@@ -1,0 +1,210 @@
+$(document).ready(function () {
+    $('body').on('propertychange input', 'input[class="number"]', forceNumeric);
+    
+    $('#main_dropdown').on("click.bs.dropdown", function (e) {
+        e.stopPropagation(); 
+        e.preventDefault();        
+    });
+    
+    $(document).ajaxStart(function() {            
+         $('body').addClass('wait');
+    }).ajaxStop(function() {                   
+        $('body').removeClass('wait');
+    });
+
+    $(document).on('click', '.menu_login', function(){        
+        document.getElementById("userLogin2").focus();
+    });    
+    
+    $('#login_container1').keypress(function (e) {
+        if (e.which == 13) {
+            $("#btn_dumbu_login1").click();
+            return false;
+        }
+    });
+    
+    $('#login_container2').keypress(function (e) {
+        if (e.which == 13) {
+            $("#btn_dumbu_login2").click();
+            return false;
+        }
+    });
+    
+    function getUrlVars(){
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++){
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+    
+    function modal_alert_message(text_message){
+        $('#modal_alert_message').modal('show');
+        $('#message_text').text(text_message);        
+    }
+    
+    $("#accept_modal_alert_message").click(function () {
+        $('#modal_alert_message').modal('hide');
+    });
+    
+    //------------desenvolvido para DUMBU-LEADS-------------------
+    $("#btn_dumbu_login1").click(function() {
+        do_login('#userLogin1','#userPassword1', '#container_login_message1', 
+                 '#container_login_force_login1', '#check_force_login1', '#message_force_login1',this);
+    });
+    
+    $("#btn_dumbu_login2").click(function() {                
+        do_login('#userLogin2','#userPassword2', '#container_login_message2', 
+                 '#container_login_force_login2', '#check_force_login2', '#message_force_login2',this);        
+    });    
+   
+   function do_login(fieldLogin,fieldPass, fieldErrorMessage, fieldContainerLoginForce, fieldCheckForceLogin, fieldMessageForceLogin, object){                        
+       if($(fieldLogin).val()!='' && $(fieldPass).val()!==''){           
+            if (validate_element(fieldLogin, '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$')) {                
+                message_container('Espere por favor ...',fieldErrorMessage,'green');                                                                                
+                var l = Ladda.create(object);  l.start();
+                $.ajax({
+                    url: base_url + 'index.php/welcome/login',
+                    data: {                                
+                        'client_login': $(fieldLogin).val(),
+                        'client_pass': $(fieldPass).val(),
+                        'language': language
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {                    
+                            $(location).attr('href',base_url+'index.php/welcome/'+response['resource']+'?language='+language);
+                        } else { 
+                            message_container(response['message'],fieldErrorMessage,'red');                                
+                        }
+                        l.stop();
+                    },
+                    error: function (xhr, status) {
+                        message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                        
+                        l.stop();
+                    }
+                });                
+            }
+            else {                
+                message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',fieldErrorMessage,'red');                
+            }
+        } else {            
+            message_container('Deve preencher todos os dados corretamente!',fieldErrorMessage,'red');                            
+        }         
+    }
+   
+    $("#do_signin").click(function () {       
+       var login = $('#user_registration').val();
+       var pass = $('#pass_registration').val();
+       var email = $('#email_registration').val()       
+       var telf = $('#telf_registration').val()       
+       var UTM = typeof getUrlVars()["utm_source"] !== 'undefined' ? getUrlVars()["utm_source"] : '';
+       
+       if (login != '' && pass != '' && email != '') {
+            if (validate_element('#email_registration', "^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,4}$")) {
+                if (validate_element('#user_registration', '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$')) {
+                    if (validate_element('#telf_registration', '^[0-9]{0,15}$')) {
+                        if($('#terms_checkbox').is(":checked")) {                        
+                            var l = Ladda.create(this);  l.start();
+                            $.ajax({
+                                url: base_url + 'index.php/welcome/signin',
+                                data: {
+                                    'client_email': email,
+                                    'client_telf': telf,
+                                    'client_name': name,
+                                    'client_login': login,
+                                    'client_pass': pass,
+                                    'language': language,
+                                    'utm_source': UTM
+                                },
+                                type: 'POST',
+                                dataType: 'json',
+                                success: function (response) {
+                                    if (response['success']) {
+                                        $(location).attr('href',base_url+'index.php/welcome/'+response['resource']+'');
+
+                                    } else {
+                                        message_container(response['message'],'#container_sigin_message','red');                                                  
+                                    }                
+                                    l.stop();
+                                },
+                                error: function (xhr, status) {
+                                    message_container('Não foi possível responder a sua solicitude!','#container_sigin_message','red');                                                                                  
+                                    l.stop();
+                                }
+                            });                         
+                        }else{
+                            message_container('Deve aceitar os termos de uso!','#container_sigin_message','red');                        
+                            $('#terms_checkbox').css('outline-color', 'red');
+                            $('#terms_checkbox').css('outline-style', 'solid');
+                            $('#terms_checkbox').css('outline-width', 'thin');                        
+                        }
+                    }
+                    else{
+                        message_container('O telefone só pode conter números!','#container_sigin_message','red');                                            
+                    }
+                } else {
+                    message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!','#container_sigin_message','red');                                            
+                }
+            } else {
+                message_container('Problemas na estrutura do email informado!','#container_sigin_message','red');                                                            
+            }
+        } else {
+            message_container('Deve preencher todos os dados corretamente!','#container_sigin_message','red');              
+        }
+       
+    });
+    
+    $("#do_cancel_signin").click(function () {
+        var language='PT';       
+        $.ajax({
+            url: base_url + 'index.php/welcome/signout',
+            data: {                                
+                'client_login': login,
+                'client_pass': pass,
+                'language': language
+            },
+            type: 'POST',
+            dataType: 'json',
+            beforeSend:function(){
+                        return confirm("Are you sure to cancel the subscription?");
+                     },
+            success: function (response) {
+                if (response['success']) {
+                    modal_alert_message(response['message']);
+                } else {
+                      modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {                
+                message_container('Não foi possível executar sua solicitude!','#container_sigin_message','red');                                        
+            }
+        });                                 
+    });
+    
+    function validate_element(element_selector, pattern) {
+        if (!$(element_selector).val().match(pattern)) {
+            $(element_selector).css("border", "1px solid red");
+            return false;
+        } else {
+            $(element_selector).css("border", "1px solid gray");
+            return true;
+        }
+    }    
+    
+    function message_container(message, container, color){
+        $(container).text(message);                                            
+        $(container).css('visibility','visible');
+        $(container).css('color', color);
+    }
+    
+}); 
+
+function forceNumeric(){
+    var $input = $(this);
+    $input.val($input.val().replace(/[^\d]+/g,''));
+}

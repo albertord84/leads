@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+            <?php  $CI =& get_instance();?>
+            <meta charset="UTF-8">
+            <title>Dumbu-Leads</title>
+            <meta name="viewport" content="width=device-width">
+            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/favicon.png'?>">
+
+            <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
+            <script type="text/javascript">var language ='<?php echo $GLOBALS['language']?>';</script>
+            
+            <!-- Font Awesome -->
+            <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
+            
+            <!-- Bootstrap -->
+            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>"/>
+            <!--<link rel="stylesheet" href="<?php //echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>"/>-->
+
+            <!-- CSS -->
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
+            
+            <!-- jQuery -->
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>        
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
+            
+            <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
+            <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>
+        
+    </head>
+    <body>
+    <section class="topo-home fleft100 bk-black">
+<!--            <header class="fleft100 pd-tb20 m-top20">
+                    <div class="container pd-lr60 pd-lr15-xs">
+                            <div class="col-md-4 col-sm-6 col-xs-7 pull-right text-right m-top10-xs menu">
+                                    <a href="www.dumbu.pro/dumbu/src" class="a-border i-block hidden-xs">Quer seguidores? <br>Clique aqui</a>
+                                    <div class="dropdown i-block">
+                                      <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
+                                          <img src="<?//php echo base_url().'assets/img/user.png'?>" alt=""> ENTRAR
+                                      </button>
+                                      <form class="dropdown-menu" aria-labelledby="dLabel">
+                                        <input type="text" class="form-control fleft100" placeholder="Usuário">
+                                        <input type="text" class="form-control fleft100 m-top10" placeholder="Senha">
+                                        <button type="button" class="btn btn-success fleft100 m-top10">Entrar</button>
+                                      </form>
+                                    </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-5 pull-right text-center left-xs logo m-top8 m-none-xs">
+                                    <a href=""><img src="<?php //echo base_url().'assets/img/logo.png'?>" alt="Logo-image"/></a>
+                            </div>		
+                    </div>
+            </header>-->
+            
+            <header class="">
+                <div class="container">
+                    <div id="dl-menu" class="dl-menuwrapper">
+                        <!--<button class="dl-trigger">Open Menu</button>-->
+                            <ul class="dl-menu">                                        
+                                <li>
+                                    <a href="#lnk_sign_in_now">
+                                        <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
+                                    </a>
+                                </li>                                                                
+                                <li>
+                                    <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
+                                    <ul class="dl-submenu">
+                                        <li>
+                                            <div id="login_container1">
+                                                <form id="usersLoginForm1" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
+                                                    <div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
+                                                    <?php echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(),$language);?>
+                                                    </div>                                                                        
+                                                    <div class="form-group">
+                                                            <input id="userLogin1" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                            <input id="userPassword1" type="password" class="form-control" placeholder="<?php echo $CI->T("senha", array(),$language);?>" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                            <input type="submit" name="" value="<?php echo $CI->T("ENTRAR", array(),$language);?>" id="btn_dumbu_login1" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff" />
+                                                    </div>
+                                                    <div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
+                                                    </div>
+                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
+                                                        <div class="col-md-2 col-sm-2 col-xs-12">
+                                                            <input type="checkbox" id="check_force_login1" checked="false" style="margin-top: 0;">                                                                                                        
+                                                        </div>
+                                                        <div id="message_force_login1" style="with:100%" class="col-md-10 col-sm-10 col-xs-12 text-left">                                                                                        
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+<!--                                <li id="locales_cell">
+                                    <a  id="lnk_language1_cell" href="#">
+                                        <?php if ($language === 'EN') { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
+                                            <span id="txt_language1" style="color: white">EN</span>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?> 
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us">
+                                            <span id="txt_language1" style="color: white">PT</span>
+                                        <?php }
+                                        else { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us">
+                                            <span id="txt_language1" style="color: white">ES</span>
+                                        <?php } ?>
+                                    </a>
+                                    <ul class="dl-submenu">
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language2" style="color: black">PT</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language2" style="color: black">ES</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language2" style="color: black">EN</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language3" style="color: black">ES</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language3" style="color: black">EN</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language3" style="color: black">PT</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                    </ul>
+                                </li>-->
+                            </ul>
+                        </div>
+
+                        <nav class="navbar navbar-default navbar-static-top" style="background-color:transparent; margin-top:20px">
+                            <div class="logo pabsolute fleft100 text-center">
+                                <a class="navbar-brand i-block" href="#">
+                                    <img alt="Brand" src="<?php echo base_url().'assets/img/logo.png'?>">
+                                </a>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right menu-principal">
+                                <li >
+                                    <a href="https://dumbu.pro/dumbu/src" class="a-border i-block hidden-xs text-right">Quer seguidores? <br>Clique aqui</a>
+                                </li>
+                                <li >
+                                    <a href="#lnk_sign_in_now">
+                                        <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
+                                    </a>
+                                </li>
+                                <?php
+                                if($this->session->userdata('login')){
+                                ?>                                
+                                <li>                                    
+                                    <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
+                                        <i class="fa fa-binoculars"></i>
+                                        <?php echo $CI->T("CAMPANHAS", array(),$language);?>
+                                    </a>
+                                </li>
+                                <?php
+                                }
+                                else {
+                                ?>
+                                <li class = "dropdown_open" class="col-md-12">                                    
+                                    <a href="#" class="dropdown-toggle menu_login" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                        <img src="<?php echo base_url().'assets/img/user.png'?>" class="wauto us" alt="User">
+                                            <?php echo $CI->T("ENTRAR", array(),$language);?>
+                                        <spam class="caret"></spam>
+                                    </a>                                    
+                                    <ul class="dropdown-menu" id = "main_dropdown">
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="login_container2">
+                                                        <form id="usersLoginForm2" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
+                                                            <div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
+                                                                <?php echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(),$language);?>
+                                                            </div>
+                                                            <div class="form-group center" style="font-family:sans-serif; font-size:0.7em">
+                                                                <?php echo $CI->T("Use login e senha", array(),$language);?>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input id="userLogin2" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                    <input id="userPassword2" type="password" class="form-control" placeholder="<?php echo $CI->T("Senha", array(),$language);?>" required="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                    <button id="btn_dumbu_login2" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff">
+                                                                            <spam class="ladda-label"><?php echo $CI->T("Entrar", array(),$language);?></spam>
+                                                                    </button>
+                                                            </div>
+                                                            <div id="container_login_message2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
+                                                            </div>
+                                                            <div id="container_login_force_login2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
+                                                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                                                    <input type="checkbox" id="check_force_login2" checked="false" style="margin-top: 0;">                                                                                                        
+                                                                </div>
+                                                                <div id="message_force_login2" style="with:100%"  class="col-md-10 col-sm-10 col-xs-12 text-left">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>                                    
+                                </li> 
+                                <?php
+                                }
+                                ?>
+                                <li id="locales" class="">
+                                    <a  id="lnk_language1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">                                 
+                                        <?php if($language==='EN'){?>
+                                                <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" class="wauto us" alt="EN">
+                                                <span id="txt_language1">EN</span>
+                                                <span  class="caret"></span>
+                                        <?php }else if($language==='PT'){?>
+                                                <img id="img_language1" alt="PT" src="<?php echo base_url().'assets/img/pt_flag.png'?>" class="wauto us"/>
+                                                <span id="txt_language1">PT</span>
+                                                <span  class="caret"></span>
+                                        <?php } else {?>
+                                                <img id="img_language1" alt="ES" src="<?php echo base_url().'assets/img/es_flag.png'?>" class="wauto us"/>
+                                                <span id="txt_language1">ES</span>
+                                                <span  class="caret"></span>
+                                        <?php }?>                                            
+                                    </a>
+                                    <ul class="dropdown-menu" style="min-width: 50px">
+                                        <li>
+                                            <?php if($language==='EN'){?>
+                                                <a id="lnk_language2" href="#">
+                                                    <img id="img_language2" alt="PT" src="<?php echo base_url().'assets/img/pt_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language2">PT</span>
+                                                </a>
+                                            <?php }else if($language==='PT'){?>
+                                                <a id="lnk_language2" href="#">
+                                                    <img id="img_language2" alt="ES" src="<?php echo base_url().'assets/img/es_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language2">ES</span>
+                                                </a>
+                                            <?php } else {?>
+                                                <a id="lnk_language2" href="#">
+                                                    <img id="img_language2" alt="EN" src="<?php echo base_url().'assets/img/en_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language2">EN</span>
+                                                </a>
+                                            <?php }?>
+                                        </li>
+                                        <li>
+                                            <?php if($language==='EN'){?>
+                                                <a id="lnk_language3" href="#">
+                                                    <img id="img_language3" alt="ES" src="<?php echo base_url().'assets/img/es_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language3">ES</span>
+                                                </a>
+                                            <?php }else if($language==='PT'){?>
+                                                <a id="lnk_language3" href="#">
+                                                    <img id="img_language3" alt="EN" src="<?php echo base_url().'assets/img/en_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language3">EN</span>
+                                                </a>
+                                            <?php } else {?>
+                                                <a id="lnk_language3" href="#">
+                                                    <img id="img_language3" alt="PT" src="<?php echo base_url().'assets/img/pt_flag.png'?>" class="wauto us"/>
+                                                    <span id="txt_language3">PT</span>
+                                                </a>
+                                            <?php }?>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                </div>
+            </header>
+
+
+
+
+
+
+            <div class="container text-center topo cl-fff">
+                    <div class="col-md-10 col-sm-12 col-xs-12 fnone i-block">
+                            <div class="fleft100 text-left center-xs"><small>NOVIDADE</small></div>
+                            <h1 class="cl-blue fw-900 m-top15 fleft100">Extraia dados de futuros clientes usando o Instagram.</h1>
+                            <span class="fleft100 text-center fw-300 ft-size20">Sem limite de extração diária. Mais de 500 milhões de Leads que podem ser seus agora!</span>
+
+                            <div class="col-md-5 col-sm-12 col-xs-12 m-top40">
+                                    <div class="fleft100 blseta">
+                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
+                                                    <img src="<?php echo base_url().'assets/img/$.png'?>" alt=""/>
+                                            </div>
+                                            <div class="col-md- 9 col-sm-9 col-xs-12 text-left center-xs m-top5">
+                                                    <h4>A partir de R$ 0,10  por leads ÚNICOS extraídos</h4>
+                                            </div>
+                                    </div>
+                                    <div class="fleft100 blseta m-top40">
+                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0 m-top15">
+                                                    <img src="<?php echo base_url().'assets/img/alvo.png'?>" alt="">
+                                            </div>
+                                            <div class="col-md- 9 col-sm-9 col-xs-12 text-left center-xs">
+                                                    <h4>Crie campanhas personalizadas, com filtros completos, como: sexo, localidade e tipo de perfil</h4>
+                                            </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-xs-12 m-top40">
+                                    <div class="blblue fleft100">
+                                            <h2 class="fw-600 text-left m-b30 pd-lr15">Quais dados consigo exportar?</h2>
+                                            <div class="fleft100">
+                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/tel.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12 text-left pd-lr0-xs center-xs fw-600 ft-size13">
+                                                                    Número telefônico
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/mail.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12 text-left pd-lr0-xs center-xs fw-600 ft-size13 m-top5">
+                                                                    E-mail
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/insta.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12 text-left pd-lr0-xs center-xs fw-600 ft-size13 m-top5">
+                                                                    @perfil
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                            <div class="fleft100 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/local.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12 text-left pd-lr0-xs center-xs fw-600 ft-size13 m-top8">
+                                                                    Local
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                            <div class="col-md-4 col-sm-4 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/sexo.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-12 text-left pd-lr0-xs center-xs fw-600 ft-size13 m-top5">
+                                                                    Gênero
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                            <div class="col-md-2 col-sm-2 col-xs-12 pd-0">
+                                                                    <img src="<?php echo base_url().'assets/img/user.png'?>" alt="">
+                                                            </div>
+                                                            <div class="col-md-10 col-sm-10 col-xs-12 text-left pd-lr0-xs center-xs fw-600 pd-lr5 ft-size13">
+                                                                    Tipo de perfil
+                                                                    <span class="ft-size8">(Pessoal ou Empresa)</span>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+                            </div>
+
+                            <div class="fleft100">
+                                    <div class="col-md-6 col-sm-12 col-xs-12 pf pull-right">
+                                            <span class="fleft100 m-b10 hidden-xs"><img src="<?php echo base_url().'assets/img/s-up.png'?>" alt=""></span>
+                                            <img src="<?php echo base_url().'assets/img/pf.png'?>" alt="">
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12 m-top80 m-top20-xs m-b20">
+                                            <a href="#lnk_sign_in_now" class="bt-trans-green">
+                                                <span class="fleft100">Cadastre-se GRÁTIS agora mesmo!</span> 
+                                                <i class="fa fa-chevron-down"></i></a>
+                                    </div>
+                            </div>
+                    </div>
+            </div>
+
+            <div class="fleft100 gb cl-fff text-center pd-tb40">
+                    <div class="container">
+                            <img src="<?php echo base_url().'assets/img/gbl.png'?>" alt="">
+                            <h3 class="m-top15">Dumbu é global!</h3>
+                            <span class="ft-size17">Temos clientes em mais de 200 países.  Faça parte de uma das Startups que mais cresce nos últimos tempos!</span>
+                    </div>
+            </div>
+    </section>
+    <section class="fleft100">
+            <div class="container center-xs">
+                    <h1 class="fw-800 fleft100 m-b30 m-top50">COMO FUNCIONA?</h1>
+                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5">
+                            <div class="fleft100 pass">
+                                    <div class="col-md-1 col-sm-2 col-xs-12 pd-0 text-center ft-size24 fw-600">1</div>
+                                    <div class="col-md-11 col-sm-10 col-xs-12 pd-lr5 fw-600">
+                                            Escolha os perfis, hashtags ou locais do Instagram  que deseja captar seus leads
+                                    </div>
+                            </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5">
+                            <div class="fleft100 pass">
+                                    <div class="col-md-1 col-sm-2 col-xs-12 pd-0 text-center ft-size24 fw-600">2</div>
+                                    <div class="col-md-11 col-sm-10 col-xs-12 pd-lr5 fw-600 m-top8 m-none-xs">
+                                            Escolha quanto deseja investir por dia
+                                    </div>
+                            </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
+                            <div class="fleft100 pass passblue">
+                                    <div class="col-md-1 col-sm-2 col-xs-12 pd-0 text-center ft-size24 fw-600">3</div>
+                                    <div class="col-md-11 col-sm-10 col-xs-12 pd-lr5 fw-600">
+                                            A Dumbu fará uma lista  exportável com informações de contas baseada nos perfis, hashtags ou locais que você deseja
+                                    </div>
+                            </div>
+                    </div>
+                    <div class="fleft100 m-top50">
+                            <div class="col-md-6 col-sm-6 col-xs-12 pd-0">
+                                    <div class="fleft100 pd-40 border-blue">
+                                            <h1 class="ft-size55 fw-800 col-md-8 col-sm-8 col-xs-12">
+                                                    O que são Leads?
+                                            </h1>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <img src="<?php echo base_url().'assets/img/cf.png'?>" class="mxw-180">
+                                            </div>
+                                            <p class="fleft100 pd-lr15 fw-400 m-top20">
+                                                    Geração de leads significa oportunidades de negócio. Lead, em Marketing Digital, é um potencial consumidor de uma marca que demonstrou interesse em consumir o seu produto ou serviço.
+                                                    <br><br>
+                                                    Se baseando em seu público alvo, você só precisa selecionar Perfis do Instagram, Locais e Hashtags que tenham a ver com seu negócio. Nossa ferramenta irá entregar os dados dos usuários que potencialmente podem se tornar consumidores do seu produto ou serviço.
+                                            </p>
+                                    </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 pd-50 m-top30">
+                                    <h3 class="fw-600">Como usar os dados exportados?</h3>
+                                    <p class="fleft100 fw-400 m-top20">
+                                            Você pode usar os Leads extraídos de várias maneiras. 
+                                            <br><br>
+                                            Usando o e-mail, além do mais tradicional e-mail marketing, você também pode criar públicos para campanhas de Custom Audience no Facebook e Instagram. 
+                                            <br><br>
+                                            Já com o número de celular, você pode criar campanhas de SMS ou Whats App Marketing ou fazer ligações através do seu time comercial, por exemplo. 
+                                            <br><br>
+                                            Os demais dados, como: sexo, localidade e tipo de perfil, são excelentes filtros para começar a categorizar e criar campanhas personalizadas, baseadas no público atingido.
+                                    </p>
+                            </div>
+                    </div>
+            </div>
+
+            <div class="fleft100 bk-silver pd-tb30 m-top50 text-center">
+                    <div class="container">
+                            <A name="lnk_sign_in_now"></A>
+                            <h3>Agora que você já sabe como funciona, <b>crie sua conta grátis!</b></h3>
+                            <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4 col-sm-offset-4 m-top30">
+                                    <div class="col-md-8 col-sm-12 col-xs-12 pd-0 fnone i-block">
+                                            <form action="" class="fleft100 fmr-cadastro">					
+                                                    <div class="fleft100 pd-20 bk-fff text-left">
+                                                            <div class="fleft100 pd-lr15">
+                                                                    <h4 class="fw-600"><img src="<?php echo base_url().'assets/img/profile.png'?>" class="m-r8"> <span>Crie sua conta</span></h4>
+                                                                    <span class="ft-size13 m-top15 fleft100 m-b20">
+                                                                            Você só será cobrado se após iniciar uma campanha e escolher o valor  que deseja pagar por dia.
+                                                                    </span>						
+                                                            </div>						
+                                                            <div class="form-group">
+                                                                <label for="nome"><?php echo $CI->T("Nome de usuário", array(),$language);?></label>
+                                                                <input class="form-control" id="user_registration" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="email">E-mail</label>
+                                                                <input type="email" class="form-control" id="email_registration">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="telf">Telefone</label>
+                                                                <input class="form-control" id="telf_registration" maxlength="15">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
+                                                                <input type="password" class="form-control" id="pass_registration">
+                                                            </div>
+                                                    </div>
+                                                    <div id="container_sigin_message" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
+                                                    </div>
+                                                    <div class="fleft100 pd-lr20">
+                                                        <button type="button" id="do_signin" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CRIAR CONTA", array(),$language);?></button>
+                                                            <div class="checkbox m-top10 fleft100">
+                                                          <label style="font-size: 11px;">
+                                                            <input id = "terms_checkbox" type="checkbox" style="position: relative;top:2px;"> Declaro que li e aceito os termos de uso
+                                                          </label>
+                                                        </div>
+                                                    </div>                                                    
+                                            </form>	
+                                    </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12 m-top30 text-left">
+                                    <div class="seguro text-center">
+                                            <div class="col-md-2 col-sm-2 col-xs-12 pd-0">
+                                                    <img src="<?php echo base_url().'assets/img/seg.png'?>" alt="">
+                                            </div>
+                                            <div class="col-md-10 col-sm-10 col-xs-12 pd-lr5">
+                                                    <span class="ft-size11 fleft100 fw-600">AMBIENTE 100% SEGURO</span>
+                                                    <span class="ft-size8 fleft100">DADOS CRIPTOGRAFADOS</span>
+                                            </div>
+                                    </div>
+                            </div>
+                    </div>
+            </div>	
+    </section>        
+    <footer class="fleft100 pd-tb50 bk-fff text-center">
+            <div class="container">
+                    <div class="col-md-5 col-sm-7 col-xs-12 fnone i-block">
+                            <h1 class="fw-800 fleft100 m-b10">FALE CONOSCO</h1>
+                            <div class="col-md-7 col-sm-7 col-xs-12 text-right center-xs t-up fw-800">
+                                    <h6>Write to us! Our service is supported <br>in more than one language:</h6>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-xs-12 text-left center-xs">
+                                    <img src="<?php echo base_url().'assets/img/linguas.png'?>" alt="">
+                            </div>
+                            <form action="" class="fmr-contato fleft100 m-top15">
+                                <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5 form-group">
+                                    <input id="visitor_name" type="text" class="form-control" placeholder="Nome *">
+                                </div>
+                                <div id="" class="col-md-6 col-sm-6 col-xs-12 pd-lr5 form-group">
+                                    <input id="visitor_company" type="text" class="form-control" placeholder="Empresa">
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5 form-group">
+                                    <input id="visitor_email" type="text" class="form-control" placeholder="E-mail *">
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5 form-group">
+                                    <input id="visitor_phone" type="text" class="form-control" placeholder="Telefone">
+                                </div>
+                                <div class="fleft100 pd-lr5 form-group">
+                                    <textarea id="visitor_message" type="text" class="form-control fleft100" rows="4" placeholder="Mensagem *"></textarea>
+                                </div>
+                                <div class="fleft100 pd-lr5">
+                                    <span>(*) Obrigatório</span>
+                                </div>
+                                <div class="fleft100 pd-lr5">
+                                    <button id="btn_send_message" type="button" class="btn m-top10">ENVIAR MENSAGEM</button>
+                                </div>
+                            </form>
+
+                            <div class="fleft100 m-top40">
+                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
+                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - TODOS OS DIREITOS RESERVADOS</span>
+                            </div>
+                    </div>
+            </div>
+    </footer>
+        
+    <!--modal_container_alert_message-->
+    <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <img src="<?php echo base_url().'assets/img/FECHAR.png'?>" alt="cancel"> <!--<spam aria-hidden="true">&times;</spam>-->
+                    </button>
+                    <h5 class="modal-title" id="myModalLabel"><b><?php echo $CI->T("Mensagem", array(),$language) ?></b></h5>                        
+                </div>
+                <div class="modal-body">                                            
+                    <p id="message_text"></p>                        
+                </div>
+                <div class="modal-footer text-center">
+                    <button id="accept_modal_alert_message" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                        <spam class="ladda-label"><div style="color:white; font-weight:bold">OK</div></spam>
+                    </button>
+                </div>
+            </div>
+        </div>                                                        
+    </div> 
+    </body>
+    <!--[if lt IE 9]>
+    <script src="js/jquery-1.9.1.js"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script src="<?php echo base_url().'assets/js/jquery-3.1.1.min.js'?>"></script>
+    <!--<![endif]-->
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
+    <!-- FILTRAR -->
+    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
+    <!-- VALIDATE -->
+    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
+    <!-- MASCARAS -->
+    <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
+    <!-- Scripts -->
+    <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/talkme_painel.js'?>" type="text/javascript"></script>
+    
+</html>

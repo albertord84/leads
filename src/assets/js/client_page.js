@@ -1,0 +1,1626 @@
+$(document).ready(function () {    
+    $('#datetimepicker_lead').datepicker( { format: "dd/mm/yyyy", autoclose: true});
+    $('#datetimepicker_lead2').datepicker( { format: "dd/mm/yyyy", autoclose: true});
+        
+    function modal_alert_message(text_message){
+        $('#modal_alert_message').modal('show');
+        $('#message_text').text(text_message);        
+    }
+    
+    $("#accept_modal_alert_message").click(function () {
+        $('#modal_alert_message').modal('hide');
+    });
+    
+    //------------desenvolvido para DUMBU-LEADS-------------------    
+    $("#do_logout").click(function () {                
+        $.ajax({
+            url: base_url + 'index.php/welcome/logout',            
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                    
+                    $(location).attr('href',base_url);
+                } else {
+                      modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+//                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+//                $('#container_sigin_message').css('visibility', 'visible');
+//                $('#container_sigin_message').css('color', 'red');
+            }
+        });                            
+    });
+    
+    $("#do_add_profile_temp").click(function () {
+        var profile_temp = $('#profile_temp').val();
+        var profile_insta_temp = $('#profile_insta_temp').val();
+        var profile_type_temp = $('#profile_type_temp').val();
+
+        if(profile_type_temp == 0)
+            profile_type_temp = $('#campaing_type').val();
+        var char_type;
+        if(profile_type_temp == 1)
+            char_type = '';
+        if(profile_type_temp == 2)
+            char_type = '@';
+        if(profile_type_temp == 3)
+            char_type = '#';
+        $("#table_search_profile").empty();
+
+        if(validate_element($('#profile_insta_temp'), '^[0-9]{1,100}$') && profile_insta_temp > 0){
+            if (validate_element($('#profile_temp'), '^[\._\u00c0-\u01ffa-zA-Za-zA-Z0-9\-]{1,100}$')) {                                                          
+                $.ajax({
+                         url: base_url + 'index.php/welcome/add_temp_profile',
+                         data:  {                        
+                             'profile_temp': profile_temp,
+                             'profile_type_temp': profile_type_temp,
+                             'profile_insta_temp': profile_insta_temp                        
+                         },   
+                         type: 'POST',
+                         dataType: 'json',
+                         success: function (response) {
+                             if (response['success']) {                            
+                                 $('#profile_temp').val('');
+                                 var html = '<li id = "_' + profile_insta_temp + '">';                                                          
+                                     html +=     '<span class="fleft100 ellipse">';
+                                     html +=           '<div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profile_temp+'">';
+                                     html +=                char_type+reduced_profile(profile_temp);                                     
+                                     html +=           '</div>';
+                                     html +=           '<b class="my_close">x</b>';
+                                     html +=      '</span>';
+                                     html += '</li>';
+                                 document.getElementById("profiles").innerHTML += html;
+                                 $('#profile_type_temp').val(0);
+                             } else {
+                                   modal_alert_message(response['message']);
+     //                                    $('#container_sigin_message').text(response['message']);
+     //                                    $('#container_sigin_message').css('visibility', 'visible');
+     //                                    $('#container_sigin_message').css('color', 'red');                                    
+                             }                             
+                         },
+                         error: function (xhr, status) {
+                             $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                             $('#container_sigin_message').css('visibility', 'visible');
+                             $('#container_sigin_message').css('color', 'red');                             
+                         }
+                     });                             
+                 } else {
+                   modal_alert_message('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!');
+     //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+     //            $('#container_sigin_message').css('visibility', 'visible');
+     //            $('#container_sigin_message').css('color', 'red');
+                 //modal_alert_message('Formulario incompleto');
+             }
+        }
+        else{
+            modal_alert_message('Deve selecionar um perfil da lista fornecida');
+        }
+         
+       
+    });
+
+    
+    $(document).on('click', '.my_close', function(){        
+        var profile_temp = this.parentNode.parentNode.id;        
+        profile_temp = profile_temp.substr(1); //eliminado el _
+        
+        if (profile_temp) {            
+            $.ajax({
+                url: base_url + 'index.php/welcome/delete_temp_profile',
+                data:  {                        
+                    'profile_insta_temp': profile_temp
+                },   
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response['success']) {
+                        $('#_'+profile_temp).remove();                        
+                    } else {
+                          modal_alert_message(response['message']);
+//                                    $('#container_sigin_message').text(response['message']);
+//                                    $('#container_sigin_message').css('visibility', 'visible');
+//                                    $('#container_sigin_message').css('color', 'red');                                    
+                    }
+                },
+                error: function (xhr, status) {
+                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').css('visibility', 'visible');
+                    $('#container_sigin_message').css('color', 'red');
+                }
+            });            
+        } else {
+              modal_alert_message('Deve fornecer um perfil para eliminar');
+//            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+//            $('#container_sigin_message').css('visibility', 'visible');
+//            $('#container_sigin_message').css('color', 'red');
+            //modal_alert_message('Formulario incompleto');
+        }
+        
+    });
+    
+    $("#do_save_campaing").click(function () {        
+        var total_daily_value = $('#daily_value').val(); 
+        total_daily_value = total_daily_value.replace(",", "."); 
+        var available_daily_value = total_daily_value;
+        var insta_id = "";
+        
+        var campaing_type_id = $('#campaing_type').val();
+        var client_objetive = $('#objective').val();
+        
+       
+        if (total_daily_value != '' && client_objetive != '') {
+            if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
+                validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
+                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= 30) {
+                var l = Ladda.create(this);  l.start();
+                $.ajax({
+                    url: base_url + 'index.php/welcome/save_campaing',
+                    data:  {
+                        'total_daily_value': total_daily_value*100,
+                        'available_daily_value': available_daily_value*100,
+                        'insta_id':insta_id,
+                        'campaing_type_id': campaing_type_id,
+                        'client_objetive': client_objetive,                
+                        'language': language                                
+                    },   
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {
+                            $('#daily_value').val('0.00');                                    
+                            clearBox("profiles");                                                                                                    
+                            $('#criar').modal('hide');
+                            var tempStr = document.getElementById("list_campaings").innerHTML;
+                            document.getElementById("list_campaings").innerHTML = response['html'] + tempStr;
+                            //modal_alert_message(response['message']);
+                            message_created_campaing();
+                            //modal_alert_message_CP("Operação realizada!", "Sua campanha foi criada exitosamente. Para pode comenzar a extraer leads deve ativar sua campanha. Deseja fazer agora?", "Cancelar", "Ok", remover_perfil, profile);
+                            
+                        } else {
+                              modal_alert_message(response['message']);
+//                                    $('#container_sigin_message').text(response['message']);
+//                                    $('#container_sigin_message').css('visibility', 'visible');
+//                                    $('#container_sigin_message').css('color', 'red');                                    
+                        }
+                        l.stop();    
+                    },
+                    error: function (xhr, status) {
+                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').css('visibility', 'visible');
+                        $('#container_sigin_message').css('color', 'red');
+                        l.stop();
+                    }
+                });                
+            } else {
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+                  //modal_alert_message('Deve ser um número (não zero) com até dois valores decimais!');
+//                $('#container_sigin_message').text(T('Deve fornecer um valor númerico!'));
+//                $('#container_sigin_message').css('visibility', 'visible');
+//                $('#container_sigin_message').css('color', 'red');
+                //modal_alert_message('O email informado não é correto');
+            }
+        } else {
+              modal_alert_message('Preencha todos os dados da campanha corretamente!');
+//            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+//            $('#container_sigin_message').css('visibility', 'visible');
+//            $('#container_sigin_message').css('color', 'red');
+            //modal_alert_message('Formulario incompleto');
+        }
+       
+       
+    });
+
+    $(document).on('click', '.edit_campaing', function(){        
+        reset_element("#edit_daily_value","2px solid #1fa57e");        
+        clearBox('response_daily_value');        
+        $("#table_search_profile2").empty();
+        $('#profile_edit').val("");
+        
+        var id_element = $(this).data('id');
+        var res = id_element.split("_");
+        var id_campaing = res[res.length-1];
+        $("#campaing_id").val( id_campaing );
+        $.ajax({
+            url: base_url + 'index.php/welcome/get_campaing_data',
+            data:  {
+                'campaing_id': id_campaing
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {
+                    var campaing_array = response['data'];
+                    var campaing = campaing_array[0];
+                    //modal_alert_message(campaing['campaing_id']);
+                    $('#editar').modal('show');
+                    $(".modal-content #orcamento").val(Number(campaing['total_daily_value']/100).toFixed(2));
+                    $("#ativada").removeClass('play');
+                    $("#pausada").removeClass('pause');
+                    document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
+                    document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                    $("#edit_daily_value").val(Number(campaing['total_daily_value']/100).toFixed(2));
+                    
+                    var status = campaing['campaing_status_id_string'];
+                    
+                    if(status == "ATIVA"){                        
+                        $("#ativada").addClass('play');
+                        document.getElementById("ativada").innerHTML = ' ATIVA';
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                    }
+                    else{
+                        if(status == "PAUSADA"){
+                            $("#pausada").addClass('pause');                            
+                            document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
+                            document.getElementById("pausada").innerHTML = ' PAUSADA';
+                        }
+                    }
+                    var gasto = document.getElementById('gasto');                    
+                    var total = document.getElementById('total');                    
+                    var dados_captados = document.getElementById('dados_captados');                    
+                    var tipo = document.getElementById('tipo');                    
+                    var total = document.getElementById('total');                    
+                    
+                    gasto.innerText = Number((campaing['total_daily_value'] - campaing['available_daily_value'])/100).toFixed(2);
+                    total.innerText = Number(campaing['total_daily_value']/100).toFixed(2);
+                    dados_captados.innerText = campaing['amount_leads'];
+                    tipo.innerText = campaing['campaing_type_id_string'];
+                    $('#type_campaing').val(campaing['campaing_type_id']);
+
+                    var char_type;
+                    if(campaing['campaing_type_id'] == 1)
+                        char_type = '';
+                    if(campaing['campaing_type_id'] == 2)
+                        char_type = '@';
+                    if(campaing['campaing_type_id'] == 3)
+                        char_type = '#';
+
+                    var profiles = campaing['profile'];
+                    var i;
+                    document.getElementById("profiles_edit").innerHTML = "";
+                    for (i = 0; i < profiles.length; ++i) {
+                        var html = '<li id = "__' + profiles[i]['insta_id'] + '">';                                                         
+                                html +=     '<span class="fleft100 ellipse">';
+                                html +=           '<div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profiles[i]['profile']+'">';
+                                html +=                char_type+reduced_profile(profiles[i]['profile']);
+                                html +=           '</div>';
+                                html +=           '<b class="my_close2">x</b>'
+                                html +=      '</span>';
+                                html += '</li>';
+                        document.getElementById("profiles_edit").innerHTML += html;
+                    }
+                    
+                } else {
+                      modal_alert_message(response['message']);
+//                                    $('#container_sigin_message').text(response['message']);
+//                                    $('#container_sigin_message').css('visibility', 'visible');
+//                                    $('#container_sigin_message').css('color', 'red');                                    
+                }
+            },
+            error: function (xhr, status) {
+                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').css('visibility', 'visible');
+                $('#container_sigin_message').css('color', 'red');
+            }
+        });
+    });
+    
+    $("#ativada").click(function () {        
+        if(!$("#ativada").hasClass('play')){
+            var id_campaing = $("#campaing_id").val();            
+            $.ajax({
+                url: base_url + 'index.php/welcome/activate_campaing',
+                data:  {
+                    'id_campaing': id_campaing                          
+                },   
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response['success']) {                        
+                        $("#pausada").removeClass('pause');
+                        $("#ativada").addClass('play');
+                        document.getElementById("ativada").innerHTML = 'ATIVA';
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                        
+                        $("#campaing_"+id_campaing+"").removeClass('camp-silver');
+                        $("#campaing_"+id_campaing+"").removeClass('camp-blue');
+                        $("#campaing_"+id_campaing+"").addClass('camp-green');                                                
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Ativa";
+                        //PARA MINI
+                        $("#action_"+id_campaing+"").removeClass('mini_play');
+                        $("#action_"+id_campaing+"").addClass('mini_pause');
+                        $("#action_text_"+id_campaing+"").removeClass('fa fa-play-circle');
+                        $("#action_text_"+id_campaing+"").addClass('fa fa-pause-circle');
+                        
+                        document.getElementById("action_text_"+id_campaing).innerHTML = "PAUSAR";
+                        
+                        modal_alert_message(response['message']);                                            
+                    } else {
+                          modal_alert_message(response['message']);
+        //                                    $('#container_sigin_message').text(response['message']);
+        //                                    $('#container_sigin_message').css('visibility', 'visible');
+        //                                    $('#container_sigin_message').css('color', 'red');                                    
+                    }
+                },
+                error: function (xhr, status) {
+                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').css('visibility', 'visible');
+                    $('#container_sigin_message').css('color', 'red');
+                }
+            });                  
+        }        
+    });
+    
+    $(document).on('click', '.mini_play', function(){                
+        var id_element = $(this).attr('id');
+        var res = id_element.split("_");
+        var id_campaing = res[res.length-1];
+        
+        $.ajax({
+            url: base_url + 'index.php/welcome/activate_campaing',
+            data:  {
+                'id_campaing': id_campaing                          
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                                
+                    $("#pausada").removeClass('pause');
+                    $("#ativada").addClass('play');
+                        
+                    $("#campaing_"+id_campaing+"").removeClass('camp-silver');
+                    $("#campaing_"+id_campaing+"").removeClass('camp-blue');
+                    $("#campaing_"+id_campaing+"").addClass('camp-green');                        
+                    $("#action_"+id_campaing+"").removeClass('mini_play');
+                    $("#action_"+id_campaing+"").addClass('mini_pause');                        
+                    $("#action_text_"+id_campaing+"").removeClass('fa fa-play-circle');
+                    $("#action_text_"+id_campaing+"").addClass('fa fa-pause-circle');
+                    document.getElementById("campaing_status_"+id_campaing).innerHTML = "Ativa";
+                    document.getElementById("action_text_"+id_campaing).innerHTML = "PAUSAR";
+                    modal_alert_message(response['message']);                                            
+                } else {
+                      modal_alert_message(response['message']);
+    //                                    $('#container_sigin_message').text(response['message']);
+    //                                    $('#container_sigin_message').css('visibility', 'visible');
+    //                                    $('#container_sigin_message').css('color', 'red');                                    
+                }
+            },
+            error: function (xhr, status) {
+                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').css('visibility', 'visible');
+                $('#container_sigin_message').css('color', 'red');
+            }
+        });                          
+    });
+    
+    $("#pausada").click(function () {        
+        if(!$("#pausada").hasClass('pause')){
+            var id_campaing = $("#campaing_id").val();            
+            $.ajax({
+                url: base_url + 'index.php/welcome/pause_campaing',
+                data:  {
+                    'id_campaing': id_campaing                          
+                },   
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response['success']) {                        
+                        $("#ativada").removeClass('play');
+                        $("#pausada").addClass('pause');  
+                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
+                        document.getElementById("pausada").innerHTML = ' PAUSADA';
+                        
+                        $("#campaing_"+id_campaing+"").removeClass('camp-green');                        
+                        $("#campaing_"+id_campaing+"").addClass('camp-silver');                        
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Pausada";
+                        //PARA MINI
+                        $("#action_"+id_campaing+"").removeClass('mini_pause');
+                        $("#action_"+id_campaing+"").addClass('mini_play');                                                
+                        $("#action_text_"+id_campaing+"").removeClass('fa fa-pause-circle');
+                        $("#action_text_"+id_campaing+"").addClass('fa fa-play-circle');
+                        document.getElementById("action_text_"+id_campaing).innerHTML = "ATIVAR";
+                        //modal_alert_message(response['message']);                                            
+                    } else {
+                          modal_alert_message(response['message']);
+        //                                    $('#container_sigin_message').text(response['message']);
+        //                                    $('#container_sigin_message').css('visibility', 'visible');
+        //                                    $('#container_sigin_message').css('color', 'red');                                    
+                    }
+                },
+                error: function (xhr, status) {
+                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').css('visibility', 'visible');
+                    $('#container_sigin_message').css('color', 'red');
+                }
+            });            
+        }        
+    });
+    
+    $(document).on('click', '.mini_pause', function(){                
+        var id_element = $(this).attr('id');
+        var res = id_element.split("_");
+        var id_campaing = res[res.length-1];
+        
+        $.ajax({
+            url: base_url + 'index.php/welcome/pause_campaing',
+            data:  {
+                'id_campaing': id_campaing                          
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                        
+                    $("#ativada").removeClass('play');
+                    $("#pausada").addClass('pause'); 
+                        
+                    $("#campaing_"+id_campaing+"").removeClass('camp-green');                        
+                    $("#campaing_"+id_campaing+"").addClass('camp-silver');                        
+                    document.getElementById("campaing_status_"+id_campaing).innerHTML = "Pausada";
+                    //PARA MINI
+                    $("#action_"+id_campaing+"").removeClass('mini_pause');
+                    $("#action_"+id_campaing+"").addClass('mini_play');                                                
+                    $("#action_text_"+id_campaing+"").removeClass('fa fa-pause-circle');
+                    $("#action_text_"+id_campaing+"").addClass('fa fa-play-circle');
+                    document.getElementById("action_text_"+id_campaing).innerHTML = "ATIVAR";
+                    //modal_alert_message(response['message']);                                            
+                } else {
+                      modal_alert_message(response['message']);
+    //                                    $('#container_sigin_message').text(response['message']);
+    //                                    $('#container_sigin_message').css('visibility', 'visible');
+    //                                    $('#container_sigin_message').css('color', 'red');                                    
+                }
+            },
+            error: function (xhr, status) {
+                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').css('visibility', 'visible');
+                $('#container_sigin_message').css('color', 'red');
+            }
+        });
+    });
+        
+    $("#encerrar").click(function () {        
+        confirm("Cuidado!", "Deseja terminar esta campanha?", "Cancelar", "Ok", encerrar_campanha);
+    });
+    
+    function encerrar_campanha() {        
+        if(this.className != "pointer_mouse ativo"){
+            var id_campaing = $("#campaing_id").val();            
+            $.ajax({
+                url: base_url + 'index.php/welcome/cancel_campaing',
+                data:  {
+                    'id_campaing': id_campaing                          
+                },   
+                type: 'POST',
+                dataType: 'json',
+                /*beforeSend:function(){
+                        return confirm("Seguro que deseja cancelar esta campanha?");
+                },*/
+                success: function (response) {
+                    if (response['success']) {                        
+                        $("#pausada").removeClass('pause');
+                        $("#ativada").removeClass('play');
+                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> ATIVAR';
+                        
+                        $('#editar').modal('hide');
+                        $("#campaing_"+id_campaing+"").removeClass('camp-green');
+                        $("#campaing_"+id_campaing+"").removeClass('camp-silver');
+                        $("#campaing_"+id_campaing+"").removeClass('camp-blue');
+                        $("#campaing_"+id_campaing+"").addClass('camp-red');                        
+                        $("#edit_campaing_"+id_campaing+"").remove();                        
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Cancelada";
+                        //PARA MINI
+                        $("#action_"+id_campaing+"").removeClass('mini_pause');
+                        $("#action_"+id_campaing+"").removeClass('mini_play');                                                
+                        $("#action_text_"+id_campaing+"").removeClass('fa fa-pause-circle');
+                        $("#action_text_"+id_campaing+"").removeClass('fa fa-play-circle');
+                        document.getElementById("action_text_"+id_campaing).innerHTML = "";
+                        modal_alert_message(response['message']);                                            
+                    } else {
+                          modal_alert_message(response['message']);
+        //                                    $('#container_sigin_message').text(response['message']);
+        //                                    $('#container_sigin_message').css('visibility', 'visible');
+        //                                    $('#container_sigin_message').css('color', 'red');                                    
+                    }
+                },
+                error: function (xhr, status) {
+                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').css('visibility', 'visible');
+                    $('#container_sigin_message').css('color', 'red');
+                }
+            });            
+        }        
+    }
+
+    $("#do_add_profile").click(function () {           
+        var id_campaing = $("#campaing_id").val();
+        var id_insta = $("#profile_insta_edit").val();
+        var profile = $('#profile_edit').val();
+        var profile_type = $('#type_campaing').val();
+        var char_type = "";
+        if(profile_type == 2)
+            char_type = "@";
+        if(profile_type == 3)
+            char_type = "#";
+        $('#table_search_profile2').empty();
+        if(validate_element($('#profile_insta_edit'), '^[0-9]{1,100}$') && id_insta > 0){
+            if (validate_element($('#profile_edit'), '^[a-zA-Z][\-\._a-zA-Z0-9]{0,99}$')) {                               
+                    var html = '<li id = "__' + id_insta + '">';                                                          
+                                    html +=     '<span class="fleft100 ellipse">';
+                                    html +=           '<div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profile+'">';
+                                    html +=                char_type+reduced_profile(profile);
+                                    html +=           '</div>';
+                                    html +=           '<b class="my_close2">x</b>'
+                                    html +=      '</span>';
+                                    html += '</li>';
+                    var html2 = '<li id = "___' + id_insta + '"> <span>'+char_type+ reduced_profile(profile) +'</span></li>' ;  
+                    
+                    $.ajax({
+                         url: base_url + 'index.php/welcome/add_profile',
+                         data:  {                        
+                             'profile': profile,                                
+                             'id_campaing': id_campaing,
+                             'profile_type': profile_type,
+                             'insta_id': id_insta
+                         },   
+                         type: 'POST',
+                         dataType: 'json',
+                         success: function (response) {
+                             if (response['success']) {                            
+                                 document.getElementById("profiles_edit").innerHTML += html;
+                                 document.getElementById("profiles_view_"+id_campaing).innerHTML += html2;
+                                 $('#profile_edit').val('');
+                                 $('#profile_insta_edit').val(0);
+                                 //modal_alert_message(response['message']);                                    
+                             }else {                              
+                                     if(!response['old_profile'])
+                                         modal_alert_message(response['message']);
+                                     else{
+                                         confirm("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
+                                     }
+                             }                    
+                         },
+                         error: function (xhr, status) {
+                             $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                             $('#container_sigin_message').css('visibility', 'visible');
+                             $('#container_sigin_message').css('color', 'red');                                            
+                         }
+                     });
+                 } else {
+                   modal_alert_message('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!');
+     //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+     //            $('#container_sigin_message').css('visibility', 'visible');
+     //            $('#container_sigin_message').css('color', 'red');
+                 //modal_alert_message('Formulario incompleto');
+             }
+        }
+        else{
+            modal_alert_message('Deve selecionar um perfil da lista fornecida');
+        }
+    });
+    
+    function adicionar_old_perfil(old_profile){
+        var id_campaing = $("#campaing_id").val();
+        var id_insta = $("#profile_insta_edit").val();
+        var profile = $('#profile_edit').val();
+        var profile_type = $('#type_campaing').val();
+        var char_type = "";
+        if(profile_type == 2)
+            char_type = "@";
+        if(profile_type == 3)
+            char_type = "#";
+        
+        var html = '<li id = "__' + id_insta + '">';                                                          
+                                html +=     '<span class="fleft100 ellipse">';
+                                html +=           '<div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profile+'">';
+                                html +=                char_type+reduced_profile(profile);
+                                html +=           '</div>';
+                                html +=           '<b class="my_close2">x</b>'
+                                html +=      '</span>';
+                                html += '</li>';
+        var html2 = '<li id = "___' + id_insta + '"> <span>'+char_type+reduced_profile(profile) +'</span></li>' ;  
+                
+        $.ajax({                                    
+        url: base_url + 'index.php/welcome/add_existing_profile',
+        data: {
+            'old_profile': old_profile
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (response) {
+            if (response['success']) {
+                document.getElementById("profiles_edit").innerHTML += html;
+                document.getElementById("profiles_view_"+id_campaing).innerHTML += html2;
+                $('#profile_edit').val('');                
+                $('#profile_insta_edit').val(0);
+                //modal_alert_message(response['message']);                                            
+            }
+            else{
+                modal_alert_message(response['message']);                
+            }            
+            $('body').removeClass('wait');
+        },
+        error: function (xhr, status) {
+                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').css('visibility', 'visible');
+                        $('#container_sigin_message').css('color', 'red');                        
+                    }
+        });
+        $('body').removeClass('wait');
+    }
+    
+    $(document).on('click', '.my_close2', function(){        
+        var profile = this.parentNode.parentNode.id;        
+        confirm("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
+    });
+    
+    function remover_perfil(profile_to_delete){
+        var profile = profile_to_delete;
+        profile = profile.substr(2); //eliminado 2 _
+        var id_campaing = $("#campaing_id").val();
+       
+        if (profile) {                
+            $.ajax({
+                    url: base_url + 'index.php/welcome/delete_profile',
+                    data:  {                        
+                        'insta_id': profile,                                
+                        'id_campaing': id_campaing
+                    },   
+                    type: 'POST',
+                    dataType: 'json',
+//                    beforeSend:function(){
+//                        return confirm("Está seguro de remover o perfil desta campanha?");
+//                     },
+                    success: function (response) {
+                        if (response['success']) {
+                            $('#__'+profile).remove();                        
+                            $('#___'+profile).remove();                        
+                            //modal_alert_message(response['message']);
+                            
+                        } else {
+                              modal_alert_message(response['message']);
+//                                    $('#container_sigin_message').text(response['message']);
+//                                    $('#container_sigin_message').css('visibility', 'visible');
+//                                    $('#container_sigin_message').css('color', 'red');                                    
+                        }
+                    },
+                    error: function (xhr, status) {
+                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').css('visibility', 'visible');
+                        $('#container_sigin_message').css('color', 'red');
+                    }
+                });                
+        } else {
+            modal_alert_message('Deve fornecer um perfil');
+//          $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+//          $('#container_sigin_message').css('visibility', 'visible');
+//          $('#container_sigin_message').css('color', 'red');
+            //modal_alert_message('Formulario incompleto');
+        }    
+    }
+    
+    
+    $("#update_daily_value").click(function () {        
+        //$("#update_daily_value").css({'cursor':'wait'});        
+        clearBox('response_daily_value');        
+        if(!$("#ativada").hasClass('ativo')){            
+            var id_campaing = $("#campaing_id").val();
+            var new_daily_value = $("#edit_daily_value").val();
+            new_daily_value = new_daily_value.replace(",", "."); 
+           
+            if ((validate_element('#edit_daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
+                validate_element('#edit_daily_value', "^[0][\.,][1-9][0-9]?$") ||
+                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= 30){                    
+                $.ajax({
+                    url: base_url + 'index.php/welcome/update_daily_value',
+                    data:  {
+                        'new_daily_value': new_daily_value*100,
+                        'id_campaing': id_campaing                          
+                    },   
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {                        
+                            document.getElementById("show_total_"+id_campaing).innerText = Number(new_daily_value*100/100).toFixed(2);                                             
+                            document.getElementById("total").innerHTML = Number(new_daily_value*100/100).toFixed(2);                                                                                                 
+                            message_container('Orçamento diário atualizado',"#response_daily_value",'green');                                                                                
+                        } else {
+                              message_container(response['message'],"#response_daily_value",'red');                                                                                
+                            //modal_alert_message(response['message']);
+            //                                    $('#container_sigin_message').text(response['message']);
+            //                                    $('#container_sigin_message').css('visibility', 'visible');
+            //                                    $('#container_sigin_message').css('color', 'red');                                    
+                        }                        
+                    },
+                    error: function (xhr, status) {
+                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').css('visibility', 'visible');
+                        $('#container_sigin_message').css('color', 'red');                        
+                    }
+                });
+            }
+            else {
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+    //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
+    //            $('#container_sigin_message').css('visibility', 'visible');
+    //            $('#container_sigin_message').css('color', 'red');
+                //modal_alert_message('Formulario incompleto');
+                }
+        }
+        else{
+            modal_alert_message('Para modificar o orçamento diário a campanha não pode estar ativa');
+        }
+        //$("#update_daily_value").css({'cursor':'pointer'});                        
+    });
+   
+    $(document).on('click', '.date_filter', function(){           
+        var id_element = $(this).attr('id');
+        var init_date = null, end_date = null;
+        if(id_element != "tudo" || id_element != "tudo2"){            
+            var res = id_element.split("_");
+            var to_substract = res[res.length-1];
+            init_date = (real_date(Date.now())-to_substract*(24*3600*1000))/1000;            
+        }
+        
+        $.ajax({
+            url: base_url + 'index.php/welcome/get_campaings',
+            data: {
+                'init_date':init_date,
+                'end_date':end_date                
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                
+                    var html = show_campaings(response['data'])
+                    document.getElementById("list_campaings").innerHTML = html;                       
+                    document.getElementById("init_day_filter").innerHTML = toDate(response['date_interval']['init_date']);
+                    document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
+                } 
+                else {                 
+                    document.getElementById("list_campaings").innerHTML = 'Você nao possui nenhuma campanha nesse periodo';
+                }                 
+            },
+            error: function (xhr, status) {
+                set_global_var('flag', true);
+            }
+        });
+    });
+    
+    
+    $("#filter_person").on("click", function(){
+        var initDate = $('#init_filter').val();
+        initDate = initDate.split("/");        
+        var init_date = toTimestamp(initDate[1]+"/"+initDate[0]+"/"+initDate[2]);
+        
+        var endDate = $('#end_filter').val();
+        endDate = endDate.split("/");        
+        var end_date = toTimestamp(endDate[1]+"/"+endDate[0]+"/"+endDate[2]);
+        
+        if(init_date <= end_date || !end_date){
+            $.ajax({
+                url: base_url + 'index.php/welcome/get_campaings',
+                data: {
+                    'init_date':init_date,
+                    'end_date':end_date                
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response['success']) {                
+                        var html = show_campaings(response['data'])
+                        document.getElementById("list_campaings").innerHTML = html;                       
+                        document.getElementById("init_day_filter").innerHTML = toDate(response['date_interval']['init_date']);
+                        document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
+                    } 
+                    else {                 
+                        document.getElementById("list_campaings").innerHTML = 'Você nao possui nenhuma campanha nesse periodo';
+                    }                 
+                },
+                error: function (xhr, status) {
+                    set_global_var('flag', true);
+                }
+            });
+        }
+        else{
+            modal_alert_message("A data incial deve ser anterior à data final");
+        }
+    });
+    
+    $("#salvar_modo_pago").on("click", function(){
+        if($("#pago_cartao").hasClass('ativo')){
+            save_credit_card('#credit_card_name', '#credit_card_number', '#credit_card_cvc',
+                             '#credit_card_exp_month', '#credit_card_exp_year', this);
+        }
+        else{            
+            save_bank_ticket_datas('#boleto_nome', '#boleto_value', '#boleto_cpf', '#boleto_cpe', '#boleto_endereco',
+                                   '#boleto_numero', '#boleto_bairro', '#boleto_municipio', 
+                                   '#boleto_estado', this);
+        }
+    });
+    
+    $("#find_cep").click(function () { 
+        var l = Ladda.create(this);  l.start();
+        $.ajax({
+            url: base_url + 'index.php/welcome/get_cep_datas',
+            data: {'cep':$('#boleto_cpe').val()},
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                    
+                    //modal_alert_message(response['datas']);          
+                    $('#boleto_endereco').val(response['datas']['logradouro']);
+                    $('#boleto_numero').val(response['datas']['complemento']);                    
+                    $('#boleto_bairro').val(response['datas']['bairro']);
+                    $('#boleto_municipio').val(response['datas']['localidade']);
+                    $('#boleto_estado').val(response['datas']['uf']);
+                } 
+                else {                 
+                    modal_alert_message("CEP não encontrado");
+                }                 
+                l.stop();
+            },
+            error: function (xhr, status) {
+                set_global_var('flag', true);
+                l.stop();
+            }
+        });
+    });
+    
+    function save_credit_card(credit_card_name, credit_card_number, credit_card_cvc, credit_card_exp_month, credit_card_exp_year, object ){
+                      
+        if (($(credit_card_name).val()).toUpperCase()==='VISA' || ($(credit_card_name).val()).toUpperCase()==='MASTERCARD') {
+            modal_alert_message("Informe seu nome no cartão e não a bandeira dele.");
+        }
+
+        var name = validate_element(credit_card_name, "^[A-Z ]{4,50}$");
+        var number = validate_element(credit_card_number, "^[0-9]{10,20}$");
+
+        if (number) {
+            // Validating a Visa card starting with 4, length 13 or 16 digits.
+            number = validate_element(credit_card_number, "^(?:4[0-9]{12}(?:[0-9]{3})?)$");
+
+            if (!number) {
+                // Validating a MasterCard starting with 51 through 55, length 16 digits.
+                number = validate_element(credit_card_number, "^(?:5[1-5][0-9]{14})$");
+
+                if (!number) {
+                    // Validating a American Express credit card starting with 34 or 37, length 15 digits.
+                    number = validate_element(credit_card_number, "^(?:3[47][0-9]{13})$");
+
+                    if (!number) {
+                        // Validating a Discover card starting with 6011, length 16 digits or starting with 5, length 15 digits.
+                        number = validate_element(credit_card_number, "^(?:6(?:011|5[0-9][0-9])[0-9]{12})$");
+
+                        if (!number) {
+                            // Validating a Diners Club card starting with 300 through 305, 36, or 38, length 14 digits.
+                            number = validate_element(credit_card_number, "^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$");
+
+                            if (!number) {
+                                // Validating a Elo credit card
+                                number = validate_element(credit_card_number, "^(?:((((636368)|(438935)|(504175)|(451416)|(636297))[0-9]{0,10})|((5067)|(4576)|(4011))[0-9]{0,12}))$");
+
+                                if (!number) {
+                                    // Validating a Hypercard
+                                    number = validate_element(credit_card_number, "^(?:(606282[0-9]{10}([0-9]{3})?)|(3841[0-9]{15}))$");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        var cvv = validate_element(credit_card_cvc, "^[0-9]{3,4}$");
+        var month = validate_month(credit_card_exp_month, "^(0?[1-9]|1[012])$");
+        //validate_element('#client_email', "^([2-9][0-9]{3})$");
+        var year = validate_year(credit_card_exp_year, "^([2-9][0-9]{3})$");            
+        var date = validate_date($(credit_card_exp_month).val(),$(credit_card_exp_year).val());            
+        if (name && number && cvv && month && year) {
+            if (date) {
+                //modal_alert_message('Dados corretos!');
+                var datas={                    
+                    'credit_card_number': $(credit_card_number).val(),
+                    'credit_card_cvc': $(credit_card_cvc).val(),
+                    'credit_card_name': $(credit_card_name).val(),
+                    'credit_card_exp_month': $(credit_card_exp_month).val(),
+                    'credit_card_exp_year': $(credit_card_exp_year).val()                                        
+                };                
+                var l = Ladda.create(object);  l.start();            
+                $.ajax({
+                    url: base_url + 'index.php/welcome/add_credit_card',
+                    data: datas,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {
+                            $('#credit_card_name').val('');
+                            $('#credit_card_number').val('');
+                            $('#credit_card_cvc').val('');                            
+                            
+                            modal_alert_message(response['message']);           
+                            document.getElementById("alerta_pago").innerHTML = '';
+                            //document.getElementById("ops").innerHTML = '';                            
+                        } else {
+                            if(!response['existing_card'])
+                                modal_alert_message(response['message']);
+                            else{                                
+                                confirm("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
+                            }
+                        }
+                        l.stop();
+                    },
+                    error: function (xhr, status) {
+                        set_global_var('flag', true);
+                        l.stop();
+                    }
+                });
+            } else {
+                modal_alert_message('A data fornecida ñao foi aceitada');
+            }   
+        } else{
+            modal_alert_message('Verifique os dados fornecidos');
+        }        
+    }
+    
+    function atualizar_cartao(datas){
+        $.ajax({                                    
+        url: base_url + 'index.php/welcome/update_credit_card',
+        data: datas,
+        type: 'POST',
+        dataType: 'json',        
+        success: function (response2) {
+            if (response2['success']) {
+                $('#credit_card_name').val('');
+                $('#credit_card_number').val('');
+                $('#credit_card_cvc').val('');
+                
+                modal_alert_message(response2['message']);
+                document.getElementById("alerta_pago").innerHTML = '';
+            }
+            else{
+                modal_alert_message(response2['message']);
+            }
+        }
+        });
+    }
+    
+         
+    function save_bank_ticket_datas(boleto_nome, boleto_value, boleto_cpf, boleto_cpe, boleto_endereco,
+                                    boleto_numero, boleto_bairro, boleto_municipio, 
+                                    boleto_estado, object){
+        if( $(boleto_nome).val() && $(boleto_value).val() && $(boleto_cpf).val() && $(boleto_cpe).val() && $(boleto_endereco).val()
+            && $(boleto_numero).val() && $(boleto_bairro).val() && $(boleto_municipio).val() && $(boleto_estado).val()){
+            if( (validate_element(boleto_value, "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
+                validate_element(boleto_value, "^[0][\.,][1-9][0-9]?$") ||
+                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= 300 ) {
+                var cpf = $(boleto_cpf).val();                
+                cpf = cpf.replace(/[.-]/g, '');
+                
+                if(validaCPF(cpf)){                    
+                        var money_value = $(boleto_value).val(); 
+                        money_value = money_value.replace(",", "."); 
+                        var datas = {
+                                    'name_in_ticket' : $(boleto_nome).val(),
+                                    'emission_money_value' : money_value*100,
+                                    'cpf' : cpf,
+                                    'cep' : $(boleto_cpe).val(),
+                                    'street_address' : $(boleto_endereco).val(),
+                                    'house_number' : $(boleto_numero).val(),
+                                    'neighborhood_address' : $(boleto_bairro).val(),
+                                    'municipality_address' : $(boleto_municipio).val(),
+                                    'state_address' : $(boleto_estado).val()
+                                    };
+                        var l = Ladda.create(object);  l.start();            
+                        $.ajax({
+                                url: base_url + 'index.php/welcome/add_bank_ticket',
+                                data: datas,
+                                type: 'POST',
+                                dataType: 'json',
+                                success: function (response) {
+                                    if (response['success']) {                                    
+                                        modal_alert_message("Seu boleto foi gerado satisfactoriamente");                                    
+                                        document.getElementById("alerta_pago").innerHTML = '';
+                                        //document.getElementById("ops").innerHTML = '';
+                                    } 
+                                    else {                            
+                                         modal_alert_message(response['message']);                            
+                                    }
+                                    l.stop();
+                                },
+                                error: function (xhr, status) {
+                                    set_global_var('flag', true);
+                                    l.stop();
+                                }
+                            });                        
+                }
+                else{
+                    modal_alert_message("Formato incorreto para o cpf");
+                }                       
+            }
+            else{
+                modal_alert_message("O valor minimo por boleto deve ser a partir de 300 reais");
+            }
+        }
+        else{
+            modal_alert_message("Deve fornecer todos os dados");
+        }
+    }
+    
+    $(document).on('click', '.extraer_leads', function(){ 
+        var id_element = $(this).data('id');
+        var res = id_element.split("_");
+        var id_campaing = res[res.length-1];        
+        
+        $('#id_campaing_leads').val(id_campaing);
+        $('#extraer').modal('show');
+    });
+    
+    
+    $("#do_get_leads").on("click", function(){
+        
+        var id_campaing = $('#id_campaing_leads').val();        
+        var info_to_get = $('.inf:checked').serialize();        
+        
+        var initDate = $('#init_date').val();
+        initDate = initDate.split("/");        
+        var init_date = toTimestamp(initDate[1]+"/"+initDate[0]+"/"+initDate[2]);
+        
+        var endDate = $('#end_date').val();
+        endDate = endDate.split("/");        
+        var end_date = toTimestamp(endDate[1]+"/"+endDate[0]+"/"+endDate[2]);
+                
+        if(init_date && end_date){
+            if(init_date <= end_date){
+                $.ajax({
+                type: "POST",
+                url: base_url + 'index.php/welcome/get_leads_campaing', //calling method in controller
+                data: {
+                    id_campaing: id_campaing,
+                    //profile: profile,
+                    init_date: init_date,
+                    end_date: end_date,
+                    info_to_get: info_to_get
+                },
+                dataType:'json',
+                success: function (response) {
+                    if (response['success']) {
+                        if(response['file']){
+                            a = document.createElement('a');
+
+                            a.href = window.URL.createObjectURL( new Blob([response['file']]) );
+                            // Give filename you wish to download
+                            a.download = "leads.csv";
+                            a.style.display = 'none';
+                            document.body.appendChild(a);
+                            a.click();
+                        }
+                        else{
+                            modal_alert_message("Você não possui leads que cumplam com sua solicitude");
+                        }
+                    }
+                    else{
+                        modal_alert_message(response['message']);
+                    }
+                },
+                error: function (xhr, status) {
+                    modal_alert_message('Ooops ... problema no servidor'); 
+                }
+            });
+            }
+            else
+            {
+                modal_alert_message("A data incial deve ser anterior à data final");
+            }  
+        }
+        else
+            modal_alert_message("Deve fornecer o intervalo válido de datas para a extração");
+    });
+    
+    
+    $('#profile_temp').keyup(function() {
+        var campaing_type = $("#campaing_type").val();
+        var pre_char = "";
+        if(campaing_type == 3)
+            pre_char = "%23";
+        $('#profile_type_temp').val(0);            
+        $('#profile_insta_temp').val(0);        
+        
+        $.ajax({
+            url: 'https://www.instagram.com/web/search/topsearch/?context=blended&query='+ pre_char + $('#profile_temp').val(),
+            data: {},
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $("#table_search_profile").empty();
+                $('#reference_profile_message').css('visibility', 'hidden');
+                if (campaing_type == 1 && response['users'].length !== 0) {
+                    var i = 0;
+                    var username, full_name, profile_pic_url, is_verified;
+                    while (response['users'][i]) {
+                        username = response['users'][i]['user']['username'];
+                        full_name = response['users'][i]['user']['full_name'];
+                        profile_pic_url = response['users'][i]['user']['profile_pic_url'];
+                        is_verified = response['users'][i]['user']['is_verified'];
+                        $("#table_search_profile").append("<tr class='row' id='row_prof_"+i+"'>");
+                        $("#table_search_profile").append("<td class='col' id='col_1_prof_"+i+"'>"+
+                            "<img style='border: solid 1px #efefef; border-radius: 40px; height: 40px; width: 40px; margin: 10px 0 0 0;' src='" + profile_pic_url + "' onclick='select_profile_from_search(\"" + username + "\","+"\""+ response['users'][i]['user']['pk'] + "\");'>");
+                        $("#table_search_profile").append("<td class='col' id='col_2_prof_"+i+"' style='text-align: left;'>"+
+                            "<div class='tt-suggestion' style='text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 50px;' onclick='select_profile_from_search(\"" + username + "\","+"\""+ response['users'][i]['user']['pk'] + "\");'>"+
+                                "<div><span><strong>" + username + "</strong></span>" +
+                                ((is_verified) ? "<span style='color: blue' class='glyphicon glyphicon-certificate'></span>" : "") +
+                                "</div><span style='color: gray;'>" + full_name + "</span></div></td></tr>");
+                        i++;
+                    }
+                    
+                } else {
+                    if (campaing_type == 2 && response['places'].length !== 0) {
+                        var i = 0;
+                        var location_name, location_address, location_city, place_slug;
+                        while (response['places'][i]) {
+                            location_name = response['places'][i]['place']['location']['name'];
+                            location_address = response['places'][i]['place']['location']['address'];
+                            location_city = response['places'][i]['place']['location']['city'];
+                            place_slug = response['places'][i]['place']['slug'];
+                            $("#table_search_profile").append("<tr class='row' id='row_geo_"+i+"'>");
+                            $("#table_search_profile").append("<td class='col' id='col_1_geo_"+i+"'>"+
+                                "<div><span style='font-size: 30px; color:gray; margin-top: 10px;' class='glyphicon glyphicon-map-marker'></span></div></td>");
+                            $("#table_search_profile").append("<td class='col' id='col_2_geo_"+i+"' style='text-align: left; vertical-align: middle;'>" +
+                                "<div class='tt-suggestion' style='text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 50px;' onclick='select_geolocalization_from_search(\"" + place_slug + "\","+"\""+ response['places'][i]['place']['location']['pk'] + "\");'>" +
+                                    "<strong>" + location_name + "</strong><br><span style='color: gray;'>"+
+                                    location_address +
+                                    ((location_address && location_city) ? ", " : "") +
+                                    location_city + "</span></div></td></tr>");
+                            i++;
+                        }
+                    } 
+                    else{
+                        if (campaing_type == 3 && response['hashtags'].length !== 0) {
+                            var i = 0;
+                            var hashtag_name;
+                            while (response['hashtags'][i]) {
+                                hashtag_name = response['hashtags'][i]['hashtag']['name'];
+                                $("#table_search_profile").append("<tr class='row' id='row_tag_"+i+"'>");
+                                $("#table_search_profile").append("<td class='col' id='col_tag_"+i+"' style='text-align: left'><div class='tt-suggestion' onclick='select_hashtag_from_search(\"" + hashtag_name + "\","+"\""+ response['hashtags'][i]['hashtag']['id'] + "\");'>" +
+                                    "<strong>#" + hashtag_name+"</strong><br><span style='color: gray;'>"+
+                                    response['hashtags'][i]['hashtag']['media_count'] + T(' publicações') + "</span></div></td></tr>");
+                                i++;
+                            }
+
+                        }
+                        else{
+                            if ($('#login_profile').val() !== '') {
+                                $("#table_search_profile").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.')+"</td></tr>");
+                                $('#reference_profile_message').css('visibility', 'hidden');
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (xhr, status) {
+                $('#reference_profile_message').text(T('Não foi possível conectar com o Instagram'));
+                $('#reference_profile_message').css('visibility', 'visible');
+                $('#reference_profile_message').css('color', 'red');
+            }
+        });
+    }); 
+    
+    $('#profile_edit').keyup(function() {
+        var campaing_type = $("#type_campaing").val();
+        var pre_char = "";
+        if(campaing_type == 3)
+            pre_char = "%23";       
+        $('#profile_insta_edit').val(0);        
+        
+        $.ajax({
+            url: 'https://www.instagram.com/web/search/topsearch/?context=blended&query='+ pre_char + $('#profile_edit').val(),
+            data: {},
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $("#table_search_profile2").empty();
+                $('#reference_profile_message2').css('visibility', 'hidden');
+                if (campaing_type == 1 && response['users'].length !== 0) {
+                    var i = 0;
+                    var username, full_name, profile_pic_url, is_verified;
+                    while (response['users'][i]) {
+                        username = response['users'][i]['user']['username'];
+                        full_name = response['users'][i]['user']['full_name'];
+                        profile_pic_url = response['users'][i]['user']['profile_pic_url'];
+                        is_verified = response['users'][i]['user']['is_verified'];
+                        $("#table_search_profile2").append("<tr class='row' id='edit_row_prof_"+i+"'>");
+                        $("#table_search_profile2").append("<td class='col' id='edit_col_1_prof_"+i+"'>"+
+                            "<img style='border: solid 1px #efefef; border-radius: 40px; height: 40px; width: 40px; margin: 10px 0 0 0;' src='" + profile_pic_url + "' onclick='select_profile_from_search2(\"" + username + "\","+"\""+ response['users'][i]['user']['pk'] + "\");'>");
+                        $("#table_search_profile2").append("<td class='col' id='edit_col_2_prof_"+i+"' style='text-align: left;'>"+
+                            "<div class='tt-suggestion' style='text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 50px;' onclick='select_profile_from_search2(\"" + username + "\","+"\""+ response['users'][i]['user']['pk'] + "\");'>"+
+                                "<div><span><strong>" + username + "</strong></span>" +
+                                ((is_verified) ? "<span style='color: blue' class='glyphicon glyphicon-certificate'></span>" : "") +
+                                "</div><span style='color: gray;'>" + full_name + "</span></div></td></tr>");
+                        i++;
+                    }
+                    
+                } else {
+                    if (campaing_type == 2 && response['places'].length !== 0) {
+                        var i = 0;
+                        var location_name, location_address, location_city, place_slug;
+                        while (response['places'][i]) {
+                            location_name = response['places'][i]['place']['location']['name'];
+                            location_address = response['places'][i]['place']['location']['address'];
+                            location_city = response['places'][i]['place']['location']['city'];
+                            place_slug = response['places'][i]['place']['slug'];
+                            $("#table_search_profile2").append("<tr class='row' id='edit_row_geo_"+i+"'>");
+                            $("#table_search_profile2").append("<td class='col' id='edit_col_1_geo_"+i+"'>"+
+                                "<div><span style='font-size: 30px; color:gray; margin-top: 10px;' class='glyphicon glyphicon-map-marker'></span></div></td>");
+                            $("#table_search_profile2").append("<td class='col' id='edit_col_2_geo_"+i+"' style='text-align: left; vertical-align: middle;'>" +
+                                "<div class='tt-suggestion' style='text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 50px;' onclick='select_geolocalization_from_search2(\"" + place_slug + "\","+"\""+ response['places'][i]['place']['location']['pk'] + "\");'>" +
+                                    "<strong>" + location_name + "</strong><br><span style='color: gray;'>"+
+                                    location_address +
+                                    ((location_address && location_city) ? ", " : "") +
+                                    location_city + "</span></div></td></tr>");
+                            i++;
+                        }
+                    } 
+                    else{
+                        if (campaing_type == 3 && response['hashtags'].length !== 0) {
+                            var i = 0;
+                            var hashtag_name;
+                            while (response['hashtags'][i]) {
+                                hashtag_name = response['hashtags'][i]['hashtag']['name'];
+                                $("#table_search_profile2").append("<tr class='row' id='edit_row_tag_"+i+"'>");
+                                $("#table_search_profile2").append("<td class='col' id='col_tag_"+i+"' style='text-align: left'><div class='tt-suggestion' onclick='select_hashtag_from_search2(\"" + hashtag_name + "\","+"\""+ response['hashtags'][i]['hashtag']['id'] + "\");'>" +
+                                    "<strong>#" + hashtag_name+"</strong><br><span style='color: gray;'>"+
+                                    response['hashtags'][i]['hashtag']['media_count'] + T(' publicações') + "</span></div></td></tr>");
+                                i++;
+                            }
+
+                        }
+                        else{
+                            if ($('#login_profile2').val() !== '') {
+                                $("#table_search_profile2").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.')+"</td></tr>");
+                                $('#reference_profile_message2').css('visibility', 'hidden');
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (xhr, status) {
+                $('#reference_profile_message2').text(T('Não foi possível conectar com o Instagram'));
+                $('#reference_profile_message2').css('visibility', 'visible');
+                $('#reference_profile_message2').css('color', 'red');
+            }
+        });
+    }); 
+    
+    /* Generic Confirm func */
+  function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback, args) {
+
+    var confirmModal = 
+      $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
+          '<div class="modal-dialog modal-sm" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+            '<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                '<img src="'+base_url+'assets/img/FECHAR.png">'+
+            '</button>' +
+            '<h5 class="modal-title"><b>' + heading +'</b></h5>' +
+          '</div>' +
+
+          '<div class="modal-body">' +
+            '<p>' + question + '</p>' +
+          '</div>' +
+
+          '<div class="modal-footer">' +            
+            '<button id="okButton" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            okButtonTxt+
+                        '</div></spam>'+
+            '</button>'+
+            '<a href="#!" class="btn" data-dismiss="modal">' + 
+              cancelButtonTxt + 
+            '</a>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+        '</div>');
+
+    confirmModal.find('#okButton').click(function(event) {
+      callback(args);
+      confirmModal.modal('hide');
+    }); 
+
+    confirmModal.modal('show');    
+  };  
+    /* END Generic Confirm func */
+ 
+ 
+ function message_created_campaing() {
+
+    var confirmModal = 
+      $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
+          '<div class="modal-dialog modal-sm" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+            '<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                '<img src="'+base_url+'assets/img/FECHAR.png">'+
+            '</button>' +
+            '<h5 class="modal-title"><b>' + 'Campanha criada!' +'</b></h5>' +
+          '</div>' +
+
+          '<div class="modal-body">' +
+            '<p>' + '<img src="'+base_url +'assets/img/ativar_hint.png" width="96" height="96" ALIGN="right" >'+ 
+            'Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.'  +
+            '</p>'+ 
+          '</div>' +
+
+          '<div class="modal-footer">' +            
+            '<button id="okButtonCP" type="button" data-dismiss="modal" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                '<spam class="ladda-label"><div style="color:white; font-weight:bold">OK</div></spam>'+
+            '</button>'+
+          '</div>' +
+          '</div>' +
+          '</div>' +
+        '</div>');
+
+        confirmModal.find('#okButtonCP').click(function(event) {
+            confirmModal.modal('hide');
+        });
+        confirmModal.modal('show');    
+  };  
+    /* END Generic Confirm func */
+ 
+ 
+    $('#mark_all').click(function(event) { 
+        var flag = this.checked;
+        $(':checkbox').each(function() {
+            this.checked = flag;                        
+        });
+    });
+});
+   
+function reset_element(element_selector, style) {
+    $(element_selector).css("border", style);
+}   
+
+function validate_element(element_selector, pattern) {
+        if (!$(element_selector).val().match(pattern)) {
+            $(element_selector).css("border", "1px solid red");
+            return false;
+        } else {
+            $(element_selector).css("border", "1px solid gray");
+            return true;
+        }
+    }
+    
+function toTimestamp(strDate){
+    if(!strDate)
+        return null;
+    var datum = Date.parse(strDate);
+    return datum/1000;
+}
+
+
+function validate_month(element_selector, pattern) {
+    if (!$(element_selector).val().match(pattern) || Number($(element_selector).val()) < 1 || Number($(element_selector).val()) > 12) {
+        $(element_selector).css("border", "1px solid red");
+        return false;
+    } else {
+        $(element_selector).css("border", "1px solid gray");
+        return true;
+    }
+}
+
+function validate_year(element_selector, pattern) {
+    if (!$(element_selector).val().match(pattern) || Number($(element_selector).val()) < 2018) {
+        $(element_selector).css("border", "1px solid red");
+        return false;
+    } else {
+        $(element_selector).css("border", "1px solid gray");
+        return true;
+    }
+}
+
+function validate_date(month, year) {
+    var d=new Date();        
+    if (year < d.getFullYear() || (year == d.getFullYear() && month <= d.getMonth()+1)){
+        return false;
+    }
+    return true;
+}
+
+function clearBox(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+}
+
+function message_container(message, container, color){
+    $(container).text(message);                                            
+    $(container).css('visibility','visible');
+    $(container).css('color', color);
+}   
+
+function select_hashtag_from_search(tag_name, id) {    
+    $('#profile_temp').val(tag_name);
+    $('#profile_type_temp').val(3);    
+    $('#profile_insta_temp').val(id);    
+    $("#table_search_profile").empty();
+}
+
+function select_geolocalization_from_search(geo_name,id) {
+    $('#profile_temp').val(geo_name);
+    $('#profile_type_temp').val(2);    
+    $('#profile_insta_temp').val(id);    
+    $("#table_search_profile").empty();
+}
+
+function select_profile_from_search(prof_name, id) {
+    $('#profile_temp').val(prof_name);
+    $('#profile_type_temp').val(1);    
+    $('#profile_insta_temp').val(id);    
+    $("#table_search_profile").empty();    
+}
+
+function select_hashtag_from_search2(tag_name, id) {
+    $('#profile_edit').val(tag_name);    
+    $('#profile_insta_edit').val(id);    
+    $("#table_search_profile2").empty();    
+}
+
+function select_geolocalization_from_search2(geo_name, id) {
+    $('#profile_edit').val(geo_name);
+    $('#profile_insta_edit').val(id);    
+    $("#table_search_profile2").empty();
+}
+
+function select_profile_from_search2(prof_name, id) {
+    $('#profile_edit').val(prof_name);
+    $('#profile_insta_edit').val(id);    
+    $("#table_search_profile2").empty();
+}
+
+function reduced_profile(profile){
+    var str_temp = profile;
+    return str_temp.substring(9, 0);
+}
+
+function T(message){
+    return message;
+}
+
+function concert_especial_char(str){
+    str.replace(String.fromCharCode(46),String.fromCharCode(92,46));
+    return str;
+}
+
+function show_campaings(campaings){
+    var html = '';
+    var num_campaings = campaings.length;
+    var i;
+    var color_status = [];
+    color_status["ATIVA"] = "camp-green";
+    color_status["PAUSADA"] = "camp-silver";
+    color_status["TERMINADA"] = "camp-silver";
+    color_status["CANCELADA"] = "camp-red";
+    color_status["CRIADA"] = "camp-blue";
+    
+    for(i = 0; i < num_campaings; i++)
+    {
+        //var campaing = campaings[i];        
+        html += '<div id = "campaing_'+campaings[i]['campaing_id']+'" class="fleft100 bk-silver camp '+ color_status[campaings[i]['campaing_status_id_string']]+' m-top20 center-xs">'+ 
+                    '<div class="col-md-2 col-sm-2 col-xs-12 m-top10">'+
+                    '<span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>'+
+                    '<span id = "campaing_status_'+campaings[i]['campaing_id']+'" class="fleft100">'+capitalize(campaings[i]['campaing_status_id_string'])+'</span>'+
+                    '<span class="ft-size13">'+'Inicio: '+ toDate(campaings[i]['created_date'])+'</span> ';                                                        
+                if(campaings[i]['end_date'])
+                    html += '<span class="ft-size13">'+'Fim: '+toDate(campaings[i]['end_date'])+'</span>';
+            html += '<ul class="fleft75 bs2">';    
+        
+                if(campaings[i]['campaing_status_id'] == 1 || campaings[i]['campaing_status_id'] == 3)        
+                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_play pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> ATIVAR</i></a></li>';                                                          
+        
+                if(campaings[i]['campaing_status_id'] == 2)        
+                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_pause pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> PAUSAR</i></a></li>';                                                          
+            html += '</ul>'+
+                    '</div>'+
+                    '<div class="col-md-4 col-sm-4 col-xs-12">'+
+                        '<ul class="key m-top20-xs">'+
+                            '<div id = "profiles_view_'+campaings[i]['campaing_id']+'">';
+            
+            var profiles = campaings[i]['profile'];
+            var k;            
+            for (k = 0; k < profiles.length; ++k) {
+                if(profiles[k]){
+                    html += '<li id = "___'+profiles[k]['insta_id']+'">'+'<span class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profiles[k]['profile']+'">';
+                    if(campaings[i]['campaing_type_id'] == 1)
+                        html += reduced_profile(profiles[k]['profile']);
+                    
+                    if(campaings[i]['campaing_type_id'] == 2)
+                        html += '@'+reduced_profile(profiles[k]['profile']);
+                    
+                    if(campaings[i]['campaing_type_id'] == 3)
+                        html += '#'+reduced_profile(profiles[k]['profile']);                                                               
+                }                    
+            }
+            html += '</span> </li> </div> </ul> </div>';
+            html += '<div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">'+
+                    '<span class="fleft100 ft-size12">Tipo: <span class="cl-green">'+ campaings[i]['campaing_type_id_string']+'</span></span>'+
+                    '<span class="fleft100 fw-600 ft-size16">'+campaings[i]['amount_leads']+' leads captados'+'</span>'+
+                    '<span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>R$ <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> de <span class="cl-green">R$ <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
+                    '</div>';
+            html += '<div id="divcamp_'+campaings[i]['campaing_id']+'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">'+
+                        '<div class="col-md-6 col-sm-6 col-xs-6">'+                                                            
+                            '<a href="" class="cl-black extraer_leads" data-toggle="modal" data-id="extraer_'+campaings[i]['campaing_id']+'" >'+
+                                '<img src="'+base_url+'assets/img/down.png'+'" alt="">'+
+                                    '<span class="fleft100 ft-size11 m-top8 fw-600">Extrair leads</span>'+
+                                    '</a>'+
+                            '</div>'+
+                            '<div class="col-md-6 col-sm-6 col-xs-6">';                                    
+                            if(campaings[i]['campaing_status_id_string'] != "CANCELADA"){                                    
+                                html += '<div id="edit_campaing_'+campaings[i]['campaing_id']+'">'+
+                                        '<a href="" class="cl-black edit_campaing" data-toggle="modal" data-id="editar_'+campaings[i]['campaing_id']+'" >'+
+                                            '<img src="'+base_url+'assets/img/editar.png'+'" alt="">'+
+                                                '<span class="fleft100 ft-size11 m-top8 fw-600">Editar</span>'+
+                                        '</a>'+
+                                        '</div>';
+                                }                            
+            html += '</div></div> </div>';
+    }
+    return html;
+}
+
+function toDate(number){    
+    var a = new Date(number*1000);
+    var year = a.getFullYear();
+    var month = a.getMonth()+1;
+    if(month <= 9)
+        month = '0'+month;
+    var date = a.getDate();        
+    var t = date + '/' + month + '/' + year;
+    return t;
+}
+
+function real_date(number){
+    var a = new Date(number);
+    var year = a.getFullYear();
+    var month = a.getMonth()+1;
+    if(month <= 9)
+        month = '0'+month;
+    var date = a.getDate();        
+    var t = month + '/' + date + '/' + year; 
+    
+    var datum = Date.parse(t);
+    return datum;
+}
+
+function capitalize(s){
+    return s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } );
+};
+
+function  validaCPF(cpf) {        
+    
+        if(!cpf) 
+            return false;         
+        if (cpf.length !== 11){
+            return false;    
+        }
+        else{ 
+            if (cpf === '00000000000' || 
+                cpf === '11111111111' || cpf === '22222222222' || cpf === '33333333333' || 
+                cpf === '44444444444' || cpf === '55555555555' || cpf === '66666666666' || 
+                cpf === '77777777777' || cpf === '88888888888' || cpf === '99999999999') {
+                return false;
+            } 
+            else {  
+                var t,d,c;
+                for (t = 9; t < 11; t++) {
+                    for (d = 0, c = 0; c < t; c++) {
+                        d += cpf[c] * ((t + 1) - c);
+                    }
+                    d = ((10 * d) % 11) % 10;
+                    if (cpf[c] != d) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+    }
