@@ -51,6 +51,15 @@ $(document).ready(function () {
     });
     
     //------------desenvolvido para DUMBU-LEADS-------------------
+    
+    $("#lnk_language2").click(function () {
+       $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+    });
+    
+    $("#lnk_language3").click(function () {
+       $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+    });
+    
     $("#btn_dumbu_login1").click(function() {
         do_login('#userLogin1','#userPassword1', '#container_login_message1', 
                  '#container_login_force_login1', '#check_force_login1', '#message_force_login1',this);

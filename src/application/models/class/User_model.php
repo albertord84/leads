@@ -50,7 +50,7 @@ class User_model extends CI_Model {
                 $session->set_userdata('id', $user_data['id']);
                 $session->set_userdata('name', $user_data['name']);
                 $session->set_userdata('login', $user_data['login']);                
-                //$session->set_userdata('pass', $user_data['pass']);
+                $session->set_userdata('brazilian', $user_data['brazilian']);
                 $session->set_userdata('email', $user_data['email']);
                 $session->set_userdata('telf', $user_data['telf']);
                 $session->set_userdata('role_id', $user_data['role_id']);
@@ -111,6 +111,7 @@ class User_model extends CI_Model {
             $data_user['init_date'] = $datas['init_date'];
             $data_user['status_date'] = $datas['status_date'];
             $data_user['language'] = $datas['language']; 
+            $data_user['brazilian'] = $datas['brazilian']; 
             $data_user['utm_source'] = $datas['utm_source'];         
             $this->db->insert('users',$data_user);
             $user_row = $this->db->insert_id();

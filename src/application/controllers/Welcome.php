@@ -9,35 +9,6 @@ class Welcome extends CI_Controller {
     
     private $security_purchase_code; //random number in [100000;999999] interval and coded by md5 crypted to antihacker control
     public $language =NULL;
-    
-    public function test(){
-        $datas['credit_card_number'] = '4415241617292371';
-        $datas['credit_card_name'] = 'JOSE R G MONTERO';
-        $datas['credit_card_exp_month'] = '05';
-        $datas['credit_card_exp_year'] = '2026';
-        $datas['credit_card_cvc'] = '676';
-        $datas['amount_in_cents'] = '500';
-        $resp=$this->check_mundipagg_credit_card($datas);
-        var_dump($resp);
-    }
-    
-    public function test_boleto(){
-        $datas['AmountInCents']=500;
-        $datas['DocumentNumber']=14; //'3';
-        $datas['OrderReference']=14; //'3';
-        $datas['id']=250; 
-        $datas['name']='JOSE RAMON GONZALEZ MONTERO';
-        $datas['cpf']='07367014196';
-        
-        $datas['cep']='24020206';
-        $datas['street_address']='Visconde de Sepetiva';
-        $datas['house_number']='223';
-        $datas['neighborhood_address']='Centro';
-        $datas['municipality_address']='Niteroi';
-        $datas['state_address']='RJ';      
-        $resp=$this->check_mundipagg_boleto($datas);
-        var_dump($resp);
-    }
 
         //------------desenvolvido para DUMBU-LEADS-------------------
     public function load_language(){
@@ -56,6 +27,19 @@ class Welcome extends CI_Controller {
         }
     }
     
+    public function is_brazilian_ip(){
+        $prefixos_br = array('187', '189', '200', '201');
+        $prefixo_ip = substr($_SERVER['REMOTE_ADDR'], 0, 3);
+
+        if (in_array($prefixo_ip, $prefixos_br)){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+
+    }
+    
     public function index() {
         $this->load->model('class/user_role');        
         $param = array();
@@ -69,6 +53,12 @@ class Welcome extends CI_Controller {
         $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         $GLOBALS['language']=$param['language'];
         
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            $param['brazilian'] = $this->session->userdata('brazilian');
+        }
+        else{
+            $param['brazilian'] = $this->is_brazilian_ip();
+        }
         $this->load->view('user_view', $param);
     }
     
@@ -271,7 +261,8 @@ class Welcome extends CI_Controller {
                             $datas['status_date']= $datas['init_date'];
                             $datas['name']= $datas['client_name'];
                             $datas['telf']= $datas['client_telf'];
-
+                            $datas['brazilian'] = $this->is_brazilian_ip();
+                            
                             $cadastro_id = $this->user_model->insert_user($datas);
 
                             if($cadastro_id){
@@ -1434,19 +1425,19 @@ class Welcome extends CI_Controller {
                 }
                 else{
                     $result['success'] = false;            
-                    $result['message'] = 'Not found campaing for this user';
+                    $result['message'] = $this->T("Esta campanha não pertençe a este usuário.", array(), $GLOBALS['language']);    
                     $result['resource'] = 'client_painel';
                 }
             }
             else{
                 $result['success'] = false;
-                $result['message'] = 'Seu estado atual nao no sistema permite a descarga de leads';
+                $result['message'] = $this->T("Seu estado atual no sistema não permite a descarga de leads.", array(), $GLOBALS['language']);
                 $result['resource'] = 'front_page';
             }
         }
         else{
             $result['success'] = false;
-            $result['message'] = 'Not client logged';
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
             $result['resource'] = 'front_page';
         }
         
