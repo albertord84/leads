@@ -609,8 +609,8 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
-                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu-emails/worker/class/system_config.php';
-                                                                    $GLOBALS['sistem_config'] = new dumbu_emails\cls\system_config();
+                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
+                                                                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
                                                                     
                                                                     if($this->session->userdata('brazilian')==1){
                                                                         
