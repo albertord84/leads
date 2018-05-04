@@ -157,7 +157,9 @@
                                     <button id= "do_save_campaing" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
                             </div>
                             <small class="fleft100 m-top30 text-left">
-                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
+                                *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
+                                **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
+                                ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
@@ -263,7 +265,9 @@
                                     <button type="button" class="btn btn-mlds btngreen m-top10">Salvar</button>
                             </div>-->
                             <small class="fleft100 m-top30 text-left">
-                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
+                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
+                                    **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
+                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
@@ -513,7 +517,9 @@
                                     <button id = "do_get_leads" type="button" class="btn btn-mlds btnblue m-top10">Extrair leads</button>
                             </div>                            
                             <small class="fleft100 m-top30 text-left">
-                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
+                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
+                                    **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
+                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
