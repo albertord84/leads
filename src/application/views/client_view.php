@@ -614,10 +614,10 @@
                                                                     
                                                                     if($this->session->userdata('brazilian')==1){
                                                                         
-                                                                        echo "R$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100;                                                                        
+                                                                        echo "R$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100),2,'.','');                                                                        
                                                                     }
                                                                     else{
-                                                                        echo "$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100;
+                                                                        echo "$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100),2,'.','');
                                                                     }
                                                                 ?>
                                                             </span>
