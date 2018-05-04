@@ -480,7 +480,7 @@
                                     </div>
                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
                                         <div class="form-group m-top5 m-top0-xs">
-                                            <label for="init_date" class="fleft100 text-left"><?php echo $CI->T("Data incial.", array(),$language); ?>  l</label>
+                                            <label for="init_date" class="fleft100 text-left"><?php echo $CI->T("Data incial", array(),$language); ?> </label>
                                                 <div class='input-group date' id='datetimepicker_lead'>
                                                     <input type='text' class="form-control" id="init_date" />
                                                     <span class="input-group-addon">
