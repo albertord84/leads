@@ -492,9 +492,6 @@ $(document).ready(function () {
                 },   
                 type: 'POST',
                 dataType: 'json',
-                /*beforeSend:function(){
-                        return confirm("Seguro que deseja cancelar esta campanha?");
-                },*/
                 success: function (response) {
                     if (response['success']) {                        
                         $("#pausada").removeClass('pause');
@@ -576,7 +573,7 @@ $(document).ready(function () {
                                      if(!response['old_profile'])
                                          modal_alert_message(response['message']);
                                      else{
-                                         confirm("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
+                                         confirm_arg("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
                                      }
                              }                    
                          },
@@ -651,7 +648,7 @@ $(document).ready(function () {
     
     $(document).on('click', '.my_close2', function(){        
         var profile = this.parentNode.parentNode.id;        
-        confirm("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
+        confirm_arg("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
     });
     
     function remover_perfil(profile_to_delete){
@@ -668,9 +665,6 @@ $(document).ready(function () {
                     },   
                     type: 'POST',
                     dataType: 'json',
-//                    beforeSend:function(){
-//                        return confirm("Está seguro de remover o perfil desta campanha?");
-//                     },
                     success: function (response) {
                         if (response['success']) {
                             $('#__'+profile).remove();                        
@@ -945,7 +939,7 @@ $(document).ready(function () {
                             if(!response['existing_card'])
                                 modal_alert_message(response['message']);
                             else{                                
-                                confirm("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
+                                confirm_arg("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
                             }
                         }
                         l.stop();
@@ -1292,7 +1286,7 @@ $(document).ready(function () {
     }); 
     
     /* Generic Confirm func */
-  function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback, args) {
+  function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
 
     var confirmModal = 
       $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
@@ -1324,7 +1318,7 @@ $(document).ready(function () {
         '</div>');
 
     confirmModal.find('#okButton').click(function(event) {
-      callback(args);
+      callback();
       confirmModal.modal('hide');
     }); 
 
@@ -1332,7 +1326,46 @@ $(document).ready(function () {
   };  
     /* END Generic Confirm func */
  
- 
+ function confirm_arg(heading, question, cancelButtonTxt, okButtonTxt, callback, args) {
+
+    var confirmModal = 
+      $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
+          '<div class="modal-dialog modal-sm" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+            '<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                '<img src="'+base_url+'assets/img/FECHAR.png">'+
+            '</button>' +
+            '<h5 class="modal-title"><b>' + heading +'</b></h5>' +
+          '</div>' +
+
+          '<div class="modal-body">' +
+            '<p>' + question + '</p>' +
+          '</div>' +
+
+          '<div class="modal-footer">' +            
+            '<button id="okButton2" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            okButtonTxt+
+                        '</div></spam>'+
+            '</button>'+
+            '<a href="#!" class="btn" data-dismiss="modal">' + 
+              cancelButtonTxt + 
+            '</a>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+        '</div>');
+
+    confirmModal.find('#okButton2').click(function(event) {
+      callback(args);
+      confirmModal.modal('hide');
+    }); 
+
+    confirmModal.modal('show');    
+  };  
+    /* END Generic Confirm func */
+    
  function message_created_campaing() {
 
     var confirmModal = 

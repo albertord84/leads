@@ -99,7 +99,7 @@
                                         </li>
                                     </ul>
                                 </li>
-<!--                                <li id="locales_cell">
+                                <li id="locales_cell">
                                     <a  id="lnk_language1_cell" href="#">
                                         <?php if ($language === 'EN') { ?>
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
@@ -118,7 +118,7 @@
                                         <li>
 
                                         <?php if ($language === 'EN') { ?>
-                                            <a id="lnk_language2_cell" href="#">
+                                            <a id="lnk_language2_cell">
                                             <img id="img_language2" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
                                             <span id="txt_language2" style="color: black">PT</span>
                                             </a>
@@ -160,7 +160,7 @@
 
                                         </li>
                                     </ul>
-                                </li>-->
+                                </li>
                             </ul>
                         </div>
 

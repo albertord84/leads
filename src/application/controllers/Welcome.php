@@ -56,6 +56,19 @@ class Welcome extends CI_Controller {
         }
     }
     
+    public function is_brazilian_ip(){
+        $prefixos_br = array('187', '189', '200', '201');
+        $prefixo_ip = substr($_SERVER['REMOTE_ADDR'], 0, 3);
+
+        if (in_array($prefixo_ip, $prefixos_br)){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+
+    }
+    
     public function index() {
         $this->load->model('class/user_role');        
         $param = array();
@@ -69,6 +82,12 @@ class Welcome extends CI_Controller {
         $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         $GLOBALS['language']=$param['language'];
         
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            $param['brazilian'] = $this->session->userdata('brazilian');
+        }
+        else{
+            $param['brazilian'] = $this->is_brazilian_ip();
+        }
         $this->load->view('user_view', $param);
     }
     
@@ -271,7 +290,8 @@ class Welcome extends CI_Controller {
                             $datas['status_date']= $datas['init_date'];
                             $datas['name']= $datas['client_name'];
                             $datas['telf']= $datas['client_telf'];
-
+                            $datas['brazilian'] = $this->is_brazilian_ip();
+                            
                             $cadastro_id = $this->user_model->insert_user($datas);
 
                             if($cadastro_id){
@@ -1434,19 +1454,19 @@ class Welcome extends CI_Controller {
                 }
                 else{
                     $result['success'] = false;            
-                    $result['message'] = 'Not found campaing for this user';
+                    $result['message'] = $this->T("Esta campanha não pertençe a este usuário.", array(), $GLOBALS['language']);    
                     $result['resource'] = 'client_painel';
                 }
             }
             else{
                 $result['success'] = false;
-                $result['message'] = 'Seu estado atual nao no sistema permite a descarga de leads';
+                $result['message'] = $this->T("Seu estado atual no sistema não permite a descarga de leads.", array(), $GLOBALS['language']);
                 $result['resource'] = 'front_page';
             }
         }
         else{
             $result['success'] = false;
-            $result['message'] = 'Not client logged';
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
             $result['resource'] = 'front_page';
         }
         

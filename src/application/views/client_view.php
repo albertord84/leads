@@ -51,7 +51,7 @@
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em R$", array(),$language);?></span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                     <input id="daily_value" type="text" placeholder="0.00" value="0.00" class="orc number">
                                             </div>
@@ -104,7 +104,7 @@
                                                     <div class="row">
                                                         <!--<input id = "login_profile"  type="text" style="text-transform:lowercase" class="typeahead form-control tt-query" placeholder="Perfil" onkeyup="javascript:this.value = this.value.toLowerCase();"  autocomplete="off" spellcheck="false"  required> -->
                                                         <div class="col-sm-12">
-                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="digitar perfil aqui" autocomplete="off" spellcheck="false" required>
+                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" autocomplete="off" spellcheck="false" required>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -157,7 +157,7 @@
                                     <button id= "do_save_campaing" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
                             </div>
                             <small class="fleft100 m-top30 text-left">
-                                    *Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.
+                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
@@ -174,34 +174,34 @@
                             <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Editar Campanha", array(),$language);?></span>
                             <span class="ft-size13 fleft100"><?php echo $CI->T("Inicio", array(),$language)." ".date("Y/m/d");?></span>
                             <ul class="fleft100 bs m-top10 m-b20">
-                                    <li><a style="text-decoration:none"  id="ativada" class = "pointer_mouse"><i class="fa fa-play-circle"></i> ATIVAR</a></li>
-                                    <li><a style="text-decoration:none"  id="pausada" class = "pointer_mouse"><i class="fa fa-pause-circle"></i> PAUSAR</a></li>
-                                    <li><a style="text-decoration:none"  id="encerrar" class = "pointer_mouse"><i class="fa fa-times-circle"></i> TERMINAR</a></li>
+                                    <li><a style="text-decoration:none"  id="ativada" class = "pointer_mouse"><i class="fa fa-play-circle"></i> <?php echo $CI->T("ATIVAR", array(),$language);?></a></li>
+                                    <li><a style="text-decoration:none"  id="pausada" class = "pointer_mouse"><i class="fa fa-pause-circle"></i> <?php echo $CI->T("PAUSAR", array(),$language);?></a></li>
+                                    <li><a style="text-decoration:none"  id="encerrar" class = "pointer_mouse"><i class="fa fa-times-circle"></i> <?php echo $CI->T("TERMINAR", array(),$language);?></a></li>
                             </ul>
-                            <span id="leads_analised" class="fleft100"><h4 class="i-block fw-800"><label id="dados_captados"></label></h4> leads captados</span>                                                        
+                            <span id="leads_analised" class="fleft100"><h4 class="i-block fw-800"><label id="dados_captados"></label></h4> <?php echo $CI->T("leads captados", array(),$language);?></span>                                                        
                             <div class="fleft100 gastos pd-15 m-top20">
                                     <div class="col-md-1 col-sm-1 col-xs-12 pd-0">
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs">Orçamento diário en R$</span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                 <input id = "edit_daily_value" type="text" placeholder="0.00" value="0.00" class="orc">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <span class="ft-size11 fw-600 fleft100">Gasto atual: <br>R$ <label id="gasto"></label> de <span class="cl-green">R$ <label id="total"></label></span></span>
+                                                    <span class="ft-size11 fw-600 fleft100"><?php echo $CI->T("Gasto atual", array(),$language);?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="gasto"></label> <?php echo $CI->T("de", array(),$language);?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?>  <label id="total"></label></span></span>
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <a id ="update_daily_value" class="pointer_mouse bt-silver">Salvar orçamento</a>
+                                                    <a id ="update_daily_value" class="pointer_mouse bt-silver"><?php echo $CI->T("Salvar orçamento", array(),$language);?></a>
                                             </div>
                                     </div>       
                                     <div id = "response_daily_value"></div>
                             </div>                                           
                             <hr class="fleft100">                            
-                            <span class="fleft100">PERFIS PARA CAPTAÇÃO DE LEADS</span>
+                            <span class="fleft100"><?php echo $CI->T("PERFIS PARA CAPTAÇÃO DE LEADS", array(),$language);?></span>
                             <div class="fleft100 text-center">
                                     <div class="i-block mxw-250">
-                                            <span class="fleft100 fw-600 m-top20 m-b5">Objetivo da campanha:</span>
+                                            <span class="fleft100 fw-600 m-top20 m-b5"><?php echo $CI->T("Objetivo da campanha: ", array(),$language);?></span>
                                             <label id = "tipo"></label>
                                             <input id = "type_campaing" type="hidden"></input>
 <!--                                            <select name="" id="" class="sel">
@@ -215,11 +215,11 @@
                                             </ul>
 
                                             <div class="col-md-8 col-sm-8 col-xs-12 m-top20">
-                                                    <input id ="profile_edit" type="text" class="addmais" placeholder="digitar perfil aqui" type="text" style="text-transform:lowercase;">
+                                                    <input id ="profile_edit" type="text" class="addmais" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" type="text" style="text-transform:lowercase;">
                                                     <input id ="profile_insta_edit" type="hidden">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
-                                                    <a id ="do_add_profile" style="text-decoration:none" class="pointer_mouse add">Adicionar <i class="fa fa-plus-circle"></i></a>                                                    
+                                                    <a id ="do_add_profile" style="text-decoration:none" class="pointer_mouse add"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
                                             </div>
                                         <div class="row">
                                         <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
@@ -263,7 +263,7 @@
                                     <button type="button" class="btn btn-mlds btngreen m-top10">Salvar</button>
                             </div>-->
                             <small class="fleft100 m-top30 text-left">
-                                    *Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.
+                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
@@ -295,26 +295,32 @@
                                                                 <img src="<?php echo base_url().'assets/img/cr.png'?>" class="mxw-50 wauto-xs">
                                                             </span>
                                                             <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
-                                                                    Cartão de crédito
+                                                                    <?php echo $CI->T("Cartão de crédito", array(),$language);?>
                                                             </span>
                                                     </a>
                                             </div>
                                             <div class="col-md-5 col-sm-5 col-xs-5 pd-lr5 carbol">
+                                                    <?php
+                                                    if($this->session->userdata('brazilian')==1){
+                                                    ?>                                                    
                                                     <a id = "pago_boleto" class="cl-black boleto c-pointer">
                                                             <span class="col-md-2 col-sm-2 col-xs-12 pd-0">
                                                                 <img src="<?php echo base_url().'assets/img/bol.png'?>" class="mxw-50 wauto-xs">
                                                             </span>
                                                             <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
-                                                                    Boleto
+                                                                    <?php echo $CI->T("Boleto", array(),$language);?>
                                                             </span>
                                                     </a>
+                                                    <?php
+                                                    }
+                                                    ?>
                                             </div>
                                             <div class="fleft100 ctr m-top5">
                                                     <div class="fleft100 pd-lr5">
                                                             <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="Nome no cartão">
                                                     </div>
                                                     <div class="col-md-8 col-sm-8 col-xs-12 pd-lr5">
-                                                            <input id="credit_card_number" type="text" placeholder="Número do cartão" class = "number" maxlength="20">
+                                                            <input id="credit_card_number" type="text" placeholder="<?php echo $CI->T("Número de cartão", array(),$language);?>" class = "number" maxlength="20">
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                                                             <input id="credit_card_cvc" type="text" placeholder="CVV/CVC" class = "number" maxlength="4">
@@ -347,10 +353,10 @@
                                             </div>
                                             <div class="fleft100 blt m-top5 d-none">
                                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
-                                                            <input type="text" placeholder="Nome completo" id = "boleto_nome">
+                                                            <input type="text" placeholder="<?php echo $CI->T("Nome completo", array(),$language);?>" id = "boleto_nome">
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5">
-                                                        <input type="text" placeholder="Valor" id = "boleto_value" maxlength="7">
+                                                        <input type="text" placeholder="<?php echo $CI->T("Valor", array(),$language);?>" id = "boleto_value" maxlength="7">
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
                                                             <!--<input id="" type="text" placeholder="CPF">-->
@@ -363,23 +369,23 @@
                                                         <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
                                                     </div>
                                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
-                                                            <input id="boleto_endereco" type="text" placeholder="Endereço">
+                                                            <input id="boleto_endereco" type="text" placeholder="<?php echo $CI->T("Endereço", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5">
-                                                            <input id="boleto_numero" type="text" placeholder="Num/Comp">
+                                                            <input id="boleto_numero" type="text" placeholder="<?php echo $CI->T("Num/Comp", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-5 col-sm-5 col-xs-12 pd-lr5">
-                                                            <input id="boleto_bairro" type="text" placeholder="Bairro">
+                                                            <input id="boleto_bairro" type="text" placeholder="<?php echo $CI->T("Bairro", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-5 col-sm-5 col-xs-12 pd-lr5">
-                                                            <input id="boleto_municipio" type="text" placeholder="Municipio">
+                                                            <input id="boleto_municipio" type="text" placeholder="<?php echo $CI->T("Municipio", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
-                                                            <input id="boleto_estado" type="text" placeholder="UF" maxlength="2">
+                                                            <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
                                                     <div class="fleft100 m-top5">
-                                                            <h5 class="cl-green fw-600">IMPORTANTE!</h5>
-                                                            <span class="text-justify fleft100">O boleto será enviado para o e-mail cadastrado e ficará disponível em sua área de assinante. Faça o pagamento em até 2 dias úteis para manter sua conta ativa.</span>
+                                                            <h5 class="cl-green fw-600"><?php echo $CI->T("IMPORTANTE!", array(),$language);?></h5>
+                                                            <span class="text-justify fleft100"><?php echo $CI->T("O boleto será enviado para o e-mail cadastrado e ficará disponível em sua área de assinante. Faça o pagamento em até 2 dias úteis para manter sua conta ativa.", array(),$language);?></span>
                                                     </div>
                                             </div>
                                     </div>
@@ -409,45 +415,45 @@
                                         <input type="checkbox" id="coding" name="interest" value="coding"> Coding
                                     </div>-->
                                     <div>
-                                        <input id = "mark_all" type="checkbox" value="mark_all"> Marcar todos<br>
+                                        <input id = "mark_all" type="checkbox" value="mark_all"> <?php echo $CI->T("Marcar todos", array(),$language);?><br>
                                     </div>
                                     <hr>
                                     <div></div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="perfil"> Perfil de referencia<br>
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="perfil"> <?php echo $CI->T("Perfil de referencia", array(),$language);?><br>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="username"> Nome do usuário de perfil extraido
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="username"> <?php echo $CI->T("Nome do usuário de perfil extraido", array(),$language);?><br>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="name"> Nome completo do perfil extraido
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="name"> <?php echo $CI->T("Nome completo do perfil extraido", array(),$language);?><br>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="all_email"> Todos os e-mails
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="all_email"> <?php echo $CI->T("", array(),$language);?>Todos os e-mails
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="code_coutry"> Código telefónico do pais
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="code_coutry"><?php echo $CI->T("Código telefónico do pais", array(),$language);?> 
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]"  value="telf"> Número de telefone
+                                        <input type="checkbox" class = "inf" name = "inf[]"  value="telf"> <?php echo $CI->T("Número de telefone", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]"  value="public_telf"> Número de telefone público
+                                        <input type="checkbox" class = "inf" name = "inf[]"  value="public_telf"> <?php echo $CI->T("Número de telefone público", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="contact_telf"> Número de telefone de contato
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="contact_telf"> <?php echo $CI->T("Número de telefone de contato", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="sexo"> Gênero
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="sexo"> <?php echo $CI->T("Gênero", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="categoria"> Categoria
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="categoria"> <?php echo $CI->T("Categoria", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="data_nascimento"> Data de nascimento                                    
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="data_nascimento"> <?php echo $CI->T("Data de nascimento", array(),$language);?>                                    
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="privativo"> Privativo                                    
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="privativo"> <?php echo $CI->T("Privativo", array(),$language);?>                                    
                                     </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -474,7 +480,7 @@
                                     </div>
                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
                                         <div class="form-group m-top5 m-top0-xs">
-                                            <label for="init_date" class="fleft100 text-left">Data Inicial</label>
+                                            <label for="init_date" class="fleft100 text-left"><?php echo $CI->T("Data incial.", array(),$language); ?>  l</label>
                                                 <div class='input-group date' id='datetimepicker_lead'>
                                                     <input type='text' class="form-control" id="init_date" />
                                                     <span class="input-group-addon">
@@ -490,7 +496,7 @@
                                     </div>
                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
                                         <div class="form-group m-top5 m-top0-xs">
-                                            <label for="end_date" class="fleft100 text-left">Data Final</label>
+                                            <label for="end_date" class="fleft100 text-left"><?php echo $CI->T("Data final", array(),$language); ?>  </label>
                                                 <div class='input-group date' id='datetimepicker_lead2'>
                                                     <input type='text' class="form-control" id="end_date" />
                                                     <span class="input-group-addon">
@@ -507,7 +513,7 @@
                                     <button id = "do_get_leads" type="button" class="btn btn-mlds btnblue m-top10">Extrair leads</button>
                             </div>                            
                             <small class="fleft100 m-top30 text-left">
-                                    *Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.
+                                    *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail. <br>**O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis. <br>***Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
                             </small>
                 </div>
               </div>
@@ -523,7 +529,7 @@
                                     <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
-                                            SAIR
+                                            <?php echo $CI->T("SAIR", array(),$language);?>
                                         </button>
                                     </div>					
                             </div>
@@ -533,10 +539,10 @@
                     <div class="container">
                             <div class="col-md-2 col-sm-12 col-xs-12 sidbar">
                                     <ul>
-                                            <li><a href="https:/www.dumbu.pro">Captação de Seguidores</a></li>
+                                            <li><a href="https:/www.dumbu.pro"><?php echo $CI->T("Captação de Seguidores", array(),$language);?></a></li>
                                             <!--<li><a href="">Extração de Leads</a></li>-->
-                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u>Pagamentos</u></b></a></li>
-                                            <li><a href="">Contato / FAQ</a></li>
+                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>
+                                            <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>
                             <div class="col-md-10 col-sm-12 col-xs-12 center-xs">
@@ -551,7 +557,7 @@
                                     ?>
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
-                                                    Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado. 
+                                                    <?php echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
 <!--                                                    <a href="" data-toggle="modal" data-target="#pagamento">
                                                         <u>Clique aqui</u>
                                                     </a>-->
@@ -563,9 +569,9 @@
                                     ?>            
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
-                                                    Você precisa atualizar seu pagamento. 
+                                                    <?php echo $CI->T("Você precisa atualizar seu pagamento.", array(),$language); ?>  
                                                     <a href="" data-toggle="modal" data-target="#pagamento">
-                                                        <u>Clique aqui</u>
+                                                        <u><?php echo $CI->T("Clique aqui", array(),$language); ?></u>
                                                     </a>
                                                 </div>
 
@@ -574,7 +580,7 @@
                                         }
                                     ?>                                    
                                     </span>
-                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"> Campanhas</h5>
+                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo ucfirst(strtolower($CI->T("Campanhas ", array(),$language)));?></h5>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12 ft-size12 pd-0 m-top30">
                                             <div class="fleft100 gastos pd-15">
@@ -582,7 +588,7 @@
                                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
-                                                            <span class="fleft100 fw-600">Leads extraídos:</span>
+                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Leads extraídos", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php
                                                                     $total_captados = 0;
@@ -594,41 +600,55 @@
                                                             </span>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
-                                                            <span class="fleft100 fw-600">Custo por extração:</span>
+                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
-                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                                                                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                                                                    echo $CI->T("R$ ", array(),$language);
-                                                                    echo $GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100;                                                                        
+                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu-emails/worker/class/system_config.php';
+                                                                    $GLOBALS['sistem_config'] = new dumbu_emails\cls\system_config();
+                                                                    
+                                                                    if($this->session->userdata('brazilian')==1){
+                                                                        
+                                                                        echo "R$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100;                                                                        
+                                                                    }
+                                                                    else{
+                                                                        echo "$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100;
+                                                                    }
                                                                 ?>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5 m-top5">
-                                                            <span class="fleft100 fw-600">Gasto atual:</span>
-                                                            <span class="fleft100 fw-600 cl-green"><?php echo "R$" ?> <?php echo number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100), 2, '.', '');?> </span>
+                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Gasto atual", array(),$language);?>:</span>
+                                                            <span class="fleft100 fw-600 cl-green">
+                                                                <?php 
+                                                                    if($this->session->userdata('brazilian')==1){
+                                                                        echo "R$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100), 2, '.', '');                                                                        
+                                                                    }else{
+                                                                        echo "$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100), 2, '.', '');        
+                                                                    }
+                                                                ?> 
+                                                            </span>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">
                                                             <div class="dropdown i-block dropfiltro">
                                                               <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none ft-size12 cl" style="color:#5c8fe1">
                                                                   <img src="<?php echo base_url().'assets/img/user.png'?>" alt=""> <u><b>
-                                                                  Campanhas por data</b></u>
+                                                                  <?php echo $CI->T("Campanhas por data", array(),$language);?></b></u>
                                                               </button>
                                                               <ul class="dropdown-menu text-center" aria-labelledby="dLabel">
-                                                                    <li><a class="c-pointer person">Personalizado</a></li>
-                                                                <li><a class="date_filter pointer_mouse" id ="menos_0" >Hoje</a></li>
-                                                                <li><a class="date_filter pointer_mouse" id ="menos_1" >Ontem</a></li>
+                                                                    <li><a class="c-pointer person"><?php echo $CI->T("Personalizado", array(),$language);?></a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="menos_0" ><?php echo $CI->T("Hoje", array(),$language);?></a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="menos_1" ><?php echo $CI->T("Ontem", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Esta semana (dom. - hoje)</a></li>-->
                                                                 <!--<li><a href="">Esta semana (de segunda-feira até hoje)</a></li>-->
-                                                                <li><a class="date_filter pointer_mouse" id ="menos_7">Últimos 7 dias</a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="menos_7"><?php echo $CI->T("Últimos 7 dias", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Semana passada (seg. - sáb.)</a></li>-->
                                                                 <!--<li><a href="">Semana passada (seg. - dom.)</a></li>-->
                                                                 <!--<li><a href="">Última semana útil (seg. - sex.)</a></li>-->
-                                                                <li><a class="date_filter pointer_mouse" id ="menos_14">Últimos 14 dias</a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="menos_14"><?php echo $CI->T("Últimos 14 dias", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Este mês</a></li>-->
-                                                                <li><a class="date_filter pointer_mouse" id ="menos_30">Últimos 30 dias</a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="menos_30"><?php echo $CI->T("Últimos 30 dias", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Mês passado</a></li>-->
-                                                                <li><a class="date_filter pointer_mouse" id ="tudo">Todo o período</a></li>
+                                                                <li><a class="date_filter pointer_mouse" id ="tudo"><?php echo $CI->T("Todo o período", array(),$language);?></a></li>
                                                               </ul>
                                                             </div>
 
@@ -636,7 +656,7 @@
                                                                 <div class="calendario">
                                                                     <div class="col-md-5 col-sm-5 col-xs-12 pd-lr5">
                                                                             <div class="form-group m-top5 m-top0-xs">
-                                                                                    <label for="init_filter" class="fleft100 text-left">Data Inicial</label>
+                                                                                    <label for="init_filter" class="fleft100 text-left"><?php echo $CI->T("Data incial", array(),$language);?></label>
                                                                             <div class='input-group date' id='datetimepicker'>
                                                                                 <input type='text' class="form-control" id="init_filter" />
                                                                                 <span class="input-group-addon">
@@ -647,7 +667,7 @@
                                                                 </div>
                                                                             <div class="col-md-5 col-sm-5 col-xs-12 pd-lr5">
                                                                                     <div class="form-group m-top5 m-top0-xs">
-                                                                                            <label for="end_filter" class="fleft100 text-left">Data Final</label>
+                                                                                            <label for="end_filter" class="fleft100 text-left"><?php echo $CI->T("Data final", array(),$language);?></label>
                                                                             <div class='input-group date' id='datetimepicker2'>
                                                                                 <input type='text' class="form-control" id = "end_filter"/>
                                                                                 <span class="input-group-addon">
@@ -669,10 +689,10 @@
                                             </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-left50 m-top30 pd-lr0-xs">
-                                            <a style="text-decoration:none" class="btblue-radius w100 ft-size17 text-center m-top15 ellipse pointer_mouse" data-toggle="modal" data-target="#criar" >Criar campanha <i class="fa fa-plus-circle"></i></a>
+                                            <a style="text-decoration:none" class="btblue-radius w100 ft-size17 text-center m-top15 ellipse pointer_mouse" data-toggle="modal" data-target="#criar" ><?php echo $CI->T("Criar campanha", array(),$language);?> <i class="fa fa-plus-circle"></i></a>
                                     </div>
                                     <div class="col-xs-12 m-top30">
-                                        <h5>Campanhas criadas em <strong><span id = "init_day_filter"><?php echo date('d/m/Y', $date_filter['init_day']); ?></span></strong> até <strong><span id = "end_day_filter"><?php echo date('d/m/Y', $date_filter['end_day']); ?></span></strong> | <span><a class="date_filter pointer_mouse" id ="tudo2" style="color: #206040; text-transform: uppercase; text-decoration: underline;"><strong> Ver todas as campanhas</strong></a></span></h5>
+                                        <h5><?php echo $CI->T("Campanhas criadas em ", array(),$language); ?><strong><span id = "init_day_filter"><?php echo date('d/m/Y', $date_filter['init_day']); ?></span></strong> <?php echo $CI->T("até", array(),$language);?> <strong><span id = "end_day_filter"><?php echo date('d/m/Y', $date_filter['end_day']); ?></span></strong> | <span><a class="date_filter pointer_mouse" id ="tudo2" style="color: #206040; text-transform: uppercase; text-decoration: underline;"><strong> <?php echo $CI->T("Ver todas as campanhas", array(),$language);?></strong></a></span></h5>
                                     </div>
                                     <div id = list_campaings>
                                         <?php
@@ -686,12 +706,12 @@
                                             m-top20 center-xs">                                            
                                                 <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
                                                         <span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>
-                                                        <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($campaing['campaing_status_id_string'])); ?></span>
-                                                        <span class="ft-size13"><?php echo "Inicio: ".date('d/m/Y', $campaing['created_date'])?></span>                                                        
+                                                        <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($CI->T($campaing['campaing_status_id_string'], array(),$language))); ?></span>
+                                                        <span class="ft-size13"><?php echo $CI->T("Inicio: ", array(),$language).date('d/m/Y', $campaing['created_date'])?></span>                                                        
                                                         <?php 
                                                         if($campaing['end_date']){
                                                         ?>
-                                                            <span class="ft-size13"><?php echo "Fim: ".date('d/m/Y', $campaing['end_date'])?></span> 
+                                                            <span class="ft-size13"><?php echo $CI->T("Fim: ", array(),$language).date('d/m/Y', $campaing['end_date'])?></span> 
                                                             
                                                         <?php                                                        
                                                         }
@@ -700,14 +720,14 @@
                                                             <?php
                                                             if($campaing['campaing_status_id'] == 1 || $campaing['campaing_status_id'] == 3){
                                                             ?>  
-                                                                <li><a id="action_<?php echo $campaing['campaing_id'];?>" class = "mini_play pointer_mouse"><i id = "action_text_<?php echo $campaing['campaing_id'];?>" class="fa fa-play-circle"> ATIVAR</i></a></li>                                                          
+                                                                <li><a id="action_<?php echo $campaing['campaing_id'];?>" class = "mini_play pointer_mouse"><i id = "action_text_<?php echo $campaing['campaing_id'];?>" class="fa fa-play-circle"> <?php echo $CI->T("ATIVAR", array(),$language); ?></i></a></li>                                                          
                                                             <?php                                                        
                                                             }
                                                             ?>    
                                                             <?php
                                                             if($campaing['campaing_status_id'] == 2){
                                                             ?>
-                                                                <li><a id="action_<?php echo $campaing['campaing_id'];?>" class = "mini_pause pointer_mouse"><i id = "action_text_<?php echo $campaing['campaing_id'];?>" class="fa fa-pause-circle"> PAUSAR</i></a></li>
+                                                                <li><a id="action_<?php echo $campaing['campaing_id'];?>" class = "mini_pause pointer_mouse"><i id = "action_text_<?php echo $campaing['campaing_id'];?>" class="fa fa-pause-circle"> <?php echo $CI->T("PAUSAR", array(),$language); ?></i></a></li>
                                                             <?php                                                        
                                                             }
                                                             ?>    
@@ -744,15 +764,15 @@
                                                         </ul>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
-                                                        <span class="fleft100 ft-size12">Tipo: <span class="cl-green"><?php echo $campaing['campaing_type_id_string']; ?></span></span>
-                                                        <span class="fleft100 fw-600 ft-size16"><?php echo $campaing['amount_leads']; ?> leads captados</span>
-                                                        <span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>R$ <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> de <span class="cl-green">R$ <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
+                                                        <span class="fleft100 ft-size12"><?php echo $CI->T("Tipo", array(),$language); ?>: <span class="cl-green"><?php echo $CI->T($campaing['campaing_type_id_string'], array(),$language); ?></span></span>
+                                                        <span class="fleft100 fw-600 ft-size16"><?php echo $campaing['amount_leads']; ?> <?php echo $CI->T("leads captados", array(),$language); ?></span>
+                                                        <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
                                                 </div>
                                                 <div id="divcamp_<?php echo $campaing['campaing_id'];?>" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
                                                         <div class="col-md-6 col-sm-6 col-xs-6">                                                            
                                                                 <a href="" class="cl-black extraer_leads" data-toggle="modal" data-id="extraer_<?php echo $campaing['campaing_id'];?>" >
                                                                     <img src="<?php echo base_url().'assets/img/down.png'?>" alt="">
-                                                                        <span class="fleft100 ft-size11 m-top8 fw-600">Extrair leads</span>
+                                                                        <span class="fleft100 ft-size11 m-top8 fw-600"><?php echo $CI->T("Extrair leads", array(),$language); ?></span>
                                                                 </a>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6 col-xs-6">
@@ -762,7 +782,7 @@
                                                                 <div id="edit_campaing_<?php echo $campaing['campaing_id'];?>">
                                                                     <a href="" class="cl-black edit_campaing" data-toggle="modal" data-id="editar_<?php echo $campaing['campaing_id'];?>" >
                                                                         <img src="<?php echo base_url().'assets/img/editar.png'?>" alt="">
-                                                                            <span class="fleft100 ft-size11 m-top8 fw-600">Editar</span>
+                                                                            <span class="fleft100 ft-size11 m-top8 fw-600"><?php echo $CI->T("Editar", array(),$language); ?></span>
                                                                     </a>
                                                                 </div>
                                                                 <?php
