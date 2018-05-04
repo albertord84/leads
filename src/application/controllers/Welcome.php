@@ -56,7 +56,7 @@ class Welcome extends CI_Controller {
         }
     }
     
-    public function index() {        
+    public function index() {
         $this->load->model('class/user_role');        
         $param = array();
         $language=$this->input->get();
@@ -1666,8 +1666,8 @@ class Welcome extends CI_Controller {
     
     public function T($token, $array_params=NULL, $lang=NULL) {
         if(!$lang){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu-leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new dumbu_leads\cls\system_config();
+            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
+            $GLOBALS['sistem_config'] = new \leads\cls\system_config();
             if(isset($language['language']))
                 $param['language']=$language['language'];
             else

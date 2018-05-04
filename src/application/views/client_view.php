@@ -8,7 +8,7 @@
             <meta charset="UTF-8">
             <title>Dumbo-Leads</title>
             <meta name="viewport" content="width=device-width">
-            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/favicon.png'?>">
+            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
 
             <!-- Font Awesome -->
             <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->            

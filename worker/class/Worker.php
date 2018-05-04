@@ -17,6 +17,7 @@ namespace leads\cls {
         public $DB;
         public $Robot;
         public $Gmail;
+        public $robot_profile;
 //        public $robot_profile_login;
 //        public $robot_profile_pass;
 //        public $init;
@@ -30,7 +31,7 @@ namespace leads\cls {
             $this->config = $GLOBALS['sistem_config'];
             $this->Robot->config = $GLOBALS['sistem_config'];
             $this->Gmail = new Gmail();
-            $this->$robot_profile = new Robot_Profile();
+            $this->robot_profile = new Robot_Profile();
             $this->DB = $DB ? $DB : new \leads\cls\DB();
         }
         

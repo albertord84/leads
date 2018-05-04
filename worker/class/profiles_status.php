@@ -2,7 +2,7 @@
 
 namespace leads\cls {
 
-    class user_status {
+    class profiles_status {
         // uso geral
         const ACTIVE = 1;
         const ENDED = 2;        

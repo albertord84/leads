@@ -35,7 +35,7 @@ namespace leads\cls {
             $id =0;
             while(true){
                 $sql = ""
-                    . "SELECT * FROM leads_db.robots_profiles "
+                    . "SELECT * FROM dumbu_emails_db.robots_profiles "
                     . "WHERE (robots_profiles.status_id = $ACTIVE "
                     . "OR robots_profiles.status_id = $BLOCKED_BY_INSTA "
                     . "OR robots_profiles.status_id = $VERIFY_ACCOUNT )"

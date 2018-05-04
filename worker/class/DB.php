@@ -12,7 +12,7 @@ namespace leads\cls {
         
         //-------------PRINCIPALS FUNCTIONS------------------------------
 
-        public function __construct($conf_file = "/../../../CONFIG_EMAILS.INI") {
+        public function __construct($conf_file = "/../../../LEADS.INI") {
             $this->connect($conf_file);
         }
 
@@ -29,13 +29,13 @@ namespace leads\cls {
         }
         
         public function reset_robot_profiles() {
-            $sql='UPDATE leads_db.robots_profiles SET status_id = 1 WHERE status_id > 0';
+            $sql='UPDATE dumbu_emails_db.robots_profiles SET status_id = 1 WHERE status_id > 0 AND status_id <> 4';
             return mysqli_query($this->connection, $sql); 
         }
         
         public function truncate_daily_work() {
             try{
-                $sql = "TRUNCATE leads_db.daily_work;";
+                $sql = "TRUNCATE dumbu_emails_db.daily_work;";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -47,7 +47,7 @@ namespace leads\cls {
             try {
                 $t=time();
                 $sql = ""
-                        . "INSERT INTO leads_db.daily_work "
+                        . "INSERT INTO dumbu_emails_db.daily_work "
                         . "(client_id, campaing_id, profile_id, last_accesed) "
                         . "VALUES "
                         . "($client_id, $campaing_id, $ref_prof_id, $t);";
@@ -63,7 +63,7 @@ namespace leads\cls {
 
         public function delete_daily_work_by_profile($ref_prof_id) {
             try {
-                $sql ="DELETE FROM leads_db.daily_work WHERE reference_id = $ref_prof_id; ";
+                $sql ="DELETE FROM dumbu_emails_db.daily_work WHERE reference_id = $ref_prof_id; ";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -73,7 +73,7 @@ namespace leads\cls {
 
         public function delete_daily_work_by_campaing($campaing_id) {
             try {
-                $sql = "DELETE FROM leads_db.daily_work WHERE daily_work.campaing_id = $campaing_id);";
+                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $campaing_id);";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -83,7 +83,7 @@ namespace leads\cls {
        
         public function delete_daily_work_by_client($client_id) {
             try {
-                $sql = "DELETE FROM leads_db.daily_work WHERE daily_work.campaing_id = $client_id); ";
+                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $client_id); ";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -94,7 +94,7 @@ namespace leads\cls {
         public function set_campaing_available_daily_value($campaing_id,$value){
             try {
                 $sql = ""
-                    . "UPDATE leads_db.campaings "                    
+                    . "UPDATE dumbu_emails_db.campaings "                    
                     . "SET campaings.available_daily_value = '$value' "
                     . "WHERE campaings.id = $campaing_id; ";
                 return mysqli_query($this->connection, $sql);
@@ -108,7 +108,7 @@ namespace leads\cls {
             try {
                 //1. obter a registro do daily_work mais antigo sem trabalhar
                 $sql = ""
-                    . " SELECT * FROM leads_db.daily_work "
+                    . " SELECT * FROM dumbu_emails_db.daily_work "
                     . " ORDER BY daily_work.last_accesed ASC "
                     . " LIMIT 1;";
                 $result = mysqli_query($this->connection, $sql);
@@ -131,7 +131,7 @@ namespace leads\cls {
                 
                 //3. obter o cliente mais antigo sem ter trabalhado segundo o daily work
                 $sql = ""
-                    . " SELECT * FROM leads_db.clients "
+                    . " SELECT * FROM dumbu_emails_db.clients "
                     . " INNER JOIN users ON users.id = clients.user_id "
                     . " WHERE clients.user_id = '$next_work->client_id';";
                 $result = mysqli_query($this->connection, $sql);
@@ -139,14 +139,14 @@ namespace leads\cls {
                 
                 //4. obter a campanha mais antiga sem ter trabalhado segundo o daily work
                 $sql = ""
-                    . " SELECT * FROM leads_db.campaings "
+                    . " SELECT * FROM dumbu_emails_db.campaings "
                     . " WHERE campaings.id = '$next_work->campaing_id';";
                 $result = mysqli_query($this->connection, $sql);
                 $old_campaing = $result->fetch_object();
                 
                 //5. obter o perfil mais antigo 
                 $sql = ""
-                    . " SELECT * FROM leads_db.profiles "
+                    . " SELECT * FROM dumbu_emails_db.profiles "
                     . " WHERE profiles.id = '$next_work->profile_id';";
                 $result = mysqli_query($this->connection, $sql);
                 $old_profile = $result->fetch_object();
@@ -164,7 +164,7 @@ namespace leads\cls {
         
         public function update_field_in_DB($table, $key_field, $key_value, $field, $value){
             $sql = ""
-                . "UPDATE leads_db.$table "                    
+                . "UPDATE dumbu_emails_db.$table "                    
                 . "SET $field = '$value' "
                 . "WHERE $key_field = '$key_value'; ";
             $v = mysqli_query($this->connection, $sql);
@@ -172,7 +172,7 @@ namespace leads\cls {
         }
         
         public function get_init_range_value() {
-            $sql = "SELECT value FROM leads_db.leads_system_config WHERE name='INIT_RANGE_VALUE';";
+            $sql = "SELECT value FROM dumbu_emails_db.dumbu_emails_system_config WHERE name='INIT_RANGE_VALUE';";
             $result = mysqli_query($this->connection, $sql);
             $result = (int)($result->fetch_object()->value);
             return $result;
@@ -181,7 +181,7 @@ namespace leads\cls {
         public function get_system_config_vars() {
             try {
                 $this->connect();
-                $sql = "SELECT * FROM leads_db.leads_system_config;";
+                $sql = "SELECT * FROM dumbu_emails_db.dumbu_emails_system_config;";
                 $result = mysqli_query($this->connection, $sql);
                 return $result ? $result : NULL;
             } catch (\Exception $exc) {
@@ -192,7 +192,7 @@ namespace leads\cls {
        
         public function insert_future_reference_profile($table_to_profiles, $ds_user_id, $username){
             try {
-                $sql = "INSERT INTO leads_db.$table_to_profiles "
+                $sql = "INSERT INTO dumbu_emails_db.$table_to_profiles "
                     . " (insta_id,profile)"
                     . " VALUES ('$ds_user_id', '$username');";
                 $result = mysqli_query($this->connection, $sql);
@@ -241,7 +241,7 @@ namespace leads\cls {
                 else
                     $category = 'single_profile';
                 $sql = ""
-                    . "INSERT INTO leads_db.$table "
+                    . "INSERT INTO dumbu_emails_db.$table "
                     . "(reference_profile_id, username, ds_user_id, is_private, is_business, "
                     . "private_email, biography_email, public_email, "
                     . "public_phone_country_code, public_phone_number, contact_phone_number, phone_number, "
@@ -294,7 +294,7 @@ namespace leads\cls {
          
          
         public function show_all_leads(){
-            $sql = "SELECT * FROM leads_db.leads_1kM;";
+            $sql = "SELECT * FROM dumbu_emails_db.dumbu_emails_1kM;";
             $result = mysqli_query($this->connection, $sql);
             while($lead = $result->fetch_object()){
                 var_dump($lead->ds_user_id);
@@ -310,11 +310,11 @@ namespace leads\cls {
          }
          
         public function set_id_in_profile(){
-            $sql = "SELECT * FROM leads_db.profiles;";
+            $sql = "SELECT * FROM dumbu_emails_db.profiles;";
             $result = mysqli_query($this->connection, $sql);
             $k=1;
             while($lead = $result->fetch_object()){
-                $sql = "UPDATE  leads_db.profiles set id='$k' where insta_id='$lead->insta_id';";
+                $sql = "UPDATE  dumbu_emails_db.profiles set id='$k' where insta_id='$lead->insta_id';";
                 $resp = mysqli_query($this->connection, $sql);
                 $k++;
                 echo "'$k'<br>";
@@ -322,7 +322,7 @@ namespace leads\cls {
          }
          
 //         public function creating_profiles_from_reference_profiles(){
-//            $sql = "SELECT * FROM leads_db.reference_profile where type='0';";
+//            $sql = "SELECT * FROM dumbu_emails_db.reference_profile where type='0';";
 //            $result = mysqli_query($this->connection, $sql);
 //            $k=1;
 //            try{
@@ -362,10 +362,10 @@ namespace leads\cls {
 //        public function codify_base64_all_leads(){ //aplicar solo a las que ya fueron encriptadas
 //            $table="leads_10kM";
 //            
-//            $sql = "ALTER TABLE `leads_db`.`".$table."` RENAME TO  `leads_db`.`".$table."_tmp`;" ;
+//            $sql = "ALTER TABLE `dumbu_emails_db`.`".$table."` RENAME TO  `dumbu_emails_db`.`".$table."_tmp`;" ;
 //            $result1 = mysqli_query($this->connection, $sql);
 //            
-//            $sql = "CREATE TABLE `leads_db`.`".$table."` (
+//            $sql = "CREATE TABLE `dumbu_emails_db`.`".$table."` (
 //                `ds_user_id` VARCHAR(20) CHARACTER SET 'utf8' NOT NULL,
 //                `reference_profile_id` INT(11) NULL DEFAULT NULL,
 //                `extracted_date` VARCHAR(11) CHARACTER SET 'utf8' NULL DEFAULT NULL,
@@ -403,7 +403,7 @@ namespace leads\cls {
 //            $result2 = mysqli_query($this->connection, $sql);
 //            
 //            if($result1 && $result2){
-//                $sql = "SELECT * FROM leads_db.".$table."_tmp;";
+//                $sql = "SELECT * FROM dumbu_emails_db.".$table."_tmp;";
 //                $result = mysqli_query($this->connection, $sql);
 //                while($lead = $result->fetch_object()){
 //

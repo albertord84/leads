@@ -5,7 +5,7 @@
             <meta charset="UTF-8">
             <title>Dumbu-Leads</title>
             <meta name="viewport" content="width=device-width">
-            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/favicon.png'?>">
+            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
 
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $GLOBALS['language']?>';</script>
