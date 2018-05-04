@@ -9,35 +9,6 @@ class Welcome extends CI_Controller {
     
     private $security_purchase_code; //random number in [100000;999999] interval and coded by md5 crypted to antihacker control
     public $language =NULL;
-    
-    public function test(){
-        $datas['credit_card_number'] = '4415241617292371';
-        $datas['credit_card_name'] = 'JOSE R G MONTERO';
-        $datas['credit_card_exp_month'] = '05';
-        $datas['credit_card_exp_year'] = '2026';
-        $datas['credit_card_cvc'] = '676';
-        $datas['amount_in_cents'] = '500';
-        $resp=$this->check_mundipagg_credit_card($datas);
-        var_dump($resp);
-    }
-    
-    public function test_boleto(){
-        $datas['AmountInCents']=500;
-        $datas['DocumentNumber']=14; //'3';
-        $datas['OrderReference']=14; //'3';
-        $datas['id']=250; 
-        $datas['name']='JOSE RAMON GONZALEZ MONTERO';
-        $datas['cpf']='07367014196';
-        
-        $datas['cep']='24020206';
-        $datas['street_address']='Visconde de Sepetiva';
-        $datas['house_number']='223';
-        $datas['neighborhood_address']='Centro';
-        $datas['municipality_address']='Niteroi';
-        $datas['state_address']='RJ';      
-        $resp=$this->check_mundipagg_boleto($datas);
-        var_dump($resp);
-    }
 
         //------------desenvolvido para DUMBU-LEADS-------------------
     public function load_language(){
