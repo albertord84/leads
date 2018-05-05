@@ -4,6 +4,9 @@
             <?php  $CI =& get_instance();?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
+            <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
+            <script type="text/javascript">var min_daily_value ='<?php echo $min_daily_value/100;?>';</script>
+            <script type="text/javascript">var min_ticket_bank ='<?php echo $min_ticket_bank/100;?>';</script>
             
             <meta charset="UTF-8">
             <title>Dumbo-Leads</title>

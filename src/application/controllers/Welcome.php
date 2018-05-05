@@ -113,6 +113,9 @@ class Welcome extends CI_Controller {
             }
             //3. cargar la vista con los parâmetros                        
             
+            $param['min_daily_value'] = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;
+            $param['min_ticket_bank'] = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;
+            
             $this->load->view('client_view', $param);
         }
         else{            
@@ -132,6 +135,10 @@ class Welcome extends CI_Controller {
     
     public function is_valid_email($email)    {
         return preg_match("/^[a-zA-Z0-9\._-]+[@]([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,4}$/", $email);
+    }
+    
+    public function is_valid_cpe($cpe)    {
+        return preg_match("/^[0-9]{8,8}$/", $cpe);
     }
     
     public function is_valid_phone($email)    {
@@ -221,6 +228,9 @@ class Welcome extends CI_Controller {
         $message = NULL;
         if(!$this->validaCPF($cpf)){
             return $this->T("CPF incorreto.", array(), $GLOBALS['language']);
+        }
+        if(!$this->is_valid_cpe($cpe)){
+            return $this->T("CPE deve conter só números.", array(), $GLOBALS['language']);
         }
         if(!$this->is_valid_currency($money)){
             return $this->T("Deve fornecer um valor monetário válido.", array(), $GLOBALS['language']);
@@ -1562,7 +1572,7 @@ class Welcome extends CI_Controller {
             $datas = $this->input->post();
             $message_error = $this->errors_in_bank_ticket($datas['name_in_ticket'],
                                                             $datas['cpf'],
-                                                            $datas['cpe'], 
+                                                            $datas['cep'], 
                                                             $datas['emission_money_value'], 
                                                             $datas['house_number'],             
                                                             $datas['street_address'],             
@@ -1710,7 +1720,7 @@ class Welcome extends CI_Controller {
         $this->is_ip_hacker();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/src/application/libraries/Payment.php';
         $Payment = new \leads\cls\Payment();
         $payment_data['credit_card_number'] = $datas['credit_card_number'];
         $payment_data['credit_card_name'] = $datas['credit_card_name'];
@@ -1732,7 +1742,7 @@ class Welcome extends CI_Controller {
         $this->is_ip_hacker();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/src/application/libraries/Payment.php';
         $Payment = new \leads\cls\Payment();
         
         $payment_data['AmountInCents']=$datas['AmountInCents'];

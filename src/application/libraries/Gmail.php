@@ -253,7 +253,7 @@
            
            // $this->mail->msgHTML(@file_get_contents("http://dumbu.one/follows/worker/resources/emails/contact_form.php?username=$username&useremail=$useremail&usercompany=$usercompany&userphone=$userphone&usermsg=$usermsg"), dirname(__FILE__));
             
-            $this->mail->msgHTML(@file_get_contents("http://". $_SERVER['SERVER_NAME'] ."/follows/worker/resources/emails/contact_form.php?username=$username&useremail=$useremail&usercompany=$usercompany&userphone=$userphone&usermsg=$usermsg"), dirname(__FILE__));
+            $this->mail->msgHTML(@file_get_contents("http://". $_SERVER['SERVER_NAME'] ."/leads/src/resources/emails/contact_form.php?username=$username&useremail=$useremail&usercompany=$usercompany&userphone=$userphone&usermsg=$usermsg"), dirname(__FILE__));
             //$this->mail->Body = $usermsg;
             //Replace the plain text body with one created manually
             $this->mail->AltBody = "User Contact: $username";

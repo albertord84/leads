@@ -152,7 +152,7 @@ $(document).ready(function () {
         if (total_daily_value != '' && client_objetive != '') {
             if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= 30) {
+                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {
                 var l = Ladda.create(this);  l.start();
                 $.ajax({
                     url: base_url + 'index.php/welcome/save_campaing',
@@ -193,7 +193,7 @@ $(document).ready(function () {
                     }
                 });                
             } else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
                   //modal_alert_message('Deve ser um número (não zero) com até dois valores decimais!');
 //                $('#container_sigin_message').text(T('Deve fornecer um valor númerico!'));
 //                $('#container_sigin_message').css('visibility', 'visible');
@@ -704,7 +704,7 @@ $(document).ready(function () {
            
             if ((validate_element('#edit_daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#edit_daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= 30){                    
+                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= min_daily_value){                    
                 $.ajax({
                     url: base_url + 'index.php/welcome/update_daily_value',
                     data:  {
@@ -734,7 +734,7 @@ $(document).ready(function () {
                 });
             }
             else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
     //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
     //            $('#container_sigin_message').css('visibility', 'visible');
     //            $('#container_sigin_message').css('color', 'red');
@@ -987,18 +987,22 @@ $(document).ready(function () {
             && $(boleto_numero).val() && $(boleto_bairro).val() && $(boleto_municipio).val() && $(boleto_estado).val()){
             if( (validate_element(boleto_value, "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element(boleto_value, "^[0][\.,][1-9][0-9]?$") ||
-                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= 300 ) {
+                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= min_ticket_bank ) {
                 var cpf = $(boleto_cpf).val();                
                 cpf = cpf.replace(/[.-]/g, '');
                 
                 if(validaCPF(cpf)){                    
                         var money_value = $(boleto_value).val(); 
                         money_value = money_value.replace(",", "."); 
+                        
+                        var cep = $(boleto_cpe).val(); 
+                        cep = cep.replace("-", ""); 
+                        
                         var datas = {
                                     'name_in_ticket' : $(boleto_nome).val(),
                                     'emission_money_value' : money_value*100,
                                     'cpf' : cpf,
-                                    'cep' : $(boleto_cpe).val(),
+                                    'cep' : cep,
                                     'street_address' : $(boleto_endereco).val(),
                                     'house_number' : $(boleto_numero).val(),
                                     'neighborhood_address' : $(boleto_bairro).val(),
@@ -1033,7 +1037,7 @@ $(document).ready(function () {
                 }                       
             }
             else{
-                modal_alert_message("O valor minimo por boleto deve ser a partir de 300 reais");
+                modal_alert_message("O valor minimo por boleto deve ser a partir de "+min_ticket_bank+".00 reais");
             }
         }
         else{
