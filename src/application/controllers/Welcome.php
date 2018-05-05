@@ -14,8 +14,8 @@ class Welcome extends CI_Controller {
     public function load_language(){
         if (!$this->session->userdata('login')){
             $language=$this->input->get();
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new leads\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
             if(isset($language['language']))
                 $GLOBALS['language']=$language['language'];
             else
@@ -44,8 +44,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $param = array();
         $language=$this->input->get();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         if(isset($language['language']))
             $param['language']=$language['language'];
         else
@@ -65,7 +65,9 @@ class Welcome extends CI_Controller {
     public function client($param_aux = NULL) {
         $this->load->model('class/user_role');        
         $this->load->model('class/client_model');        
-        $this->load->model('class/user_model');        
+        $this->load->model('class/user_model');
+        $this->load->model('class/system_config');
+        
         if ($this->session->userdata('role_id')==user_role::CLIENT){            
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
             if($param_aux){
@@ -99,6 +101,16 @@ class Welcome extends CI_Controller {
                     
             if(count($param['campaings']) == 0)
                 $param['campaings'] = NULL;
+            
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            if($this->session->userdata('brazilian')==1){
+                $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+                $param['currency_symbol'] = "R$";
+            }
+            else{
+                $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
+                $param['currency_symbol'] = "US$";
+            }
             //3. cargar la vista con los parâmetros                        
             
             $this->load->view('client_view', $param);
@@ -202,8 +214,8 @@ class Welcome extends CI_Controller {
     
     public function errors_in_bank_ticket($nome, $cpf, $cpe, $money, $comp, $endereco, $bairro, $municipio, $estado){        
         $this->load_language();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         $min_value = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;            
                 
         $message = NULL;
@@ -324,12 +336,12 @@ class Welcome extends CI_Controller {
                 $this->daily_work_model->delete_works_by_client($user_row['id']);
                 $cancelamento = $this->user_model->cancel_user($user_row,time());
                 if($cancelamento){
-                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                    $this->Gmail = new \leads\cls\Gmail();
+                    $this->load->model('class/system_config');                    
+                    $GLOBALS['sistem_config'] = $this->system_config->load();
+                    $this->load->library('Gmail');                    
+                    //$this->Gmail = new \leads\cls\Gmail();
 
-                    $result_message = $this->Gmail->send_client_cancel_status
+                    $result_message = $this->gmail->send_client_cancel_status
                                         (
                                             $this->session->userdata('email'),
                                             $this->session->userdata('login')
@@ -434,8 +446,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/client_model');        
         
         if ($this->session->userdata('role_id')==user_role::CLIENT){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new leads\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
             $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
             $profiles_temp = $this->session->userdata('profiles_temp');
             $profiles_type_temp = $this->session->userdata('profiles_type_temp');
@@ -605,8 +617,8 @@ class Welcome extends CI_Controller {
                $this->session->userdata('status_id') != user_status::DELETED && 
                $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
               
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $min_daily_value = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;            
 
                 $datas = $this->input->post();
@@ -1035,8 +1047,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
                 
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
 
                 $datas = $this->input->post();
@@ -1149,8 +1161,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::PENDENT_BY_PAYMENT &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
 
                 $datas = $this->input->post();
@@ -1297,8 +1309,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
                 
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $min_daily_value = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;            
                 
                 $datas = $this->input->post();
@@ -1586,19 +1598,19 @@ class Welcome extends CI_Controller {
                         $result_insert = $this->bank_ticket_model->insert_bank_ticket($datas);
 
                         if($result_insert){                            
-                            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-                            $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                            $this->Gmail = new \leads\cls\Gmail();
+                            $this->load->model('class/system_config');                    
+                            $GLOBALS['sistem_config'] = $this->system_config->load();
+                            $this->load->library('gmail');                    
+                            //$this->Gmail = new \leads\cls\Gmail();
                             
-                            $result_message = $this->Gmail->send_client_ticket_success(
+                            $result_message = $this->gmail->send_client_ticket_success(
                                                                 $this->session->userdata('email'),
                                                                 $this->session->userdata('login'),
                                                                 $datas['ticket_url']
                                                             );
                             
                             $result['success'] = true;
-                            $result['message'] = $this->T("Gerado boleto bancario, consulte se e-mail!", array(), $GLOBALS['language']);
+                            $result['message'] = $this->T("Seu boleto bancário foi gerado com sucesso! Consulte seu e-mail e siga as indicações.", array(), $GLOBALS['language']);
                             $result['resource'] = 'client_page';
                             $result['link'] = $datas['ticket_url'];
                         }
@@ -1636,10 +1648,10 @@ class Welcome extends CI_Controller {
     }  
     
     public function message() {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        $this->Gmail = new \leads\cls\Gmail();
+        $this->load->model('class/system_config');                    
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        $this->load->library('gmail');                    
+        
         $language=$this->input->get();
         if(isset($language['language']))
             $param['language']=$language['language'];
@@ -1648,7 +1660,7 @@ class Welcome extends CI_Controller {
         $param['SERVER_NAME'] = $GLOBALS['sistem_config']->SERVER_NAME;
         $GLOBALS['language']=$param['language'];
         $datas = $this->input->post();
-        $result = $this->Gmail->send_client_contact_form($datas['name'], $datas['email'], $datas['message'], $datas['company'], $datas['telf']);
+        $result = $this->gmail->send_client_contact_form($datas['name'], $datas['email'], $datas['message'], $datas['company'], $datas['telf']);
         if ($result['success']) {
             $result['message'] = $this->T('Mensagem enviada, agradecemos seu contato', array(), $GLOBALS['language']);
         }
@@ -1657,8 +1669,9 @@ class Welcome extends CI_Controller {
     
     public function T($token, $array_params=NULL, $lang=NULL) {
         if(!$lang){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new \leads\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            
             if(isset($language['language']))
                 $param['language']=$language['language'];
             else
@@ -1695,8 +1708,8 @@ class Welcome extends CI_Controller {
     
     public function check_mundipagg_credit_card($datas) {
         $this->is_ip_hacker();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
         $Payment = new \leads\cls\Payment();
         $payment_data['credit_card_number'] = $datas['credit_card_number'];
@@ -1717,8 +1730,8 @@ class Welcome extends CI_Controller {
 
     public function check_mundipagg_boleto($datas) {
         $this->is_ip_hacker();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
         $Payment = new \leads\cls\Payment();
         

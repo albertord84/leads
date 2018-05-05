@@ -3,7 +3,7 @@
     <head>
             <?php  $CI =& get_instance();?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
-            <script type="text/javascript">var language ='<?php echo $GLOBALS['language']?>';</script>
+            <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
             
             <meta charset="UTF-8">
             <title>Dumbo-Leads</title>
@@ -51,7 +51,7 @@
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol; ?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                     <input id="daily_value" type="text" placeholder="0.00" value="0.00" class="orc number">
                                             </div>
@@ -186,12 +186,12 @@
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol;?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                 <input id = "edit_daily_value" type="text" placeholder="0.00" value="0.00" class="orc">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <span class="ft-size11 fw-600 fleft100"><?php echo $CI->T("Gasto atual", array(),$language);?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="gasto"></label> <?php echo $CI->T("de", array(),$language);?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?>  <label id="total"></label></span></span>
+                                                    <span class="ft-size11 fw-600 fleft100"><?php echo $CI->T("Gasto atual", array(),$language);?>: <br><?php echo $currency_symbol;?> <label id="gasto"></label> <?php echo $CI->T("de", array(),$language);?> <span class="cl-green"><?php echo $currency_symbol;?>  <label id="total"></label></span></span>
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
                                                     <a id ="update_daily_value" class="pointer_mouse bt-silver"><?php echo $CI->T("Salvar orçamento", array(),$language);?></a>
@@ -609,28 +609,15 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
-                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                                                                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                                                                    
-                                                                    if($this->session->userdata('brazilian')==1){
-                                                                        
-                                                                        echo "R$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100),2,'.','');                                                                        
-                                                                    }
-                                                                    else{
-                                                                        echo "$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100),2,'.','');
-                                                                    }
+                                                                    echo $currency_symbol." ".number_format((float)($price_lead/100),2,'.','');                                                  
                                                                 ?>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Gasto atual", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
-                                                                <?php 
-                                                                    if($this->session->userdata('brazilian')==1){
-                                                                        echo "R$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100), 2, '.', '');                                                                        
-                                                                    }else{
-                                                                        echo "$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100), 2, '.', '');        
-                                                                    }
+                                                                <?php
+                                                                    echo $currency_symbol." ".number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
                                                                 ?> 
                                                             </span>
                                                     </div>
@@ -772,7 +759,7 @@
                                                 <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
                                                         <span class="fleft100 ft-size12"><?php echo $CI->T("Tipo", array(),$language); ?>: <span class="cl-green"><?php echo $CI->T($campaing['campaing_type_id_string'], array(),$language); ?></span></span>
                                                         <span class="fleft100 fw-600 ft-size16"><?php echo $campaing['amount_leads']; ?> <?php echo $CI->T("leads captados", array(),$language); ?></span>
-                                                        <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
+                                                        <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php echo $currency_symbol;?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php echo $currency_symbol;?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
                                                 </div>
                                                 <div id="divcamp_<?php echo $campaing['campaing_id'];?>" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
                                                         <div class="col-md-6 col-sm-6 col-xs-6">                                                            

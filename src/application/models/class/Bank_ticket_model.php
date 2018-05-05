@@ -84,16 +84,16 @@ class bank_ticket_model extends CI_Model {
         $number_row = NULL;
         try{
             $this->db->select('value');
-            $this->db->from('leads_system_config');
+            $this->db->from('dumbu_emails_system_config');
             $this->db->where( array('name' => 'ORDER_NUMBER') );                       
             $number_row =  $this->db->get()->row_array();
 
             $this->db->set('value', 'value+1', FALSE);       
             $this->db->where( array('name' => 'ORDER_NUMBER') );                       
-            $this->db->update('leads_system_config');
+            $this->db->update('dumbu_emails_system_config');
 
             $this->db->select('value');
-            $this->db->from('leads_system_config');
+            $this->db->from('dumbu_emails_system_config');
             $this->db->where( array('name' => 'ORDER_NUMBER') );                               
             $new_number_row =  $this->db->get()->row_array();
             

@@ -1013,7 +1013,7 @@ $(document).ready(function () {
                                 dataType: 'json',
                                 success: function (response) {
                                     if (response['success']) {                                    
-                                        modal_alert_message("Seu boleto foi gerado satisfactoriamente");                                    
+                                        modal_alert_message(response['message']);                                    
                                         document.getElementById("alerta_pago").innerHTML = '';
                                         //document.getElementById("ops").innerHTML = '';
                                     } 
