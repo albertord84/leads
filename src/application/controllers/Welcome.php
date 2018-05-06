@@ -12,8 +12,10 @@ class Welcome extends CI_Controller {
 
         //------------desenvolvido para DUMBU-LEADS-------------------
     public function load_language(){
-        if (!$this->session->userdata('login')){
+        if (!$this->session->userdata('id')){
             $language=$this->input->get();
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;            
             $this->load->model('class/system_config');
             $GLOBALS['sistem_config'] = $this->system_config->load();
             if(isset($language['language']))
@@ -43,26 +45,34 @@ class Welcome extends CI_Controller {
     public function index() {       
         $this->load->model('class/user_role');        
         $param = array();
-        $language=$this->input->get();
         $this->load->model('class/system_config');
-        $GLOBALS['sistem_config'] = $this->system_config->load();
-        if(isset($language['language']))
-            $param['language']=$language['language'];
-        else
-            $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
-        $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
-        $GLOBALS['language']=$param['language'];
         
-        if ($this->session->userdata('role_id')==user_role::CLIENT){            
-            $param['brazilian'] = $this->session->userdata('brazilian');
-        }
-        else{
+        if (!$this->session->userdata('id')){            
+            $language=$this->input->get();            
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;
+            
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            
+            if(isset($language['language']))                
+                $param['language']=$language['language'];            
+            else
+                $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
+            
             $param['brazilian'] = $this->is_brazilian_ip();
         }
+        else{
+            $param['language'] = $this->session->userdata('language');            
+            $param['brazilian'] = $this->session->userdata('brazilian');            
+        }
+        
+        $GLOBALS['language']=$param['language'];
+        $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
+        
         $this->load->view('user_view', $param);
     }
     
-    public function client($param_aux = NULL) {
+    public function client() {
         $this->load->model('class/user_role');        
         $this->load->model('class/client_model');        
         $this->load->model('class/user_model');
@@ -70,12 +80,7 @@ class Welcome extends CI_Controller {
         
         if ($this->session->userdata('role_id')==user_role::CLIENT){            
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
-            if($param_aux){
-                $language=$param_aux;
-            }
-            else{
-                $language=$this->input->get();
-            }
+            
             $param = array();
             
             $param['language'] = $this->session->userdata('language');
@@ -393,9 +398,15 @@ class Welcome extends CI_Controller {
                 //verificar si se existe cliente        
                 $user_row = $this->user_model->verify_account($datas);
                 //$verificar = true;
-                if($user_row){                    
+                if($user_row){      
+                    if($datas['language'] != "PT" && $datas['language'] != "ES" && $datas['language'] != "EN")
+                        $datas['language'] = $user_row['language'];            
+                    if($user_row['language'] != $datas['language']){
+                        $this->user_model->update_language($user_row['id'], $datas['language']);
+                    }
+                        
                     $this->user_model->set_session($user_row['id'],$this->session);
-
+                   
                     $result['success'] = true;
                     $result['message'] = 'Login success';
                     $result['resource'] = 'client';
@@ -1662,14 +1673,14 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_model');        
         
-        if ($this->session->userdata('role_id')==user_role::CLIENT){            
-            
-            $datas = $this->input->post();
-            $language = $datas['new_language'];
-            
+        $datas = $this->input->post();
+        $language = $datas['new_language'];
+
+        if ($this->session->userdata('id')){            
             if($language != "PT" && $language != "ES" && $language != "EN"){
-                $language = "PT";
+                $language = $this->session->userdata('language');
             }
+
             $result_update = $this->user_model->update_language($this->session->userdata('id'), $language);
 
             if($result_update){
@@ -1683,7 +1694,15 @@ class Welcome extends CI_Controller {
                 $result['resource'] = 'client_page';
             }            
         }
-        else{            
+        else{
+            
+            if($language != "PT" && $language != "ES" && $language != "EN"){
+                $language = $GLOBALS['language'];
+            }
+            else{
+                $GLOBALS['language'] = $language;
+            }
+            
             $result['success'] = true;
             $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
             $result['resource'] = 'front_page';
