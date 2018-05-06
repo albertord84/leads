@@ -589,7 +589,7 @@
                                         }
                                     ?>                                    
                                     </span>
-                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo ucfirst(strtolower($CI->T("Campanhas ", array(),$language)));?></h5>
+                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo $CI->T("Campanhas", array(),$language);?></h5>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12 ft-size12 pd-0 m-top30">
                                             <div class="fleft100 gastos pd-15">

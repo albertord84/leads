@@ -185,7 +185,7 @@
                                 <li>                                    
                                     <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
                                         <i class="fa fa-binoculars"></i>
-                                        <?php echo $CI->T("CAMPANHAS", array(),$language);?>
+                                        <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
                                     </a>
                                 </li>
                                 <?php

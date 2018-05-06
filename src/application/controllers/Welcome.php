@@ -709,7 +709,7 @@ class Welcome extends CI_Controller {
                                                 $this->session->set_userdata('profiles_type_temp',NULL);
                                                 $this->session->set_userdata('profiles_insta_temp',NULL);
                                                 $result['success'] = true;
-                                                $result['message'] = $this->T("Campanaha criada", array(), $GLOBALS['language']);
+                                                $result['message'] = $this->T("Campanha criada", array(), $GLOBALS['language']);
                                                 $result['resource'] = 'client_painel';
                                                 $campaings = $this->client_model->load_campaings($this->session->userdata('id'), $id_campaing);
                                                 $result['html'] = $this->html_for_new_campaing($campaings[0]);
