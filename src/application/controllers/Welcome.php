@@ -46,13 +46,12 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $param = array();
         $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         
         if (!$this->session->userdata('id')){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
                     $language['language'] = NULL;
-            
-            $GLOBALS['sistem_config'] = $this->system_config->load();
             
             if(isset($language['language']))                
                 $param['language']=$language['language'];            
@@ -60,10 +59,21 @@ class Welcome extends CI_Controller {
                 $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
             
             $param['brazilian'] = $this->is_brazilian_ip();
+                
         }
         else{
             $param['language'] = $this->session->userdata('language');            
             $param['brazilian'] = $this->session->userdata('brazilian');            
+            $param['currency_symbol'] = $this->session->userdata('currency_symbol');              
+        }
+        
+        if($param['brazilian'] == 1){
+            $param['currency_symbol'] = "R$";
+            $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+        }
+        else{
+            $param['currency_symbol'] = "US$";
+            $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
         }
         
         $GLOBALS['language']=$param['language'];
@@ -528,11 +538,11 @@ class Welcome extends CI_Controller {
     public function html_for_new_campaing($campaing){        
         $html = '<div id = "campaing_'.$campaing['campaing_id'].'" class="fleft100 bk-silver camp camp-blue m-top20 center-xs">                                            
             <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                    <span class="bol fw-600 fleft100 ft-size15"><i></i> '.'Campanha'.'</span>
-                    <span id = "campaing_status_'.$campaing['campaing_id'].'" class="fleft100">'.'Criada'.'</span>
-                    <span class="ft-size13">'.'Inicio '.date('d/m/Y', $campaing['created_date']).'</span>
+                    <span class="bol fw-600 fleft100 ft-size15"><i></i> '.$this->T("Campanha", array(), $GLOBALS['language']).'</span>
+                    <span id = "campaing_status_'.$campaing['campaing_id'].'" class="fleft100">'.ucfirst(strtolower($this->T("Criada", array(), $GLOBALS['language']))).'</span>
+                    <span class="ft-size13">'.$this->T("Inicio", array(), $GLOBALS['language']).': '.date('d/m/Y', $campaing['created_date']).'</span>
                     <ul class="fleft75 bs2">
-                        <li><a id="action_'.$campaing['campaing_id'].'" class = "mini_play pointer_mouse"><i id = "action_text_'.$campaing['campaing_id'].'" class="fa fa-play-circle"> ATIVAR</i></a></li>                                                          
+                        <li><a id="action_'.$campaing['campaing_id'].'" class = "mini_play pointer_mouse"><i id = "action_text_'.$campaing['campaing_id'].'" class="fa fa-play-circle"> '.$this->T("ATIVAR", array(), $GLOBALS['language']).'</i></a></li>                                                          
                     </ul>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -559,22 +569,22 @@ class Welcome extends CI_Controller {
                     </ul>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
-                    <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$campaing['campaing_type_id_string'].'</span></span>
-                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' dados captados'.'</span>
-                    <span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>'.'R$ '.'<label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.'R$ '.'<label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
+                    <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$this->T($campaing['campaing_type_id_string'], array(), $GLOBALS['language']).'</span></span>
+                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
+                    <span class="ft-size11 fw-600 m-top8 fleft100">'.$this->T("Gasto atual", array(), $GLOBALS['language']).': <br>'.$this->session->userdata('currency_symbol').' <label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.$this->session->userdata('currency_symbol').' <label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
             </div>';
         $html .= '<div id="divcamp_'.$campaing['campaing_id'].'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
                     <div class="col-md-6 col-sm-6 col-xs-6">                                                            
                             <a href="" class="cl-black">
                                 <img src="'.base_url().'assets/img/down.png" alt="">
-                                    <span class="fleft100 ft-size11 m-top8 fw-600">Extrair dados</span>
+                                    <span class="fleft100 ft-size11 m-top8 fw-600">'.$this->T("Extrair leads", array(), $GLOBALS['language']).'</span>
                             </a>
                     </div>';
         $html .= '  <div class="col-md-6 col-sm-6 col-xs-6">';                            
         $html .= '           <div id="edit_campaing_'.$campaing['campaing_id'].'">';
         $html .= '              <a href="" class="cl-black edit_campaing" data-toggle="modal" data-id="editar_'.$campaing['campaing_id'].'" >';
         $html .= '                   <img src="'.base_url().'assets/img/editar.png" alt="">';
-        $html .= '                      <span class="fleft100 ft-size11 m-top8 fw-600">Editar</span>';
+        $html .= '                      <span class="fleft100 ft-size11 m-top8 fw-600">'.$this->T("Editar", array(), $GLOBALS['language']).'</span>';
         $html .= '</a> </div> </div>';
         $html .=' </div></div>';
         return $html;

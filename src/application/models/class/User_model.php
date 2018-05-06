@@ -57,6 +57,12 @@ class User_model extends CI_Model {
                 $session->set_userdata('status_id', $user_data['status_id']);
                 $session->set_userdata('init_date', $user_data['init_date']);
                 $session->set_userdata('language', $user_data['language']);                
+                if($user_data['brazilian']==1){
+                    $session->set_userdata('currency_symbol', "R$");               
+                }
+                else {
+                    $session->set_userdata('currency_symbol', "US$");                
+                }
                 //$campaing = $this->client_model->load_campaings($user_data['id']);
                 //$session->set_userdata('campaing', $campaing);                
                 //$array_id_campaings = $this->client_model->client_get_campaings($user_data['id'],'id');
