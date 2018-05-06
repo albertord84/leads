@@ -197,8 +197,24 @@ class User_model extends CI_Model {
         return $this->db->query($query)->result_array();
     }
 
-
-
+    public function update_language($id_user, $language){
+                       
+        $update_result = NULL;
+        try{            
+            $this->db->where('id',$id_user);                        
+            $this->db->update('users', array('language' => $language));                                    
+            $update_result =  $this->db->affected_rows();
+            $this->session->set_userdata('language', $language);                
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el cancelamiento';
+        } finally {
+            return $update_result;
+        }
+        
+        
+    }
+    
 
 
 

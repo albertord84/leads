@@ -264,7 +264,7 @@ $(document).ready(function () {
                     gasto.innerText = Number((campaing['total_daily_value'] - campaing['available_daily_value'])/100).toFixed(2);
                     total.innerText = Number(campaing['total_daily_value']/100).toFixed(2);
                     dados_captados.innerText = campaing['amount_leads'];
-                    tipo.innerText = campaing['campaing_type_id_string'];
+                    tipo.innerText = T(campaing['campaing_type_id_string']);
                     $('#type_campaing').val(campaing['campaing_type_id']);
 
                     var char_type;
@@ -1581,7 +1581,7 @@ function show_campaings(campaings){
             html += '<div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">'+
                     '<span class="fleft100 ft-size12">Tipo: <span class="cl-green">'+ campaings[i]['campaing_type_id_string']+'</span></span>'+
                     '<span class="fleft100 fw-600 ft-size16">'+campaings[i]['amount_leads']+' leads captados'+'</span>'+
-                    '<span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>R$ <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> de <span class="cl-green">R$ <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
+                    '<span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>'+currency_symbol+' <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> de <span class="cl-green">'+currency_symbol+' <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
                     '</div>';
             html += '<div id="divcamp_'+campaings[i]['campaing_id']+'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">'+
                         '<div class="col-md-6 col-sm-6 col-xs-6">'+                                                            

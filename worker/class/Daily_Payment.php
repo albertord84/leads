@@ -1,42 +1,42 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+//defined('BASEPATH') OR exit('No direct script access allowed');
+namespace leads\cls {
+    
+require_once 'DB.php';
+require_once 'Payment_BD.php';
+require_once 'Payment.php';
+require_once 'system_config.php';
+require_once 'Gmail.php';
 
-class Payment extends CI_Controller {
+class Daily_Payment {   //extends CI_Controller {
 
     //------------desenvolvido para DUMBU-LEADS-------------------
     public function check_payment_leads() {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-        $this->Gmail = new \leads\cls\Gmail();
-        if($this->session->userdata('brazilian')==1){
-            $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
-        }
-        else{
-            $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
-        }
-        echo "Check Payment Initiated...!<br>\n";
-        echo date("Y-m-d h:i:sa");
+        echo "Check Payment Initiated...!<br>";
+        echo date("Y-m-d h:i:sa")."<br>";
         
-        $this->load->model('class/client_model');
-        $this->load->model('class/user_model');
-        $this->load->model('class/user_status');
-        $this->load->model('class/credit_card_model');
-        $this->load->model('class/bank_ticket_model');
-        $this->load->model('class/daily_work_model');        
+        $GLOBALS['sistem_config'] = new system_config();        
+        $this->Gmail = new Gmail();
+        $BD_access = new Payment_BD();
 
-        
-        
-        $clients = $this->client_model->get_clients_to_pay();
+        $clients = $BD_access->get_clients_to_pay();
         
         foreach ($clients as $client) {
-            $leads_to_pay = $this->client_model->leads_to_pay($client['user_id'],NULL,NULL);
+            $factor_conversion = 1;
+            if($client['brazilian']==1){
+                $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+            }
+            else{
+                $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
+                $factor_conversion = $GLOBALS['sistem_config']->DOLLAR_TO_REAL;
+            }
+            $leads_to_pay = $BD_access->leads_to_pay($client['user_id']); 
             $amount_leads = count($leads_to_pay);
             $amount_to_pay = $amount_leads * $price_per_lead;
             $leads_sold = 0;
             if($amount_to_pay){                
-                $list_boleto = $this->bank_ticket_model->get_charged_bank_ticket($client['user_id']);
+                $list_boleto = $BD_access->get_charged_bank_ticket($client['user_id']);
                 $charged = 0;
                 if($list_boleto){                
                     foreach ($list_boleto as $boleto) {                        
@@ -47,27 +47,34 @@ class Payment extends CI_Controller {
                                 $leads_sold += $amount_to_pay;
                                 $charged += $amount_to_pay;
                                 $amount_available -= $amount_to_pay;                        
-                                $amount_to_pay = 0;                                                        
+                                $amount_to_pay = 0;
+                                
+                                if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
+                                    //adicionar campanhas activas
+                                    $BD_access->activate_client($client['user_id'], time());
+                                    $BD_access->add_works_by_client($client['user_id']);
+                                    echo 'Client '.$client['user_id'].' is now active <br>'; 
+                                }  
                             }
                             else
                             {
-                                $leads_sold += $amount_available;
-                                $charged += $amount_available;
-                                $amount_to_pay -= $amount_available;
-                                $amount_available = 0;  
+                                $partial_charged = intdiv($amount_available,$price_per_lead)*$price_per_lead;
+                                $leads_sold += $partial_charged;
+                                $charged += $partial_charged;
+                                $amount_to_pay -= $partial_charged;
+                                $amount_available -= $partial_charged;  
                             }                        
                             //actualizar boleto
-                            $boleto = $this->bank_ticket_model->update_bank_ticket(array(   'client_id' => $client['user_id'],
-                                                                                            'amount_used_value' => ($boleto['amount_payed_value']-$amount_available),
-                                                                                            'id' => $boleto['id'])
-                                                                                        );
+                            $boleto = $BD_access->update_bank_ticket($client['user_id'], $boleto['id'], ($boleto['amount_payed_value']-$amount_available));
                         }                        
                     }
-                    echo 'Charged '.$charged.' in ticket for client '.$client['user_id'].'<br>\n'; 
+                    if($charged){
+                        echo 'Charged '.$charged.' in ticket for client '.$client['user_id'].'<br>'; 
+                    }
                 }
 
                 if($amount_to_pay){//acabar de pagar con la tarjeta de credito
-                    $credit_card = $this->credit_card_model->get_credit_card($client['user_id']);
+                    $credit_card = $BD_access->get_credit_card($client['user_id']);
                     /*Hacer el cobro*/                    
                     $datas['credit_card_number'] = $credit_card['credit_card_number'];
                     $datas['credit_card_name'] = $credit_card['credit_card_name'];
@@ -85,20 +92,20 @@ class Payment extends CI_Controller {
 
                     if($value_cents < $amount_to_pay){//no fue hecho el cobro
                         if($client['status_id'] == user_status::ACTIVE){
-                            $this->user_model->set_pendent_client($client['user_id'], time());
-                            $this->daily_work_model->delete_works_by_client($client['user_id']);
-                            echo 'Client '.$client['user_id'].' is now pendent by payment <br>\n'; 
+                            $BD_access->set_pendent_client($client['user_id'], time());
+                            $BD_access->delete_works_by_client($client['user_id']);
+                            echo 'Client '.$client['user_id'].' is now pendent by payment <br>'; 
                         }
                         else{
                             $status_date = $client['status_date'];
                             $diff_time = time() - $status_date;
-                            if($diff_time >= 0*2*24*3600 && $diff_time < 3*24*3600){//primera alerta
+                            if($diff_time >= 2*24*3600 && $diff_time < 3*24*3600){//primera alerta
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
                                                                 4
                                                             );                                
-                                echo 'Client '.$client['user_id'].' receiving first alert <br>\n'; 
+                                echo 'Client '.$client['user_id'].' receiving first alert <br>'; 
                             }
                             if($diff_time >= 4*24*3600 && $diff_time < 5*24*3600){//segunda alerta
                                 $result_message = $this->Gmail->send_client_pendent_status(
@@ -106,7 +113,7 @@ class Payment extends CI_Controller {
                                                                 $client['login'],
                                                                 2
                                                             );
-                                echo 'Client '.$client['user_id'].' receiving second alert <br>\n'; 
+                                echo 'Client '.$client['user_id'].' receiving second alert <br>'; 
                             }                            
                             if($diff_time >= 6*24*3600 ){
                                 //bloquear
@@ -115,8 +122,8 @@ class Payment extends CI_Controller {
                                                                 $client['login']
                                                             );
                                 
-                                $this->user_model->set_blocked_client($client['user_id'], time());
-                                echo 'Client '.$client['user_id'].' is now blocked by payment <br>\n'; 
+                                $BD_access->set_blocked_client($client['user_id'], time());
+                                echo 'Client '.$client['user_id'].' is now blocked by payment <br>'; 
                             }                            
                         }
                     }
@@ -125,9 +132,9 @@ class Payment extends CI_Controller {
                         
                         if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
                             //adicionar campanhas activas
-                            $this->user_model->activate_client($client['user_id'], time());
-                            $this->daily_work_model->add_works_by_client($client['user_id']);
-                            echo 'Client '.$client['user_id'].' is now active <br>\n'; 
+                            $BD_access->activate_client($client['user_id'], time());
+                            $BD_access->add_works_by_client($client['user_id']);
+                            echo 'Client '.$client['user_id'].' is now active <br>'; 
                         }                        
                     }
                 }
@@ -139,18 +146,18 @@ class Payment extends CI_Controller {
                     foreach ($leads_to_pay as $lead_to_pay) {
                         $list_leads_id[] = $lead_to_pay['id'];
                     }
-                    $this->client_model->update_leads($list_leads_id, $leads_sold);
+                    $BD_access->update_leads($list_leads_id, $leads_sold);
                 }
             }
         }        
     }
     
     public function check_mundipagg_credit_card($datas) {
-        $this->is_ip_hacker();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new dumbu_emails\cls\system_config();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
-        $Payment = new \leads\cls\Payment();
+        //$this->is_ip_hacker();
+        //require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
+        //$GLOBALS['sistem_config'] = new system_config();
+        //require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
+        $Payment = new Payment();
         $payment_data['credit_card_number'] = $datas['credit_card_number'];
         $payment_data['credit_card_name'] = $datas['credit_card_name'];
         $payment_data['credit_card_exp_month'] = $datas['credit_card_exp_month'];
@@ -162,7 +169,7 @@ class Payment extends CI_Controller {
         if ($bandeira)
             $response = $Payment->create_payment($payment_data);
         else
-            $response = array("message" => $this->T("Confira seu número de cartão e se está certo entre em contato com o atendimento.", array(), $GLOBALS['language']));
+            $response = array("message" => "Número de cartão errado");
         
         return $response;
     }    
@@ -528,3 +535,7 @@ class Payment extends CI_Controller {
 
     
 }
+
+}
+
+?>

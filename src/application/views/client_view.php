@@ -701,7 +701,7 @@
                                                 ?> 
                                             m-top20 center-xs">                                            
                                                 <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>
+                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Campanha", array(),$language)?></span>
                                                         <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($CI->T($campaing['campaing_status_id_string'], array(),$language))); ?></span>
                                                         <span class="ft-size13"><?php echo $CI->T("Inicio: ", array(),$language).date('d/m/Y', $campaing['created_date'])?></span>                                                        
                                                         <?php 
@@ -794,6 +794,15 @@
                             </div>
                     </div>
             </section>
+            
+            <footer class="fleft100 pd-tb50 bk-fff text-center">
+                    <div class="container">
+                            <div class="fleft100 m-top40">
+                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
+                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - TODOS OS DIREITOS RESERVADOS</span>
+                            </div>
+                    </div>
+            </footer>
     
     <!--modal_container_alert_message-->
     <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

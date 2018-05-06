@@ -40,7 +40,7 @@ class Welcome extends CI_Controller {
 
     }
     
-    public function index() {
+    public function index() {       
         $this->load->model('class/user_role');        
         $param = array();
         $language=$this->input->get();
@@ -1655,7 +1655,41 @@ class Welcome extends CI_Controller {
             $result['resource'] = 'front_page';
         }
         echo json_encode($result);
-    }  
+    } 
+    
+    
+    public function update_language(){        
+        $this->load->model('class/user_role');        
+        $this->load->model('class/user_model');        
+        
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            
+            $datas = $this->input->post();
+            $language = $datas['new_language'];
+            
+            if($language != "PT" && $language != "ES" && $language != "EN"){
+                $language = "PT";
+            }
+            $result_update = $this->user_model->update_language($this->session->userdata('id'), $language);
+
+            if($result_update){
+                $result['success'] = true;
+                $result['message'] = $this->T("Linguagem cambiada!", array(), $GLOBALS['language']);
+                $result['resource'] = 'client_page';
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não se cambiou a linguagem!", array(), $GLOBALS['language']);
+                $result['resource'] = 'client_page';
+            }            
+        }
+        else{            
+            $result['success'] = true;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }    
     
     public function message() {
         $this->load->model('class/system_config');                    
