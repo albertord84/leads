@@ -701,7 +701,7 @@
                                                 ?> 
                                             m-top20 center-xs">                                            
                                                 <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>
+                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Campanha", array(),$language)?></span>
                                                         <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($CI->T($campaing['campaing_status_id_string'], array(),$language))); ?></span>
                                                         <span class="ft-size13"><?php echo $CI->T("Inicio: ", array(),$language).date('d/m/Y', $campaing['created_date'])?></span>                                                        
                                                         <?php 
