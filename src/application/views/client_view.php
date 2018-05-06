@@ -799,7 +799,7 @@
                     <div class="container">
                             <div class="fleft100 m-top40">
                                     <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
-                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - TODOS OS DIREITOS RESERVADOS</span>
+                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
                             </div>
                     </div>
             </footer>
