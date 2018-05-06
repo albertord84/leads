@@ -68,7 +68,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_model');
         $this->load->model('class/system_config');
         
-        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+        if ($this->session->userdata('role_id')==user_role::CLIENT){
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
             if($param_aux){
                 $language=$param_aux;
