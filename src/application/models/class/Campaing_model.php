@@ -170,7 +170,7 @@ class Campaing_model extends CI_Model {
             $data_profile['campaing_id'] = $datas['campaing_id'];
             $data_profile['profile'] = $datas['profile'];
             $data_profile['cursor'] = $datas['cursor'];            
-            $data_profile['end_date'] = $datas['end_date'];
+            //$data_profile['end_date'] = $datas['end_date'];
             $data_profile['profile_status_id'] = $datas['profile_status_id'];
             $data_profile['profile_status_date'] = $datas['profile_status_date'];
             $data_profile['profile_type_id'] = $datas['profile_type_id'];

@@ -152,7 +152,7 @@ $(document).ready(function () {
         if (total_daily_value != '' && client_objetive != '') {
             if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= 30) {
+                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {
                 var l = Ladda.create(this);  l.start();
                 $.ajax({
                     url: base_url + 'index.php/welcome/save_campaing',
@@ -193,7 +193,7 @@ $(document).ready(function () {
                     }
                 });                
             } else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
                   //modal_alert_message('Deve ser um número (não zero) com até dois valores decimais!');
 //                $('#container_sigin_message').text(T('Deve fornecer um valor númerico!'));
 //                $('#container_sigin_message').css('visibility', 'visible');
@@ -492,9 +492,6 @@ $(document).ready(function () {
                 },   
                 type: 'POST',
                 dataType: 'json',
-                /*beforeSend:function(){
-                        return confirm("Seguro que deseja cancelar esta campanha?");
-                },*/
                 success: function (response) {
                     if (response['success']) {                        
                         $("#pausada").removeClass('pause');
@@ -576,7 +573,7 @@ $(document).ready(function () {
                                      if(!response['old_profile'])
                                          modal_alert_message(response['message']);
                                      else{
-                                         confirm("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
+                                         confirm_arg("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
                                      }
                              }                    
                          },
@@ -651,7 +648,7 @@ $(document).ready(function () {
     
     $(document).on('click', '.my_close2', function(){        
         var profile = this.parentNode.parentNode.id;        
-        confirm("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
+        confirm_arg("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
     });
     
     function remover_perfil(profile_to_delete){
@@ -668,9 +665,6 @@ $(document).ready(function () {
                     },   
                     type: 'POST',
                     dataType: 'json',
-//                    beforeSend:function(){
-//                        return confirm("Está seguro de remover o perfil desta campanha?");
-//                     },
                     success: function (response) {
                         if (response['success']) {
                             $('#__'+profile).remove();                        
@@ -710,7 +704,7 @@ $(document).ready(function () {
            
             if ((validate_element('#edit_daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#edit_daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= 30){                    
+                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= min_daily_value){                    
                 $.ajax({
                     url: base_url + 'index.php/welcome/update_daily_value',
                     data:  {
@@ -740,7 +734,7 @@ $(document).ready(function () {
                 });
             }
             else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de 30.00 reais!');
+                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
     //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
     //            $('#container_sigin_message').css('visibility', 'visible');
     //            $('#container_sigin_message').css('color', 'red');
@@ -945,7 +939,7 @@ $(document).ready(function () {
                             if(!response['existing_card'])
                                 modal_alert_message(response['message']);
                             else{                                
-                                confirm("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
+                                confirm_arg("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
                             }
                         }
                         l.stop();
@@ -993,18 +987,22 @@ $(document).ready(function () {
             && $(boleto_numero).val() && $(boleto_bairro).val() && $(boleto_municipio).val() && $(boleto_estado).val()){
             if( (validate_element(boleto_value, "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element(boleto_value, "^[0][\.,][1-9][0-9]?$") ||
-                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= 300 ) {
+                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= min_ticket_bank ) {
                 var cpf = $(boleto_cpf).val();                
                 cpf = cpf.replace(/[.-]/g, '');
                 
                 if(validaCPF(cpf)){                    
                         var money_value = $(boleto_value).val(); 
                         money_value = money_value.replace(",", "."); 
+                        
+                        var cep = $(boleto_cpe).val(); 
+                        cep = cep.replace("-", ""); 
+                        
                         var datas = {
                                     'name_in_ticket' : $(boleto_nome).val(),
                                     'emission_money_value' : money_value*100,
                                     'cpf' : cpf,
-                                    'cep' : $(boleto_cpe).val(),
+                                    'cep' : cep,
                                     'street_address' : $(boleto_endereco).val(),
                                     'house_number' : $(boleto_numero).val(),
                                     'neighborhood_address' : $(boleto_bairro).val(),
@@ -1019,7 +1017,7 @@ $(document).ready(function () {
                                 dataType: 'json',
                                 success: function (response) {
                                     if (response['success']) {                                    
-                                        modal_alert_message("Seu boleto foi gerado satisfactoriamente");                                    
+                                        modal_alert_message(response['message']);                                    
                                         document.getElementById("alerta_pago").innerHTML = '';
                                         //document.getElementById("ops").innerHTML = '';
                                     } 
@@ -1039,7 +1037,7 @@ $(document).ready(function () {
                 }                       
             }
             else{
-                modal_alert_message("O valor minimo por boleto deve ser a partir de 300 reais");
+                modal_alert_message("O valor minimo por boleto deve ser a partir de "+min_ticket_bank+".00 reais");
             }
         }
         else{
@@ -1292,7 +1290,7 @@ $(document).ready(function () {
     }); 
     
     /* Generic Confirm func */
-  function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback, args) {
+  function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
 
     var confirmModal = 
       $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
@@ -1324,7 +1322,7 @@ $(document).ready(function () {
         '</div>');
 
     confirmModal.find('#okButton').click(function(event) {
-      callback(args);
+      callback();
       confirmModal.modal('hide');
     }); 
 
@@ -1332,7 +1330,46 @@ $(document).ready(function () {
   };  
     /* END Generic Confirm func */
  
- 
+ function confirm_arg(heading, question, cancelButtonTxt, okButtonTxt, callback, args) {
+
+    var confirmModal = 
+      $('<div class="modal fade" style="top:30%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +        
+          '<div class="modal-dialog modal-sm" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+            '<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                '<img src="'+base_url+'assets/img/FECHAR.png">'+
+            '</button>' +
+            '<h5 class="modal-title"><b>' + heading +'</b></h5>' +
+          '</div>' +
+
+          '<div class="modal-body">' +
+            '<p>' + question + '</p>' +
+          '</div>' +
+
+          '<div class="modal-footer">' +            
+            '<button id="okButton2" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            okButtonTxt+
+                        '</div></spam>'+
+            '</button>'+
+            '<a href="#!" class="btn" data-dismiss="modal">' + 
+              cancelButtonTxt + 
+            '</a>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+        '</div>');
+
+    confirmModal.find('#okButton2').click(function(event) {
+      callback(args);
+      confirmModal.modal('hide');
+    }); 
+
+    confirmModal.modal('show');    
+  };  
+    /* END Generic Confirm func */
+    
  function message_created_campaing() {
 
     var confirmModal = 
