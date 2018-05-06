@@ -40,7 +40,7 @@ class Welcome extends CI_Controller {
 
     }
     
-    public function index() {
+    public function index() {       
         $this->load->model('class/user_role');        
         $param = array();
         $language=$this->input->get();

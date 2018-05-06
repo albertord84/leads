@@ -794,6 +794,15 @@
                             </div>
                     </div>
             </section>
+            
+            <footer class="fleft100 pd-tb50 bk-fff text-center">
+                    <div class="container">
+                            <div class="fleft100 m-top40">
+                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
+                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - TODOS OS DIREITOS RESERVADOS</span>
+                            </div>
+                    </div>
+            </footer>
     
     <!--modal_container_alert_message-->
     <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
