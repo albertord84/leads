@@ -25,7 +25,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-//                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+//                $('#container_sigin_message').text('Não foi possível executar sua solicitude!');
 //                $('#container_sigin_message').css('visibility', 'visible');
 //                $('#container_sigin_message').css('color', 'red');
             }
@@ -80,13 +80,13 @@ $(document).ready(function () {
                              }                             
                          },
                          error: function (xhr, status) {
-                             $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                             $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                              $('#container_sigin_message').css('visibility', 'visible');
                              $('#container_sigin_message').css('color', 'red');                             
                          }
                      });                             
                  } else {
-                   modal_alert_message('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!');
+                   modal_alert_message(T('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',language));
      //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
      //            $('#container_sigin_message').css('visibility', 'visible');
      //            $('#container_sigin_message').css('color', 'red');
@@ -94,7 +94,7 @@ $(document).ready(function () {
              }
         }
         else{
-            modal_alert_message('Deve selecionar um perfil da lista fornecida');
+            modal_alert_message(T('Deve selecionar um perfil da lista fornecida',language));
         }
          
        
@@ -124,13 +124,13 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status) {
-                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                     $('#container_sigin_message').css('visibility', 'visible');
                     $('#container_sigin_message').css('color', 'red');
                 }
             });            
         } else {
-              modal_alert_message('Deve fornecer um perfil para eliminar');
+              modal_alert_message(T('Deve fornecer um perfil para eliminar',language));
 //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
 //            $('#container_sigin_message').css('visibility', 'visible');
 //            $('#container_sigin_message').css('color', 'red');
@@ -186,14 +186,14 @@ $(document).ready(function () {
                         l.stop();    
                     },
                     error: function (xhr, status) {
-                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                         $('#container_sigin_message').css('visibility', 'visible');
                         $('#container_sigin_message').css('color', 'red');
                         l.stop();
                     }
                 });                
             } else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
+                  modal_alert_message(T('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de',language)+' '+currency_symbol+' '+min_daily_value+'.00!');
                   //modal_alert_message('Deve ser um número (não zero) com até dois valores decimais!');
 //                $('#container_sigin_message').text(T('Deve fornecer um valor númerico!'));
 //                $('#container_sigin_message').css('visibility', 'visible');
@@ -201,7 +201,7 @@ $(document).ready(function () {
                 //modal_alert_message('O email informado não é correto');
             }
         } else {
-              modal_alert_message('Preencha todos os dados da campanha corretamente!');
+              modal_alert_message(T('Preencha todos os dados da campanha corretamente!',language));
 //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
 //            $('#container_sigin_message').css('visibility', 'visible');
 //            $('#container_sigin_message').css('color', 'red');
@@ -237,22 +237,22 @@ $(document).ready(function () {
                     $(".modal-content #orcamento").val(Number(campaing['total_daily_value']/100).toFixed(2));
                     $("#ativada").removeClass('play');
                     $("#pausada").removeClass('pause');
-                    document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
-                    document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                    document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> '+T('ATIVAR',language);
+                    document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> '+T('PAUSAR',language);
                     $("#edit_daily_value").val(Number(campaing['total_daily_value']/100).toFixed(2));
                     
                     var status = campaing['campaing_status_id_string'];
                     
                     if(status == "ATIVA"){                        
                         $("#ativada").addClass('play');
-                        document.getElementById("ativada").innerHTML = ' ATIVA';
-                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                        document.getElementById("ativada").innerHTML = ' '+T('ATIVA',language);
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> '+T('PAUSAR',language);
                     }
                     else{
                         if(status == "PAUSADA"){
                             $("#pausada").addClass('pause');                            
-                            document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
-                            document.getElementById("pausada").innerHTML = ' PAUSADA';
+                            document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> '+T('ATIVAR',language);
+                            document.getElementById("pausada").innerHTML = ' '+T('PAUSADA',language);
                         }
                     }
                     var gasto = document.getElementById('gasto');                    
@@ -264,8 +264,8 @@ $(document).ready(function () {
                     gasto.innerText = Number((campaing['total_daily_value'] - campaing['available_daily_value'])/100).toFixed(2);
                     total.innerText = Number(campaing['total_daily_value']/100).toFixed(2);
                     dados_captados.innerText = campaing['amount_leads'];
-                    tipo.innerText = T(campaing['campaing_type_id_string']);
-                    $('#type_campaing').val(campaing['campaing_type_id']);
+                    tipo.innerText = T(campaing['campaing_type_id_string'],language);
+                    $('#type_campaing').val((campaing['campaing_type_id']));
 
                     var char_type;
                     if(campaing['campaing_type_id'] == 1)
@@ -298,7 +298,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                 $('#container_sigin_message').css('visibility', 'visible');
                 $('#container_sigin_message').css('color', 'red');
             }
@@ -319,20 +319,20 @@ $(document).ready(function () {
                     if (response['success']) {                        
                         $("#pausada").removeClass('pause');
                         $("#ativada").addClass('play');
-                        document.getElementById("ativada").innerHTML = 'ATIVA';
-                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> PAUSAR';
+                        document.getElementById("ativada").innerHTML = T('ATIVA',language);
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> '+T('PAUSAR',language);
                         
                         $("#campaing_"+id_campaing+"").removeClass('camp-silver');
                         $("#campaing_"+id_campaing+"").removeClass('camp-blue');
                         $("#campaing_"+id_campaing+"").addClass('camp-green');                                                
-                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Ativa";
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = T("Ativa",language);
                         //PARA MINI
                         $("#action_"+id_campaing+"").removeClass('mini_play');
                         $("#action_"+id_campaing+"").addClass('mini_pause');
                         $("#action_text_"+id_campaing+"").removeClass('fa fa-play-circle');
                         $("#action_text_"+id_campaing+"").addClass('fa fa-pause-circle');
                         
-                        document.getElementById("action_text_"+id_campaing).innerHTML = "PAUSAR";
+                        document.getElementById("action_text_"+id_campaing).innerHTML = T("PAUSAR",language);
                         
                         modal_alert_message(response['message']);                                            
                     } else {
@@ -343,7 +343,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status) {
-                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                     $('#container_sigin_message').css('visibility', 'visible');
                     $('#container_sigin_message').css('color', 'red');
                 }
@@ -375,8 +375,8 @@ $(document).ready(function () {
                     $("#action_"+id_campaing+"").addClass('mini_pause');                        
                     $("#action_text_"+id_campaing+"").removeClass('fa fa-play-circle');
                     $("#action_text_"+id_campaing+"").addClass('fa fa-pause-circle');
-                    document.getElementById("campaing_status_"+id_campaing).innerHTML = "Ativa";
-                    document.getElementById("action_text_"+id_campaing).innerHTML = "PAUSAR";
+                    document.getElementById("campaing_status_"+id_campaing).innerHTML = T("Ativa",language);
+                    document.getElementById("action_text_"+id_campaing).innerHTML = T("PAUSAR",language);
                     modal_alert_message(response['message']);                                            
                 } else {
                       modal_alert_message(response['message']);
@@ -386,7 +386,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                 $('#container_sigin_message').css('visibility', 'visible');
                 $('#container_sigin_message').css('color', 'red');
             }
@@ -407,18 +407,18 @@ $(document).ready(function () {
                     if (response['success']) {                        
                         $("#ativada").removeClass('play');
                         $("#pausada").addClass('pause');  
-                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
+                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> '+T('ATIVAR',language);
                         document.getElementById("pausada").innerHTML = ' PAUSADA';
                         
                         $("#campaing_"+id_campaing+"").removeClass('camp-green');                        
                         $("#campaing_"+id_campaing+"").addClass('camp-silver');                        
-                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Pausada";
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = T("Pausada",language);
                         //PARA MINI
                         $("#action_"+id_campaing+"").removeClass('mini_pause');
                         $("#action_"+id_campaing+"").addClass('mini_play');                                                
                         $("#action_text_"+id_campaing+"").removeClass('fa fa-pause-circle');
                         $("#action_text_"+id_campaing+"").addClass('fa fa-play-circle');
-                        document.getElementById("action_text_"+id_campaing).innerHTML = "ATIVAR";
+                        document.getElementById("action_text_"+id_campaing).innerHTML = T("ATIVAR",language);
                         //modal_alert_message(response['message']);                                            
                     } else {
                           modal_alert_message(response['message']);
@@ -428,7 +428,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status) {
-                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                     $('#container_sigin_message').css('visibility', 'visible');
                     $('#container_sigin_message').css('color', 'red');
                 }
@@ -455,13 +455,13 @@ $(document).ready(function () {
                         
                     $("#campaing_"+id_campaing+"").removeClass('camp-green');                        
                     $("#campaing_"+id_campaing+"").addClass('camp-silver');                        
-                    document.getElementById("campaing_status_"+id_campaing).innerHTML = "Pausada";
+                    document.getElementById("campaing_status_"+id_campaing).innerHTML = T("Pausada",language);
                     //PARA MINI
                     $("#action_"+id_campaing+"").removeClass('mini_pause');
                     $("#action_"+id_campaing+"").addClass('mini_play');                                                
                     $("#action_text_"+id_campaing+"").removeClass('fa fa-pause-circle');
                     $("#action_text_"+id_campaing+"").addClass('fa fa-play-circle');
-                    document.getElementById("action_text_"+id_campaing).innerHTML = "ATIVAR";
+                    document.getElementById("action_text_"+id_campaing).innerHTML = T("ATIVAR",language);
                     //modal_alert_message(response['message']);                                            
                 } else {
                       modal_alert_message(response['message']);
@@ -471,7 +471,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-                $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                 $('#container_sigin_message').css('visibility', 'visible');
                 $('#container_sigin_message').css('color', 'red');
             }
@@ -479,7 +479,7 @@ $(document).ready(function () {
     });
         
     $("#encerrar").click(function () {        
-        confirm("Cuidado!", "Deseja terminar esta campanha?", "Cancelar", "Ok", encerrar_campanha);
+        confirm(T("Cuidado!",language), T("Deseja terminar esta campanha?",language), T("Cancelar",language), "Ok", encerrar_campanha);
     });
     
     function encerrar_campanha() {        
@@ -496,8 +496,8 @@ $(document).ready(function () {
                     if (response['success']) {                        
                         $("#pausada").removeClass('pause');
                         $("#ativada").removeClass('play');
-                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> ATIVAR';
-                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> ATIVAR';
+                        document.getElementById("ativada").innerHTML = '<i class="fa fa-play-circle"></i> '+T('ATIVAR',language);
+                        document.getElementById("pausada").innerHTML = '<i class="fa fa-pause-circle"></i> '+T('ATIVAR',language);
                         
                         $('#editar').modal('hide');
                         $("#campaing_"+id_campaing+"").removeClass('camp-green');
@@ -505,7 +505,7 @@ $(document).ready(function () {
                         $("#campaing_"+id_campaing+"").removeClass('camp-blue');
                         $("#campaing_"+id_campaing+"").addClass('camp-red');                        
                         $("#edit_campaing_"+id_campaing+"").remove();                        
-                        document.getElementById("campaing_status_"+id_campaing).innerHTML = "Cancelada";
+                        document.getElementById("campaing_status_"+id_campaing).innerHTML = T("Cancelada",language);
                         //PARA MINI
                         $("#action_"+id_campaing+"").removeClass('mini_pause');
                         $("#action_"+id_campaing+"").removeClass('mini_play');                                                
@@ -521,7 +521,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status) {
-                    $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                    $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                     $('#container_sigin_message').css('visibility', 'visible');
                     $('#container_sigin_message').css('color', 'red');
                 }
@@ -573,18 +573,18 @@ $(document).ready(function () {
                                      if(!response['old_profile'])
                                          modal_alert_message(response['message']);
                                      else{
-                                         confirm_arg("Observação", "Quer adicionar um perfil previamente eliminado?", "Cancelar", "Ok", adicionar_old_perfil, response['old_profile']);                                    
+                                         confirm_arg(T("Observação",language), T("Quer adicionar um perfil previamente eliminado?",language), T("Cancelar",language), "Ok", adicionar_old_perfil, response['old_profile']);                                    
                                      }
                              }                    
                          },
                          error: function (xhr, status) {
-                             $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                             $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                              $('#container_sigin_message').css('visibility', 'visible');
                              $('#container_sigin_message').css('color', 'red');                                            
                          }
                      });
                  } else {
-                   modal_alert_message('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!');
+                   modal_alert_message(T('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',language));
      //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
      //            $('#container_sigin_message').css('visibility', 'visible');
      //            $('#container_sigin_message').css('color', 'red');
@@ -592,7 +592,7 @@ $(document).ready(function () {
              }
         }
         else{
-            modal_alert_message('Deve selecionar um perfil da lista fornecida');
+            modal_alert_message(T('Deve selecionar um perfil da lista fornecida',language));
         }
     });
     
@@ -638,7 +638,7 @@ $(document).ready(function () {
             $('body').removeClass('wait');
         },
         error: function (xhr, status) {
-                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                         $('#container_sigin_message').css('visibility', 'visible');
                         $('#container_sigin_message').css('color', 'red');                        
                     }
@@ -648,7 +648,7 @@ $(document).ready(function () {
     
     $(document).on('click', '.my_close2', function(){        
         var profile = this.parentNode.parentNode.id;        
-        confirm_arg("Cuidado!", "Está seguro de remover o perfil desta campanha?", "Cancelar", "Ok", remover_perfil, profile);
+        confirm_arg(T("Cuidado!",language), T("Está seguro de remover o perfil desta campanha?",language), T("Cancelar",language), "Ok", remover_perfil, profile);
     });
     
     function remover_perfil(profile_to_delete){
@@ -679,13 +679,13 @@ $(document).ready(function () {
                         }
                     },
                     error: function (xhr, status) {
-                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                         $('#container_sigin_message').css('visibility', 'visible');
                         $('#container_sigin_message').css('color', 'red');
                     }
                 });                
         } else {
-            modal_alert_message('Deve fornecer um perfil');
+            modal_alert_message(T('Deve fornecer um perfil',language));
 //          $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
 //          $('#container_sigin_message').css('visibility', 'visible');
 //          $('#container_sigin_message').css('color', 'red');
@@ -727,14 +727,14 @@ $(document).ready(function () {
                         }                        
                     },
                     error: function (xhr, status) {
-                        $('#container_sigin_message').text('Não foi possível comprobar a autenticidade do usuario no Instagram!');
+                        $('#container_sigin_message').text(T('Não foi possível executar sua solicitude!',language));
                         $('#container_sigin_message').css('visibility', 'visible');
                         $('#container_sigin_message').css('color', 'red');                        
                     }
                 });
             }
             else {
-                  modal_alert_message('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de '+min_daily_value+'.00 reais!');
+                  modal_alert_message(T('O orçamento deve ser um valor monetário (não zero) com até dois valores decimais e a partir de',language)+' '+currency_symbol+' '+min_daily_value+'.00!');
     //            $('#container_sigin_message').text(T('Deve preencher todos os dados corretamente!'));
     //            $('#container_sigin_message').css('visibility', 'visible');
     //            $('#container_sigin_message').css('color', 'red');
@@ -742,7 +742,7 @@ $(document).ready(function () {
                 }
         }
         else{
-            modal_alert_message('Para modificar o orçamento diário a campanha não pode estar ativa');
+            modal_alert_message(T('Para modificar o orçamento diário a campanha não pode estar ativa'),language);
         }
         //$("#update_daily_value").css({'cursor':'pointer'});                        
     });
@@ -772,7 +772,7 @@ $(document).ready(function () {
                     document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
                 } 
                 else {                 
-                    document.getElementById("list_campaings").innerHTML = 'Você nao possui nenhuma campanha nesse periodo';
+                    document.getElementById("list_campaings").innerHTML = T('Você nao possui nenhuma criada campanha nesse periodo',language);
                 }                 
             },
             error: function (xhr, status) {
@@ -808,7 +808,7 @@ $(document).ready(function () {
                         document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
                     } 
                     else {                 
-                        document.getElementById("list_campaings").innerHTML = 'Você nao possui nenhuma campanha nesse periodo';
+                        document.getElementById("list_campaings").innerHTML = T('Você nao possui nenhuma campanha criada nesse periodo',language);
                     }                 
                 },
                 error: function (xhr, status) {
@@ -939,7 +939,7 @@ $(document).ready(function () {
                             if(!response['existing_card'])
                                 modal_alert_message(response['message']);
                             else{                                
-                                confirm_arg("Observação", "Quer sobrescrever os dados de seu cartão?", "Cancelar", "Ok", atualizar_cartao, datas);                                                                    
+                                confirm_arg(T("Observação",language), T("Quer sobrescrever os dados de seu cartão?",language), T("Cancelar",language), "Ok", atualizar_cartao, datas);                                                                    
                             }
                         }
                         l.stop();
@@ -1033,15 +1033,15 @@ $(document).ready(function () {
                             });                        
                 }
                 else{
-                    modal_alert_message("Formato incorreto para o cpf");
+                    modal_alert_message(T("Formato incorreto para o cpf",language));
                 }                       
             }
             else{
-                modal_alert_message("O valor minimo por boleto deve ser a partir de "+min_ticket_bank+".00 reais");
+                modal_alert_message(T("O valor minimo por boleto deve ser a partir de",language)+" "+currency_symbol+" "+curremin_ticket_bank+".00");
             }
         }
         else{
-            modal_alert_message("Deve fornecer todos os dados");
+            modal_alert_message(T("Deve fornecer todos os dados",language));
         }
     }
     
@@ -1094,7 +1094,7 @@ $(document).ready(function () {
                             a.click();
                         }
                         else{
-                            modal_alert_message("Você não possui leads que cumplam com sua solicitude");
+                            modal_alert_message(T("Você não possui leads que cumplam com sua solicitude",language));
                         }
                     }
                     else{
@@ -1108,11 +1108,11 @@ $(document).ready(function () {
             }
             else
             {
-                modal_alert_message("A data incial deve ser anterior à data final");
+                modal_alert_message(T("A data incial deve ser anterior à data final",language));
             }  
         }
         else
-            modal_alert_message("Deve fornecer o intervalo válido de datas para a extração");
+            modal_alert_message(T("Deve fornecer o intervalo válido de datas para a extração",language));
     });
     
     
@@ -1181,14 +1181,14 @@ $(document).ready(function () {
                                 $("#table_search_profile").append("<tr class='row' id='row_tag_"+i+"'>");
                                 $("#table_search_profile").append("<td class='col' id='col_tag_"+i+"' style='text-align: left'><div class='tt-suggestion' onclick='select_hashtag_from_search(\"" + hashtag_name + "\","+"\""+ response['hashtags'][i]['hashtag']['id'] + "\");'>" +
                                     "<strong>#" + hashtag_name+"</strong><br><span style='color: gray;'>"+
-                                    response['hashtags'][i]['hashtag']['media_count'] + T(' publicações') + "</span></div></td></tr>");
+                                    response['hashtags'][i]['hashtag']['media_count'] + ' '+T('publicações',language) + "</span></div></td></tr>");
                                 i++;
                             }
 
                         }
                         else{
                             if ($('#login_profile').val() !== '') {
-                                $("#table_search_profile").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.')+"</td></tr>");
+                                $("#table_search_profile").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.',language)+"</td></tr>");
                                 $('#reference_profile_message').css('visibility', 'hidden');
                             }
                         }
@@ -1196,7 +1196,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-                $('#reference_profile_message').text(T('Não foi possível conectar com o Instagram'));
+                $('#reference_profile_message').text(T('Não foi possível conectar com o Instagram',language));
                 $('#reference_profile_message').css('visibility', 'visible');
                 $('#reference_profile_message').css('color', 'red');
             }
@@ -1267,14 +1267,14 @@ $(document).ready(function () {
                                 $("#table_search_profile2").append("<tr class='row' id='edit_row_tag_"+i+"'>");
                                 $("#table_search_profile2").append("<td class='col' id='col_tag_"+i+"' style='text-align: left'><div class='tt-suggestion' onclick='select_hashtag_from_search2(\"" + hashtag_name + "\","+"\""+ response['hashtags'][i]['hashtag']['id'] + "\");'>" +
                                     "<strong>#" + hashtag_name+"</strong><br><span style='color: gray;'>"+
-                                    response['hashtags'][i]['hashtag']['media_count'] + T(' publicações') + "</span></div></td></tr>");
+                                    response['hashtags'][i]['hashtag']['media_count'] + ' '+T('publicações',language) + "</span></div></td></tr>");
                                 i++;
                             }
 
                         }
                         else{
                             if ($('#login_profile2').val() !== '') {
-                                $("#table_search_profile2").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.')+"</td></tr>");
+                                $("#table_search_profile2").append("<tr class='row'><td class='col'>"+T('Nenhum resultado encontrado.',language)+"</td></tr>");
                                 $('#reference_profile_message2').css('visibility', 'hidden');
                             }
                         }
@@ -1282,7 +1282,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status) {
-                $('#reference_profile_message2').text(T('Não foi possível conectar com o Instagram'));
+                $('#reference_profile_message2').text(T('Não foi possível conectar com o Instagram',language));
                 $('#reference_profile_message2').css('visibility', 'visible');
                 $('#reference_profile_message2').css('color', 'red');
             }
@@ -1380,12 +1380,12 @@ $(document).ready(function () {
             '<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">'+
                 '<img src="'+base_url+'assets/img/FECHAR.png">'+
             '</button>' +
-            '<h5 class="modal-title"><b>' + 'Campanha criada!' +'</b></h5>' +
+            '<h5 class="modal-title"><b>' + T('Campanha criada!',language) +'</b></h5>' +
           '</div>' +
 
           '<div class="modal-body">' +
             '<p>' + '<img src="'+base_url +'assets/img/ativar_hint.png" width="96" height="96" ALIGN="right" >'+ 
-            'Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.'  +
+            T('Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.',language)  +
             '</p>'+ 
           '</div>' +
 
@@ -1544,18 +1544,18 @@ function show_campaings(campaings){
         //var campaing = campaings[i];        
         html += '<div id = "campaing_'+campaings[i]['campaing_id']+'" class="fleft100 bk-silver camp '+ color_status[campaings[i]['campaing_status_id_string']]+' m-top20 center-xs">'+ 
                     '<div class="col-md-2 col-sm-2 col-xs-12 m-top10">'+
-                    '<span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>'+
-                    '<span id = "campaing_status_'+campaings[i]['campaing_id']+'" class="fleft100">'+capitalize(campaings[i]['campaing_status_id_string'])+'</span>'+
-                    '<span class="ft-size13">'+'Inicio: '+ toDate(campaings[i]['created_date'])+'</span> ';                                                        
+                    '<span class="bol fw-600 fleft100 ft-size15"><i></i> '+T('Campanha',language)+'</span>'+
+                    '<span id = "campaing_status_'+campaings[i]['campaing_id']+'" class="fleft100">'+capitalize(T(campaings[i]['campaing_status_id_string'],language))+'</span>'+
+                    '<span class="ft-size13">'+T('Inicio',language)+': '+ toDate(campaings[i]['created_date'])+'</span> ';                                                        
                 if(campaings[i]['end_date'])
-                    html += '<span class="ft-size13">'+'Fim: '+toDate(campaings[i]['end_date'])+'</span>';
+                    html += '<span class="ft-size13">'+T('Fim',language)+': '+toDate(campaings[i]['end_date'])+'</span>';
             html += '<ul class="fleft75 bs2">';    
         
                 if(campaings[i]['campaing_status_id'] == 1 || campaings[i]['campaing_status_id'] == 3)        
-                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_play pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> ATIVAR</i></a></li>';                                                          
+                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_play pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> '+T('ATIVAR',language)+'</i></a></li>';                                                          
         
                 if(campaings[i]['campaing_status_id'] == 2)        
-                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_pause pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> PAUSAR</i></a></li>';                                                          
+                    html += '<li><a id="action_' + campaings[i]['campaing_id']+'" class = "mini_pause pointer_mouse"><i id = "action_text_'+campaings[i]['campaing_id']+'" class="fa fa-play-circle"> '+T('PAUSAR',language)+'</i></a></li>';                                                          
             html += '</ul>'+
                     '</div>'+
                     '<div class="col-md-4 col-sm-4 col-xs-12">'+
@@ -1579,15 +1579,15 @@ function show_campaings(campaings){
             }
             html += '</span> </li> </div> </ul> </div>';
             html += '<div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">'+
-                    '<span class="fleft100 ft-size12">Tipo: <span class="cl-green">'+ campaings[i]['campaing_type_id_string']+'</span></span>'+
-                    '<span class="fleft100 fw-600 ft-size16">'+campaings[i]['amount_leads']+' leads captados'+'</span>'+
-                    '<span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>'+currency_symbol+' <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> de <span class="cl-green">'+currency_symbol+' <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
+                    '<span class="fleft100 ft-size12">'+T('Tipo',language)+': <span class="cl-green">'+ T(campaings[i]['campaing_type_id_string'],language)+'</span></span>'+
+                    '<span class="fleft100 fw-600 ft-size16">'+campaings[i]['amount_leads']+' '+T('leads captados',language)+'</span>'+
+                    '<span class="ft-size11 fw-600 m-top8 fleft100">'+T('Gasto atual',language)+': <br>'+currency_symbol+' <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> '+T('de',language)+' <span class="cl-green">'+currency_symbol+' <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
                     '</div>';
             html += '<div id="divcamp_'+campaings[i]['campaing_id']+'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">'+
                         '<div class="col-md-6 col-sm-6 col-xs-6">'+                                                            
                             '<a href="" class="cl-black extraer_leads" data-toggle="modal" data-id="extraer_'+campaings[i]['campaing_id']+'" >'+
                                 '<img src="'+base_url+'assets/img/down.png'+'" alt="">'+
-                                    '<span class="fleft100 ft-size11 m-top8 fw-600">Extrair leads</span>'+
+                                    '<span class="fleft100 ft-size11 m-top8 fw-600">'+T('Extrair leads',language)+'</span>'+
                                     '</a>'+
                             '</div>'+
                             '<div class="col-md-6 col-sm-6 col-xs-6">';                                    
@@ -1595,7 +1595,7 @@ function show_campaings(campaings){
                                 html += '<div id="edit_campaing_'+campaings[i]['campaing_id']+'">'+
                                         '<a href="" class="cl-black edit_campaing" data-toggle="modal" data-id="editar_'+campaings[i]['campaing_id']+'" >'+
                                             '<img src="'+base_url+'assets/img/editar.png'+'" alt="">'+
-                                                '<span class="fleft100 ft-size11 m-top8 fw-600">Editar</span>'+
+                                                '<span class="fleft100 ft-size11 m-top8 fw-600">'+T('Editar',language)+'</span>'+
                                         '</a>'+
                                         '</div>';
                                 }                            
@@ -1610,7 +1610,10 @@ function toDate(number){
     var month = a.getMonth()+1;
     if(month <= 9)
         month = '0'+month;
-    var date = a.getDate();        
+    
+    var date = a.getDate();
+    if(date <= 9)
+        date = '0'+date;
     var t = date + '/' + month + '/' + year;
     return t;
 }

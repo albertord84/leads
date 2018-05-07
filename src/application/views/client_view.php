@@ -35,7 +35,8 @@
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
             <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
@@ -399,7 +400,7 @@
                             </div>
                             <div class="fleft100 pd-tb30 bk-silver text-center">
                                     <div class="col-md-6 col-sm-8 col-xs-12 fnone i-block">
-                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10">SALVAR</button>
+                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
                                     </div>
                             </div>
                 </div>
