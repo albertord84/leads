@@ -35,7 +35,8 @@
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
             <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
@@ -399,7 +400,7 @@
                             </div>
                             <div class="fleft100 pd-tb30 bk-silver text-center">
                                     <div class="col-md-6 col-sm-8 col-xs-12 fnone i-block">
-                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10">SALVAR</button>
+                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
                                     </div>
                             </div>
                 </div>
@@ -589,7 +590,7 @@
                                         }
                                     ?>                                    
                                     </span>
-                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo ucfirst(strtolower($CI->T("Campanhas ", array(),$language)));?></h5>
+                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo $CI->T("Campanhas", array(),$language);?></h5>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12 ft-size12 pd-0 m-top30">
                                             <div class="fleft100 gastos pd-15">
@@ -701,7 +702,7 @@
                                                 ?> 
                                             m-top20 center-xs">                                            
                                                 <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>
+                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Campanha", array(),$language)?></span>
                                                         <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($CI->T($campaing['campaing_status_id_string'], array(),$language))); ?></span>
                                                         <span class="ft-size13"><?php echo $CI->T("Inicio: ", array(),$language).date('d/m/Y', $campaing['created_date'])?></span>                                                        
                                                         <?php 
@@ -794,6 +795,15 @@
                             </div>
                     </div>
             </section>
+            
+            <footer class="fleft100 pd-tb50 bk-fff text-center">
+                    <div class="container">
+                            <div class="fleft100 m-top40">
+                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
+                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
+                            </div>
+                    </div>
+            </footer>
     
     <!--modal_container_alert_message-->
     <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
