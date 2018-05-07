@@ -63,6 +63,12 @@ class User_model extends CI_Model {
                 else {
                     $session->set_userdata('currency_symbol', "US$");                
                 }
+                
+                $session->set_userdata('is_admin', FALSE);
+                if($user_data['role_id']== user_role::ADMIN){
+                    $session->set_userdata('is_admin', TRUE);               
+                }
+                
                 //$campaing = $this->client_model->load_campaings($user_data['id']);
                 //$session->set_userdata('campaing', $campaing);                
                 //$array_id_campaings = $this->client_model->client_get_campaings($user_data['id'],'id');

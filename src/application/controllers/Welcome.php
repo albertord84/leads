@@ -138,6 +138,22 @@ class Welcome extends CI_Controller {
             $this->index();
         }        
     }
+    
+    public function admin() {
+        $this->load->model('class/user_role');                
+        $this->load->model('class/system_config');
+        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            //2. cargar los datos necesarios para pasarselos a la vista como parametro
+            $param = array();            
+            $param['language'] = $this->session->userdata('language');
+            $this->load->view('admin_view', $param);
+        }
+        else{            
+            $this->session->sess_destroy();
+            $this->index();
+        }        
+    }
 
     public function same_type_of_profiles($profiles_type, $campaing_type){
         foreach ($profiles_type as $profile_type) {
@@ -400,7 +416,8 @@ class Welcome extends CI_Controller {
     
     public function login() {
         $this->load_language();
-        if (!$this->session->userdata('id')){            
+        if (!$this->session->userdata('id')){
+            $this->load->model('class/user_role'); 
             $this->load->model('class/user_model');
             $datas = $this->input->post();
             if ($this->is_valid_user_name($datas['client_login']) ){
@@ -419,24 +436,33 @@ class Welcome extends CI_Controller {
                    
                     $result['success'] = true;
                     $result['message'] = 'Login success';
-                    $result['resource'] = 'client';
+                    if($user_row['role_id'] == user_role::CLIENT){
+                        $result['resource'] = 'client';
+                    }
+                    else{
+                        if($user_row['role_id'] == user_role::ADMIN)
+                            $result['resource'] = 'admin';
+                        else{
+                            $result['resource'] = 'index';
+                        }                            
+                    }
                 } else{
                     $result['success'] = false;
                     $result['message'] = $this->T("Não existe nome de usuário/senha", array(), $GLOBALS['language']);
-                    $result['resource'] = 'front_page';
+                    $result['resource'] = 'index';
                 }                
             }
             else{
                 $result['success'] = false;
                 $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
-                $result['resource'] = 'front_page';
+                $result['resource'] = 'index';
             }
         
         }
         else {
             $result['success'] = false;
             $result['message'] = $this->T("Verifique que nenhuma sessão no sistema está aberta.", array(), $GLOBALS['language']); 
-            $result['resource'] = 'front_page';
+            $result['resource'] = 'index';
         }
         echo json_encode($result);
     }
@@ -460,13 +486,13 @@ class Welcome extends CI_Controller {
             } else{
                 $result['success'] = false;
                 $result['message'] = $this->T("Usuário inexistente.", array(), $GLOBALS['language']); 
-                $result['resource'] = 'front_page';
+                $result['resource'] = 'index';
             }
         }
         else{
             $result['success'] = false;
             $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
-            $result['resource'] = 'front_page';
+            $result['resource'] = 'index';
         }
         echo json_encode($result);
     }
@@ -1871,15 +1897,7 @@ class Welcome extends CI_Controller {
         }
     }
     
-    
-    
-    
-    
-    
-
-
-
-
+ 
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
     public function language() {

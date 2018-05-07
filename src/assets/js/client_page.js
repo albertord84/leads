@@ -1519,10 +1519,6 @@ function reduced_profile(profile){
     return str_temp.substring(9, 0);
 }
 
-function T(message){
-    return message;
-}
-
 function concert_especial_char(str){
     str.replace(String.fromCharCode(46),String.fromCharCode(92,46));
     return str;
