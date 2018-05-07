@@ -89,12 +89,13 @@ class daily_work_model extends CI_Model {
     
     public function add_works_by_client($id_client){
         $this->load->model('class/campaing_status');
+        $this->load->model('class/profile_status');
         
         $this->db->select('*');
         $this->db->from('campaings');            
         $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
         $this->db->where('campaings.client_id',$id_client);
-        $this->db->where('profiles.deleted', 0);
+        $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
         $this->db->where('campaings.campaing_status_id', campaing_status::ACTIVE );  
         $this->db->where('campaings.available_daily_value >', 0 );  
         $profiles_in_campaing =  $this->db->get()->result_array();

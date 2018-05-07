@@ -6,10 +6,9 @@ namespace leads\cls {
 
         const CREATED = 1;
         const ACTIVE = 2;
-        const PAUSED = 3;
-        const BLOCKED_BY_PAYMENT = 4;
-        const DELETED = 5;
-        const ENDED = 6;
+        const PAUSED = 3;        
+        const DELETED = 4;
+        const ENDED = 5;
 
         static public function Defines($const) {
             $cls = new ReflectionClass(__CLASS__);

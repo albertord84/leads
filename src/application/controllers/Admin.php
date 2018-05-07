@@ -3,7 +3,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
-
+    
+    //------------ADMIN desenvolvido para DUMBU-LEADS-------------------   
+    
+    
+    
+    
+    //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
+    
     public function index() {        
         $this->load->view('admin_login_view');
     }

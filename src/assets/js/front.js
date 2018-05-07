@@ -53,11 +53,49 @@ $(document).ready(function () {
     //------------desenvolvido para DUMBU-LEADS-------------------
     
     $("#lnk_language2").click(function () {
-       $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+       var new_language = $("#txt_language2").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
     });
     
     $("#lnk_language3").click(function () {
-       $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+       var new_language = $("#txt_language3").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
     });
     
     $("#btn_dumbu_login1").click(function() {
@@ -73,7 +111,7 @@ $(document).ready(function () {
    function do_login(fieldLogin,fieldPass, fieldErrorMessage, fieldContainerLoginForce, fieldCheckForceLogin, fieldMessageForceLogin, object){                        
        if($(fieldLogin).val()!='' && $(fieldPass).val()!==''){           
             if (validate_element(fieldLogin, '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$')) {                
-                message_container('Espere por favor ...',fieldErrorMessage,'green');                                                                                
+                message_container(T('Espere por favor ...',language),fieldErrorMessage,'green');                                                                                
                 var l = Ladda.create(object);  l.start();
                 $.ajax({
                     url: base_url + 'index.php/welcome/login',
@@ -86,23 +124,23 @@ $(document).ready(function () {
                     dataType: 'json',
                     success: function (response) {
                         if (response['success']) {                    
-                            $(location).attr('href',base_url+'index.php/welcome/'+response['resource']+'?language='+language);
+                            $(location).attr('href',base_url+'index.php/welcome/'+response['resource']);
                         } else { 
                             message_container(response['message'],fieldErrorMessage,'red');                                
                         }
                         l.stop();
                     },
                     error: function (xhr, status) {
-                        message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                        
+                        message_container(T('Não foi possível responder a sua solicitude!',language),fieldErrorMessage,'red');                        
                         l.stop();
                     }
                 });                
             }
             else {                
-                message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',fieldErrorMessage,'red');                
+                message_container(T('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',language),fieldErrorMessage,'red');                
             }
         } else {            
-            message_container('Deve preencher todos os dados corretamente!',fieldErrorMessage,'red');                            
+            message_container(T('Deve preencher todos os dados corretamente!',language),fieldErrorMessage,'red');                            
         }         
     }
    
@@ -142,7 +180,7 @@ $(document).ready(function () {
                                     l.stop();
                                 },
                                 error: function (xhr, status) {
-                                    message_container('Não foi possível responder a sua solicitude!','#container_sigin_message','red');                                                                                  
+                                    message_container(T('Não foi possível responder a sua solicitude!',language),'#container_sigin_message','red');                                                                                  
                                     l.stop();
                                 }
                             });                         

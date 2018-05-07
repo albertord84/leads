@@ -12,10 +12,12 @@ class Welcome extends CI_Controller {
 
         //------------desenvolvido para DUMBU-LEADS-------------------
     public function load_language(){
-        if (!$this->session->userdata('login')){
+        if (!$this->session->userdata('id')){
             $language=$this->input->get();
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new leads\cls\system_config();
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;            
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
             if(isset($language['language']))
                 $GLOBALS['language']=$language['language'];
             else
@@ -40,40 +42,55 @@ class Welcome extends CI_Controller {
 
     }
     
-    public function index() {
+    public function index() {       
         $this->load->model('class/user_role');        
         $param = array();
-        $language=$this->input->get();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        if(isset($language['language']))
-            $param['language']=$language['language'];
-        else
-            $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
-        $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
-        $GLOBALS['language']=$param['language'];
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         
-        if ($this->session->userdata('role_id')==user_role::CLIENT){            
-            $param['brazilian'] = $this->session->userdata('brazilian');
+        if (!$this->session->userdata('id')){            
+            $language=$this->input->get();            
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;
+            
+            if(isset($language['language']))                
+                $param['language']=$language['language'];            
+            else
+                $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
+            
+            $param['brazilian'] = $this->is_brazilian_ip();
+                
         }
         else{
-            $param['brazilian'] = $this->is_brazilian_ip();
+            $param['language'] = $this->session->userdata('language');            
+            $param['brazilian'] = $this->session->userdata('brazilian');            
+            $param['currency_symbol'] = $this->session->userdata('currency_symbol');              
         }
+        
+        if($param['brazilian'] == 1){
+            $param['currency_symbol'] = "R$";
+            $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+        }
+        else{
+            $param['currency_symbol'] = "US$";
+            $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
+        }
+        
+        $GLOBALS['language']=$param['language'];
+        $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
+        
         $this->load->view('user_view', $param);
     }
     
-    public function client($param_aux = NULL) {
+    public function client() {
         $this->load->model('class/user_role');        
         $this->load->model('class/client_model');        
-        $this->load->model('class/user_model');        
-        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+        $this->load->model('class/user_model');
+        $this->load->model('class/system_config');
+        
+        if ($this->session->userdata('role_id')==user_role::CLIENT){
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
-            if($param_aux){
-                $language=$param_aux;
-            }
-            else{
-                $language=$this->input->get();
-            }
+            
             $param = array();
             
             $param['language'] = $this->session->userdata('language');
@@ -99,9 +116,38 @@ class Welcome extends CI_Controller {
                     
             if(count($param['campaings']) == 0)
                 $param['campaings'] = NULL;
+            
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            if($this->session->userdata('brazilian')==1){
+                $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+                $param['currency_symbol'] = "R$";
+            }
+            else{
+                $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
+                $param['currency_symbol'] = "US$";
+            }
             //3. cargar la vista con los parâmetros                        
             
+            $param['min_daily_value'] = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;
+            $param['min_ticket_bank'] = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;
+            
             $this->load->view('client_view', $param);
+        }
+        else{            
+            $this->session->sess_destroy();
+            $this->index();
+        }        
+    }
+    
+    public function admin() {
+        $this->load->model('class/user_role');                
+        $this->load->model('class/system_config');
+        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            //2. cargar los datos necesarios para pasarselos a la vista como parametro
+            $param = array();            
+            $param['language'] = $this->session->userdata('language');
+            $this->load->view('admin_view', $param);
         }
         else{            
             $this->session->sess_destroy();
@@ -120,6 +166,10 @@ class Welcome extends CI_Controller {
     
     public function is_valid_email($email)    {
         return preg_match("/^[a-zA-Z0-9\._-]+[@]([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,4}$/", $email);
+    }
+    
+    public function is_valid_cpe($cpe)    {
+        return preg_match("/^[0-9]{8,8}$/", $cpe);
     }
     
     public function is_valid_phone($email)    {
@@ -202,13 +252,16 @@ class Welcome extends CI_Controller {
     
     public function errors_in_bank_ticket($nome, $cpf, $cpe, $money, $comp, $endereco, $bairro, $municipio, $estado){        
         $this->load_language();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         $min_value = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;            
                 
         $message = NULL;
         if(!$this->validaCPF($cpf)){
             return $this->T("CPF incorreto.", array(), $GLOBALS['language']);
+        }
+        if(!$this->is_valid_cpe($cpe)){
+            return $this->T("CPE deve conter só números.", array(), $GLOBALS['language']);
         }
         if(!$this->is_valid_currency($money)){
             return $this->T("Deve fornecer um valor monetário válido.", array(), $GLOBALS['language']);
@@ -324,12 +377,12 @@ class Welcome extends CI_Controller {
                 $this->daily_work_model->delete_works_by_client($user_row['id']);
                 $cancelamento = $this->user_model->cancel_user($user_row,time());
                 if($cancelamento){
-                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                    $this->Gmail = new \leads\cls\Gmail();
+                    $this->load->model('class/system_config');                    
+                    $GLOBALS['sistem_config'] = $this->system_config->load();
+                    $this->load->library('Gmail');                    
+                    //$this->Gmail = new \leads\cls\Gmail();
 
-                    $result_message = $this->Gmail->send_client_cancel_status
+                    $result_message = $this->gmail->send_client_cancel_status
                                         (
                                             $this->session->userdata('email'),
                                             $this->session->userdata('login')
@@ -363,7 +416,8 @@ class Welcome extends CI_Controller {
     
     public function login() {
         $this->load_language();
-        if (!$this->session->userdata('id')){            
+        if (!$this->session->userdata('id')){
+            $this->load->model('class/user_role'); 
             $this->load->model('class/user_model');
             $datas = $this->input->post();
             if ($this->is_valid_user_name($datas['client_login']) ){
@@ -371,29 +425,44 @@ class Welcome extends CI_Controller {
                 //verificar si se existe cliente        
                 $user_row = $this->user_model->verify_account($datas);
                 //$verificar = true;
-                if($user_row){                    
+                if($user_row){      
+                    if($datas['language'] != "PT" && $datas['language'] != "ES" && $datas['language'] != "EN")
+                        $datas['language'] = $user_row['language'];            
+                    if($user_row['language'] != $datas['language']){
+                        $this->user_model->update_language($user_row['id'], $datas['language']);
+                    }
+                        
                     $this->user_model->set_session($user_row['id'],$this->session);
-
+                   
                     $result['success'] = true;
                     $result['message'] = 'Login success';
-                    $result['resource'] = 'client';
+                    if($user_row['role_id'] == user_role::CLIENT){
+                        $result['resource'] = 'client';
+                    }
+                    else{
+                        if($user_row['role_id'] == user_role::ADMIN)
+                            $result['resource'] = 'admin';
+                        else{
+                            $result['resource'] = 'index';
+                        }                            
+                    }
                 } else{
                     $result['success'] = false;
                     $result['message'] = $this->T("Não existe nome de usuário/senha", array(), $GLOBALS['language']);
-                    $result['resource'] = 'front_page';
+                    $result['resource'] = 'index';
                 }                
             }
             else{
                 $result['success'] = false;
                 $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
-                $result['resource'] = 'front_page';
+                $result['resource'] = 'index';
             }
         
         }
         else {
             $result['success'] = false;
             $result['message'] = $this->T("Verifique que nenhuma sessão no sistema está aberta.", array(), $GLOBALS['language']); 
-            $result['resource'] = 'front_page';
+            $result['resource'] = 'index';
         }
         echo json_encode($result);
     }
@@ -417,13 +486,13 @@ class Welcome extends CI_Controller {
             } else{
                 $result['success'] = false;
                 $result['message'] = $this->T("Usuário inexistente.", array(), $GLOBALS['language']); 
-                $result['resource'] = 'front_page';
+                $result['resource'] = 'index';
             }
         }
         else{
             $result['success'] = false;
             $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
-            $result['resource'] = 'front_page';
+            $result['resource'] = 'index';
         }
         echo json_encode($result);
     }
@@ -434,8 +503,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/client_model');        
         
         if ($this->session->userdata('role_id')==user_role::CLIENT){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new leads\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
             $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
             $profiles_temp = $this->session->userdata('profiles_temp');
             $profiles_type_temp = $this->session->userdata('profiles_type_temp');
@@ -495,11 +564,11 @@ class Welcome extends CI_Controller {
     public function html_for_new_campaing($campaing){        
         $html = '<div id = "campaing_'.$campaing['campaing_id'].'" class="fleft100 bk-silver camp camp-blue m-top20 center-xs">                                            
             <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                    <span class="bol fw-600 fleft100 ft-size15"><i></i> '.'Campanha'.'</span>
-                    <span id = "campaing_status_'.$campaing['campaing_id'].'" class="fleft100">'.'Criada'.'</span>
-                    <span class="ft-size13">'.'Inicio '.date('d/m/Y', $campaing['created_date']).'</span>
+                    <span class="bol fw-600 fleft100 ft-size15"><i></i> '.$this->T("Campanha", array(), $GLOBALS['language']).'</span>
+                    <span id = "campaing_status_'.$campaing['campaing_id'].'" class="fleft100">'.ucfirst(strtolower($this->T("Criada", array(), $GLOBALS['language']))).'</span>
+                    <span class="ft-size13">'.$this->T("Inicio", array(), $GLOBALS['language']).': '.date('d/m/Y', $campaing['created_date']).'</span>
                     <ul class="fleft75 bs2">
-                        <li><a id="action_'.$campaing['campaing_id'].'" class = "mini_play pointer_mouse"><i id = "action_text_'.$campaing['campaing_id'].'" class="fa fa-play-circle"> ATIVAR</i></a></li>                                                          
+                        <li><a id="action_'.$campaing['campaing_id'].'" class = "mini_play pointer_mouse"><i id = "action_text_'.$campaing['campaing_id'].'" class="fa fa-play-circle"> '.$this->T("ATIVAR", array(), $GLOBALS['language']).'</i></a></li>                                                          
                     </ul>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -526,22 +595,22 @@ class Welcome extends CI_Controller {
                     </ul>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
-                    <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$campaing['campaing_type_id_string'].'</span></span>
-                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' dados captados'.'</span>
-                    <span class="ft-size11 fw-600 m-top8 fleft100">Gasto atual: <br>'.'R$ '.'<label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.'R$ '.'<label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
+                    <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$this->T($campaing['campaing_type_id_string'], array(), $GLOBALS['language']).'</span></span>
+                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
+                    <span class="ft-size11 fw-600 m-top8 fleft100">'.$this->T("Gasto atual", array(), $GLOBALS['language']).': <br>'.$this->session->userdata('currency_symbol').' <label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.$this->session->userdata('currency_symbol').' <label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
             </div>';
         $html .= '<div id="divcamp_'.$campaing['campaing_id'].'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
                     <div class="col-md-6 col-sm-6 col-xs-6">                                                            
                             <a href="" class="cl-black">
                                 <img src="'.base_url().'assets/img/down.png" alt="">
-                                    <span class="fleft100 ft-size11 m-top8 fw-600">Extrair dados</span>
+                                    <span class="fleft100 ft-size11 m-top8 fw-600">'.$this->T("Extrair leads", array(), $GLOBALS['language']).'</span>
                             </a>
                     </div>';
         $html .= '  <div class="col-md-6 col-sm-6 col-xs-6">';                            
         $html .= '           <div id="edit_campaing_'.$campaing['campaing_id'].'">';
         $html .= '              <a href="" class="cl-black edit_campaing" data-toggle="modal" data-id="editar_'.$campaing['campaing_id'].'" >';
         $html .= '                   <img src="'.base_url().'assets/img/editar.png" alt="">';
-        $html .= '                      <span class="fleft100 ft-size11 m-top8 fw-600">Editar</span>';
+        $html .= '                      <span class="fleft100 ft-size11 m-top8 fw-600">'.$this->T("Editar", array(), $GLOBALS['language']).'</span>';
         $html .= '</a> </div> </div>';
         $html .=' </div></div>';
         return $html;
@@ -605,8 +674,8 @@ class Welcome extends CI_Controller {
                $this->session->userdata('status_id') != user_status::DELETED && 
                $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
               
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $min_daily_value = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;            
 
                 $datas = $this->input->post();
@@ -676,7 +745,7 @@ class Welcome extends CI_Controller {
                                                 $this->session->set_userdata('profiles_type_temp',NULL);
                                                 $this->session->set_userdata('profiles_insta_temp',NULL);
                                                 $result['success'] = true;
-                                                $result['message'] = $this->T("Campanaha criada", array(), $GLOBALS['language']);
+                                                $result['message'] = $this->T("Campanha criada", array(), $GLOBALS['language']);
                                                 $result['resource'] = 'client_painel';
                                                 $campaings = $this->client_model->load_campaings($this->session->userdata('id'), $id_campaing);
                                                 $result['html'] = $this->html_for_new_campaing($campaings[0]);
@@ -1035,8 +1104,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
                 
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
 
                 $datas = $this->input->post();
@@ -1149,8 +1218,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::PENDENT_BY_PAYMENT &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $max_amount = $GLOBALS['sistem_config']->REFERENCE_PROFILE_AMOUNT;            
 
                 $datas = $this->input->post();
@@ -1297,8 +1366,8 @@ class Welcome extends CI_Controller {
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){
                 
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                $this->load->model('class/system_config');
+                $GLOBALS['sistem_config'] = $this->system_config->load();
                 $min_daily_value = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;            
                 
                 $datas = $this->input->post();
@@ -1550,7 +1619,7 @@ class Welcome extends CI_Controller {
             $datas = $this->input->post();
             $message_error = $this->errors_in_bank_ticket($datas['name_in_ticket'],
                                                             $datas['cpf'],
-                                                            $datas['cpe'], 
+                                                            $datas['cep'], 
                                                             $datas['emission_money_value'], 
                                                             $datas['house_number'],             
                                                             $datas['street_address'],             
@@ -1586,19 +1655,19 @@ class Welcome extends CI_Controller {
                         $result_insert = $this->bank_ticket_model->insert_bank_ticket($datas);
 
                         if($result_insert){                            
-                            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-                            $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                            $this->Gmail = new \leads\cls\Gmail();
+                            $this->load->model('class/system_config');                    
+                            $GLOBALS['sistem_config'] = $this->system_config->load();
+                            $this->load->library('gmail');                    
+                            //$this->Gmail = new \leads\cls\Gmail();
                             
-                            $result_message = $this->Gmail->send_client_ticket_success(
+                            $result_message = $this->gmail->send_client_ticket_success(
                                                                 $this->session->userdata('email'),
                                                                 $this->session->userdata('login'),
                                                                 $datas['ticket_url']
                                                             );
                             
                             $result['success'] = true;
-                            $result['message'] = $this->T("Gerado boleto bancario, consulte se e-mail!", array(), $GLOBALS['language']);
+                            $result['message'] = $this->T("Seu boleto bancário foi gerado com sucesso! Consulte seu e-mail e siga as indicações.", array(), $GLOBALS['language']);
                             $result['resource'] = 'client_page';
                             $result['link'] = $datas['ticket_url'];
                         }
@@ -1633,13 +1702,55 @@ class Welcome extends CI_Controller {
             $result['resource'] = 'front_page';
         }
         echo json_encode($result);
-    }  
+    } 
+    
+    
+    public function update_language(){        
+        $this->load->model('class/user_role');        
+        $this->load->model('class/user_model');        
+        
+        $datas = $this->input->post();
+        $language = $datas['new_language'];
+
+        if ($this->session->userdata('id')){            
+            if($language != "PT" && $language != "ES" && $language != "EN"){
+                $language = $this->session->userdata('language');
+            }
+
+            $result_update = $this->user_model->update_language($this->session->userdata('id'), $language);
+
+            if($result_update){
+                $result['success'] = true;
+                $result['message'] = $this->T("Linguagem cambiada!", array(), $GLOBALS['language']);
+                $result['resource'] = 'client_page';
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não se cambiou a linguagem!", array(), $GLOBALS['language']);
+                $result['resource'] = 'client_page';
+            }            
+        }
+        else{
+            
+            if($language != "PT" && $language != "ES" && $language != "EN"){
+                $language = $GLOBALS['language'];
+            }
+            else{
+                $GLOBALS['language'] = $language;
+            }
+            
+            $result['success'] = true;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }    
     
     public function message() {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Gmail.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        $this->Gmail = new \leads\cls\Gmail();
+        $this->load->model('class/system_config');                    
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        $this->load->library('gmail');                    
+        
         $language=$this->input->get();
         if(isset($language['language']))
             $param['language']=$language['language'];
@@ -1648,7 +1759,7 @@ class Welcome extends CI_Controller {
         $param['SERVER_NAME'] = $GLOBALS['sistem_config']->SERVER_NAME;
         $GLOBALS['language']=$param['language'];
         $datas = $this->input->post();
-        $result = $this->Gmail->send_client_contact_form($datas['name'], $datas['email'], $datas['message'], $datas['company'], $datas['telf']);
+        $result = $this->gmail->send_client_contact_form($datas['name'], $datas['email'], $datas['message'], $datas['company'], $datas['telf']);
         if ($result['success']) {
             $result['message'] = $this->T('Mensagem enviada, agradecemos seu contato', array(), $GLOBALS['language']);
         }
@@ -1657,8 +1768,9 @@ class Welcome extends CI_Controller {
     
     public function T($token, $array_params=NULL, $lang=NULL) {
         if(!$lang){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new \leads\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            
             if(isset($language['language']))
                 $param['language']=$language['language'];
             else
@@ -1695,9 +1807,9 @@ class Welcome extends CI_Controller {
     
     public function check_mundipagg_credit_card($datas) {
         $this->is_ip_hacker();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/src/application/libraries/Payment.php';
         $Payment = new \leads\cls\Payment();
         $payment_data['credit_card_number'] = $datas['credit_card_number'];
         $payment_data['credit_card_name'] = $datas['credit_card_name'];
@@ -1717,9 +1829,9 @@ class Welcome extends CI_Controller {
 
     public function check_mundipagg_boleto($datas) {
         $this->is_ip_hacker();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-        $GLOBALS['sistem_config'] = new leads\cls\system_config();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Payment.php';
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/src/application/libraries/Payment.php';
         $Payment = new \leads\cls\Payment();
         
         $payment_data['AmountInCents']=$datas['AmountInCents'];
@@ -1785,15 +1897,6 @@ class Welcome extends CI_Controller {
         }
     }
     
-    
-    
-    
-//Testing ELIO    
-    
-
-
-
-
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
     public function language() {
