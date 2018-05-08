@@ -12,7 +12,7 @@ $(document).ready(function () {
     //------------desenvolvido para DUMBU-LEADS-------------------    
     $("#do_logout").click(function () {                
         $.ajax({
-            url: base_url + 'index.php/welcome/logout',            
+            url: base_url + 'index.php/admin/logout',            
             type: 'POST',
             dataType: 'json',
             success: function (response) {
