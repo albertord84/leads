@@ -64,8 +64,11 @@ class Admin extends CI_Controller {
         echo json_encode($result);
     }
     
-    public function index() {        
-        $this->load->view('admin_view', $param);
+    public function index() {    
+        $this->load->model('class/user_role');        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            $this->load->view('admin_view', $param);
+        }
     }
        
     public function T($token, $array_params=NULL, $lang=NULL) {
