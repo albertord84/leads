@@ -5,14 +5,67 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
     
     //------------ADMIN desenvolvido para DUMBU-LEADS-------------------   
-    
-    
-    
+    /*public function __construct() {
+        parent::__construct();
+
+        if ($this->session->userdata('admin') == FALSE) {
+          redirect('admin');
+        }
+    }*/
+       
     
     //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
     
+    public function load_language(){
+        if (!$this->session->userdata('id')){
+            $language=$this->input->get();
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;            
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            if(isset($language['language']))
+                $GLOBALS['language']=$language['language'];
+            else
+                $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
+        }
+        else
+        {
+            $GLOBALS['language'] = $this->session->userdata('language');
+        }
+    }
+    
+    public function logout() {
+        $this->load_language();
+        if ($this->session->userdata('id')){            
+            $this->load->model('class/user_model');
+            $datas = $this->input->post();
+            $datas['check_pass'] = false; 
+            $datas['client_login'] = $this->session->userdata('login');
+            
+            //verificar si se existe cliente        
+            $user_row = $this->user_model->verify_account($datas);
+            
+            if($user_row){    
+                $this->session->sess_destroy();
+                $result['success'] = true;
+                $result['message'] = 'Logout success';
+                $result['resource'] = 'index';
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Usuário inexistente.", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
+    }
+    
     public function index() {        
-        $this->load->view('admin_login_view');
+        $this->load->view('admin_view', $param);
     }
        
     public function T($token, $array_params=NULL, $lang=NULL) {
