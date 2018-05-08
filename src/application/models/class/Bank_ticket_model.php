@@ -79,6 +79,25 @@ class bank_ticket_model extends CI_Model {
             return $ticket_row;
         }
     }
+    
+    public function get_available_ticket_bank_money($id_client){        
+        $available = 0;
+        try{
+            $this->db->select('*');
+            $this->db->from('bank_ticket');
+            $this->db->where( array('client_id' => $id_client) );                       
+            $ticket_row =  $this->db->get()->result_array();
+            
+            foreach ($ticket_row as $ticket_bank) {
+                $available += $ticket_bank['amount_payed_value']-$ticket_bank['amount_used_value'];
+            }
+                
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $available;
+        }
+    }
  
     public function get_number_order(){        
         $number_row = NULL;

@@ -86,6 +86,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/client_model');        
         $this->load->model('class/user_model');
+        $this->load->model('class/bank_ticket_model');
         $this->load->model('class/system_config');
         
         if ($this->session->userdata('role_id')==user_role::CLIENT){
@@ -118,9 +119,11 @@ class Welcome extends CI_Controller {
                 $param['campaings'] = NULL;
             
             $GLOBALS['sistem_config'] = $this->system_config->load();
+                                
             if($this->session->userdata('brazilian')==1){
                 $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
                 $param['currency_symbol'] = "R$";
+                $param['available_ticket'] = $this->bank_ticket_model->get_available_ticket_bank_money($this->session->userdata('id'));
             }
             else{
                 $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;

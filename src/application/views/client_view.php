@@ -391,6 +391,9 @@
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                             <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
+                                                    <div>
+                                                        <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
+                                                    </div>
                                                     <div class="fleft100 m-top5">
                                                             <h5 class="cl-green fw-600"><?php echo $CI->T("IMPORTANTE!", array(),$language);?></h5>
                                                             <span class="text-justify fleft100"><?php echo $CI->T("O boleto será enviado para o e-mail cadastrado e ficará disponível em sua área de assinante. Faça o pagamento em até 2 dias úteis para manter sua conta ativa.", array(),$language);?></span>
@@ -400,7 +403,7 @@
                             </div>
                             <div class="fleft100 pd-tb30 bk-silver text-center">
                                     <div class="col-md-6 col-sm-8 col-xs-12 fnone i-block">
-                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen"><?php echo $CI->T("Salvar", array(),$language);?></button>
                                     </div>
                             </div>
                 </div>
