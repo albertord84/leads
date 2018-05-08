@@ -105,6 +105,11 @@ var Translation = {
             "ES": "GEOLOCALIZACIÓN",
             "EN": "GEOLOCATION" 
         },
+"GEOLOCALICAÇÃO": 
+        {   "PT": "GEOLOCALIZAÇÃO",
+            "ES": "GEOLOCALIZACIÓN",
+            "EN": "GEOLOCATION" 
+        },
 "HASHTAG": 
         {   "PT": "HASHTAG",
             "ES": "HASHTAG",
@@ -124,6 +129,11 @@ var Translation = {
         {   "PT": "Cancelada",
             "ES": "Cancelada",
             "EN": "Canceled" 
+        },
+"CANCELADA": 
+        {   "PT": "CANCELADA",
+            "ES": "CANCELADA",
+            "EN": "CANCELED" 
         },
 "Cuidado!": 
         {   "PT": "Cuidado!",
@@ -221,7 +231,7 @@ var Translation = {
             "EN": "Unable to connect to Instagram" 
         },
 "Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.": 
-        {   "PT": "Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.",
+        {   "PT": "Sua campanha foi criada com sucesso! Para poder comenzar a extraer leads deve ativar sua campanha.",
             "ES": "¡Campaña creada!",
             "EN": "Your campaign was successfully created! In order to start extracting leads you must activate your campaign." 
         },
@@ -235,10 +245,20 @@ var Translation = {
             "ES": "TERMINADA",
             "EN": "FINISHED" 
         },
+"Terminada": 
+        {   "PT": "Terminada",
+            "ES": "Terminada",
+            "EN": "Finished" 
+        },
 "CRIADA": 
         {   "PT": "CRIADA",
             "ES": "CREADA",
             "EN": "CREATED" 
+        },
+"Criada": 
+        {   "PT": "Criada",
+            "ES": "Creada",
+            "EN": "Created" 
         },
 "Inicio": 
         {   "PT": "Inicio",
