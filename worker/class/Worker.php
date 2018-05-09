@@ -9,6 +9,7 @@ namespace leads\cls {
     require_once 'Gmail.php';
     require_once 'Campaings.php';
     require_once 'profiles_status.php';
+    require_once 'user_status.php';
     
     
     class Worker {
@@ -142,6 +143,17 @@ namespace leads\cls {
             if(strpos($exception_message, 'No response from server. Either a connection or configuration error') !== FALSE){
                 sleep(4);
                 //$this->init ++;
+            }
+            else
+            if(strpos($exception_message, 'Challenge required') !== FALSE){                
+                $this->DB->update_field_in_DB('robots_profiles', 'id', $robot_profile->id, 'status_id', user_status::VERIFY_ACCOUNT);
+                $administrators=array('egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com', 'josergm86@gmail.com');                        
+                    foreach($administrators as $admin){
+                            $this->Gmail->send_mail($admin, $admin,
+                                "' CONCERTAR ISSO!!! Robot_profile login = ' $rp->login ' in verify account",
+                                "' CONCERTAR ISSO!!! Robot_profile login = ' $rp->login ' in verify account");                            
+                    }
+                die("<br>\n<br>\nRobot_profile ".$robot_profile->login." to Challenge required state<br>\n<br>\n");
             }
             else{
                 sleep(1);
