@@ -15,7 +15,7 @@ namespace leads\cls {
     
     set_time_limit(0);
     date_default_timezone_set('UTC');
-    require __DIR__.'/../vendor/autoload.php';
+    require __DIR__.'/../externals/vendor/autoload.php';
     
     class Robot{
         public $id;
@@ -85,9 +85,9 @@ namespace leads\cls {
                         'insta_id', $pk);
                 }
                 
-                //1. obter seguidores
-                $rankToken = \InstagramAPI\Signatures::generateUUID();
+                //1. obter seguidores segundo o tipo de perfil de referencia
                 if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
+                    $rankToken = \InstagramAPI\Signatures::generateUUID();
                     $userId = $ig->people->getUserIdForName($rp);
                     $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
                     $followers = $response->getUsers();
@@ -95,13 +95,15 @@ namespace leads\cls {
                 } else
                 if($this->next_work->profile->profile_type_id== profile_type::GEOLOCATION) {
                     //$followers deve ser un array con los nombres de los seguidores
-                    $resp = $this->get_profiles_from_geolocation($this->next_work->profile->insta_id, $cookies,200, $cursor);
+                    $resp = $this->get_profiles_from_geolocation($this->next_work->profile->insta_id, $cookies,50, $cursor);
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }else
                 if($this->next_work->profile->profile_type_id== profile_type::HASHTAG) {
-                    
-                }                    
+                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,50, $cursor);
+                    $followers = $resp->followers; //array de nomes de perfis
+                    $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
+                }
                 
                 //2. Extrair as leads de cada seguidor dessa pagina                
                 $extracted_leads = array();
@@ -192,30 +194,6 @@ namespace leads\cls {
             return (object)$result;
         }
         
-        /*public function do_robot_extract_leads_by_id($ig, $ds_user_id, $robot_profile_id) {
-            try{
-                $result['has_exception']=false;
-                $result['lead_saved']=false;
-                $leads = (object)$this->extract_leads($ig, 'user_id', $ds_user_id); 
-                if($leads->private_email || $leads->biography_email || $leads->public_email){
-                    echo "<br><br>\n\n The profile ".$ds_user_id." has leads ";
-                    $result['lead_saved'] = $this->DB->save_extracted_crypt_leads($robot_profile_id, $leads);
-                    if($result['lead_saved'])
-                        echo " and was saved succeslly<br><br>\n\n";
-                    else 
-                        echo " but an ERROR occured in save function<br><br>\n\n";
-                } else{
-                    echo "<br><br>\n\n The profile ".$ds_user_id." DONT have leads <br><br>\n\n";
-                }                
-            } catch (\Exception $e) {
-                $result['has_exception'] = true;
-                $result['exception_message'] = $e->getMessage();      
-                echo '<br><br>\n\n An exception occurred with profile '.$ds_user_id.'';
-                echo "  EXCEPTION:  ".$result['exception_message']."<br><br>\n\n";
-            }
-            return (object)$result;
-        }*/
-        
         public function extract_leads($ig, $method, $method_value){
             $leads = array();
             if($method ==='username')
@@ -265,29 +243,36 @@ namespace leads\cls {
             return $leads;
         }
                 
+        
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
-            $json_response = $this->get_insta_geomedia( $rp_insta_id, $quantity, $cursor);
-            if( is_object($json_response) && $json_response->status == 'ok') {
-                if(isset($json_response->data->location->edge_location_to_media)) { // if response is ok
+            $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
+            if (is_object($json_response) && $json_response->status == 'ok') {
+                if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
+                    $Profiles = array();
                     $page_info = $json_response->data->location->edge_location_to_media->page_info;
                     foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
-                        $profile = new \stdClass();
-                        $profile->node = $this->get_geo_post_user_info($daily_work->rp_insta_id, $Edge->node->shortcode);
-                        array_push($Profiles, $profile);
+                            $profile = new \stdClass();
+                        $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
+                        array_push($Profiles, $profile->node->username);
                     }
                     $error = FALSE;
                 } else {
                     $page_info->end_cursor = NULL;
                     $page_info->has_next_page = false;
                 }
-            }            
+            }
+            return (object)array(
+                'followers'=> $Profiles,
+                'cursor'=>$cursor
+            );
         }
-
-        public function get_insta_geomedia($location, $N, $cursor = NULL) {
-            try {                
-                $tag_query = '951c979213d7e7a1cf1d73e2f661cbd1'; /*DUDA, que es eso?*/
+        
+        public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
+            try {
+                
+                $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
                 exec($curl_str, $output, $status);
@@ -296,19 +281,25 @@ namespace leads\cls {
                 if (isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                     $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                     if (count($json->data->location->edge_location_to_media->edges) == 0) {
-                        $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
-                        $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
-                        echo ("<br>\n Set end cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
+                        $cursor = null;
+//                        $this->DB->update_field_in_DB('profiles',
+//                        'id', $this->next_work->profile->id,
+//                        '`cursor`','NULL');                        
+//                        $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                        echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                     }
                 } else if (isset($json->data) && $json->data->location == NULL) {
                     print_r($curl_str);
-                    $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
-                    $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
-                    echo ("<br>\n Set end cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
+                    $cursor = null;
+//                    $this->DB->update_field_in_DB('profiles',
+//                    'id', $this->next_work->profile->id,
+//                    '`cursor`','NULL');                        
+//                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                    echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                 } else {
-                    //var_dump($output);
-                    //print_r($curl_str);
-                    //echo ("<br>\n Untrated error!!!");
+                    var_dump($output);
+                    print_r($curl_str);
+                    echo ("<br>\n Untrated error in Geolocation!!!");
                 }
                 return $json;
             } catch (\Exception $exc) {
@@ -335,13 +326,13 @@ namespace leads\cls {
             $curl_str .= "--compressed ";
             $result = exec($curl_str, $output, $status);
             $object = json_decode($output[0]);
-            if (is_object($object) && isset($object->graphql->shortcode_media->owner)) {
+            if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
             }
             return NULL;
         }
         
-        public function make_curl_followers_query($query, $variables, $login_data=NULL){
+        public function make_curl_followers_query($query, $variables, $login_data=NULL){            
             $variables = urlencode($variables);
             $url = "https://www.instagram.com/graphql/query/?query_hash=$query&variables=$variables";            
             $curl_str = "curl '$url' ";
@@ -368,16 +359,18 @@ namespace leads\cls {
             return $curl_str;
         }
         
-        public function get_profiles_from_hastag() {
-            $json_response = $this->get_insta_tagmedia($login_data, $daily_work->insta_name, $quantity, $daily_work->insta_follower_cursor);
+        
+        
+        public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor) {
+            $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
             if (is_object($json_response)) {
                 if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
-                    echo "Nodes: " . count($json_response->data->hashtag->edge_hashtag_to_media->edges) . " <br>\n";
+                    $Profiles = array();
                     $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
                     foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
                         $profile = new \stdClass();
                         $profile->node = $this->get_tag_post_user_info($login_data,  $Edge->node->shortcode);
-                        array_push($Profiles, $profile);
+                        array_push($Profiles, $profile->node->username);
                     }
                     $error = FALSE;
                 } else {
@@ -385,13 +378,17 @@ namespace leads\cls {
                     $page_info->has_next_page = false;
                 }
             }
+            return (object)array(
+                'followers'=> $Profiles,
+                'cursor'=>$cursor
+            );
         }
-        
+//        
         public function get_insta_tagmedia($login_data, $tag, $N, &$cursor = NULL) {
             try {
                 $tag_query = '298b92c8d7cad703f7565aa892ede943';
                 $variables = "{\"tag_name\":\"$tag\",\"first\":2,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
                 exec($curl_str, $output, $status);
@@ -402,25 +399,19 @@ namespace leads\cls {
                     if (isset($json->data->hashtag->edge_hashtag_to_media) && isset($json->data->hashtag->edge_hashtag_to_media->page_info)) {
                         $cursor = $json->data->hashtag->edge_hashtag_to_media->page_info->end_cursor;
                         if (count($json->data->hashtag->edge_hashtag_to_media->edges) == 0) {
-                            //echo '<pre>'.json_encode($json, JSON_PRETTY_PRINT).'</pre>';
-                            //var_dump($json);
-    //                        var_dump($curl_str);
-                            echo ("<br>\n No nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
-                            $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
-                            echo ("<br>\n Set end cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
+                            $cursor = null;
+//                            echo ("<br>\n No nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                            $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
+//                            $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                            echo ("<br>\n Hashtag ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
                     }
-                }/* else if (isset($json->data) && $json->data->location == NULL) {
-                    //var_dump($output);
-                    print_r($curl_str);
-                    $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
-                    $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
-                    echo ("<br>\n Set end cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
-                }*/ else {
+                }
+                
+                else {
                     var_dump($output);
                     print_r($curl_str);
-                    echo ("<br>\n Untrated error!!!");
+                    echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
                 }
                 return $json;
             } catch (\Exception $exc) {
@@ -455,7 +446,7 @@ namespace leads\cls {
         
         public function get_multi_level_hash($ds_user_id, $multi_level){
             $result=array();
-            if(!$multi_level){
+            if($multi_level==false || $multi_level=='false'){
                 $result['table_to_leads'] = 'leads';
                 $result['table_to_profiles'] = 'profiles' ;
                 return (object)$result;
@@ -503,6 +494,29 @@ namespace leads\cls {
             return (object)$result;
         }
 
+        /*public function do_robot_extract_leads_by_id($ig, $ds_user_id, $robot_profile_id) {
+            try{
+                $result['has_exception']=false;
+                $result['lead_saved']=false;
+                $leads = (object)$this->extract_leads($ig, 'user_id', $ds_user_id); 
+                if($leads->private_email || $leads->biography_email || $leads->public_email){
+                    echo "<br><br>\n\n The profile ".$ds_user_id." has leads ";
+                    $result['lead_saved'] = $this->DB->save_extracted_crypt_leads($robot_profile_id, $leads);
+                    if($result['lead_saved'])
+                        echo " and was saved succeslly<br><br>\n\n";
+                    else 
+                        echo " but an ERROR occured in save function<br><br>\n\n";
+                } else{
+                    echo "<br><br>\n\n The profile ".$ds_user_id." DONT have leads <br><br>\n\n";
+                }                
+            } catch (\Exception $e) {
+                $result['has_exception'] = true;
+                $result['exception_message'] = $e->getMessage();      
+                echo '<br><br>\n\n An exception occurred with profile '.$ds_user_id.'';
+                echo "  EXCEPTION:  ".$result['exception_message']."<br><br>\n\n";
+            }
+            return (object)$result;
+        }*/
         
     }     
 }

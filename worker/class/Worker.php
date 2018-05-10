@@ -81,8 +81,7 @@ namespace leads\cls {
         public function do_work(){
             //level 0. using the dumbu.pro RP as the RP of one single campaing
             //1. obtener un robot_profile para trabalhar
-            $param_id = filter_input(INPUT_GET, 'id',FILTER_VALIDATE_INT); //identificador usado pro robot i-esimo
-            $this->id = $param_id;
+            $param_id = filter_input(INPUT_GET, 'id',FILTER_VALIDATE_INT); //identificador usado pro robot i-esimo           
             $robot_profile=new Robot_Profile();
             $result = $robot_profile->get_robot_profile_from_backup($param_id);
             if(!$result){
@@ -101,7 +100,7 @@ namespace leads\cls {
                         //4. processar trabalho atual e analise de exepções
                         $result = $this->Robot->do_robot_extract_leads($robot_profile->ig, $robot_profile->cookies,$this->config->MULTI_LEVEL);
                         if($result->has_exception){
-                            $this->process_instagram_api_exception($result->exception_message);
+                            $this->process_instagram_api_exception($result->exception_message,$robot_profile);
                             $message = $result->exception_message;
                         } else{
                             $message =' proccess correctly';
@@ -114,9 +113,8 @@ namespace leads\cls {
                             sleep((int)($this->config->TIME_SLEEP_ROBOT_WITHOUT_WORK)); 
                             echo "Robot waiting 30 minutes by not dispose work --------<br> \n <br> \n";
                         }
-                        else{
-                            echo "<br> \n <br> \nCongratulations!!! Job done... with robot_profiles ".$result['robot_profile_login']."!<br> \n";
-                            die();
+                        else{                            
+                            die("<br> \n <br> \nCongratulations!!! Job done... with robot_profiles ".$result['robot_profile_login']."!<br> \n");
                         }
                     }
                 }
@@ -124,7 +122,7 @@ namespace leads\cls {
         }
         
         
-        public function process_instagram_api_exception($exception_message){            
+        public function process_instagram_api_exception($exception_message,$robot_profile){            
             if(strpos($exception_message, 'Throttled by Instagram because of too many API requests')!== FALSE){
                 sleep(120);
             }
@@ -150,8 +148,8 @@ namespace leads\cls {
                 $administrators=array('egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com', 'josergm86@gmail.com');                        
                     foreach($administrators as $admin){
                             $this->Gmail->send_mail($admin, $admin,
-                                "' CONCERTAR ISSO!!! Robot_profile login = ' $rp->login ' in verify account",
-                                "' CONCERTAR ISSO!!! Robot_profile login = ' $rp->login ' in verify account");                            
+                                "' CONCERTAR ISSO!!! Robot_profile login = ' $robot_profile->login ' in verify account",
+                                "' CONCERTAR ISSO!!! Robot_profile login = ' $robot_profile->login ' in verify account");                            
                     }
                 die("<br>\n<br>\nRobot_profile ".$robot_profile->login." to Challenge required state<br>\n<br>\n");
             }
