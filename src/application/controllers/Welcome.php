@@ -86,6 +86,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/client_model');        
         $this->load->model('class/user_model');
+        $this->load->model('class/bank_ticket_model');
         $this->load->model('class/system_config');
         
         if ($this->session->userdata('role_id')==user_role::CLIENT){
@@ -118,9 +119,11 @@ class Welcome extends CI_Controller {
                 $param['campaings'] = NULL;
             
             $GLOBALS['sistem_config'] = $this->system_config->load();
+                                
             if($this->session->userdata('brazilian')==1){
                 $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
                 $param['currency_symbol'] = "R$";
+                $param['available_ticket'] = $this->bank_ticket_model->get_available_ticket_bank_money($this->session->userdata('id'));
             }
             else{
                 $param['price_lead'] = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
@@ -928,7 +931,7 @@ class Welcome extends CI_Controller {
                     if($profiles_in_campaing[0]['available_daily_value'] > 0){
                         $current_time = time();
                         foreach($profiles_in_campaing as $p){
-                            $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id']);
+                            $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id'], 'last_accesed'=>time());
                             if($profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED){
                                 $this->campaing_model->update_profile_accesed($p['campaing_id'], $p['id'], $current_time-24*3600);
                             }
