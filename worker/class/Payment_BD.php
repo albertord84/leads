@@ -300,20 +300,21 @@ namespace leads\cls {
             try {
                 $DB->connect();
                 $first = TRUE;
+                $current_time = time();
                 $sql = ""
                         . "INSERT INTO daily_work "
-                        . "(client_id, campaing_id, profile_id) "
+                        . "(client_id, campaing_id, profile_id, last_accesed) "
                         . "VALUES ";
                 foreach($datas_works as $work){
                     $client_id = $work['client_id'];
                     $campaing_id = $work['campaing_id'];
                     $profile_id = $work['profile_id'];
                     if($first){
-                        $sql .= "($client_id, $campaing_id, $profile_id)";
+                        $sql .= "($client_id, $campaing_id, $profile_id, $current_time)";
                         $first = FALSE;
                     }
                     else{
-                        $sql .= ", ($client_id, $campaing_id, $profile_id)";
+                        $sql .= ", ($client_id, $campaing_id, $profile_id, $current_time)";
                     }
                 }
                 $sql .=";";
