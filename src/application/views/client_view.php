@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
+    <head> 
+            <?php 
+                function reduce_profile($profile){
+                    if(strlen($profile) >= 9){
+                        return substr($profile,0,7).'...';
+                    }
+                    else{
+                        return $profile;
+                    }
+                }
+            ?>
             <?php  $CI =& get_instance();?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
@@ -87,13 +97,13 @@
                                                                 <span class="fleft100 ellipse">
                                                                     <div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'.$profiles_temp[$profile_insta_temp].'">';
                                                                         if($profiles_type_temp[$profile_insta_temp] == 1){
-                                                                            echo substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 2){
-                                                                            echo "@".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "@".reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 3){
-                                                                            echo "#".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "#".reduce_profile($profiles_temp[$profile_insta_temp],0,9);
                                                                         }
                                                         echo        '</div>
                                                                     <b class="my_close">x</b>
@@ -744,13 +754,13 @@
                                                                             <span data-toggle="tooltip" data-placement="top" title="<?php echo $profile['profile']; ?>">
                                                                                 <?php
                                                                                 if($campaing['campaing_type_id'] == 1){
-                                                                                    echo substr($profile['profile'],0,9);
+                                                                                    echo reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 2){
-                                                                                    echo "@".substr($profile['profile'],0,9);
+                                                                                    echo "@".reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 3){
-                                                                                    echo "#".substr($profile['profile'],0,9);
+                                                                                    echo "#".reduce_profile($profile['profile'],0,9);
                                                                                 }                                                                                
                                                                                 ?>
                                                                             </span>

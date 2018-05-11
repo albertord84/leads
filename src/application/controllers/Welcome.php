@@ -158,6 +158,15 @@ class Welcome extends CI_Controller {
         }        
     }
 
+    public function reduce_profile($profile){
+        if(strlen($profile) >= 9){
+            return substr($profile,0,7).'...';
+        }
+        else{
+            return $profile;
+        }
+    }
+    
     public function same_type_of_profiles($profiles_type, $campaing_type){
         foreach ($profiles_type as $profile_type) {
             if($profile_type != $campaing_type){
@@ -590,7 +599,8 @@ class Welcome extends CI_Controller {
                                         $char_type = "#";
                                     }
                                     $html .= '<li id = "___'.$profile['insta_id'].'"><span data-toggle="tooltip" data-placement="top" title="'.$profile['profile'].'">';
-                                    $html .= $char_type.substr($profile['profile'],0,9).'</span></li>';                                                                                        
+                                    $html .= $char_type.$this->reduce_profile($profile['profile']).'</span></li>';                                                                                        
+                                    
                                 }
                             }                                                                
                             

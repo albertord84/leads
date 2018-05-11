@@ -499,7 +499,7 @@
                                                             <div class="fleft100 pd-lr15">
                                                                     <h4 class="fw-600"><img src="<?php echo base_url().'assets/img/profile.png'?>" class="m-r8"> <span><?php echo $CI->T("Crie sua conta", array(),$language);?></span></h4>
                                                                     <span class="ft-size13 m-top15 fleft100 m-b20">
-                                                                            <?php echo $CI->T("Você só será cobrado se após iniciar uma campanha e escolher o valor  que deseja pagar por dia.", array(),$language);?>                                                                            
+                                                                            <?php echo $CI->T("Você só será cobrado após ativar e rodar sua primeira campanha.", array(),$language);?>                                                                            
                                                                     </span>						
                                                             </div>						
                                                             <div class="form-group">
@@ -525,7 +525,7 @@
                                                         <button type="button" id="do_signin" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CRIAR CONTA", array(),$language);?></button>
                                                             <div class="checkbox m-top10 fleft100">
                                                           <label style="font-size: 11px;">
-                                                            <input id = "terms_checkbox" type="checkbox" style="position: relative;top:2px;"> <?php echo $CI->T("Declaro que li e aceito os termos de uso", array(),$language);?>
+                                                              <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;"> <?php echo $CI->T("Declaro que li e aceito os termos de uso", array(),$language);?>
                                                           </label>
                                                         </div>
                                                     </div>                                                    
