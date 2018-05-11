@@ -931,7 +931,7 @@ class Welcome extends CI_Controller {
                     if($profiles_in_campaing[0]['available_daily_value'] > 0){
                         $current_time = time();
                         foreach($profiles_in_campaing as $p){
-                            $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id'], 'last_accesed'=>time());
+                            $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id'], 'last_accesed'=>$current_time);
                             if($profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED){
                                 $this->campaing_model->update_profile_accesed($p['campaing_id'], $p['id'], $current_time-24*3600);
                             }
@@ -1143,7 +1143,8 @@ class Welcome extends CI_Controller {
                                     if( $campaing_row['campaing_status_id'] == campaing_status::ACTIVE && $campaing_row['available_daily_value'] > 0){////////
                                         $this->daily_work_model->insert_work(array( 'client_id' => $this->session->userdata('id'), 
                                                                                     'campaing_id' => $id_campaing, 
-                                                                                    'profile_id' => $id_profile) );
+                                                                                    'profile_id' => $id_profile,
+                                                                                    'last_accesed' => time() ) );
                                     }                            
                                     if($id_profile){                                                                   
                                         $result['success'] = true;
@@ -1241,7 +1242,8 @@ class Welcome extends CI_Controller {
                             if( $campaing_row['campaing_status_id'] == campaing_status::ACTIVE && $campaing_row['available_daily_value'] > 0){
                                 $this->daily_work_model->insert_work(array( 'client_id' => $this->session->userdata('id'), 
                                                                             'campaing_id' => $id_campaing, 
-                                                                            'profile_id' => $old_profile_row['id']) );
+                                                                            'profile_id' => $old_profile_row['id'],
+                                                                            'last_accesed' => time()) );
                             }                            
                             if($result_update){                            
                                 $result['success'] = true;
@@ -1310,7 +1312,8 @@ class Welcome extends CI_Controller {
                         if( $campaing_row['campaing_status_id'] == campaing_status::ACTIVE ){
                             $this->daily_work_model->delete_work(array( 'client_id' => $this->session->userdata('id'), 
                                                                         'campaing_id' => $id_campaing, 
-                                                                        'profile_id' => $profile_row['id']) );
+                                                                        'profile_id' => $profile_row['id'],
+                                                                        'last_accesed' => time() ) );
                         }
                         if($result_profile){                            
                             $result['success'] = true;
