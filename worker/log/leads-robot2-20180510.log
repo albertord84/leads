@@ -1,0 +1,322 @@
+Worker-Robot Leads Inited...!<br>
+2018-05-11 12:36:22amRobot2 initialized with robot_profile bertoernesto6505<br>
+<br>
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>395</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22santanderselect%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>382</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> pedropetti  Campaing --> 4  Profile --> santanderselect:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>279</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=ac38b90f0f3981c42092016a37c59bf7&variables=%7B%22id%22%3A%22481100643%22%2C%22first%22%3A50%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>
+ Untrated error in Geolocation!!!<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>265</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> josergm86  Campaing --> 2  Profile --> icarai:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>279</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=ac38b90f0f3981c42092016a37c59bf7&variables=%7B%22id%22%3A%22213369624%22%2C%22first%22%3A50%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>
+ Untrated error in Geolocation!!!<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>265</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> josergm86  Campaing --> 2  Profile --> niteroi-rio-de-janeiro-brazil:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>395</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22amores%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>382</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> josergm86  Campaing --> 3  Profile --> amores:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>395</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22vidaloca%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>382</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> josergm86  Campaing --> 3  Profile --> vidaloca:  proccess correctly<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 319293402 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3099164334 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2527637183 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7592179715 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1964549610 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1198855821 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5729127475 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7718635518 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3178867816 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7668567534 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1536597536 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 22991283 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4916772504 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1671869030 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1981820814 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1153397271 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4067929333 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2801676516 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5920005817 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2198063272 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7456527637 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3028532817 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1987808752 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 297473988 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1115388469 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2311493970 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 242833067 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7424568601 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6817968021 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3034924226 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6006465028 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1712884624 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 25709734 na tabela leads<br>
+<br>
+ Client ---> josergm86  Campaing --> 1  Profile --> adidas:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>395</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22santanderselect%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=Wt3trwABAAHizght5Kw56hcfzhHy; sessionid=IGSC14d5940eee51c63475b90da74c919d5d292910a44160843a73195589bdb82bf2%3A1FrDVB0aC9FbSq4xiVEpYV0e4QMRnrnk%3A%7B%22_auth_user_id%22%3A7549886606%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227549886606%3AaxbXChs5iwxuXDJVN6oX6K5RPsidAjaK%3A6817d1bfcc14dbfbfb94e0f93ba79d2603211d458cc06209feef1e70e4d5a329%22%2C%22last_refreshed%22%3A1525998982.9328091145%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH; ds_user_id=7549886606' -H 'X-CSRFToken: jLjvHKD9vCX4XrtIaLhfwOOM1QH492hH' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+<br />
+<b>Notice</b>:  Undefined variable: Profiles in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>382</b><br />
+<br />
+<b>Warning</b>:  Invalid argument supplied for foreach() in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>112</b><br />
+ Client ---> josergm86  Campaing --> 3  Profile --> santanderselect:  proccess correctly<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7514729107 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6915807819 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3937874180 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 343127553 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1201222961 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7051348621 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7171215496 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2186377659 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6259065526 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7718706826 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2159611256 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5834032664 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5792271454 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 205025234 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4268327208 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3144581797 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4235893624 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6154214498 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3267283490 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 813231591 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 187543823 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3529064162 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1149142419 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6027274018 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6580034834 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1726460975 na tabela leads<br>
+<br>
+<br />
+<b>Fatal error</b>:  Uncaught Error: Undefined class constant 'MISSING' in /opt/lampp/htdocs/leads/worker/class/Worker.php:137
+Stack trace:
+#0 /opt/lampp/htdocs/leads/worker/class/Worker.php(103): leads\cls\Worker-&gt;process_instagram_api_exception('InstagramAPI\\Re...', Object(leads\cls\Robot_Profile))
+#1 /opt/lampp/htdocs/leads/worker/scripts/all/index-do.php(18): leads\cls\Worker-&gt;do_work()
+#2 {main}
+  thrown in <b>/opt/lampp/htdocs/leads/worker/class/Worker.php</b> on line <b>137</b><br />
