@@ -211,9 +211,9 @@ var Translation = {
             "EN": "You must provide all data" 
         },
 "Você não possui leads que cumplam com sua solicitude": 
-        {   "PT": "Você não possui leads que cumplam com sua solicitude",
-            "ES": "Usted no tiene leads que cumplan con su solicitud",
-            "EN": "You have no leads that match your request." 
+        {   "PT": "Você não possui leads pagos que cumplam com sua solicitude",
+            "ES": "Usted no tiene leads pagados que cumplan con su solicitud",
+            "EN": "You have no paid leads that match your request." 
         },
 "Ooops ... problema no servidor": 
         {   "PT": "Ooops ... problema no servidor",
@@ -231,8 +231,8 @@ var Translation = {
             "EN": "Unable to connect to Instagram" 
         },
 "Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.": 
-        {   "PT": "Sua campanha foi criada com sucesso! Para poder comenzar a extraer leads deve ativar sua campanha.",
-            "ES": "¡Campaña creada!",
+        {   "PT": "Sua campanha foi criada com sucesso! Para poder começar a extrair leads deve ativar sua campanha.",
+            "ES": "¡Campaña creada exitosamente! Para poder comenzar a extraer leads debe activar su campaña.",
             "EN": "Your campaign was successfully created! In order to start extracting leads you must activate your campaign." 
         },
 "Campanha criada!": 

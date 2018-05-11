@@ -1516,7 +1516,9 @@ function select_profile_from_search2(prof_name, id) {
 
 function reduced_profile(profile){
     var str_temp = profile;
-    return str_temp.substring(9, 0);
+    if(str_temp.length >= 9)
+        return str_temp.substring(7, 0)+"...";
+    return profile;
 }
 
 function concert_especial_char(str){
