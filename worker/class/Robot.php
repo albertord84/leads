@@ -241,17 +241,16 @@ namespace leads\cls {
             $leads['get_show_insights_terms'] = $user->getShowInsightsTerms();
             
             return $leads;
-        }
-                
+        }                
         
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
+            $Profiles = array();
             $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
             if (is_object($json_response) && $json_response->status == 'ok') {
                 if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
-                    $Profiles = array();
                     $page_info = $json_response->data->location->edge_location_to_media->page_info;
                     foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
-                            $profile = new \stdClass();
+                        $profile = new \stdClass();
                         $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
                         array_push($Profiles, $profile->node->username);
                     }
@@ -268,8 +267,7 @@ namespace leads\cls {
         }
         
         public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
-            try {
-                
+            try {                
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
@@ -362,10 +360,10 @@ namespace leads\cls {
         
         
         public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor) {
+            $Profiles = array();
             $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
             if (is_object($json_response)) {
                 if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
-                    $Profiles = array();
                     $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
                     foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
                         $profile = new \stdClass();
