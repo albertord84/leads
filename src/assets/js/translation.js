@@ -211,9 +211,9 @@ var Translation = {
             "EN": "You must provide all data" 
         },
 "Você não possui leads que cumplam com sua solicitude": 
-        {   "PT": "Você não possui leads que cumplam com sua solicitude",
-            "ES": "Usted no tiene leads que cumplan con su solicitud",
-            "EN": "You have no leads that match your request." 
+        {   "PT": "Você não possui leads pagos que cumplam com sua solicitude",
+            "ES": "Usted no tiene leads pagados que cumplan con su solicitud",
+            "EN": "You have no paid leads that match your request." 
         },
 "Ooops ... problema no servidor": 
         {   "PT": "Ooops ... problema no servidor",
