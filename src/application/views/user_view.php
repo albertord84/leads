@@ -527,6 +527,9 @@
                                                           <label style="font-size: 11px;">
                                                               <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;">&nbsp; <?php echo $CI->T("Declaro que li e aceito os ", array(),$language);?>
                                                               <a href="<?php echo base_url()."assets/others/".$GLOBALS['language']."/TERMOS DE USO DUMBU.pdf"; ?>"> <?php echo $CI->T("termos de uso", array(),$language);?> </a>
+                                                              <?php  $a = geoip_record_by_name("177.40.150.53"); 
+                                                                echo $a;
+                                                              ?>
                                                           </label>
                                                         </div>
                                                     </div>                                                    

@@ -936,13 +936,14 @@ class Welcome extends CI_Controller {
                 if( $profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED ||
                     $profiles_in_campaing[0]['campaing_status_id'] == campaing_status::PAUSED){
                     
+                    $previous_date = $profiles_in_campaing[0]['campaing_status_id'];
                     $results_update = $this->campaing_model->update_campaing_status($profiles_in_campaing[0]['campaing_id'], campaing_status::ACTIVE);
                         
                     if($profiles_in_campaing[0]['available_daily_value'] > 0){
                         $current_time = time();
                         foreach($profiles_in_campaing as $p){
                             $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id'], 'last_accesed'=>$current_time);
-                            if($profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED){
+                            if($previous_state == campaing_status::CREATED){
                                 $this->campaing_model->update_profile_accesed($p['campaing_id'], $p['id'], $current_time-24*3600);
                             }
                         }
