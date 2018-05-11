@@ -526,7 +526,7 @@
                                                             <div class="checkbox m-top10 fleft100">
                                                           <label style="font-size: 11px;">
                                                               <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;">&nbsp; <?php echo $CI->T("Declaro que li e aceito os ", array(),$language);?>
-                                                              <a href="<?php echo base_url()."assets/others/".$GLOBALS['language']."/TERMOS DE USO DUMBU.pdf"; ?>"> <?php echo $CI->T("termos de uso", array(),$language);?> </a>                                                              
+                                                              <a href="<?php echo base_url()."assets/others/".$GLOBALS['language']."/TERMOS DE USO DUMBU.pdf"; ?>"> <?php echo $CI->T("termos de uso", array(),$language);?> </a>                                                                                                                          
                                                           </label>
                                                         </div>
                                                     </div>                                                    
