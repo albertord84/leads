@@ -362,7 +362,7 @@ class Welcome extends CI_Controller {
             }
             else{
                 $result['success'] = false;
-                $result['message'] = $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
+                $result['message'] = $this->T("Estrutura incorreta para o nome de usuário. IP:".$_SERVER['REMOTE_ADDR'], array(), $GLOBALS['language']); 
                 $result['resource'] = 'front_page';
             }
         }
