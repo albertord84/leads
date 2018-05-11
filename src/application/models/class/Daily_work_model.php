@@ -100,8 +100,12 @@ class daily_work_model extends CI_Model {
         $this->db->where('campaings.available_daily_value >', 0 );  
         $profiles_in_campaing =  $this->db->get()->result_array();
         $datas_works = [];
+        $current_time = time();
         foreach($profiles_in_campaing as $p)
-            $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id']);
+            $datas_works[] = array( 'client_id' => $p['client_id'], 
+                                    'campaing_id' => $p['campaing_id'], 
+                                    'profile_id' => $p['id'],
+                                    'last_accesed' => $current_time);
 
         $this->insert_works($datas_works);
     }
