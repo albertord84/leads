@@ -550,7 +550,7 @@ $(document).ready(function () {
                                     html +=           '<b class="my_close2">x</b>'
                                     html +=      '</span>';
                                     html += '</li>';
-                    var html2 = '<li id = "___' + id_insta + '"> <span>'+char_type+ reduced_profile(profile) +'</span></li>' ;  
+                    var html2 = '<li id = "___' + id_insta + '"> <span class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'+profile+'">'+char_type+ reduced_profile(profile) +'</span></li>' ;  
                     
                     $.ajax({
                          url: base_url + 'index.php/welcome/add_profile',
