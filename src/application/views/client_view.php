@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head> 
+             <meta http-equiv="refresh" content="300">
             <?php 
                 function reduce_profile($profile){
                     if(strlen($profile) >= 9){
