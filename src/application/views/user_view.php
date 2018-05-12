@@ -70,6 +70,31 @@
                                 </li>                                                                
                                 <li>
                                     <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
+                                    <?php
+                                    if($this->session->userdata('login')){
+                                        if($this->session->userdata('is_admin')==TRUE){
+                                    ?>  
+                                            <li>                                    
+                                                <a href="<?php echo base_url().'index.php/welcome/admin'; ?>">
+                                                    <i class="fa fa-cog"></i>
+                                                    <?php echo mb_strtoupper($CI->T("ADMINISTRAR", array(),$language));?>
+                                                </a>
+                                            </li>
+                                    <?php
+                                        }
+                                        else{
+                                    ?>    
+                                            <li>                                    
+                                                <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
+                                                    <i class="fa fa-binoculars"></i>
+                                                    <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
+                                                </a>
+                                            </li>
+                                    <?php
+                                        }
+                                    }
+                                    else {
+                                    ?>
                                     <ul class="dl-submenu">
                                         <li>
                                             <div id="login_container1">
@@ -99,6 +124,7 @@
                                             </div>
                                         </li>
                                     </ul>
+                                    <?php }?>        
                                 </li>
                                 <li id="locales_cell">
                                     <a  id="lnk_language1_cell" href="#">

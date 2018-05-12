@@ -30,7 +30,10 @@ class Welcome extends CI_Controller {
     }
     
     public function is_brazilian_ip(){
-        $prefixos_br = array('187', '189', '200', '201');
+        /*
+        $prefixos_br = array(   '45.','72.','93.','128','131','132','138','139',
+                                '139','143','146','147','150','152','155','157','161','164',
+                                '170','177','179','181','186','187','189','190','191','200','201');
         $prefixo_ip = substr($_SERVER['REMOTE_ADDR'], 0, 3);
 
         if (in_array($prefixo_ip, $prefixos_br)){
@@ -38,8 +41,15 @@ class Welcome extends CI_Controller {
         }
         else{
             return 0;
-        }
-
+        }*/
+        if($_SERVER['REMOTE_ADDR'] === "127.0.0.1")
+            return 1;
+        
+        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
+        $response = json_decode($datas);
+        if(is_object($response) && $response->country_code == "BR")
+            return 1;
+        return 0;
     }
     
     public function index() {       
