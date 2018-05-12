@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('body').on('propertychange input', 'input[class="number"]', forceNumeric);
+    //$('body').on('propertychange input', 'input[class="number"]', forceNumeric);
     
     $('#main_dropdown').on("click.bs.dropdown", function (e) {
         e.stopPropagation(); 

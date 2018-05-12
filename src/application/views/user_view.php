@@ -23,9 +23,9 @@
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>            
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
-            
+                
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>        
             <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
