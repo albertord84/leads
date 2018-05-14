@@ -57,7 +57,14 @@ class Welcome extends CI_Controller {
         $param = array();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-                
+       
+        $this->load->library('gmail');
+        $result_message = $this->gmail->send_welcome
+                            (
+                                "jorge85.mail@gmail.com",
+                                "jorge"
+                            );
+        
         if (!$this->session->userdata('id')){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
@@ -433,6 +440,17 @@ class Welcome extends CI_Controller {
                                 $cadastro_id = $this->user_model->insert_user($datas);
 
                                 if($cadastro_id){                                    
+                                    $this->load->model('class/system_config');                    
+                                    $GLOBALS['sistem_config'] = $this->system_config->load();
+                                    $this->load->library('gmail');
+                                    //$this->Gmail = new \leads\cls\Gmail();
+
+                                    $result_message = $this->gmail->send_welcome
+                                                        (
+                                                            $datas['client_email'],
+                                                            $datas['client_login']
+                                                        );
+                                    
                                     $this->user_model->set_session($cadastro_id,$this->session);
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
