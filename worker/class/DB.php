@@ -144,7 +144,7 @@ namespace leads\cls {
                 $result = mysqli_query($this->connection, $sql);
                 $old_campaing = $result->fetch_object();
                 
-                //5. obter o perfil mais antigo 
+                //5. obter o perfil asociado
                 $sql = ""
                     . " SELECT * FROM dumbu_emails_db.profiles "
                     . " WHERE profiles.id = '$next_work->profile_id';";
