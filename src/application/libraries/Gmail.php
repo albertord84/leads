@@ -393,7 +393,7 @@
             return $result;
         }
         
-        public function send_client_pendent_status($useremail, $username, $day_to_block) {
+        public function send_client_pendent_status($useremail, $username, $day_to_block, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -414,7 +414,7 @@
             $day_to_block = urlencode($day_to_block);            
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/pendent_status.php?username=$username&day_to_block=$day_to_block"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
@@ -435,7 +435,7 @@
             return $result;
         }
         
-        public function send_client_cancel_status($useremail, $username) {
+        public function send_client_cancel_status($useremail, $username, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -456,7 +456,7 @@
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/cancel_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
@@ -477,7 +477,7 @@
             return $result;
         }
         
-        public function send_client_bloqued_status($useremail, $username) {
+        public function send_client_bloqued_status($useremail, $username, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -498,7 +498,7 @@
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/bloqued_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
@@ -519,7 +519,7 @@
             return $result;
         }
         
-        public function send_client_ticket_success($useremail, $username, $ticket_url) {
+        public function send_client_ticket_success($useremail, $username, $ticket_url, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -540,7 +540,7 @@
             $ticket_url = urlencode($ticket_url);            
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/ticket_success.php?username=$username&ticket_url=$ticket_url"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
@@ -561,7 +561,7 @@
             return $result;
         }
         
-        public function send_number_confirm($useremail, $username, $number) {
+        public function send_number_confirm($useremail, $username, $number, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -579,11 +579,11 @@
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
-            $username = urlencode($number);            
+            $number = urlencode($number);            
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/number_confirm.php?username=$username&number=$number"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
@@ -604,7 +604,7 @@
             return $result;
         }
         
-        public function send_welcome($useremail, $username, $number) {
+        public function send_welcome($useremail, $username, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -625,7 +625,7 @@
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/welcome_message.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually

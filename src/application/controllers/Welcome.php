@@ -11,17 +11,17 @@ class Welcome extends CI_Controller {
     public $language =NULL;
 
         //------------desenvolvido para DUMBU-LEADS-------------------
-    public function load_language(){
+    public function load_language($language = NULL){
         if (!$this->session->userdata('id')){
-            $language=$this->input->get();
-            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
-                    $language['language'] = NULL;            
+            
             $this->load->model('class/system_config');
             $GLOBALS['sistem_config'] = $this->system_config->load();
-            if(isset($language['language']))
-                $GLOBALS['language']=$language['language'];
-            else
+            if($language != "PT" && $language != "EN" && $language != "ES")
+                $language = NULL;
+            if(!$language)
                 $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
+            else
+                $GLOBALS['language'] = $language;
         }
         else
         {
@@ -58,13 +58,6 @@ class Welcome extends CI_Controller {
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
        
-        $this->load->library('gmail');
-        $result_message = $this->gmail->send_welcome
-                            (
-                                "jorge85.mail@gmail.com",
-                                "jorge"
-                            );
-        
         if (!$this->session->userdata('id')){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
@@ -323,13 +316,14 @@ class Welcome extends CI_Controller {
     }
     
     public function signin() {     
-        $this->load_language();
+        $datas = $this->input->post();
+        $this->load_language($datas['language']);
+        
         if (!$this->session->userdata('id')){
             $this->load->model('class/user_model');
             $this->load->model('class/user_temp_model');
             $this->load->model('class/user_role');
             $this->load->model('class/user_status');                                                                                                                                                                                                                            
-            $datas = $this->input->post();
             
             if ( $this->is_valid_user_name($datas['client_login']) ){                
                 if ( $this->is_valid_phone($datas['client_telf']) ){
@@ -357,7 +351,8 @@ class Welcome extends CI_Controller {
                                                         (
                                                             $datas['client_email'],
                                                             $datas['client_login'],
-                                                            $datas['id_number']
+                                                            $datas['id_number'],
+                                                            $GLOBALS['language']
                                                         );
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
@@ -410,13 +405,15 @@ class Welcome extends CI_Controller {
     }
     
     public function signin_number() {
-        $this->load_language();
+        $datas = $this->input->post();
+        $this->load_language($datas['language']);
+        
         if (!$this->session->userdata('id')){
             $this->load->model('class/user_model');
             $this->load->model('class/user_temp_model');
             $this->load->model('class/user_role');
             $this->load->model('class/user_status');                                                                                                                                                                                                                            
-            $datas = $this->input->post();
+            //$datas = $this->input->post();
             
             if ( $this->is_valid_user_name($datas['client_login']) ){                
                 if ( $this->is_valid_phone($datas['client_telf']) ){
@@ -448,7 +445,8 @@ class Welcome extends CI_Controller {
                                     $result_message = $this->gmail->send_welcome
                                                         (
                                                             $datas['client_email'],
-                                                            $datas['client_login']
+                                                            $datas['client_login'],
+                                                            $GLOBALS['language']
                                                         );
                                     
                                     $this->user_model->set_session($cadastro_id,$this->session);
@@ -523,7 +521,8 @@ class Welcome extends CI_Controller {
                     $result_message = $this->gmail->send_client_cancel_status
                                         (
                                             $this->session->userdata('email'),
-                                            $this->session->userdata('login')
+                                            $this->session->userdata('login'),
+                                            $this->session->userdata('language')
                                         );
                     
                     $this->session->sess_destroy();
@@ -553,11 +552,13 @@ class Welcome extends CI_Controller {
     }
     
     public function login() {
-        $this->load_language();
+        $datas = $this->input->post();
+        $this->load_language($datas['language']);
+        
         if (!$this->session->userdata('id')){
             $this->load->model('class/user_role'); 
             $this->load->model('class/user_model');
-            $datas = $this->input->post();
+            //$datas = $this->input->post();
             if ($this->is_valid_user_name($datas['client_login']) ){
                 $datas['check_pass'] = true; 
                 //verificar si se existe cliente        
@@ -1806,7 +1807,8 @@ class Welcome extends CI_Controller {
                             $result_message = $this->gmail->send_client_ticket_success(
                                                                 $this->session->userdata('email'),
                                                                 $this->session->userdata('login'),
-                                                                $datas['ticket_url']
+                                                                $datas['ticket_url'],
+                                                                $this->session->userdata('language')
                                                             );
                             
                             $result['success'] = true;
