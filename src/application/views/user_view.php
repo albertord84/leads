@@ -544,7 +544,7 @@
                                                                 <div class="form-group">
                                                                     <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
                                                                     <input type="password" class="form-control" id="pass_registration">
-                                                                </div>                                                                
+                                                                </div>   
                                                             </div>
                                                             <div id ="show_number" class="form-group" style="display:none;">
                                                                 <label for="num"><?php echo $CI->T("NÚMERO DE CONFIRMAÇÃO", array(),$language);?></label>

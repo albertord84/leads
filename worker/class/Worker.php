@@ -41,7 +41,7 @@ namespace leads\cls {
         }
         
         function prepare_daily_work() {
-            //0. botaar todos os robot_profiles em activo
+            //0. botar todos os robot_profiles em activo
             $this->DB->reset_robot_profiles();
             //1. seleccionar clientes activos (que pueden trabajar)
             $GLOBALS['all_client_cookies']=array();
@@ -109,7 +109,7 @@ namespace leads\cls {
                             " Campaing --> ".$this->next_work->campaing->id. " ".
                             " Profile --> ".$this->next_work->profile->profile. ": ".$message."<br><br>\n\n";                        
                     } else{
-                        if($param_id<=0){ //2 robots trabajando hasta reiniciar el servidor, los otros mueren
+                        if($param_id<=2){ //2 robots trabajando hasta reiniciar el servidor, los otros mueren
                             sleep((int)($this->config->TIME_SLEEP_ROBOT_WITHOUT_WORK)); 
                             echo "Robot waiting 30 minutes by not dispose work --------<br> \n <br> \n";
                         }
