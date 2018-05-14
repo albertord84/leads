@@ -320,6 +320,11 @@ var Translation = {
             "ES": "CONFIRMAR CUENTA",
             "EN": "CONFIRM ACCOUNT" 
         },
+"Para continuar o cadastro use o número enviado a seu e-mail!": 
+        {   "PT": "Para continuar o cadastro use o número enviado a seu e-mail!",
+            "ES": "Para continuar el registro use el número enviado a su e-mail!",
+            "EN": "To continue the registration use the number sent to your e-mail!" 
+        },
 "Nenhum resultado encontrado.": 
         {   "PT": "Nenhum resultado encontrado.",
             "ES": "Ningún resultado encontrado.",

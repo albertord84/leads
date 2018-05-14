@@ -220,11 +220,7 @@ $(document).ready(function () {
                                 success: function (response) {
                                     if (response['success']) {                                        
                                         //campo para recivir codigo de 4 digitos
-                                        var html = '<div id ="show_number" class="form-group">';                                                          
-                                            html +=     '<label for="num">'+T('NÚMERO DE CONFIRMAÇÃO',language)+'</label>';
-                                            html +=     '<input style="text-align:center;" class="form-control" placeholder="_ _ _ _" id="number_confirmation" maxlength="4">';
-                                            html +=     '<button type="button" id="do_signin_number" class="btn btn-success fleft100 m-top30">'+T('CONFIRMAR CONTA',language)+'</button>';                                                                                  
-                                            html +='</div>';
+                                        message_container(T('Para continuar o cadastro use o número enviado a seu e-mail!',language),'#container_sigin_message','green');                                                  
                                         document.getElementById("datas_form").style.display = 'none';                                        
                                         document.getElementById("show_number").style.display = 'block';                                        
                                         document.getElementById("button_place").innerHTML = "";                                        
