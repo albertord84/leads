@@ -521,35 +521,44 @@
                             <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4 col-sm-offset-4 m-top30">
                                     <div class="col-md-8 col-sm-12 col-xs-12 pd-0 fnone i-block">
                                             <form action="" class="fleft100 fmr-cadastro">					
-                                                    <div class="fleft100 pd-20 bk-fff text-left">
+                                                    <div class="fleft100 pd-20 bk-fff text-left" style="<?php if($GLOBALS['id_number'] > 0){ echo "visibility:hidden;";} ?>">
                                                             <div class="fleft100 pd-lr15">
                                                                     <h4 class="fw-600"><img src="<?php echo base_url().'assets/img/profile.png'?>" class="m-r8"> <span><?php echo $CI->T("Crie sua conta", array(),$language);?></span></h4>
                                                                     <span class="ft-size13 m-top15 fleft100 m-b20">
                                                                             <?php echo $CI->T("Você só será cobrado após ativar e rodar sua primeira campanha.", array(),$language);?>                                                                            
                                                                     </span>						
-                                                            </div>						
-                                                            <div class="form-group">
-                                                                <label for="nome"><?php echo $CI->T("Nome de usuário", array(),$language);?></label>
-                                                                <input class="form-control" id="user_registration" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
+                                                            </div>       
+                                                            <div id="datas_form">
+                                                                <div class="form-group">
+                                                                    <label for="nome"><?php echo $CI->T("Nome de usuário", array(),$language);?></label>
+                                                                    <input class="form-control" id="user_registration" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="email">E-mail</label>
+                                                                    <input type="email" class="form-control" id="email_registration">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="telf"><?php echo $CI->T("Telefone", array(),$language);?></label>
+                                                                    <input class="form-control" id="telf_registration" maxlength="15">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
+                                                                    <input type="password" class="form-control" id="pass_registration">
+                                                                </div>                                                                
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="email">E-mail</label>
-                                                                <input type="email" class="form-control" id="email_registration">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="telf"><?php echo $CI->T("Telefone", array(),$language);?></label>
-                                                                <input class="form-control" id="telf_registration" maxlength="15">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
-                                                                <input type="password" class="form-control" id="pass_registration">
+                                                            <div id ="show_number" class="form-group" style="display:none;">
+                                                                <label for="num"><?php echo $CI->T("NÚMERO DE CONFIRMAÇÃO", array(),$language);?></label>
+                                                                <input style="text-align:center;" class="form-control" placeholder="_ _ _ _" id="number_confirmation" maxlength="4">
+                                                                <button type="button" id="do_signin_number" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CONFIRMAR CONTA", array(),$language);?></button>
                                                             </div>
                                                     </div>
                                                     <div id="container_sigin_message" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
-                                                    </div>
-                                                    <div class="fleft100 pd-lr20">
-                                                        <button type="button" id="do_signin" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CRIAR CONTA", array(),$language);?></button>
-                                                            <div class="checkbox m-top10 fleft100">
+                                                    </div>                                                    
+                                                    <div class="fleft100 pd-lr20" >
+                                                        <div id = "button_place">
+                                                        <button type="button" id="do_signin" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CRIAR CONTA", array(),$language);?></button>                                                                                                                 
+                                                        </div>
+                                                        <div class="checkbox m-top10 fleft100">
                                                           <label style="font-size: 11px;">
                                                               <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;">&nbsp; <?php echo $CI->T("Declaro que li e aceito os ", array(),$language);?>
                                                               <a href="<?php echo base_url()."assets/others/".$GLOBALS['language']."/TERMOS DE USO DUMBU.pdf"; ?>"> <?php echo $CI->T("termos de uso", array(),$language);?> </a>                     

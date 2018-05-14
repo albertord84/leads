@@ -218,9 +218,16 @@ $(document).ready(function () {
                                 type: 'POST',
                                 dataType: 'json',
                                 success: function (response) {
-                                    if (response['success']) {
-                                        $(location).attr('href',base_url+'index.php/welcome/'+response['resource']+'');
-
+                                    if (response['success']) {                                        
+                                        //campo para recivir codigo de 4 digitos
+                                        var html = '<div id ="show_number" class="form-group">';                                                          
+                                            html +=     '<label for="num">'+T('NÚMERO DE CONFIRMAÇÃO',language)+'</label>';
+                                            html +=     '<input style="text-align:center;" class="form-control" placeholder="_ _ _ _" id="number_confirmation" maxlength="4">';
+                                            html +=     '<button type="button" id="do_signin_number" class="btn btn-success fleft100 m-top30">'+T('CONFIRMAR CONTA',language)+'</button>';                                                                                  
+                                            html +='</div>';
+                                        document.getElementById("datas_form").style.display = 'none';                                        
+                                        document.getElementById("show_number").style.display = 'block';                                        
+                                        document.getElementById("button_place").innerHTML = "";                                        
                                     } else {
                                         message_container(response['message'],'#container_sigin_message','red');                                                  
                                     }                
@@ -238,6 +245,74 @@ $(document).ready(function () {
                             $('#terms_checkbox').css('outline-width', 'thin');                        
                         }
                     }
+                    else{
+                        message_container('O telefone só pode conter números!','#container_sigin_message','red');                                            
+                    }
+                } else {
+                    message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!','#container_sigin_message','red');                                            
+                }
+            } else {
+                message_container('Problemas na estrutura do email informado!','#container_sigin_message','red');                                                            
+            }
+        } else {
+            message_container('Deve preencher todos os dados corretamente!','#container_sigin_message','red');              
+        }
+       
+    });
+    
+    $("#do_signin_number").click(function () {       
+       var login = $('#user_registration').val();
+       var pass = $('#pass_registration').val();
+       var email = $('#email_registration').val()       
+       var telf = $('#telf_registration').val()       
+       var UTM = typeof getUrlVars()["utm_source"] !== 'undefined' ? getUrlVars()["utm_source"] : '';
+       
+       if (login != '' && pass != '' && email != '') {
+            if (validate_element('#email_registration', "^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,4}$")) {
+                if (validate_element('#user_registration', '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$')) {
+                    if (validate_element('#telf_registration', '^[0-9]{0,15}$')) {
+                        if (validate_element('#number_confirmation', '^[0-9]{4,4}$')) {
+                        
+                            if($('#terms_checkbox').is(":checked")) {                        
+                                var l = Ladda.create(this);  l.start();
+                                $.ajax({
+                                    url: base_url + 'index.php/welcome/signin_number',
+                                    data: {
+                                        'client_email': email,
+                                        'client_telf': telf,
+                                        'client_name': name,
+                                        'client_login': login,
+                                        'client_pass': pass,
+                                        'language': language,
+                                        'utm_source': UTM,
+                                        'number_confirmation':$(number_confirmation).val()
+                                    },
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        if (response['success']) {
+                                            $(location).attr('href',base_url+'index.php/welcome/'+response['resource']+'');
+
+                                        } else {
+                                            message_container(response['message'],'#container_sigin_message','red');                                                  
+                                        }                
+                                        l.stop();
+                                    },
+                                    error: function (xhr, status) {
+                                        message_container(T('Não foi possível responder a sua solicitude!',language),'#container_sigin_message','red');                                                                                  
+                                        l.stop();
+                                    }
+                                });                         
+                            }else{
+                                message_container('Deve aceitar os termos de uso!','#container_sigin_message','red');                        
+                                $('#terms_checkbox').css('outline-color', 'red');
+                                $('#terms_checkbox').css('outline-style', 'solid');
+                                $('#terms_checkbox').css('outline-width', 'thin');                        
+                            }
+                        }
+                        else{
+                            message_container('Deve ser um código de 4 números!','#container_sigin_message','red');                                            
+                        }                  }
                     else{
                         message_container('O telefone só pode conter números!','#container_sigin_message','red');                                            
                     }

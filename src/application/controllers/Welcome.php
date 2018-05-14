@@ -315,10 +315,11 @@ class Welcome extends CI_Controller {
         
     }
     
-    public function signin() {
+    public function signin() {     
         $this->load_language();
         if (!$this->session->userdata('id')){
             $this->load->model('class/user_model');
+            $this->load->model('class/user_temp_model');
             $this->load->model('class/user_role');
             $this->load->model('class/user_status');                                                                                                                                                                                                                            
             $datas = $this->input->post();
@@ -329,27 +330,124 @@ class Welcome extends CI_Controller {
                         $datas['check_pass'] = false;    //check only by the user name
                         //verificar si se puede cadastar cliente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                         $user_row = $this->user_model->verify_account($datas);
-                        if(!$user_row){    
-                            $datas['role_id'] = user_role::CLIENT;
-                            $datas['status_id'] = user_status::BEGINNER;
-                            $datas['init_date']= time();
-                            $datas['status_date']= $datas['init_date'];
-                            $datas['name']= $datas['client_name'];
-                            $datas['telf']= $datas['client_telf'];
-                            $datas['brazilian'] = $this->is_brazilian_ip();
-                            
-                            $cadastro_id = $this->user_model->insert_user($datas);
+                        if(!$user_row){  
+                            $user_row = $this->user_temp_model->in_confirmation($datas);
+                            if(!$user_row){
+                                $datas['id_number'] = rand(1000, 9999);                                 
+                                $datas['name']= "";//$datas['client_name'];
+                                $datas['telf']= $datas['client_telf'];
+                                $datas['ip']= $_SERVER['REMOTE_ADDR'];
+                                
+                                $cadastro_id = $this->user_temp_model->insert_user($datas);
 
-                            if($cadastro_id){
-                                $this->user_model->set_session($cadastro_id,$this->session);
+                                if($cadastro_id){                                    
+                                    $this->load->model('class/system_config');                    
+                                    $GLOBALS['sistem_config'] = $this->system_config->load();
+                                    $this->load->library('gmail');
+                                    //$this->Gmail = new \leads\cls\Gmail();
+
+                                    $result_message = $this->gmail->send_number_confirm
+                                                        (
+                                                            $datas['client_email'],
+                                                            $datas['client_login'],
+                                                            $datas['id_number']
+                                                        );
+                                    $result['success'] = true;
+                                    $result['message'] = 'Signin success ';
+                                    $result['resource'] = 'client';
+                                    $result['number'] = true;
+                                }else
+                                {
+                                    $result['success'] = false;
+                                    $result['message'] = $this->T("Erro no cadastro", array(), $GLOBALS['language']);                        
+                                    $result['resource'] = 'front_page';
+                                }
+                            }
+                            else{
                                 $result['success'] = true;
-                                $result['message'] = 'Signin success ';
-                                $result['resource'] = 'client';
-                            }else
-                            {
+                                $result['message'] = $this->T("Usuário em fase de cadastro. Por favor insira o número de 4 dígitos enviado a seu e-mail.", array(), $GLOBALS['language']); 
+                                $result['resource'] = 'front_page'; 
+                                $result['number'] = true;
+                            }
+                        }
+                        else{
+                            $result['success'] = false;
+                            $result['message'] = $this->T("Usuário existente no sistema, por favor faça o login.", array(), $GLOBALS['language']); 
+                            $result['resource'] = 'front_page'; 
+                        }
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
+                        $result['resource'] = 'front_page';
+                    }
+                }
+                else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("O telefone só deve conter números!", array(), $GLOBALS['language']); 
+                        $result['resource'] = 'front_page';
+                    }
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
+                $result['resource'] = 'front_page';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Verifique que nenhuma sessão no sistema está aberta.", array(), $GLOBALS['language']); 
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
+    
+    public function signin_number() {
+        $this->load_language();
+        if (!$this->session->userdata('id')){
+            $this->load->model('class/user_model');
+            $this->load->model('class/user_temp_model');
+            $this->load->model('class/user_role');
+            $this->load->model('class/user_status');                                                                                                                                                                                                                            
+            $datas = $this->input->post();
+            
+            if ( $this->is_valid_user_name($datas['client_login']) ){                
+                if ( $this->is_valid_phone($datas['client_telf']) ){
+                    if ( $this->is_valid_email($datas['client_email']) ){
+                        $datas['check_pass'] = false;    //check only by the user name
+                        //verificar si se puede cadastar cliente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                        $user_row = $this->user_model->verify_account($datas);
+                        if(!$user_row){  
+                            $user_row = $this->user_temp_model->verify_confirmation($datas);
+                            if($user_row){
+                                
+                                $datas['role_id'] = user_role::CLIENT;
+                                $datas['status_id'] = user_status::BEGINNER;
+                                $datas['init_date']= time();
+                                $datas['status_date']= $datas['init_date'];
+                                $datas['name']= $datas['client_name'];
+                                $datas['telf']= $datas['client_telf'];
+                                $datas['brazilian'] = $this->is_brazilian_ip();
+
+                                $this->user_temp_model->delete_temp_user($user_row['id']);
+                                $cadastro_id = $this->user_model->insert_user($datas);
+
+                                if($cadastro_id){                                    
+                                    $this->user_model->set_session($cadastro_id,$this->session);
+                                    $result['success'] = true;
+                                    $result['message'] = 'Signin success ';
+                                    $result['resource'] = 'client';
+                                }else
+                                {
+                                    $result['success'] = false;
+                                    $result['message'] = $this->T("Erro no cadastro", array(), $GLOBALS['language']);                        
+                                    $result['resource'] = 'front_page';
+                                }
+                            }
+                            else{
                                 $result['success'] = false;
-                                $result['message'] = $this->T("Erro no cadastro", array(), $GLOBALS['language']);                        
-                                $result['resource'] = 'front_page';
+                                $result['message'] = $this->T("Verifique os dados proporcionados para concluir o cadastro.", array(), $GLOBALS['language']); 
+                                $result['resource'] = 'front_page'; 
                             }
                         }
                         else{
@@ -401,7 +499,7 @@ class Welcome extends CI_Controller {
                 if($cancelamento){
                     $this->load->model('class/system_config');                    
                     $GLOBALS['sistem_config'] = $this->system_config->load();
-                    $this->load->library('Gmail');                    
+                    $this->load->library('gmail');                    
                     //$this->Gmail = new \leads\cls\Gmail();
 
                     $result_message = $this->gmail->send_client_cancel_status

@@ -310,6 +310,16 @@ var Translation = {
             "ES": "publicaciones",
             "EN": "publications" 
         },
+"NÚMERO DE CONFIRMAÇÃO": 
+        {   "PT": "NÚMERO DE CONFIRMAÇÃO",
+            "ES": "NÚMERO DE CONFIRMACIÓN",
+            "EN": "CONFIRMATION NUMBER" 
+        },
+"CONFIRMAR CONTA": 
+        {   "PT": "CONFIRMAR CONTA",
+            "ES": "CONFIRMAR CUENTA",
+            "EN": "CONFIRM ACCOUNT" 
+        },
 "Nenhum resultado encontrado.": 
         {   "PT": "Nenhum resultado encontrado.",
             "ES": "Ningún resultado encontrado.",
