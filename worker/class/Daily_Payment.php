@@ -109,7 +109,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                4
+                                                                4,
+                                                                $client['language']
                                                             );                                
                                 echo 'Client '.$client['user_id'].' receiving first alert <br>'; 
                             }
@@ -117,7 +118,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                2
+                                                                2,
+                                                                $client['language']
                                                             );
                                 echo 'Client '.$client['user_id'].' receiving second alert <br>'; 
                             }                            
@@ -125,7 +127,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 //bloquear
                                 $result_message = $this->Gmail->send_client_bloqued_status(
                                                                 $client['email'],
-                                                                $client['login']
+                                                                $client['login'],
+                                                                $client['language']
                                                             );
                                 
                                 $BD_access->set_blocked_client($client['user_id'], time());

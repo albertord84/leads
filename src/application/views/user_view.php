@@ -20,16 +20,16 @@
             <!--<link rel="stylesheet" href="<?php //echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>"/>-->
 
             <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>            
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
                 
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>        
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script>                
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>
@@ -654,16 +654,16 @@
     <!--<![endif]-->
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js?'.$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js?'.$SCRIPT_VERSION;?>"></script>
     <!-- FILTRAR -->
-    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
+    <script src="<?php echo base_url().'assets/js/filtrar.js?'.$SCRIPT_VERSION;?>"></script> 
     <!-- VALIDATE -->
-    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/validate.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
     <!-- MASCARAS -->
     <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
     <!-- Scripts -->
     <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
-    <script src="<?php echo base_url().'assets/js/talkme_painel.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/talkme_painel.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
     
 </html>
