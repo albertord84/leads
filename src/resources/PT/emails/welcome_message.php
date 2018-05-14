@@ -5,7 +5,7 @@
         <title>DUMBU Conta criada!</title>
 	<style>
 	div.blue {
-	    background-color: #4d94ff;
+	    background-color: #1a75ff;
 	    color: white;
 	}
 	</style>
@@ -17,13 +17,13 @@
                     <img src='cid:logo_new' style="vertical-align:middle">
                 </p>
                 
-                <h1 style="text-align:center;">Conta criada!</h1>
+                <h1 style="text-align:center;">Conta criada com sucesso!</h1>
             </div>    
             <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?>!</strong></h3></p></div>
-            <p> Você criou uma conta nosso sistema! Crie campanhas e comece a 
+            <p> Você criou uma conta nosso sistema. Crie campanhas e comece a 
                 <a href = https://dumbu.pro/leads/src/>
                 ganhar leads
-                </a>
+                </a>!
             </p>
                 
             <p>Se tiver qualquer dúvida é só nos escrever!</p>

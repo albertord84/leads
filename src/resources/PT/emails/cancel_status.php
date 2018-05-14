@@ -17,6 +17,7 @@
                     <img src='cid:logo_cancel' style="vertical-align:middle">
                 </p>
                 <h1 style="text-align:center;">Conta cancelada</h1>
+            </div>    
             <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
             <p> Sua conta foi cancelada. Como já foi assinante, gostariamos deixar um desconto caso deseje assinar novamente.</p>
             <p>É só usar o cupom BACKTODUMBU* e ganhará 50% de desconto no primeiro pagamento. :) </p>
