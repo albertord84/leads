@@ -91,7 +91,7 @@ namespace leads\cls {
                     $userId = $ig->people->getUserIdForName($rp);
                     $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
                     $followers = $response->getUsers();
-                    $new_cursor = $response->getNextMaxId();                    
+                    $new_cursor = $response->getNextMaxId();
                 } else
                 if($this->next_work->profile->profile_type_id== profile_type::GEOLOCATION) {
                     //$followers deve ser un array con los nombres de los seguidores
@@ -117,7 +117,7 @@ namespace leads\cls {
                         $username = $user;                    
                     $leads = (object)$this->extract_leads($ig, 'username', $username);
                     
-                    //2.2 incrementar a quantidade total de perfis analisados dessa campanha
+                    //2.2 incrementar a quantidade total de perfis analisados dessa perfil
                     if(!$this->next_work->profile->amount_analysed_profiles)
                         $this->next_work->profile->amount_analysed_profiles = 0;
                     $this->next_work->profile->amount_analysed_profiles ++;
@@ -134,6 +134,10 @@ namespace leads\cls {
                         //A.1 salvar a lead
                         $resp = $this->DB->save_extracted_crypt_leads($this->next_work->profile->id, $leads, $multi_level_result->table_to_leads);
                         //A.2 incrementar a quantidade total de leads extraidos da campanha
+                        if($this->next_work->client->brazilian ==1)
+                            $fixed_price = $this->config->FIXED_LEADS_PRICE;
+                        else    
+                            $fixed_price = $this->config->FIXED_LEADS_PRICE_EX;
                         if($resp){
                             $result['success']=true;
                             if(!$this->next_work->profile->amount_leads)
@@ -144,7 +148,8 @@ namespace leads\cls {
                                 'amount_leads', $this->next_work->profile->amount_leads
                             );
                             //A.3 atualizar o orçamento disponível da campanha
-                            $this->next_work->campaing->available_daily_value -= $this->config->FIXED_LEADS_PRICE;
+                            
+                                $this->next_work->campaing->available_daily_value -= $fixed_price;
                             $this->DB->update_field_in_DB('campaings', 
                                 'id', $this->next_work->campaing->id,
                                 'available_daily_value', $this->next_work->campaing->available_daily_value
@@ -155,14 +160,14 @@ namespace leads\cls {
                         }
                             
                         //A.4 se nao tiver orçamento disponivel, eliminar trabalho dessa campanha
-                        if($this->next_work->campaing->available_daily_value <= $this->config->FIXED_LEADS_PRICE){ //não tem orçamento disponível nem pra uma leads mais
+                        if($this->next_work->campaing->available_daily_value <= $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
                             $this->DB->delete_daily_work_by_campaing($this->next_work->campaing->id);
                             break;
                         }
                     }
                     
                     //2.4 salvar o perfil para ser usado no futuro
-                    if($multi_level && $leads->follower_count && $leads->follower_count>300){
+                    if($multi_level && $leads->follower_count && $leads->follower_count>300 && $multi_level_result->table_to_profiles !=='not_insert_profile_to_future'){
                         $this->DB->insert_future_reference_profile( $multi_level_result->table_to_profiles, $leads->ds_user_id, $leads->username);
                     }
                     sleep(2);           
@@ -446,7 +451,7 @@ namespace leads\cls {
             $result=array();
             if($multi_level==false || $multi_level=='false'){
                 $result['table_to_leads'] = 'leads';
-                $result['table_to_profiles'] = 'profiles' ;
+                $result['table_to_profiles'] = 'not_insert_profile_to_future' ;
                 return (object)$result;
             } 
             if($ds_user_id >0 && $ds_user_id< 1000000000){

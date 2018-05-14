@@ -512,7 +512,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="telf"><?php echo $CI->T("Telefone", array(),$language);?></label>
-                                                                <input class="form-control" id="telf_registration" maxlength="15">
+                                                                <input class="form-control number" id="telf_registration" maxlength="15">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
