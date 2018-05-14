@@ -23,9 +23,9 @@
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>            
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
-            
+                
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>        
             <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
@@ -70,6 +70,31 @@
                                 </li>                                                                
                                 <li>
                                     <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
+                                    <?php
+                                    if($this->session->userdata('login')){
+                                        if($this->session->userdata('is_admin')==TRUE){
+                                    ?>  
+                                            <li>                                    
+                                                <a href="<?php echo base_url().'index.php/welcome/admin'; ?>">
+                                                    <i class="fa fa-cog"></i>
+                                                    <?php echo mb_strtoupper($CI->T("ADMINISTRAR", array(),$language));?>
+                                                </a>
+                                            </li>
+                                    <?php
+                                        }
+                                        else{
+                                    ?>    
+                                            <li>                                    
+                                                <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
+                                                    <i class="fa fa-binoculars"></i>
+                                                    <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
+                                                </a>
+                                            </li>
+                                    <?php
+                                        }
+                                    }
+                                    else {
+                                    ?>
                                     <ul class="dl-submenu">
                                         <li>
                                             <div id="login_container1">
@@ -99,6 +124,7 @@
                                             </div>
                                         </li>
                                     </ul>
+                                    <?php }?>        
                                 </li>
                                 <li id="locales_cell">
                                     <a  id="lnk_language1_cell" href="#">
@@ -525,7 +551,8 @@
                                                         <button type="button" id="do_signin" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CRIAR CONTA", array(),$language);?></button>
                                                             <div class="checkbox m-top10 fleft100">
                                                           <label style="font-size: 11px;">
-                                                              <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;"> <?php echo $CI->T("Declaro que li e aceito os termos de uso", array(),$language);?>
+                                                              <input id = "terms_checkbox" type="checkbox" checked="true" style="position: relative;top:2px;">&nbsp; <?php echo $CI->T("Declaro que li e aceito os ", array(),$language);?>
+                                                              <a href="<?php echo base_url()."assets/others/".$GLOBALS['language']."/TERMOS DE USO DUMBU.pdf"; ?>"> <?php echo $CI->T("termos de uso", array(),$language);?> </a>                     
                                                           </label>
                                                         </div>
                                                     </div>                                                    

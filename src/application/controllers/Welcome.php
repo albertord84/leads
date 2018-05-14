@@ -30,7 +30,10 @@ class Welcome extends CI_Controller {
     }
     
     public function is_brazilian_ip(){
-        $prefixos_br = array('187', '189', '200', '201');
+        /*
+        $prefixos_br = array(   '45.','72.','93.','128','131','132','138','139',
+                                '139','143','146','147','150','152','155','157','161','164',
+                                '170','177','179','181','186','187','189','190','191','200','201');
         $prefixo_ip = substr($_SERVER['REMOTE_ADDR'], 0, 3);
 
         if (in_array($prefixo_ip, $prefixos_br)){
@@ -38,8 +41,15 @@ class Welcome extends CI_Controller {
         }
         else{
             return 0;
-        }
-
+        }*/
+        if($_SERVER['REMOTE_ADDR'] === "127.0.0.1")
+            return 1;
+        
+        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
+        $response = json_decode($datas);
+        if(is_object($response) && $response->country_code == "BR")
+            return 1;
+        return 0;
     }
     
     public function index() {       
@@ -47,7 +57,7 @@ class Welcome extends CI_Controller {
         $param = array();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-        
+                
         if (!$this->session->userdata('id')){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
@@ -936,13 +946,14 @@ class Welcome extends CI_Controller {
                 if( $profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED ||
                     $profiles_in_campaing[0]['campaing_status_id'] == campaing_status::PAUSED){
                     
+                    $previous_date = $profiles_in_campaing[0]['campaing_status_id'];
                     $results_update = $this->campaing_model->update_campaing_status($profiles_in_campaing[0]['campaing_id'], campaing_status::ACTIVE);
                         
                     if($profiles_in_campaing[0]['available_daily_value'] > 0){
                         $current_time = time();
                         foreach($profiles_in_campaing as $p){
                             $datas_works[] = array( 'client_id' => $p['client_id'], 'campaing_id' => $p['campaing_id'], 'profile_id' => $p['id'], 'last_accesed'=>$current_time);
-                            if($profiles_in_campaing[0]['campaing_status_id'] == campaing_status::CREATED){
+                            if($previous_state == campaing_status::CREATED){
                                 $this->campaing_model->update_profile_accesed($p['campaing_id'], $p['id'], $current_time-24*3600);
                             }
                         }

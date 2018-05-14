@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('body').on('propertychange input', 'input[class="number"]', forceNumeric);
+    //$('body').on('propertychange input', 'input[class="number"]', forceNumeric);
     
     $('#main_dropdown').on("click.bs.dropdown", function (e) {
         e.stopPropagation(); 
@@ -97,6 +97,53 @@ $(document).ready(function () {
             }
         });
     });
+    
+        $("#lnk_language2_cell").click(function () {
+       var new_language = $("#txt_language2").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
+    });
+    
+        $("#lnk_language3_cell").click(function () {
+       var new_language = $("#txt_language3").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
+    });
+    
     
     $("#btn_dumbu_login1").click(function() {
         do_login('#userLogin1','#userPassword1', '#container_login_message1', 
