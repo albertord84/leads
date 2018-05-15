@@ -30,6 +30,16 @@ var Translation = {
             "ES": "¡Problemas en la estructura del email informado!",
             "EN": "Problems in email structure!" 
         },
+"Deve aceitar os termos de uso!": 
+        {   "PT": "Deve aceitar os termos de uso!",
+            "ES": "Debe aceptar los términos de uso!",
+            "EN": "You must accept terms of use!" 
+        },
+"Deve ser um código de 4 números!": 
+        {   "PT": "Deve ser um código de 4 números!",
+            "ES": "Debe ser un código de 4 números!",
+            "EN": "Must be a code of 4 numbers!" 
+        },
 "Are you sure to cancel the subscription?": 
         {   "PT": "Você tem certeza de cancelar a assinatura?",
             "ES": "¿Estás seguro de cancelar la suscripción?",
@@ -211,9 +221,9 @@ var Translation = {
             "EN": "You must provide all data" 
         },
 "Você não possui leads que cumplam com sua solicitude": 
-        {   "PT": "Você não possui leads pagos que cumplam com sua solicitude",
-            "ES": "Usted no tiene leads pagados que cumplan con su solicitud",
-            "EN": "You have no paid leads that match your request." 
+        {   "PT": "Você não possui leads pagos no periodo solicitado",
+            "ES": "Usted no tiene leads pagados en el periodo solicitado",
+            "EN": "You have no paid leads in the requested period." 
         },
 "Ooops ... problema no servidor": 
         {   "PT": "Ooops ... problema no servidor",

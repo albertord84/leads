@@ -12,7 +12,7 @@
                     }
                 }
             ?>
-            <?php  $CI =& get_instance();?>
+            <?php  $CI =& get_instance(); ?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
             <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
@@ -34,20 +34,20 @@
             <!-- Bootstrap -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>">
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>">
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>">
+            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css?'.$SCRIPT_VERSION;?>">
 
             <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
             
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js?'.$SCRIPT_VERSION;?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
@@ -852,12 +852,12 @@
     <!--<![endif]-->
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js?'.$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js?'.$SCRIPT_VERSION;?>"></script>
     <!-- FILTRAR -->
-    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
+    <script src="<?php echo base_url().'assets/js/filtrar.js?'.$SCRIPT_VERSION;?>"></script> 
     <!-- VALIDATE -->
-    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/validate.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
     <!-- MASCARAS -->
     <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
     <!-- Scripts -->

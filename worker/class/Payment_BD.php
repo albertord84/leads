@@ -50,7 +50,8 @@ namespace leads\cls {
                     'email'=> $client_data['email'],
                     'status_id'=> $client_data['status_id'],
                     'brazilian'=> $client_data['brazilian'],
-                    'login'=> $client_data['login']
+                    'login'=> $client_data['login'],
+                    'language'=> $client_data['language']
                 );
             }
             return  $datas;

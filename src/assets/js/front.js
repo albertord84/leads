@@ -235,23 +235,23 @@ $(document).ready(function () {
                                 }
                             });                         
                         }else{
-                            message_container('Deve aceitar os termos de uso!','#container_sigin_message','red');                        
+                            message_container(T('Deve aceitar os termos de uso!',language),'#container_sigin_message','red');                        
                             $('#terms_checkbox').css('outline-color', 'red');
                             $('#terms_checkbox').css('outline-style', 'solid');
                             $('#terms_checkbox').css('outline-width', 'thin');                        
                         }
                     }
                     else{
-                        message_container('O telefone só pode conter números!','#container_sigin_message','red');                                            
+                        message_container(T('O telefone só pode conter números!',language),'#container_sigin_message','red');                                            
                     }
                 } else {
-                    message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!','#container_sigin_message','red');                                            
+                    message_container(T('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',language),'#container_sigin_message','red');                                            
                 }
             } else {
-                message_container('Problemas na estrutura do email informado!','#container_sigin_message','red');                                                            
+                message_container(T('Problemas na estrutura do email informado!',language),'#container_sigin_message','red');                                                            
             }
         } else {
-            message_container('Deve preencher todos os dados corretamente!','#container_sigin_message','red');              
+            message_container(T('Deve preencher todos os dados corretamente!',language),'#container_sigin_message','red');              
         }
        
     });
@@ -300,26 +300,26 @@ $(document).ready(function () {
                                     }
                                 });                         
                             }else{
-                                message_container('Deve aceitar os termos de uso!','#container_sigin_message','red');                        
+                                message_container(T('Deve aceitar os termos de uso!',language),'#container_sigin_message','red');                        
                                 $('#terms_checkbox').css('outline-color', 'red');
                                 $('#terms_checkbox').css('outline-style', 'solid');
                                 $('#terms_checkbox').css('outline-width', 'thin');                        
                             }
                         }
                         else{
-                            message_container('Deve ser um código de 4 números!','#container_sigin_message','red');                                            
+                            message_container(T('Deve ser um código de 4 números!',language),'#container_sigin_message','red');                                            
                         }                  }
                     else{
-                        message_container('O telefone só pode conter números!','#container_sigin_message','red');                                            
+                        message_container(T('O telefone só pode conter números!',language),'#container_sigin_message','red');                                            
                     }
                 } else {
-                    message_container('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!','#container_sigin_message','red');                                            
+                    message_container(T('O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!',language),'#container_sigin_message','red');                                            
                 }
             } else {
-                message_container('Problemas na estrutura do email informado!','#container_sigin_message','red');                                                            
+                message_container(T('Problemas na estrutura do email informado!',language),'#container_sigin_message','red');                                                            
             }
         } else {
-            message_container('Deve preencher todos os dados corretamente!','#container_sigin_message','red');              
+            message_container(T('Deve preencher todos os dados corretamente!',language),'#container_sigin_message','red');              
         }
        
     });
