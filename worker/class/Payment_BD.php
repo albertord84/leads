@@ -8,8 +8,7 @@ namespace leads\cls {
     require_once 'DB.php';
     require_once 'user_role.php';
     require_once 'user_status.php';
-    require_once 'campaing_status.php';  
-    require_once 'profiles_status.php';
+    require_once 'payment_type.php';
     
         
     class Payment_BD {
@@ -324,6 +323,22 @@ namespace leads\cls {
                 }
 
             return mysqli_query($DB->connection, $sql);                            
+        }
+        
+        public function save_payment($id_client, $amount_cents, $date, $payment_type, $id_source) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "INSERT INTO payments "
+                        . "(client_id, amount_in_cents, date, payment_type, source_id) "
+                        . "VALUES "   
+                        . "($id_client, $amount_cents, $date, $payment_type, $id_source);";   
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
         }
     }
 }

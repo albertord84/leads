@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>DUMBU Conta cancelada</title>
+        <title>DUMBU Cuenta cancelada</title>
 	<style>
 	div.red {
 	    background-color: #141f1f;
@@ -16,17 +16,17 @@
                 <p style="text-align:center;">
                     <img src='cid:logo_cancel' style="vertical-align:middle">
                 </p>
-                <h1 style="text-align:center;">Conta cancelada</h1>
+                <h1 style="text-align:center;">Cuenta cancelada</h1>
             </div>    
-            <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
-            <p> Sua conta foi cancelada. Como já foi assinante, gostariamos deixar um desconto caso deseje assinar novamente.</p>
-            <p>É só usar o cupom BACKTODUMBU* e ganhará 50% de desconto no primeiro pagamento. :) </p>
+            <div ><p><h3>Hola <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
+            <p> Su cuenta ha sido cancelada Como ya fue suscrito, nos gustaría dejar un descuento si desea volver a suscribirse.</p>
+            <p> Simplemente use el cupón BACKTODUMBU * y obtendrá un 50% de descuento en el primer pago. :)</p>
                 
-            <p>Se tiver qualquer dúvida é só nos escrever!</p>
+            <p>Si tiene alguna pregunta, ¡solo escríbanos!</p>
             <br>
-            <em>*Cupom válido apenas para conta cancelada.</em>
+            <em>*Cupón válido solo para cuenta cancelada.</em>
             <br>
-            <p>Obrigado por usar nossos serviços,</p>
+            <p>Gracias por usar nuestros servicios,</p>
             <p>DUMBU SYSTEM</p>
         </div>
     </body>
