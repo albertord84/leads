@@ -281,7 +281,7 @@ namespace leads\cls {
                 exec($curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
-                if (isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
+                if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                     $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                     if (count($json->data->location->edge_location_to_media->edges) == 0) {
                         $cursor = null;
@@ -291,19 +291,21 @@ namespace leads\cls {
 //                        $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                         echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                     }
-                } else if (isset($json->data) && $json->data->location == NULL) {
-                    print_r($curl_str);
-                    $cursor = null;
-//                    $this->DB->update_field_in_DB('profiles',
-//                    'id', $this->next_work->profile->id,
-//                    '`cursor`','NULL');                        
-//                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
-                    echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
-                } else {
-                    var_dump($output);
-                    print_r($curl_str);
-                    echo ("<br>\n Untrated error in Geolocation!!!");
-                }
+                } else 
+                    if (isset($json->data) && $json->data->location == NULL) {
+                        print_r($curl_str);
+                        $cursor = null;
+    //                    $this->DB->update_field_in_DB('profiles',
+    //                    'id', $this->next_work->profile->id,
+    //                    '`cursor`','NULL');                        
+    //                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                        echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
+                    } else {
+                        var_dump($output);
+                        print_r($curl_str);
+                        echo ("<br>\n Untrated error in Geolocation!!!");
+                        throw new Exception("Not followers from geolocation");
+                    }
                 return $json;
             } catch (\Exception $exc) {
                 echo $exc->getTraceAsString();
@@ -415,6 +417,7 @@ namespace leads\cls {
                     var_dump($output);
                     print_r($curl_str);
                     echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
+                    throw new Exception("Not followers from hashtag");
                 }
                 return $json;
             } catch (\Exception $exc) {
