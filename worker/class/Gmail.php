@@ -377,7 +377,11 @@ namespace leads\cls {
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Pendente por pagamento!';
-
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Pending for payment!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Pendiente de pago!';
+            
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
@@ -388,7 +392,7 @@ namespace leads\cls {
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/worker/resources/$lang/emails/pendent_status.php?username=$username&day_to_block=$day_to_block"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Pendente por pagamento!';
+            //$this->mail->Subject = 'DUMBU Pendente por pagamento!';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -419,7 +423,11 @@ namespace leads\cls {
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta cancelada';
-
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account canceled!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta cancelada!';
+            
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
@@ -430,7 +438,7 @@ namespace leads\cls {
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/worker/resources/$lang/emails/cancel_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta cancelada';
+            //$this->mail->Subject = 'DUMBU Conta cancelada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -461,7 +469,11 @@ namespace leads\cls {
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta bloqueada';
-
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account blocked!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta bloqueada!';
+            
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
@@ -472,7 +484,7 @@ namespace leads\cls {
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/worker/resources/$lang/emails/bloqued_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta bloqueada';
+            //$this->mail->Subject = 'DUMBU Conta bloqueada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');

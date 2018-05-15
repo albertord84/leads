@@ -407,7 +407,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Pendente por pagamento!';
-
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Pending for payment!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Pendiente de pago!';
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
@@ -418,7 +421,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/pendent_status.php?username=$username&day_to_block=$day_to_block"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Pendente por pagamento!';
+            //$this->mail->Subject = 'DUMBU Pendente por pagamento!';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -449,6 +452,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta cancelada';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account canceled!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta cancelada!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -460,7 +467,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/cancel_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta cancelada';
+            //$this->mail->Subject = 'DUMBU Conta cancelada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -491,6 +498,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta bloqueada';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account blocked!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta bloqueada!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -502,7 +513,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/bloqued_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta bloqueada';
+            //$this->mail->Subject = 'DUMBU Conta bloqueada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -533,7 +544,11 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
-
+            
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Ticket generated successfully!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Boleto generado exitosamente!';
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
@@ -544,7 +559,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/ticket_success.php?username=$username&ticket_url=$ticket_url"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
+            //$this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
 
             //Attach an image file
             //$this->mail->AddEmbeddedImage($_SERVER['SERVER_NAME'].'/leads/src/assets/img/bol.png', 'logo_boleto');
@@ -575,6 +590,11 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Verificar conta';
+                        
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Check account';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Verificar cuenta';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -587,7 +607,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/number_confirm.php?username=$username&number=$number"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Verificar conta';
+            //$this->mail->Subject = 'DUMBU Verificar conta';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -618,6 +638,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta criada!';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Created account!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta creada!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -629,7 +653,7 @@
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/welcome_message.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta criada!';
+            //$this->mail->Subject = 'DUMBU Conta criada!';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');

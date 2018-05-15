@@ -12,7 +12,7 @@
                     }
                 }
             ?>
-            <?php  $CI =& get_instance();?>
+            <?php  $CI =& get_instance(); ?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
             <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
