@@ -956,4 +956,201 @@ curl 'https://www.instagram.com/graphql/query/?query_hash=ac38b90f0f3981c4209201
 <b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>393</b><br />
 array(0) {
 }
-curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22amores%22%2C%22f
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22amores%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=WrseFgABAAHpI3WnYEA-_GmTL5ym; sessionid=IGSC3b4531647a02cf5460d95b0db8ffec6b7b9376d535997f192fb508820c920f9f%3AAfQ6O8I9mjysQmvQZmd23WuDWUYpNNOV%3A%7B%22_auth_user_id%22%3A7307005960%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227307005960%3AmL82N0gmYPTPO662G5XTCQ9QQGNAPfmW%3Af54a4d32d66d3a25817fb4ae73c104fa8e60b5c943cef13f283dd1bfc6c2a43a%22%2C%22last_refreshed%22%3A1524103395.8317873478%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM; ds_user_id=7307005960' -H 'X-CSRFToken: b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+ Client ---> josergm86  Campaing --> 3  Profile --> amores:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>393</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22vidaloca%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=WrseFgABAAHpI3WnYEA-_GmTL5ym; sessionid=IGSC3b4531647a02cf5460d95b0db8ffec6b7b9376d535997f192fb508820c920f9f%3AAfQ6O8I9mjysQmvQZmd23WuDWUYpNNOV%3A%7B%22_auth_user_id%22%3A7307005960%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227307005960%3AmL82N0gmYPTPO662G5XTCQ9QQGNAPfmW%3Af54a4d32d66d3a25817fb4ae73c104fa8e60b5c943cef13f283dd1bfc6c2a43a%22%2C%22last_refreshed%22%3A1524103395.8317873478%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM; ds_user_id=7307005960' -H 'X-CSRFToken: b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+ Client ---> josergm86  Campaing --> 3  Profile --> vidaloca:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>393</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22santanderselect%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=WrseFgABAAHpI3WnYEA-_GmTL5ym; sessionid=IGSC3b4531647a02cf5460d95b0db8ffec6b7b9376d535997f192fb508820c920f9f%3AAfQ6O8I9mjysQmvQZmd23WuDWUYpNNOV%3A%7B%22_auth_user_id%22%3A7307005960%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227307005960%3AmL82N0gmYPTPO662G5XTCQ9QQGNAPfmW%3Af54a4d32d66d3a25817fb4ae73c104fa8e60b5c943cef13f283dd1bfc6c2a43a%22%2C%22last_refreshed%22%3A1524103395.8317873478%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM; ds_user_id=7307005960' -H 'X-CSRFToken: b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+ Client ---> pedropetti  Campaing --> 4  Profile --> santanderselect:  proccess correctly<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 195180669 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 9  Profile --> oramainvestimentos:  proccess correctly<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7547996284 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 9  Profile --> btgpactualdigital:  proccess correctly<br><br>
+
+<br />
+<b>Notice</b>:  Undefined offset: 0 in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>393</b><br />
+array(0) {
+}
+curl 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables=%7B%22tag_name%22%3A%22santanderselect%22%2C%22first%22%3A2%2C%22after%22%3A%22%22%7D' -H 'Cookie: mid=WrseFgABAAHpI3WnYEA-_GmTL5ym; sessionid=IGSC3b4531647a02cf5460d95b0db8ffec6b7b9376d535997f192fb508820c920f9f%3AAfQ6O8I9mjysQmvQZmd23WuDWUYpNNOV%3A%7B%22_auth_user_id%22%3A7307005960%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A1%2C%22_token_ver%22%3A2%2C%22_token%22%3A%227307005960%3AmL82N0gmYPTPO662G5XTCQ9QQGNAPfmW%3Af54a4d32d66d3a25817fb4ae73c104fa8e60b5c943cef13f283dd1bfc6c2a43a%22%2C%22last_refreshed%22%3A1524103395.8317873478%7D; s_network=; ig_pr=1; ig_vw=1855; csrftoken=b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM; ds_user_id=7307005960' -H 'X-CSRFToken: b8ZIUh1kP3qdCpEBOu6BJJcyC4N3z9qM' -H 'Origin: https://www.instagram.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' -H 'X-Requested-with: XMLHttpRequest' -H 'content-type: application/x-www-form-urlencoded' -H 'Accept: */*' -H 'Referer: https://www.instagram.com/' -H 'Authority: www.instagram.com' --compressed <br>n<br>
+ Untrated error!!!<br>
+<br>
+ Client ---> josergm86  Campaing --> 3  Profile --> santanderselect:  proccess correctly<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2300666393 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1759560826 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4001538887 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 4831279116 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 10  Profile --> bancointer: Throttled by Instagram because of too many API requests.<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 388022458 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7543334389 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 346762428 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 28638628 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 10  Profile --> bancodaycoval: Throttled by Instagram because of too many API requests.<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7564135202 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3578194577 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 528467218 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1791480276 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2256206566 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 722501548 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 452711901 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2094268517 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 8  Profile --> nubankbrasil: Throttled by Instagram because of too many API requests.<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 222245541 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6038491161 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1377312229 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 6  Profile --> bradescoprime: Throttled by Instagram because of too many API requests.<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 6174324761 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7469071329 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1491003605 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 934860926 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1834051911 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1287391647 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 1698241816 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7259156446 na tabela leads<br>
+<br>
+ Client ---> pedropetti  Campaing --> 6  Profile --> bradesco: Throttled by Instagram because of too many API requests.<br><br>
+
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3721723259 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3630303946 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2099127626 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 520063308 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 7051348621 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 2244894865 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5380758401 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 3680450698 na tabela leads<br>
+<br>
+<br>
+<br>
+ ---------->Leads extracted and save successfully from profile 5884716292 na tabela leads<br>
+<br>
