@@ -8,8 +8,7 @@ namespace leads\cls {
     require_once 'DB.php';
     require_once 'user_role.php';
     require_once 'user_status.php';
-    require_once 'campaing_status.php';  
-    require_once 'profiles_status.php';
+    require_once 'payment_type.php';
     
         
     class Payment_BD {
@@ -51,7 +50,8 @@ namespace leads\cls {
                     'email'=> $client_data['email'],
                     'status_id'=> $client_data['status_id'],
                     'brazilian'=> $client_data['brazilian'],
-                    'login'=> $client_data['login']
+                    'login'=> $client_data['login'],
+                    'language'=> $client_data['language']
                 );
             }
             return  $datas;
@@ -300,20 +300,21 @@ namespace leads\cls {
             try {
                 $DB->connect();
                 $first = TRUE;
+                $current_time = time();
                 $sql = ""
                         . "INSERT INTO daily_work "
-                        . "(client_id, campaing_id, profile_id) "
+                        . "(client_id, campaing_id, profile_id, last_accesed) "
                         . "VALUES ";
                 foreach($datas_works as $work){
                     $client_id = $work['client_id'];
                     $campaing_id = $work['campaing_id'];
                     $profile_id = $work['profile_id'];
                     if($first){
-                        $sql .= "($client_id, $campaing_id, $profile_id)";
+                        $sql .= "($client_id, $campaing_id, $profile_id, $current_time)";
                         $first = FALSE;
                     }
                     else{
-                        $sql .= ", ($client_id, $campaing_id, $profile_id)";
+                        $sql .= ", ($client_id, $campaing_id, $profile_id, $current_time)";
                     }
                 }
                 $sql .=";";
@@ -323,6 +324,22 @@ namespace leads\cls {
                 }
 
             return mysqli_query($DB->connection, $sql);                            
+        }
+        
+        public function save_payment($id_client, $amount_cents, $date, $payment_type, $id_source) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "INSERT INTO payments "
+                        . "(client_id, amount_in_cents, date, payment_type, source_id) "
+                        . "VALUES "   
+                        . "($id_client, $amount_cents, $date, $payment_type, $id_source);";   
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
         }
     }
 }

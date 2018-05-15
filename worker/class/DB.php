@@ -73,7 +73,7 @@ namespace leads\cls {
 
         public function delete_daily_work_by_campaing($campaing_id) {
             try {
-                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $campaing_id);";
+                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $campaing_id;";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -83,7 +83,7 @@ namespace leads\cls {
        
         public function delete_daily_work_by_client($client_id) {
             try {
-                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $client_id); ";
+                $sql = "DELETE FROM dumbu_emails_db.daily_work WHERE daily_work.campaing_id = $client_id; ";
                 $result = mysqli_query($this->connection, $sql);
                 return $result;
             } catch (\Exception $exc) {
@@ -144,7 +144,7 @@ namespace leads\cls {
                 $result = mysqli_query($this->connection, $sql);
                 $old_campaing = $result->fetch_object();
                 
-                //5. obter o perfil mais antigo 
+                //5. obter o perfil asociado
                 $sql = ""
                     . " SELECT * FROM dumbu_emails_db.profiles "
                     . " WHERE profiles.id = '$next_work->profile_id';";

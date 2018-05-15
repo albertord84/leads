@@ -30,6 +30,16 @@ var Translation = {
             "ES": "¡Problemas en la estructura del email informado!",
             "EN": "Problems in email structure!" 
         },
+"Deve aceitar os termos de uso!": 
+        {   "PT": "Deve aceitar os termos de uso!",
+            "ES": "Debe aceptar los términos de uso!",
+            "EN": "You must accept terms of use!" 
+        },
+"Deve ser um código de 4 números!": 
+        {   "PT": "Deve ser um código de 4 números!",
+            "ES": "Debe ser un código de 4 números!",
+            "EN": "Must be a code of 4 numbers!" 
+        },
 "Are you sure to cancel the subscription?": 
         {   "PT": "Você tem certeza de cancelar a assinatura?",
             "ES": "¿Estás seguro de cancelar la suscripción?",
@@ -105,6 +115,11 @@ var Translation = {
             "ES": "GEOLOCALIZACIÓN",
             "EN": "GEOLOCATION" 
         },
+"GEOLOCALICAÇÃO": 
+        {   "PT": "GEOLOCALIZAÇÃO",
+            "ES": "GEOLOCALIZACIÓN",
+            "EN": "GEOLOCATION" 
+        },
 "HASHTAG": 
         {   "PT": "HASHTAG",
             "ES": "HASHTAG",
@@ -124,6 +139,11 @@ var Translation = {
         {   "PT": "Cancelada",
             "ES": "Cancelada",
             "EN": "Canceled" 
+        },
+"CANCELADA": 
+        {   "PT": "CANCELADA",
+            "ES": "CANCELADA",
+            "EN": "CANCELED" 
         },
 "Cuidado!": 
         {   "PT": "Cuidado!",
@@ -201,9 +221,9 @@ var Translation = {
             "EN": "You must provide all data" 
         },
 "Você não possui leads que cumplam com sua solicitude": 
-        {   "PT": "Você não possui leads que cumplam com sua solicitude",
-            "ES": "Usted no tiene leads que cumplan con su solicitud",
-            "EN": "You have no leads that match your request." 
+        {   "PT": "Você não possui leads pagos no periodo solicitado",
+            "ES": "Usted no tiene leads pagados en el periodo solicitado",
+            "EN": "You have no paid leads in the requested period." 
         },
 "Ooops ... problema no servidor": 
         {   "PT": "Ooops ... problema no servidor",
@@ -221,8 +241,8 @@ var Translation = {
             "EN": "Unable to connect to Instagram" 
         },
 "Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.": 
-        {   "PT": "Sua campanha foi criada exitosamente! Para poder comenzar a extraer leads deve ativar sua campanha.",
-            "ES": "¡Campaña creada!",
+        {   "PT": "Sua campanha foi criada com sucesso! Para poder começar a extrair leads deve ativar sua campanha.",
+            "ES": "¡Campaña creada exitosamente! Para poder comenzar a extraer leads debe activar su campaña.",
             "EN": "Your campaign was successfully created! In order to start extracting leads you must activate your campaign." 
         },
 "Campanha criada!": 
@@ -235,10 +255,20 @@ var Translation = {
             "ES": "TERMINADA",
             "EN": "FINISHED" 
         },
+"Terminada": 
+        {   "PT": "Terminada",
+            "ES": "Terminada",
+            "EN": "Finished" 
+        },
 "CRIADA": 
         {   "PT": "CRIADA",
             "ES": "CREADA",
             "EN": "CREATED" 
+        },
+"Criada": 
+        {   "PT": "Criada",
+            "ES": "Creada",
+            "EN": "Created" 
         },
 "Inicio": 
         {   "PT": "Inicio",
@@ -289,6 +319,21 @@ var Translation = {
         {   "PT": "publicações",
             "ES": "publicaciones",
             "EN": "publications" 
+        },
+"NÚMERO DE CONFIRMAÇÃO": 
+        {   "PT": "NÚMERO DE CONFIRMAÇÃO",
+            "ES": "NÚMERO DE CONFIRMACIÓN",
+            "EN": "CONFIRMATION NUMBER" 
+        },
+"CONFIRMAR CONTA": 
+        {   "PT": "CONFIRMAR CONTA",
+            "ES": "CONFIRMAR CUENTA",
+            "EN": "CONFIRM ACCOUNT" 
+        },
+"Para continuar o cadastro use o número enviado a seu e-mail!": 
+        {   "PT": "Para continuar o cadastro use o número enviado a seu e-mail!",
+            "ES": "Para continuar el registro use el número enviado a su e-mail!",
+            "EN": "To continue the registration use the number sent to your e-mail!" 
         },
 "Nenhum resultado encontrado.": 
         {   "PT": "Nenhum resultado encontrado.",

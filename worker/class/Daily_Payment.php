@@ -42,11 +42,13 @@ class Daily_Payment {   //extends CI_Controller {
                     foreach ($list_boleto as $boleto) {                        
                         $amount_available = $boleto['amount_payed_value']-$boleto['amount_used_value'];
                         if($amount_available > $price_per_lead && $amount_to_pay > 0){
+                            $partial_charged = 0;
                             if($amount_available > $amount_to_pay){
                                 //pagar todo con el boleto
-                                $leads_sold += $amount_to_pay;
-                                $charged += $amount_to_pay;
-                                $amount_available -= $amount_to_pay;                        
+                                $partial_charged = $amount_to_pay;
+                                $leads_sold += $partial_charged;
+                                $charged += $partial_charged;
+                                $amount_available -= $partial_charged;                        
                                 $amount_to_pay = 0;
                                 
                                 if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
@@ -65,11 +67,15 @@ class Daily_Payment {   //extends CI_Controller {
                                 $amount_available -= $partial_charged;  
                             }                        
                             //actualizar boleto
-                            $boleto = $BD_access->update_bank_ticket($client['user_id'], $boleto['id'], ($boleto['amount_payed_value']-$amount_available));
+                            $boleto_updated = $BD_access->update_bank_ticket($client['user_id'], $boleto['id'], ($boleto['amount_payed_value']-$amount_available));
+                            if($boleto_updated){
+                                $BD_access->save_payment($client['user_id'], $partial_charged, time(), payment_type::TICKET_BANK, $boleto['id']);
+                                echo 'Charged '.$partial_charged.' for client '.$client['user_id'].' in ticket bank with id:'.$boleto['id'].'<br>'; 
+                            }
+                            else{   //error updating ticket bank
+                                $amount_to_pay += $partial_charged;
+                            }                            
                         }                        
-                    }
-                    if($charged){
-                        echo 'Charged '.$charged.' in ticket for client '.$client['user_id'].'<br>'; 
                     }
                 }
 
@@ -91,10 +97,17 @@ class Daily_Payment {   //extends CI_Controller {
                     }
 
                     if($value_cents < $amount_to_pay){//no fue hecho el cobro
+                        $days_to_block = $GLOBALS['sistem_config']->DAYS_TO_BLOCK_CLIENT_BY_PAYMENT;
                         if($client['status_id'] == user_status::ACTIVE){
                             $BD_access->set_pendent_client($client['user_id'], time());
                             $BD_access->delete_works_by_client($client['user_id']);
                             echo 'Client '.$client['user_id'].' is now pendent by payment <br>'; 
+                            $result_message = $this->Gmail->send_client_pendent_status(
+                                                                $client['email'],
+                                                                $client['login'],
+                                                                $days_to_block,
+                                                                $client['language']
+                                                            ); 
                         }
                         else{
                             $status_date = $client['status_date'];
@@ -103,7 +116,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                4
+                                                                $days_to_block-2,
+                                                                $client['language']
                                                             );                                
                                 echo 'Client '.$client['user_id'].' receiving first alert <br>'; 
                             }
@@ -111,7 +125,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                2
+                                                                $days_to_block-4,
+                                                                $client['language']
                                                             );
                                 echo 'Client '.$client['user_id'].' receiving second alert <br>'; 
                             }                            
@@ -119,7 +134,8 @@ class Daily_Payment {   //extends CI_Controller {
                                 //bloquear
                                 $result_message = $this->Gmail->send_client_bloqued_status(
                                                                 $client['email'],
-                                                                $client['login']
+                                                                $client['login'],
+                                                                $client['language']
                                                             );
                                 
                                 $BD_access->set_blocked_client($client['user_id'], time());
@@ -129,6 +145,9 @@ class Daily_Payment {   //extends CI_Controller {
                     }
                     else{
                         $leads_sold = $amount_to_pay;   //todos los leads fueron vendidos
+                        
+                        $BD_access->save_payment($client['user_id'], $amount_to_pay, time(), payment_type::CREDIT_CARD, $credit_card['id']);
+                        echo 'Charged '.$amount_to_pay.' for client '.$client['user_id'].' in credit card with id:'.$credit_card['id'].'<br>'; 
                         
                         if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
                             //adicionar campanhas activas

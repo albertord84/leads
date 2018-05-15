@@ -393,7 +393,7 @@
             return $result;
         }
         
-        public function send_client_pendent_status($useremail, $username, $day_to_block) {
+        public function send_client_pendent_status($useremail, $username, $day_to_block, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -407,18 +407,21 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Pendente por pagamento!';
-
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Pending for payment!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Pendiente de pago!';
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
             $day_to_block = urlencode($day_to_block);            
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/pendent_status.php?username=$username&day_to_block=$day_to_block"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Pendente por pagamento!';
+            //$this->mail->Subject = 'DUMBU Pendente por pagamento!';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -435,7 +438,7 @@
             return $result;
         }
         
-        public function send_client_cancel_status($useremail, $username) {
+        public function send_client_cancel_status($useremail, $username, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -449,6 +452,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta cancelada';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account canceled!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta cancelada!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -456,11 +463,11 @@
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/cancel_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta cancelada';
+            //$this->mail->Subject = 'DUMBU Conta cancelada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -477,7 +484,7 @@
             return $result;
         }
         
-        public function send_client_bloqued_status($useremail, $username) {
+        public function send_client_bloqued_status($useremail, $username, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -491,6 +498,10 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Conta bloqueada';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Account blocked!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta bloqueada!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -498,11 +509,11 @@
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/bloqued_status.php?username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Conta bloqueada';
+            //$this->mail->Subject = 'DUMBU Conta bloqueada';
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
@@ -519,7 +530,7 @@
             return $result;
         }
         
-        public function send_client_ticket_success($useremail, $username, $ticket_url) {
+        public function send_client_ticket_success($useremail, $username, $ticket_url, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
@@ -533,22 +544,120 @@
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
             $this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
-
+            
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Ticket generated successfully!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Boleto generado exitosamente!';
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);            
             $ticket_url = urlencode($ticket_url);            
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
             $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/ticket_success.php?username=$username&ticket_url=$ticket_url"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
+            //$this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
 
             //Attach an image file
             //$this->mail->AddEmbeddedImage($_SERVER['SERVER_NAME'].'/leads/src/assets/img/bol.png', 'logo_boleto');
             $this->mail->AddEmbeddedImage(realpath('../src/assets/img/email_bol.png'), "logo_boleto", "email_bol.png", "base64", "image/png");
+            //send the message, check for errors
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function send_number_confirm($useremail, $username, $number, $lang) {
+            //Set an alternative reply-to address
+            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
+            //Set who the message is to be sent to
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $username);
+            $this->mail->clearCCs();
+            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
+            //$this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+
+            //Set the subject line
+            //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
+            $this->mail->Subject = 'DUMBU Verificar conta';
+                        
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Check account';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Verificar cuenta';
+
+            //Read an HTML message body from an external file, convert referenced images to embedded,
+            //convert HTML into a basic plain-text alternative body
+            $username = urlencode($username);            
+            $number = urlencode($number);            
+                
+            //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
+            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/number_confirm.php?username=$username&number=$number"), dirname(__FILE__));
+
+            //Replace the plain text body with one created manually
+            //$this->mail->Subject = 'DUMBU Verificar conta';
+
+            //Attach an image file
+            //$mail->addAttachment('images/phpmailer_mini.png');
+            //$this->mail->AddEmbeddedImage(realpath('../src/assets/img/email_cancel.png'), "logo_cancel", "email_cancel.png", "base64", "image/png");
+            //send the message, check for errors
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function send_welcome($useremail, $username, $lang) {
+            //Set an alternative reply-to address
+            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
+            //Set who the message is to be sent to
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $username);
+            $this->mail->clearCCs();
+            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
+            //$this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+
+            //Set the subject line
+            //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
+            $this->mail->Subject = 'DUMBU Conta criada!';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Created account!';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Cuenta creada!';
+
+            //Read an HTML message body from an external file, convert referenced images to embedded,
+            //convert HTML into a basic plain-text alternative body
+            $username = urlencode($username);            
+                
+            //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
+            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/welcome_message.php?username=$username"), dirname(__FILE__));
+
+            //Replace the plain text body with one created manually
+            //$this->mail->Subject = 'DUMBU Conta criada!';
+
+            //Attach an image file
+            //$mail->addAttachment('images/phpmailer_mini.png');
+            $this->mail->AddEmbeddedImage(realpath('../src/assets/img/new_user.png'), "logo_new", "new_user.png", "base64", "image/png");
             //send the message, check for errors
             if (!$this->mail->send()) {
                 $result['success'] = false;

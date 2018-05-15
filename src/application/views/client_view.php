@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-            <?php  $CI =& get_instance();?>
+    <head> 
+             <meta http-equiv="refresh" content="300">
+            <?php 
+                function reduce_profile($profile){
+                    if(strlen($profile) >= 9){
+                        return substr($profile,0,7).'...';
+                    }
+                    else{
+                        return $profile;
+                    }
+                }
+            ?>
+            <?php  $CI =& get_instance(); ?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
             <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
@@ -9,13 +20,13 @@
             <script type="text/javascript">var min_ticket_bank ='<?php echo $min_ticket_bank/100;?>';</script>
             
             <meta charset="UTF-8">
-            <title>Dumbo-Leads</title>
+            <title>Dumbu-Leads</title>
             <meta name="viewport" content="width=device-width">
             <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
 
             <!-- Font Awesome -->
             <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->            
-            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
             
             <!-- Tooltip -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/js/popper.min.js'?>">
@@ -23,20 +34,20 @@
             <!-- Bootstrap -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>">
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>">
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>">
+            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css?'.$SCRIPT_VERSION;?>">
 
             <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
             
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js?'.$SCRIPT_VERSION;?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
@@ -87,13 +98,13 @@
                                                                 <span class="fleft100 ellipse">
                                                                     <div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'.$profiles_temp[$profile_insta_temp].'">';
                                                                         if($profiles_type_temp[$profile_insta_temp] == 1){
-                                                                            echo substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 2){
-                                                                            echo "@".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "@".reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 3){
-                                                                            echo "#".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "#".reduce_profile($profiles_temp[$profile_insta_temp],0,9);
                                                                         }
                                                         echo        '</div>
                                                                     <b class="my_close">x</b>
@@ -391,6 +402,9 @@
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                             <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
+                                                    <div>
+                                                        <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
+                                                    </div>
                                                     <div class="fleft100 m-top5">
                                                             <h5 class="cl-green fw-600"><?php echo $CI->T("IMPORTANTE!", array(),$language);?></h5>
                                                             <span class="text-justify fleft100"><?php echo $CI->T("O boleto será enviado para o e-mail cadastrado e ficará disponível em sua área de assinante. Faça o pagamento em até 2 dias úteis para manter sua conta ativa.", array(),$language);?></span>
@@ -400,7 +414,7 @@
                             </div>
                             <div class="fleft100 pd-tb30 bk-silver text-center">
                                     <div class="col-md-6 col-sm-8 col-xs-12 fnone i-block">
-                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen"><?php echo $CI->T("Salvar", array(),$language);?></button>
                                     </div>
                             </div>
                 </div>
@@ -754,13 +768,13 @@
                                                                             <span data-toggle="tooltip" data-placement="top" title="<?php echo $profile['profile']; ?>">
                                                                                 <?php
                                                                                 if($campaing['campaing_type_id'] == 1){
-                                                                                    echo substr($profile['profile'],0,9);
+                                                                                    echo reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 2){
-                                                                                    echo "@".substr($profile['profile'],0,9);
+                                                                                    echo "@".reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 3){
-                                                                                    echo "#".substr($profile['profile'],0,9);
+                                                                                    echo "#".reduce_profile($profile['profile'],0,9);
                                                                                 }                                                                                
                                                                                 ?>
                                                                             </span>
@@ -851,12 +865,12 @@
     <!--<![endif]-->
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js?'.$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js?'.$SCRIPT_VERSION;?>"></script>
     <!-- FILTRAR -->
-    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
+    <script src="<?php echo base_url().'assets/js/filtrar.js?'.$SCRIPT_VERSION;?>"></script> 
     <!-- VALIDATE -->
-    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/validate.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
     <!-- MASCARAS -->
     <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
     <!-- Scripts -->
