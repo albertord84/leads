@@ -57,7 +57,7 @@ class Welcome extends CI_Controller {
         $param = array();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-       
+          
         if (!$this->session->userdata('id')){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")

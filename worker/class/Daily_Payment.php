@@ -97,10 +97,17 @@ class Daily_Payment {   //extends CI_Controller {
                     }
 
                     if($value_cents < $amount_to_pay){//no fue hecho el cobro
+                        $days_to_block = $GLOBALS['sistem_config']->DAYS_TO_BLOCK_CLIENT_BY_PAYMENT;
                         if($client['status_id'] == user_status::ACTIVE){
                             $BD_access->set_pendent_client($client['user_id'], time());
                             $BD_access->delete_works_by_client($client['user_id']);
                             echo 'Client '.$client['user_id'].' is now pendent by payment <br>'; 
+                            $result_message = $this->Gmail->send_client_pendent_status(
+                                                                $client['email'],
+                                                                $client['login'],
+                                                                $days_to_block,
+                                                                $client['language']
+                                                            ); 
                         }
                         else{
                             $status_date = $client['status_date'];
@@ -109,7 +116,7 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                4,
+                                                                $days_to_block-2,
                                                                 $client['language']
                                                             );                                
                                 echo 'Client '.$client['user_id'].' receiving first alert <br>'; 
@@ -118,7 +125,7 @@ class Daily_Payment {   //extends CI_Controller {
                                 $result_message = $this->Gmail->send_client_pendent_status(
                                                                 $client['email'],
                                                                 $client['login'],
-                                                                2,
+                                                                $days_to_block-4,
                                                                 $client['language']
                                                             );
                                 echo 'Client '.$client['user_id'].' receiving second alert <br>'; 
