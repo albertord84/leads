@@ -30,6 +30,45 @@ $(document).ready(function () {
         });                            
     });
     
+    $("#do_show_users").click(function () { 
+        var status_id = $('#status_select').val();
+        $.ajax({
+            url: base_url + 'index.php/admin/show_users', 
+            data:  {
+                        'status_id': status_id,                                       
+                        'language': language                                
+                    }, 
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) { 
+                    var users = response['users_array'];
+                    var i, num_users = users.length;
+                    var html = "";
+                    for(i = 0; i < num_users; i++){
+                        html += '<div id="user_'+users[i]['id']+'" >';
+                            html += '<b>login: </b>' + users[i]['login']+'<br>';
+                            html += '<b>email: </b>' + users[i]['email']+'<br>';
+                            html += '<b>status: </b>' + users[i]['status_id']+'<br>';
+                            html += '<b>data: </b>' + toDate(users[i]['init_date']) + '<br><br>'
+                            html += '---------------------------------- <br>';
+                        html += '</div>';
+                    }
+                    document.getElementById("container_users").innerHTML = html;
+                    //modal_alert_message("Existen "+num_users+" usuarios a mostrar");
+                } else {
+                    document.getElementById("container_users").innerHTML = "";  
+                    modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+//                $('#container_sigin_message').text('Não foi possível executar sua solicitude!');
+//                $('#container_sigin_message').css('visibility', 'visible');
+//                $('#container_sigin_message').css('color', 'red');
+            }
+        });                            
+    });
+    
     /* Generic Confirm func */
     function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
 
