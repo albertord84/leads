@@ -89,7 +89,8 @@ class Welcome extends CI_Controller {
         $GLOBALS['language']=$param['language'];
         $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         
-        $this->load->view('user_view', $param);
+        //$this->load->view('user_view', $param);
+        $this->load->view('popup', $param);
     }
     
     public function client() {

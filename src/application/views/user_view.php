@@ -346,7 +346,7 @@
 
             <div class="container text-center topo cl-fff">
                     <div class="col-md-10 col-sm-12 col-xs-12 fnone i-block">
-                            <div class="fleft100 text-left center-xs"><small><?php echo $CI->T("NOVIDADE", array(),$language);?></small></div>
+                            <!--<div class="fleft100 text-left center-xs"><small><?php // echo $CI->T("NOVIDADE", array(),$language);?></small></div>-->
                             <h1 class="cl-blue fw-900 m-top15 fleft100"><?php echo $CI->T("Extraia dados de futuros clientes usando o Instagram.", array(),$language);?></h1>
                             <span class="fleft100 text-center fw-300 ft-size20"><?php echo $CI->T("Sem limite de extração diária. Mais de 500 milhões de Leads que podem ser seus agora!", array(),$language);?></span>
 
