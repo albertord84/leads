@@ -15,6 +15,12 @@ class Admin extends CI_Controller {
        
     
     //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
+    public function index() {    
+        $this->load->model('class/user_role');        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            $this->load->view('admin_view', $param);
+        }
+    }
     
     public function load_language(){
         if (!$this->session->userdata('id')){
@@ -62,13 +68,6 @@ class Admin extends CI_Controller {
             $result['resource'] = 'index';
         }
         echo json_encode($result);
-    }
-    
-    public function index() {    
-        $this->load->model('class/user_role');        
-        if ($this->session->userdata('role_id')==user_role::ADMIN){
-            $this->load->view('admin_view', $param);
-        }
     }
        
     public function T($token, $array_params=NULL, $lang=NULL) {
