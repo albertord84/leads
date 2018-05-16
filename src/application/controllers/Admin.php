@@ -5,6 +5,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
     
     //------------ADMIN desenvolvido para DUMBU-LEADS-------------------   
+    public function load_language($language = NULL){
+        if (!$this->session->userdata('id')){
+            
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            if($language != "PT" && $language != "EN" && $language != "ES")
+                $language = NULL;
+            if(!$language)
+                $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
+            else
+                $GLOBALS['language'] = $language;
+        }
+        else
+        {
+            $GLOBALS['language'] = $this->session->userdata('language');
+        }
+    }
     
     public function logout() {
         $this->load_language();
@@ -101,26 +118,7 @@ class Admin extends CI_Controller {
      
     
     //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
-    
-    public function load_language(){
-        if (!$this->session->userdata('id')){
-            $language=$this->input->get();
-            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
-                    $language['language'] = NULL;            
-            $this->load->model('class/system_config');
-            $GLOBALS['sistem_config'] = $this->system_config->load();
-            if(isset($language['language']))
-                $GLOBALS['language']=$language['language'];
-            else
-                $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
-        }
-        else
-        {
-            $GLOBALS['language'] = $this->session->userdata('language');
-        }
-    }
-    
-    
+   
     public function admin_do_login() {
         require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu/worker/class/system_config.php';
         $GLOBALS['sistem_config'] = new dumbu\cls\system_config();
