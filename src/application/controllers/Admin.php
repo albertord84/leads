@@ -4,41 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
     
-    //------------ADMIN desenvolvido para DUMBU-LEADS-------------------   
-    /*public function __construct() {
-        parent::__construct();
-
-        if ($this->session->userdata('admin') == FALSE) {
-          redirect('admin');
-        }
-    }*/
-       
-    
-    //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
-    public function index() {    
-        $this->load->model('class/user_role');        
-        if ($this->session->userdata('role_id')==user_role::ADMIN){
-            $this->load->view('admin_view', $param);
-        }
-    }
-    
-    public function load_language(){
-        if (!$this->session->userdata('id')){
-            $language=$this->input->get();
-            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
-                    $language['language'] = NULL;            
-            $this->load->model('class/system_config');
-            $GLOBALS['sistem_config'] = $this->system_config->load();
-            if(isset($language['language']))
-                $GLOBALS['language']=$language['language'];
-            else
-                $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
-        }
-        else
-        {
-            $GLOBALS['language'] = $this->session->userdata('language');
-        }
-    }
     
     public function logout() {
         $this->load_language();
@@ -69,6 +34,48 @@ class Admin extends CI_Controller {
         }
         echo json_encode($result);
     }
+    
+    public function show_users() {
+        $this->load_language();
+        if ($this->session->userdata('id')){            
+            $this->load->model('class/admin_model');
+            $datas = $this->input->post();
+            $users_results = $this->admin_model->get_users($datas);
+            $users = array();
+            foreach($users_results as $user){
+                $users[] = array(
+                                'id' => $user['id'],
+                                'login' => $user['login'],
+                                'email' => $user['email'],
+                                'status_id' => $user['status_id'],
+                                'init_date' => $user['init_date']
+                                );
+            }
+            if(count($users) > 0){                    
+                $result['success'] = true;
+                $result['message'] = 'Existem usuários';
+                $result['resource'] = 'index';
+                $result['users_array'] = $users;
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não existem usuários para esses filtros", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
+    }
+    
+    public function index() {    
+        $this->load->model('class/user_role');        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            $this->load->view('admin_view', $param);
+        }
+    }
        
     public function T($token, $array_params=NULL, $lang=NULL) {
         if(!$lang){
@@ -90,6 +97,28 @@ class Admin extends CI_Controller {
         }
         return $text;
     }
+     
+    
+    //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
+    
+    public function load_language(){
+        if (!$this->session->userdata('id')){
+            $language=$this->input->get();
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;            
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            if(isset($language['language']))
+                $GLOBALS['language']=$language['language'];
+            else
+                $GLOBALS['language'] = $GLOBALS['sistem_config']->LANGUAGE;            
+        }
+        else
+        {
+            $GLOBALS['language'] = $this->session->userdata('language');
+        }
+    }
+    
     
     public function admin_do_login() {
         require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu/worker/class/system_config.php';
