@@ -87,6 +87,7 @@ namespace leads\cls {
                 
                 //1. obter seguidores segundo o tipo de perfil de referencia
                 if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
+                    
                     $rankToken = \InstagramAPI\Signatures::generateUUID();
                     $userId = $ig->people->getUserIdForName($rp);
                     $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
@@ -111,10 +112,12 @@ namespace leads\cls {
                 
                 foreach ($followers as $user) {//para cada seguidor
                     //2.1 extaer las leads do perfil atual
-                    if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE)
+                    if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
                         $username = $user->getUsername();
+                        sleep(2);
+                    }
                     else
-                        $username = $user;                    
+                        $username = $user;
                     $leads = (object)$this->extract_leads($ig, 'username', $username);
                     
                     //2.2 incrementar a quantidade total de perfis analisados dessa perfil
@@ -149,7 +152,7 @@ namespace leads\cls {
                             );
                             //A.3 atualizar o orçamento disponível da campanha
                             
-                                $this->next_work->campaing->available_daily_value -= $fixed_price;
+                            $this->next_work->campaing->available_daily_value -= $fixed_price;
                             $this->DB->update_field_in_DB('campaings', 
                                 'id', $this->next_work->campaing->id,
                                 'available_daily_value', $this->next_work->campaing->available_daily_value
@@ -169,8 +172,7 @@ namespace leads\cls {
                     //2.4 salvar o perfil para ser usado no futuro
                     if($multi_level && $leads->follower_count && $leads->follower_count>300 && $multi_level_result->table_to_profiles !=='not_insert_profile_to_future'){
                         $this->DB->insert_future_reference_profile( $multi_level_result->table_to_profiles, $leads->ds_user_id, $leads->username);
-                    }
-                    sleep(2);           
+                    }                    
                 }
                 //3. ver se perfil chegou ao fim, se não, salvar o cursor
                 if($cursor!==null && $new_cursor===null){
@@ -188,9 +190,7 @@ namespace leads\cls {
                     $this->DB->update_field_in_DB('profiles', 
                         'id', $this->next_work->profile->id, 
                         '`cursor`', "$new_cursor");
-                }
-                
-                    
+                }   
             } catch (\Exception $e) {
                 $result['has_exception'] = true;
                 $result['exception_message'] = $e->getMessage();                
@@ -246,7 +246,7 @@ namespace leads\cls {
             $leads['get_show_insights_terms'] = $user->getShowInsightsTerms();
             
             return $leads;
-        }                
+        }   
         
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
             $Profiles = array();
@@ -272,7 +272,7 @@ namespace leads\cls {
         }
         
         public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
-            try {                
+            try {
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
@@ -281,7 +281,7 @@ namespace leads\cls {
                 exec($curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
-                if (isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
+                if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                     $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                     if (count($json->data->location->edge_location_to_media->edges) == 0) {
                         $cursor = null;
@@ -291,19 +291,21 @@ namespace leads\cls {
 //                        $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                         echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                     }
-                } else if (isset($json->data) && $json->data->location == NULL) {
-                    print_r($curl_str);
-                    $cursor = null;
-//                    $this->DB->update_field_in_DB('profiles',
-//                    'id', $this->next_work->profile->id,
-//                    '`cursor`','NULL');                        
-//                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
-                    echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
-                } else {
-                    var_dump($output);
-                    print_r($curl_str);
-                    echo ("<br>\n Untrated error in Geolocation!!!");
-                }
+                } else 
+                    if (isset($json->data) && $json->data->location == NULL) {
+                        print_r($curl_str);
+                        $cursor = null;
+    //                    $this->DB->update_field_in_DB('profiles',
+    //                    'id', $this->next_work->profile->id,
+    //                    '`cursor`','NULL');                        
+    //                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                        echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
+                    } else {
+                        var_dump($output);
+                        print_r($curl_str);
+                        echo ("<br>\n Untrated error in Geolocation!!!");
+                        throw new Exception("Not followers from geolocation");
+                    }
                 return $json;
             } catch (\Exception $exc) {
                 echo $exc->getTraceAsString();
@@ -415,6 +417,7 @@ namespace leads\cls {
                     var_dump($output);
                     print_r($curl_str);
                     echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
+                    throw new Exception("Not followers from hashtag");
                 }
                 return $json;
             } catch (\Exception $exc) {

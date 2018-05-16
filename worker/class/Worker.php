@@ -153,6 +153,28 @@ namespace leads\cls {
                     }
                 die("<br>\n<br>\nRobot_profile ".$robot_profile->login." to Challenge required state<br>\n<br>\n");
             }
+            else
+            if(strpos($exception_message, 'Not followers from geolocation') !== FALSE){                
+                $this->DB->update_field_in_DB('robots_profiles', 'id', $robot_profile->id, 'status_id', user_status::VERIFY_ACCOUNT);
+                $administrators=array('josergm86@gmail.com');                        
+                foreach($administrators as $admin){
+                    $this->Gmail->send_mail($admin, $admin,
+                        "'Robot_profile ' $robot_profile->login ' has cookies session problem",
+                        "'Robot_profile ' $robot_profile->login ' has cookies session problem");                            
+                }
+                die("<br>\n<br>\nRobot_profile ".$robot_profile->login." has cookies session problem<br>\n<br>\n");
+            }
+            else
+            if(strpos($exception_message, 'Not followers from hashtag') !== FALSE){                
+                $this->DB->update_field_in_DB('robots_profiles', 'id', $robot_profile->id, 'status_id', user_status::VERIFY_ACCOUNT);
+                $administrators=array('josergm86@gmail.com');                        
+                foreach($administrators as $admin){
+                    $this->Gmail->send_mail($admin, $admin,
+                        "'Robot_profile ' $robot_profile->login ' has cookies session problem",
+                        "'Robot_profile ' $robot_profile->login ' has cookies session problem");                            
+                }
+                die("<br>\n<br>\nRobot_profile ".$robot_profile->login." has cookies session problem<br>\n<br>\n");
+            }
             else{
                 sleep(1);
                //$this->init ++;
