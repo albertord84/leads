@@ -55,7 +55,21 @@
                     </header>
             </section>
             <!--Admin Painel-->
-            
+            <select name="" id="status_select">
+                <?php
+                    echo '<option value="1">'.$CI->T("ATIVO", array(),$language).'</option>';                                        
+                    echo '<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$language).'</option>';                                        
+                    echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
+                    echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
+                    echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
+                    echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';                                        
+                ?>
+            </select>
+            <button type="button" id="do_show_users" class="btn btn-success">
+                <?php echo $CI->T("MOSTRAR USUÁRIOS", array(),$language);?>
+            </button>
+            <div id = "container_users">                
+            </div>
             <footer class="fleft100 pd-tb50 bk-fff text-center">
                     <div class="container">
                             <div class="fleft100 m-top40">
