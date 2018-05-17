@@ -1793,7 +1793,7 @@ class Welcome extends CI_Controller {
                     
                     $resp = $this->check_mundipagg_boleto($payment_data);
                     if($resp['success']){
-                        $datas['ticket_url'] = $resp['ticket_url'];
+                        $datas['ticket_link'] = $resp['ticket_url'];
                         $datas['ticket_order_key'] = $resp['ticket_order_key'];
                         
                         $result_insert = $this->bank_ticket_model->insert_bank_ticket($datas);
@@ -1807,7 +1807,7 @@ class Welcome extends CI_Controller {
                             $result_message = $this->gmail->send_client_ticket_success(
                                                                 $this->session->userdata('email'),
                                                                 $this->session->userdata('login'),
-                                                                $datas['ticket_url'],
+                                                                $datas['ticket_link'],
                                                                 $this->session->userdata('language')
                                                             );
                             
