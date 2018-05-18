@@ -304,7 +304,7 @@
                                     <?php
                                         //}
                                     ?>
-                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs">Para poder obter seus leads, adicione seus dados de pagamento abaixo:</h4>
+                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
                             </div>
                             <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
@@ -336,7 +336,7 @@
                                             </div>
                                             <div class="fleft100 ctr m-top5">
                                                     <div class="fleft100 pd-lr5">
-                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="Nome no cartão">
+                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="<?php echo $CI->T("Nome no cartão", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-8 col-sm-8 col-xs-12 pd-lr5">
                                                             <input id="credit_card_number" type="text" placeholder="<?php echo $CI->T("Número de cartão", array(),$language);?>" class = "number" maxlength="20">
@@ -345,7 +345,7 @@
                                                             <input id="credit_card_cvc" type="text" placeholder="CVV/CVC" class = "number" maxlength="4">
                                                     </div>
                                                     <div class="col-md-3 col-sm-4 col-xs-12 pd-lr5 m-top5">
-                                                            Validade
+                                                            <?php echo $CI->T("Validade", array(),$language);?>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                                                         <select name="" id="credit_card_exp_month" class="seldumbu">

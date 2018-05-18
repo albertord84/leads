@@ -547,7 +547,7 @@
                                                                 </div>   
                                                             </div>
                                                             <div id ="show_number" class="form-group" style="display:none;">
-                                                                <label for="num"><?php echo $CI->T("NÚMERO DE CONFIRMAÇÃO", array(),$language);?></label>
+                                                                <label for="num"><?php echo $CI->T("NÚMERO ENVIADO AO E-MAIL: ", array(),$language);?><div id = "email_place"></div></label>
                                                                 <input style="text-align:center;" class="form-control" placeholder="_ _ _ _" id="number_confirmation" maxlength="4">
                                                                 <button type="button" id="do_signin_number" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CONFIRMAR CONTA", array(),$language);?></button>
                                                             </div>
