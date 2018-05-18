@@ -278,7 +278,7 @@ namespace leads\cls {
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
-                exec($curl_str, $output, $status);
+                exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
                 if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
@@ -308,7 +308,8 @@ namespace leads\cls {
                     }
                 return $json;
             } catch (\Exception $exc) {
-                echo $exc->getTraceAsString();
+                //echo $exc->getTraceAsString();
+                throw new Exception("Not followers from geolocation");
             }
         }
         
@@ -329,7 +330,7 @@ namespace leads\cls {
             $curl_str .= "-H 'Authority: www.instagram.com' ";
             $curl_str .= "-H 'Cookie: mid=$mid; sessionid=$sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$csrftoken; ds_user_id=$ds_user_id' ";
             $curl_str .= "--compressed ";
-            $result = exec($curl_str, $output, $status);
+            $result = exec('/usr/bin/'.$curl_str, $output, $status);
             $object = json_decode($output[0]);
             if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
@@ -396,7 +397,7 @@ namespace leads\cls {
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
-                exec($curl_str, $output, $status);
+                exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
                 if(isset($json) && $json->status == 'ok')
@@ -442,7 +443,7 @@ namespace leads\cls {
             $curl_str .= "-H 'Authority: www.instagram.com' ";
             $curl_str .= "-H 'Cookie: mid=$mid; sessionid=$sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$csrftoken; ds_user_id=$ds_user_id' ";
             $curl_str .= "--compressed ";
-            $result = exec($curl_str, $output, $status);
+            $result = exec('/usr/bin/'.$curl_str, $output, $status);
             $object = json_decode($output[0]);
             if (is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
