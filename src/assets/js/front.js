@@ -16,6 +16,20 @@ $(document).ready(function () {
         document.getElementById("userLogin2").focus();
     });    
     
+    $('#pass_registration').keypress(function (e) {
+        if (e.which == 13) {
+            $("#do_signin").click();
+            return false;
+        }
+    });
+    
+    $('#number_confirmation').keypress(function (e) {
+        if (e.which == 13) {
+            $("#do_signin_number").click();
+            return false;
+        }
+    });
+    
     $('#login_container1').keypress(function (e) {
         if (e.which == 13) {
             $("#btn_dumbu_login1").click();
@@ -223,6 +237,7 @@ $(document).ready(function () {
                                         message_container(T('Para continuar o cadastro use o número enviado a seu e-mail!',language),'#container_sigin_message','green');                                                  
                                         document.getElementById("datas_form").style.display = 'none';                                        
                                         document.getElementById("show_number").style.display = 'block';                                        
+                                        document.getElementById("email_place").innerHTML = email;                                        
                                         document.getElementById("button_place").innerHTML = "";                                        
                                     } else {
                                         message_container(response['message'],'#container_sigin_message','red');                                                  
