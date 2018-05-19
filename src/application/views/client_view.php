@@ -548,9 +548,9 @@
                     <header class="fleft100 pd-tb20">
                             <div class="container">
                                     <div class="col-md-2 col-sm-6 col-xs-6 col-md-offset-2">
-                                        <a href=""><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
+                                        <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
                                     </div>
-                                    <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">
+                                    <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">                                                                                
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
                                             <?php echo $CI->T("SAIR", array(),$language);?>
