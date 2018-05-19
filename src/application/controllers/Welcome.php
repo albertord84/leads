@@ -2042,7 +2042,6 @@ class Welcome extends CI_Controller {
         }
     }
     
- 
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
     public function language() {

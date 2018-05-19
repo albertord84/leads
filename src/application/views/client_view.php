@@ -304,7 +304,7 @@
                                     <?php
                                         //}
                                     ?>
-                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs">Para poder obter seus leads, adicione seus dados de pagamento abaixo:</h4>
+                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
                             </div>
                             <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
@@ -336,7 +336,7 @@
                                             </div>
                                             <div class="fleft100 ctr m-top5">
                                                     <div class="fleft100 pd-lr5">
-                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="Nome no cartão">
+                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="<?php echo $CI->T("Nome no cartão", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-8 col-sm-8 col-xs-12 pd-lr5">
                                                             <input id="credit_card_number" type="text" placeholder="<?php echo $CI->T("Número de cartão", array(),$language);?>" class = "number" maxlength="20">
@@ -345,7 +345,7 @@
                                                             <input id="credit_card_cvc" type="text" placeholder="CVV/CVC" class = "number" maxlength="4">
                                                     </div>
                                                     <div class="col-md-3 col-sm-4 col-xs-12 pd-lr5 m-top5">
-                                                            Validade
+                                                            <?php echo $CI->T("Validade", array(),$language);?>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                                                         <select name="" id="credit_card_exp_month" class="seldumbu">
@@ -547,10 +547,17 @@
             <section class="topo-home fleft100 bk-black">
                     <header class="fleft100 pd-tb20">
                             <div class="container">
-                                    <div class="col-md-2 col-sm-6 col-xs-6 col-md-offset-2">
+                                    <div class="col-md-8 col-sm-6 col-xs-6 col-md-offset-2">
                                         <a href=""><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
+                                    </div>                                    
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right">                                         
+                                        <a style="color:white;text-decoration:none;" href="<?php echo base_url().'index.php/welcome/index'; ?>">
+                                            <img src="<?php echo base_url().'assets/img/home.png'?>" style="position: relative;top: -4px;right: 5px;">
+    <!--                                            <i class="fa fa-home"></i>-->
+                                            <?php echo mb_strtoupper($CI->T("HOME", array(),$language));?>
+                                        </a>
                                     </div>
-                                    <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right menu">                                         
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
                                             <?php echo $CI->T("SAIR", array(),$language);?>
@@ -627,7 +634,9 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
+
                                                                     echo $currency_symbol." ".number_format((float)($price_lead/100),2,'.','');                                                  
+
                                                                 ?>
                                                             </span>
                                                     </div>
