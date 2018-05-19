@@ -627,7 +627,20 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
+
+                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
+                                                                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
+                                                                    
+                                                                    if($this->session->userdata('brazilian')==1){
+                                                                        
+                                                                        echo "R$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100),2,'.','');                                                                        
+                                                                    }
+                                                                    else{
+                                                                        echo "$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100),2,'.','');
+                                                                    }
+
                                                                     echo $currency_symbol." ".number_format((float)($price_lead/100),2,'.','');                                                  
+
                                                                 ?>
                                                             </span>
                                                     </div>
