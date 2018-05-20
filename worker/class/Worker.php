@@ -94,7 +94,7 @@ namespace leads\cls {
                     //3. obter um trabalho
                     $this->next_work = NULL;
                     $this->next_work = $this->DB->get_next_work();
-                    if($this->next_work){
+                    if($this->next_work->client){
                         $this->Robot->next_work = $this->next_work;
                         
                         //4. processar trabalho atual e analise de exepções

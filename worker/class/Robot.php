@@ -163,7 +163,7 @@ namespace leads\cls {
                         }
                             
                         //A.4 se nao tiver orçamento disponivel, eliminar trabalho dessa campanha
-                        if($this->next_work->campaing->available_daily_value <= $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
+                        if($this->next_work->campaing->available_daily_value < $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
                             $this->DB->delete_daily_work_by_campaing($this->next_work->campaing->id);
                             break;
                         }
