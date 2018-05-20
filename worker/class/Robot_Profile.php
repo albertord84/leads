@@ -64,7 +64,8 @@ namespace leads\cls {
                         $this->end = $rp->end;
                         return true;
                     } else{
-                        $administrators=array('josergm86@gmail.com','egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com');                        
+                        //$administrators=array('josergm86@gmail.com','egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com');                        
+                        $administrators=array('jorge85.mail@gmail.com');                        
                         foreach($administrators as $admin){
                             $this->Gmail->send_mail($admin, $admin,
                             "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
