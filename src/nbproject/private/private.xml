@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/opt/lampp/htdocs/leads/src/application/controllers/Welcome.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/system/core/Common.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/controllers/Admin.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/assets/js/jquery.js</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Admin_model.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/index.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/assets/js/filtrar.js</file>
+            <file>file:/opt/lampp/htdocs/leads/src/assets/js/client_page.js</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/User_role.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/User_model.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/views/client_view.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/views/user_view.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/.htaccess</file>
+            <file>file:/opt/lampp/htdocs/leads/src/assets/js/front.js</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/views/admin_view.php</file>
+        </group>
+    </open-files>
 </project-private>

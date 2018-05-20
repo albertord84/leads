@@ -71,7 +71,7 @@
                                 <li>
                                     <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
                                     <?php
-                                    if($this->session->userdata('login')){
+                                    if($this->session->userdata('login') && $this->session->userdata('module') == "LEADS"){
                                         if($this->session->userdata('is_admin')==TRUE){
                                     ?>  
                                             <li>                                    
@@ -346,7 +346,7 @@
 
             <div class="container text-center topo cl-fff">
                     <div class="col-md-10 col-sm-12 col-xs-12 fnone i-block">
-                            <div class="fleft100 text-left center-xs"><small><?php echo $CI->T("NOVIDADE", array(),$language);?></small></div>
+                            <!--<div class="fleft100 text-left center-xs"><small><?php // echo $CI->T("NOVIDADE", array(),$language);?></small></div>-->
                             <h1 class="cl-blue fw-900 m-top15 fleft100"><?php echo $CI->T("Extraia dados de futuros clientes usando o Instagram.", array(),$language);?></h1>
                             <span class="fleft100 text-center fw-300 ft-size20"><?php echo $CI->T("Sem limite de extração diária. Mais de 500 milhões de Leads que podem ser seus agora!", array(),$language);?></span>
 
@@ -547,7 +547,7 @@
                                                                 </div>   
                                                             </div>
                                                             <div id ="show_number" class="form-group" style="display:none;">
-                                                                <label for="num"><?php echo $CI->T("NÚMERO DE CONFIRMAÇÃO", array(),$language);?></label>
+                                                                <label for="num"><?php echo $CI->T("NÚMERO ENVIADO AO E-MAIL: ", array(),$language);?><div id = "email_place"></div></label>
                                                                 <input style="text-align:center;" class="form-control" placeholder="_ _ _ _" id="number_confirmation" maxlength="4">
                                                                 <button type="button" id="do_signin_number" class="btn btn-success fleft100 m-top30"><?php echo $CI->T("CONFIRMAR CONTA", array(),$language);?></button>
                                                             </div>
@@ -618,7 +618,7 @@
 
                             <div class="fleft100 m-top40">
                                     <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
-                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
+                                    <span class="fleft100 cp m-top15">DUMBU - 2018 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
                             </div>
                     </div>
             </div>

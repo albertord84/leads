@@ -163,7 +163,7 @@ namespace leads\cls {
                         }
                             
                         //A.4 se nao tiver orçamento disponivel, eliminar trabalho dessa campanha
-                        if($this->next_work->campaing->available_daily_value <= $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
+                        if($this->next_work->campaing->available_daily_value < $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
                             $this->DB->delete_daily_work_by_campaing($this->next_work->campaing->id);
                             break;
                         }
@@ -198,6 +198,17 @@ namespace leads\cls {
             }
             return (object)$result;
         }
+        
+        public function mysql_escape_mimic($inp) {
+            if(is_array($inp))
+                return array_map(__METHOD__, $inp);
+
+            if(!empty($inp) && is_string($inp)) {
+                return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+            }
+
+            return $inp;
+        } 
         
         public function extract_leads($ig, $method, $method_value){
             $leads = array();
@@ -245,30 +256,37 @@ namespace leads\cls {
             $leads['media_count'] = $user->getMediaCount();
             $leads['get_show_insights_terms'] = $user->getShowInsightsTerms();
             
+            $leads = $this->mysql_escape_mimic($leads);
             return $leads;
         }   
         
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
             $Profiles = array();
-            $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
-            if (is_object($json_response) && $json_response->status == 'ok') {
-                if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
-                    $page_info = $json_response->data->location->edge_location_to_media->page_info;
-                    foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
-                        $profile = new \stdClass();
-                        $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
-                        array_push($Profiles, $profile->node->username);
+            try{
+                $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
+                if (is_object($json_response) && $json_response->status == 'ok') {
+                    if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
+                        $page_info = $json_response->data->location->edge_location_to_media->page_info;
+                        foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
+                            $profile = new \stdClass();
+                            $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
+                            array_push($Profiles, $profile->node->username);
+                        }
+                        $error = FALSE;
+                    } else {
+                        $page_info->end_cursor = NULL;
+                        $page_info->has_next_page = false;
                     }
-                    $error = FALSE;
-                } else {
-                    $page_info->end_cursor = NULL;
-                    $page_info->has_next_page = false;
                 }
+                return (object)array(
+                    'followers'=> $Profiles,
+                    'cursor'=>$cursor
+                );
             }
-            return (object)array(
-                'followers'=> $Profiles,
-                'cursor'=>$cursor
-            );
+            catch (\Exception $exc) {
+                //echo $exc->getTraceAsString();
+                throw $exc;//new Exception("Not followers from geolocation");
+            }
         }
         
         public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
@@ -278,7 +296,7 @@ namespace leads\cls {
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
-                exec($curl_str, $output, $status);
+                exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
                 if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
@@ -308,7 +326,8 @@ namespace leads\cls {
                     }
                 return $json;
             } catch (\Exception $exc) {
-                echo $exc->getTraceAsString();
+                //echo $exc->getTraceAsString();
+                throw $exc;//new Exception("Not followers from geolocation");
             }
         }
         
@@ -329,7 +348,7 @@ namespace leads\cls {
             $curl_str .= "-H 'Authority: www.instagram.com' ";
             $curl_str .= "-H 'Cookie: mid=$mid; sessionid=$sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$csrftoken; ds_user_id=$ds_user_id' ";
             $curl_str .= "--compressed ";
-            $result = exec($curl_str, $output, $status);
+            $result = exec('/usr/bin/'.$curl_str, $output, $status);
             $object = json_decode($output[0]);
             if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
@@ -368,25 +387,31 @@ namespace leads\cls {
         
         public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor) {
             $Profiles = array();
-            $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
-            if (is_object($json_response)) {
-                if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
-                    $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
-                    foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
-                        $profile = new \stdClass();
-                        $profile->node = $this->get_tag_post_user_info($login_data,  $Edge->node->shortcode);
-                        array_push($Profiles, $profile->node->username);
+            try{
+                $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
+                if (is_object($json_response)) {
+                    if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
+                        $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
+                        foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
+                            $profile = new \stdClass();
+                            $profile->node = $this->get_tag_post_user_info($login_data,  $Edge->node->shortcode);
+                            array_push($Profiles, $profile->node->username);
+                        }
+                        $error = FALSE;
+                    } else {
+                        $page_info->end_cursor = NULL;
+                        $page_info->has_next_page = false;
                     }
-                    $error = FALSE;
-                } else {
-                    $page_info->end_cursor = NULL;
-                    $page_info->has_next_page = false;
                 }
+                return (object)array(
+                    'followers'=> $Profiles,
+                    'cursor'=>$cursor
+                );
             }
-            return (object)array(
-                'followers'=> $Profiles,
-                'cursor'=>$cursor
-            );
+            catch (\Exception $exc) {
+                //echo $exc->getTraceAsString();
+                throw $exc;//new Exception("Not followers from hastag");
+            }
         }
 //        
         public function get_insta_tagmedia($login_data, $tag, $N, &$cursor = NULL) {
@@ -396,7 +421,7 @@ namespace leads\cls {
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
                 if ($curl_str === NULL)
                     return NULL;
-                exec($curl_str, $output, $status);
+                exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = json_decode($output[0]);
                 //var_dump($output);
                 if(isset($json) && $json->status == 'ok')
@@ -422,6 +447,7 @@ namespace leads\cls {
                 return $json;
             } catch (\Exception $exc) {
                 echo $exc->getTraceAsString();
+                throw  $exc;
             }
         }
         
@@ -442,7 +468,7 @@ namespace leads\cls {
             $curl_str .= "-H 'Authority: www.instagram.com' ";
             $curl_str .= "-H 'Cookie: mid=$mid; sessionid=$sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$csrftoken; ds_user_id=$ds_user_id' ";
             $curl_str .= "--compressed ";
-            $result = exec($curl_str, $output, $status);
+            $result = exec('/usr/bin/'.$curl_str, $output, $status);
             $object = json_decode($output[0]);
             if (is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;

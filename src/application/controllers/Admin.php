@@ -151,7 +151,24 @@ class Admin extends CI_Controller {
         $this->user_model->insert_washdog($this->session->userdata('id'),'CLOSING SESSION');
         $this->session->sess_destroy();
         header('Location: ' . base_url() . 'index.php/admin/');
-    }    
+    } 
+    
+        public function robot() {
+        $this->load->model('class/user_role');                
+        $this->load->model('class/system_config');
+        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){
+            //2. cargar los datos necesarios para pasarselos a la vista como parametro
+            $param = array();            
+            $param['language'] = $this->session->userdata('language');
+            $this->load->view('robot_view', $param);
+        }
+        else{            
+            $this->session->sess_destroy();
+            $this->index();
+        }        
+    }
+
     
     public function view_admin(){
         $this->load->model('class/user_model');
