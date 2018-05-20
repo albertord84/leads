@@ -94,7 +94,7 @@ namespace leads\cls {
                     //3. obter um trabalho
                     $this->next_work = NULL;
                     $this->next_work = $this->DB->get_next_work();
-                    if($this->next_work){
+                    if($this->next_work->client){
                         $this->Robot->next_work = $this->next_work;
                         
                         //4. processar trabalho atual e analise de exepções
@@ -111,7 +111,7 @@ namespace leads\cls {
                     } else{
                         if($param_id<=2){ //2 robots trabajando hasta reiniciar el servidor, los otros mueren
                             sleep((int)($this->config->TIME_SLEEP_ROBOT_WITHOUT_WORK)); 
-                            echo "Robot waiting 30 minutes by not dispose work --------<br> \n <br> \n";
+                            echo "Robot waiting 5 minutes by not dispose work --------<br> \n <br> \n";
                         }
                         else{                            
                             die("<br> \n <br> \nCongratulations!!! Job done... with robot_profiles ".$result['robot_profile_login']."!<br> \n");
