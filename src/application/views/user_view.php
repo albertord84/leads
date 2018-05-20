@@ -71,7 +71,7 @@
                                 <li>
                                     <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
                                     <?php
-                                    if($this->session->userdata('login')){
+                                    if($this->session->userdata('login') && $this->session->userdata('module') == "LEADS"){
                                         if($this->session->userdata('is_admin')==TRUE){
                                     ?>  
                                             <li>                                    
