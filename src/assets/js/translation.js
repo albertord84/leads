@@ -281,9 +281,9 @@ var Translation = {
             "EN": "End" 
         },
 "Gasto atual": 
-        {   "PT": "Gasto atual",
-            "ES": "Gasto actual",
-            "EN": "Expenditure" 
+        {   "PT": "Gasto hoje",
+            "ES": "Gastado hoy",
+            "EN": "Spent today" 
         },
 "leads captados": 
         {   "PT": "leads captados",
