@@ -2,12 +2,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>DUMBU Verificar cuenta</title>	
+        <title>DUMBU Number Verification</title>
+	<style>
+	div.violet {
+	    background-color: #400080;
+	    color: white;
+	}
+	</style>
     </head>
     <body>
         <div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 11px;">
-            <div style="padding:24px 16px">
-            <h1>Verificación de cuenta!</h1>
+            <div class = "violet" style="padding:24px 16px">
+                <p style="text-align:center;">
+                    <img src='cid:logo_confirm' style="vertical-align:middle">
+                </p>                
+                <h1 style="text-align:center;">Confirmación de cuenta!</h1>
+            </div> 
             <div ><p><h3>Hola <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
             <p> Acabas de dar el primer paso para registrarte en el sistema Dumbu, ¡Enhorabuena! :D</p>
             <p> Utilice el siguiente código de 4 dígitos para continuar su registro:</p>

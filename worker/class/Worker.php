@@ -111,7 +111,7 @@ namespace leads\cls {
                     } else{
                         if($param_id<=2){ //2 robots trabajando hasta reiniciar el servidor, los otros mueren
                             sleep((int)($this->config->TIME_SLEEP_ROBOT_WITHOUT_WORK)); 
-                            echo "Robot waiting 30 minutes by not dispose work --------<br> \n <br> \n";
+                            echo "Robot waiting 5 minutes by not dispose work --------<br> \n <br> \n";
                         }
                         else{                            
                             die("<br> \n <br> \nCongratulations!!! Job done... with robot_profiles ".$result['robot_profile_login']."!<br> \n");

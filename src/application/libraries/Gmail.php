@@ -611,7 +611,7 @@
 
             //Attach an image file
             //$mail->addAttachment('images/phpmailer_mini.png');
-            //$this->mail->AddEmbeddedImage(realpath('../src/assets/img/email_cancel.png'), "logo_cancel", "email_cancel.png", "base64", "image/png");
+            $this->mail->AddEmbeddedImage(realpath('../src/assets/img/confirm.png'), "logo_confirm", "confirm.png", "base64", "image/png");
             //send the message, check for errors
             if (!$this->mail->send()) {
                 $result['success'] = false;

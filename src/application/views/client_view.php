@@ -547,10 +547,17 @@
             <section class="topo-home fleft100 bk-black">
                     <header class="fleft100 pd-tb20">
                             <div class="container">
-                                    <div class="col-md-2 col-sm-6 col-xs-6 col-md-offset-2">
+                                    <div class="col-md-8 col-sm-6 col-xs-6 col-md-offset-2">
                                         <a href=""><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
+                                    </div>                                    
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right">                                         
+                                        <a style="color:white;text-decoration:none;" href="<?php echo base_url().'index.php/welcome/index'; ?>">
+                                            <img src="<?php echo base_url().'assets/img/home.png'?>" style="position: relative;top: -4px;right: 5px;">
+    <!--                                            <i class="fa fa-home"></i>-->
+                                            <?php echo mb_strtoupper($CI->T("HOME", array(),$language));?>
+                                        </a>
                                     </div>
-                                    <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right menu">                                         
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
                                             <?php echo $CI->T("SAIR", array(),$language);?>
@@ -628,24 +635,13 @@
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
 
-                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/system_config.php';
-                                                                    $GLOBALS['sistem_config'] = new leads\cls\system_config();
-                                                                    
-                                                                    if($this->session->userdata('brazilian')==1){
-                                                                        
-                                                                        echo "R$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100),2,'.','');                                                                        
-                                                                    }
-                                                                    else{
-                                                                        echo "$ ".number_format((float)($GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100),2,'.','');
-                                                                    }
-
                                                                     echo $currency_symbol." ".number_format((float)($price_lead/100),2,'.','');                                                  
 
                                                                 ?>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5 m-top5">
-                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Gasto atual", array(),$language);?>:</span>
+                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Gasto total", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php
                                                                     echo $currency_symbol." ".number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
@@ -827,7 +823,7 @@
                     <div class="container">
                             <div class="fleft100 m-top40">
                                     <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
-                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
+                                    <span class="fleft100 cp m-top15">DUMBU - 2018 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
                             </div>
                     </div>
             </footer>

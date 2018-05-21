@@ -32,7 +32,7 @@ namespace leads\cls {
         public $DB;
         
         //--------principal functions--------------
-        function __construct($DB = NULL, $conf_file = "/../../../LEADS.INI") {
+        function __construct($DB = NULL, $conf_file = "/../../../LEADS_CONFIG.INI") {
             $config = parse_ini_file(dirname(__FILE__) . $conf_file, true);
             $this->DB = $DB ? $DB : new \leads\cls\DB();
             $this->utils = new \leads\cls\Utils();
@@ -199,6 +199,17 @@ namespace leads\cls {
             return (object)$result;
         }
         
+        public function mysql_escape_mimic($inp) {
+            if(is_array($inp))
+                return array_map(__METHOD__, $inp);
+
+            if(!empty($inp) && is_string($inp)) {
+                return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+            }
+
+            return $inp;
+        } 
+        
         public function extract_leads($ig, $method, $method_value){
             $leads = array();
             if($method ==='username')
@@ -245,6 +256,7 @@ namespace leads\cls {
             $leads['media_count'] = $user->getMediaCount();
             $leads['get_show_insights_terms'] = $user->getShowInsightsTerms();
             
+            $leads = $this->mysql_escape_mimic($leads);
             return $leads;
         }   
         

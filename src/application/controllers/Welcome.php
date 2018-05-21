@@ -57,8 +57,14 @@ class Welcome extends CI_Controller {
         $param = array();
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-          
-        if (!$this->session->userdata('id')){            
+        
+        $open_session = $this->session->userdata('id')?TRUE:FALSE;
+        if($this->session->userdata('id') && $this->session->userdata('module') != "LEADS"){
+            $this->session->sess_destroy();
+            session_destroy();
+            $open_session = FALSE;
+        }
+        if (!$open_session){            
             $language=$this->input->get();            
             if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
                     $language['language'] = NULL;
@@ -71,7 +77,7 @@ class Welcome extends CI_Controller {
             $param['brazilian'] = $this->is_brazilian_ip();
                 
         }
-        else{
+        else{            
             $param['language'] = $this->session->userdata('language');            
             $param['brazilian'] = $this->session->userdata('brazilian');            
             $param['currency_symbol'] = $this->session->userdata('currency_symbol');              
@@ -99,7 +105,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/bank_ticket_model');
         $this->load->model('class/system_config');
         
-        if ($this->session->userdata('role_id')==user_role::CLIENT){
+        if ($this->session->userdata('role_id')==user_role::CLIENT && $this->session->userdata('module') == "LEADS"){
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
             
             $param = array();
@@ -148,6 +154,7 @@ class Welcome extends CI_Controller {
         }
         else{            
             $this->session->sess_destroy();
+            session_destroy();
             $this->index();
         }        
     }
@@ -164,6 +171,7 @@ class Welcome extends CI_Controller {
         }
         else{            
             $this->session->sess_destroy();
+            session_destroy();
             $this->index();
         }        
     }
@@ -526,6 +534,7 @@ class Welcome extends CI_Controller {
                                         );
                     
                     $this->session->sess_destroy();
+                    session_destroy();
                     $result['success'] = true;
                     $result['message'] = 'Signout success';
                     $result['resource'] = 'front_page';
@@ -619,6 +628,7 @@ class Welcome extends CI_Controller {
             
             if($user_row){    
                 $this->session->sess_destroy();
+                session_destroy();
                 $result['success'] = true;
                 $result['message'] = 'Logout success';
                 $result['resource'] = 'index';
