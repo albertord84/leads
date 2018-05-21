@@ -36,6 +36,25 @@ class Admin_model extends CI_Model {
             return $user_rows;
         }
     }
+    
+        public function get_robots($filter = NULL){
+         $robot_rows = NULL;
+         $this->load->model('class/user_status');            
+         try{
+            $this->db->select('*');
+            $this->db->from('robots_profiles');
+            if($filter['status_id']){
+                $status_id = $filter['status_id'];
+                $this->db->where(array('status_id' => "$status_id"));
+            }
+            $robot_rows =  $this->db->get()->result_array();           
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante la verificacion de usario';
+        } finally {
+            return $robot_rows;
+        }
+    }
+
          
 
 }

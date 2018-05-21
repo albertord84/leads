@@ -30,10 +30,10 @@ $(document).ready(function () {
         });                            
     });
     
-    $("#do_show_users").click(function () { 
-        var status_id = $('#status_select').val();
+    $("#do_show_robots").click(function () { 
+    var status_id = $('#status_select').val();
         $.ajax({
-            url: base_url + 'index.php/admin/show_users', 
+            url: base_url + 'index.php/admin/show_robots', 
             data:  {
                         'status_id': status_id,                                       
                         'language': language                                
@@ -42,22 +42,116 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response['success']) { 
-                    var users = response['users_array'];
-                    var i, num_users = users.length;
+                    var robots = response['robots_array'];
+                    var i, num_robots = robots.length;
                     var html = "";
-                    for(i = 0; i < num_users; i++){
-                        html += '<div id="user_'+users[i]['id']+'" >';
-                            html += '<b>login: </b>' + users[i]['login']+'<br>';
-                            html += '<b>email: </b>' + users[i]['email']+'<br>';
-                            html += '<b>status: </b>' + users[i]['status_id']+'<br>';
-                            html += '<b>data: </b>' + toDate(users[i]['init_date']) + '<br><br>'
-                            html += '---------------------------------- <br>';
-                        html += '</div>';
+                    var options_trd=response['options'];
+//                    for(i = 0; i < num_robots; i++){
+//                        html += '<div id="user_'+robots[i]['id']+'" >';
+//                            html += '<b>login: </b>' + robots[i]['login']+'<br>';
+//                            html += '<b>status: </b>' + robots[i]['status_id']+'<br>';
+//                            html += '<b>data: </b>' + toDate(robots[i]['init']) + '<br><br>';
+//                            html += '<b>email: </b>' + robots[i]['end']+'<br>'
+//                            html += '---------------------------------- <br>';
+//
+//                                                html += '</div>';
+//                    }
+            //html+='<div class="row">';
+            //html+='<div class="col-md-2">';
+            html+='<div id="admin_form" class="row">';
+            html+=    '<div class="col-md-1"></div>';
+            html+=    '<div class="col-md-2">';
+
+            html+='<br><p><b style="color:red">Total de registros: </b><b>'+num_robots+'</b></p><br>';
+            html+='</div>';
+            html+='</div>';
+            html+='<div class="row">';
+            html+='<div class="col-xs-10">';
+            html+='<table class="table">';
+            html+='<tr class="list-group-item-success">';
+            html+='<td style="max-width:240px; padding:5px"><b>No.</b></td>';
+            html+='<td style="max-width:240px; padding:5px"><b>Dados gerais</b></td>';
+            html+='<td style="max-width:240px; padding:5px"><b>Estado atual</b></td>';
+            html+='<td style="max-width:240px; padding:5px"><b>Operações</b></td>';
+            html+='</tr>';
+            html+='</table>';
+            html+='</div>';
+            html+='</div>';
+            var sel='</select>';
+            html+='<div class="row">';
+            html+='<div class="col-xs-10">';
+            html+='<table class="table">';
+                 
+                    for(var i = 0; i < num_robots; i++){
+                        //html+=''
+                            html+= '<tr class="list-group-item-success" id="row-client-'+robots[i]['id']+'" style="visibility: visible;display: block'; 
+                            if (i % 2==0) {html+='; background-color: #dff0d8';}
+                            html+= '">';
+                                html+= '<td style="max-width:240px; padding:5px">';
+                                    var k=i+1;
+                                    html+= '<br><br><b>'+k; html+='</b><br><br><br>';
+                                    html+='</td>';                                
+                                    html+= '<td style="width:240px; padding:5px">';
+                                    html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
+                                    html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
+                                    html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
+                                    html+='<b>DS ID:</b>'; //</b><br>'+robots[i]['ds_user_id']+'<br>';
+                                    html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
+                                    html+='" type="date" class="robot_atribute" value="';
+                                    html+=toDate(robots[i]['ds_user_id'])+'">';
+                                    html+='</input>';
+                                    html+='</td>';
+                                    //echo '<b>Email: </b>'.$result[$i]['email'].'<br>';
+                                    //if ($SERVER_NAME == "ONE")
+                                    //    echo '<b>Idioma: </b>'.$result[$i]['language'].'<br><br>';
+                                    //else echo '<br>';
+                                    //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
+                                    html+= '<td style="width:240px; padding:5px">';
+                                    var nid=robots[i]['status_id'];
+                                    html+='<b>Status: </b><br>';
+                                    html+='<select class="robot_atribute" id="idselestatus_'+robots[i]['id'];
+                                    html+='" name="nameselestatus_'+robots[i]['id']+'" value="'+robots[i]['status_id'];
+                                    html+='">';
+                                    html+=options_trd;
+                                    html+='</select>';
+                                    html+='<br>';
+                                    html+='<b>Data de inicio: </b><br>';
+                                    html+='<input id="idselinit_'+robots[i]['id']+'" name="nameseleinit_'+robots[i]['id'];
+                                    html+='" type="date" class="robot_atribute" value="';
+                                    html+=toDate(robots[i]['init'])+'">';
+                                    html+='</input>';
+                                    html+='<br>';
+                                    html+='<b>Data final: </b><br>';
+                                    html+='<input id="idselend_'+robots[i]['id']+'" name="nameselend_'+robots[i]['id'];
+                                    html+='" type="date" class="robot_atribute" value="';
+                                    html+=toDate(robots[i]['end'])+'">';
+                                    html+='</input>';
+                                    html+='</td>';
+                                    html+= '<td style="width:240px; padding:5px">';
+                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
+                                    html+='" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">';
+                                    html+='<span class="ladda-label">Ok</span>';
+                                    html+='</button>';
+                                    html+='<br>';
+                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
+                                    html+='" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">';
+                                    html+='<span class="ladda-label">Cancel</span>';
+                                    html+='</button>';
+                                    html+='</td>';
+                                    html+='</tr>';
+
+                                    //html+='<br>';
+                                  
+                        
+                        
                     }
-                    document.getElementById("container_users").innerHTML = html;
+                    html+='</table>';
+                    html+='</div>';
+                    html+='</div>';
+                    document.getElementById("container_robots").innerHTML = html;
                     //modal_alert_message("Existen "+num_users+" usuarios a mostrar");
                 } else {
-                    document.getElementById("container_users").innerHTML = "";  
+                    document.getElementById("container_robots").innerHTML = "";  
                     modal_alert_message(response['message']);
                 }
             },

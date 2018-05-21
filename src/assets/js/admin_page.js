@@ -68,6 +68,8 @@ $(document).ready(function () {
             }
         });                            
     });
+
+
     
     /* Generic Confirm func */
     function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
