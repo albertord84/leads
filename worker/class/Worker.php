@@ -77,7 +77,7 @@ namespace leads\cls {
                 }
             }
         }
-        
+      
         public function do_work(){
             //level 0. using the dumbu.pro RP as the RP of one single campaing
             //1. obtener un robot_profile para trabalhar
@@ -176,7 +176,7 @@ namespace leads\cls {
                 die("<br>\n<br>\nRobot_profile ".$robot_profile->login." has cookies session problem<br>\n<br>\n");
             }
             else{
-                sleep(1);
+                sleep(300);
                //$this->init ++;
             }
         }
