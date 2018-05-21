@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-            <?php  $CI =& get_instance();?>
+    <head> 
+             <meta http-equiv="refresh" content="300">
+            <?php 
+                function reduce_profile($profile){
+                    if(strlen($profile) >= 9){
+                        return substr($profile,0,7).'...';
+                    }
+                    else{
+                        return $profile;
+                    }
+                }
+            ?>
+            <?php  $CI =& get_instance(); ?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
-            <script type="text/javascript">var language ='<?php echo $GLOBALS['language']?>';</script>
+            <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
+            <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
+            <script type="text/javascript">var min_daily_value ='<?php echo $min_daily_value/100;?>';</script>
+            <script type="text/javascript">var min_ticket_bank ='<?php echo $min_ticket_bank/100;?>';</script>
             
             <meta charset="UTF-8">
-            <title>Dumbo-Leads</title>
+            <title>Dumbu-Leads</title>
             <meta name="viewport" content="width=device-width">
             <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
 
             <!-- Font Awesome -->
             <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->            
-            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
             
             <!-- Tooltip -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/js/popper.min.js'?>">
@@ -20,19 +34,20 @@
             <!-- Bootstrap -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>">
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>">
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>">
+            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css?'.$SCRIPT_VERSION;?>">
 
             <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
             
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js'?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js?'.$SCRIPT_VERSION;?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
@@ -51,7 +66,7 @@
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol; ?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                     <input id="daily_value" type="text" placeholder="0.00" value="0.00" class="orc number">
                                             </div>
@@ -83,13 +98,13 @@
                                                                 <span class="fleft100 ellipse">
                                                                     <div class ="col-md-12 col-sm-12 col-xs-12" data-toggle="tooltip" data-placement="top" title="'.$profiles_temp[$profile_insta_temp].'">';
                                                                         if($profiles_type_temp[$profile_insta_temp] == 1){
-                                                                            echo substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 2){
-                                                                            echo "@".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "@".reduce_profile($profiles_temp[$profile_insta_temp]);
                                                                         }
                                                                         if($profiles_type_temp[$profile_temp] == 3){
-                                                                            echo "#".substr($profiles_temp[$profile_insta_temp],0,9);
+                                                                            echo "#".reduce_profile($profiles_temp[$profile_insta_temp],0,9);
                                                                         }
                                                         echo        '</div>
                                                                     <b class="my_close">x</b>
@@ -186,12 +201,12 @@
                                         <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
                                     </div>
                                     <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language); if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";} ?></span>
+                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol;?></span>
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                 <input id = "edit_daily_value" type="text" placeholder="0.00" value="0.00" class="orc">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <span class="ft-size11 fw-600 fleft100"><?php echo $CI->T("Gasto atual", array(),$language);?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="gasto"></label> <?php echo $CI->T("de", array(),$language);?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?>  <label id="total"></label></span></span>
+                                                    <span class="ft-size11 fw-600 fleft100"><?php echo $CI->T("Gasto atual", array(),$language);?>: <br><?php echo $currency_symbol;?> <label id="gasto"></label> <?php echo $CI->T("de", array(),$language);?> <span class="cl-green"><?php echo $currency_symbol;?>  <label id="total"></label></span></span>
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
                                                     <a id ="update_daily_value" class="pointer_mouse bt-silver"><?php echo $CI->T("Salvar orçamento", array(),$language);?></a>
@@ -289,7 +304,7 @@
                                     <?php
                                         //}
                                     ?>
-                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs">Para poder obter seus leads, adicione seus dados de pagamento abaixo:</h4>
+                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
                             </div>
                             <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
@@ -321,7 +336,7 @@
                                             </div>
                                             <div class="fleft100 ctr m-top5">
                                                     <div class="fleft100 pd-lr5">
-                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="Nome no cartão">
+                                                            <input id="credit_card_name" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="<?php echo $CI->T("Nome no cartão", array(),$language);?>">
                                                     </div>
                                                     <div class="col-md-8 col-sm-8 col-xs-12 pd-lr5">
                                                             <input id="credit_card_number" type="text" placeholder="<?php echo $CI->T("Número de cartão", array(),$language);?>" class = "number" maxlength="20">
@@ -330,7 +345,7 @@
                                                             <input id="credit_card_cvc" type="text" placeholder="CVV/CVC" class = "number" maxlength="4">
                                                     </div>
                                                     <div class="col-md-3 col-sm-4 col-xs-12 pd-lr5 m-top5">
-                                                            Validade
+                                                            <?php echo $CI->T("Validade", array(),$language);?>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                                                         <select name="" id="credit_card_exp_month" class="seldumbu">
@@ -387,6 +402,9 @@
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                             <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
+                                                    <div>
+                                                        <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
+                                                    </div>
                                                     <div class="fleft100 m-top5">
                                                             <h5 class="cl-green fw-600"><?php echo $CI->T("IMPORTANTE!", array(),$language);?></h5>
                                                             <span class="text-justify fleft100"><?php echo $CI->T("O boleto será enviado para o e-mail cadastrado e ficará disponível em sua área de assinante. Faça o pagamento em até 2 dias úteis para manter sua conta ativa.", array(),$language);?></span>
@@ -396,7 +414,7 @@
                             </div>
                             <div class="fleft100 pd-tb30 bk-silver text-center">
                                     <div class="col-md-6 col-sm-8 col-xs-12 fnone i-block">
-                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen m-top10">SALVAR</button>
+                                            <button id = "salvar_modo_pago" type="button" class="btn btn-mlds btngreen"><?php echo $CI->T("Salvar", array(),$language);?></button>
                                     </div>
                             </div>
                 </div>
@@ -529,10 +547,17 @@
             <section class="topo-home fleft100 bk-black">
                     <header class="fleft100 pd-tb20">
                             <div class="container">
-                                    <div class="col-md-2 col-sm-6 col-xs-6 col-md-offset-2">
+                                    <div class="col-md-8 col-sm-6 col-xs-6 col-md-offset-2">
                                         <a href=""><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
+                                    </div>                                    
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right">                                         
+                                        <a style="color:white;text-decoration:none;" href="<?php echo base_url().'index.php/welcome/index'; ?>">
+                                            <img src="<?php echo base_url().'assets/img/home.png'?>" style="position: relative;top: -4px;right: 5px;">
+    <!--                                            <i class="fa fa-home"></i>-->
+                                            <?php echo mb_strtoupper($CI->T("HOME", array(),$language));?>
+                                        </a>
                                     </div>
-                                    <div class="col-md-8 col-sm-6 col-xs-6 text-right menu">
+                                    <div class="col-md-1 col-sm-6 col-xs-6 text-right menu">                                         
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
                                             <?php echo $CI->T("SAIR", array(),$language);?>
@@ -586,7 +611,7 @@
                                         }
                                     ?>                                    
                                     </span>
-                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo ucfirst(strtolower($CI->T("Campanhas ", array(),$language)));?></h5>
+                                <h5 class="fleft100 fw-800 title-pg ft-size15"><img src="<?php echo base_url().'assets/img/cp.png'?>" class="m-r8"><?php echo $CI->T("Campanhas", array(),$language);?></h5>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12 ft-size12 pd-0 m-top30">
                                             <div class="fleft100 gastos pd-15">
@@ -609,28 +634,17 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php 
-                                                                    require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu-emails/worker/class/system_config.php';
-                                                                    $GLOBALS['sistem_config'] = new dumbu_emails\cls\system_config();
-                                                                    
-                                                                    if($this->session->userdata('brazilian')==1){
-                                                                        
-                                                                        echo "R$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100;                                                                        
-                                                                    }
-                                                                    else{
-                                                                        echo "$ ".$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100;
-                                                                    }
+
+                                                                    echo $currency_symbol." ".number_format((float)($price_lead/100),2,'.','');                                                  
+
                                                                 ?>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5 m-top5">
-                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Gasto atual", array(),$language);?>:</span>
+                                                            <span class="fleft100 fw-600"><?php echo $CI->T("Gasto total", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
-                                                                <?php 
-                                                                    if($this->session->userdata('brazilian')==1){
-                                                                        echo "R$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE/100), 2, '.', '');                                                                        
-                                                                    }else{
-                                                                        echo "$ ".number_format((float)($total_captados*$GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX/100), 2, '.', '');        
-                                                                    }
+                                                                <?php
+                                                                    echo $currency_symbol." ".number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
                                                                 ?> 
                                                             </span>
                                                     </div>
@@ -711,7 +725,7 @@
                                                 ?> 
                                             m-top20 center-xs">                                            
                                                 <div class="col-md-2 col-sm-2 col-xs-12 m-top10">
-                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> Campanha</span>
+                                                        <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Campanha", array(),$language)?></span>
                                                         <span id = "campaing_status_<?php echo $campaing['campaing_id'];?>" class="fleft100"><?php echo ucfirst(strtolower($CI->T($campaing['campaing_status_id_string'], array(),$language))); ?></span>
                                                         <span class="ft-size13"><?php echo $CI->T("Inicio: ", array(),$language).date('d/m/Y', $campaing['created_date'])?></span>                                                        
                                                         <?php 
@@ -750,13 +764,13 @@
                                                                             <span data-toggle="tooltip" data-placement="top" title="<?php echo $profile['profile']; ?>">
                                                                                 <?php
                                                                                 if($campaing['campaing_type_id'] == 1){
-                                                                                    echo substr($profile['profile'],0,9);
+                                                                                    echo reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 2){
-                                                                                    echo "@".substr($profile['profile'],0,9);
+                                                                                    echo "@".reduce_profile($profile['profile'],0,9);
                                                                                 }
                                                                                 if($campaing['campaing_type_id'] == 3){
-                                                                                    echo "#".substr($profile['profile'],0,9);
+                                                                                    echo "#".reduce_profile($profile['profile'],0,9);
                                                                                 }                                                                                
                                                                                 ?>
                                                                             </span>
@@ -772,7 +786,7 @@
                                                 <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
                                                         <span class="fleft100 ft-size12"><?php echo $CI->T("Tipo", array(),$language); ?>: <span class="cl-green"><?php echo $CI->T($campaing['campaing_type_id_string'], array(),$language); ?></span></span>
                                                         <span class="fleft100 fw-600 ft-size16"><?php echo $campaing['amount_leads']; ?> <?php echo $CI->T("leads captados", array(),$language); ?></span>
-                                                        <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php if($this->session->userdata('brazilian')==1){ echo "R$";}else{echo "$";}?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
+                                                        <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php echo $currency_symbol;?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php echo $currency_symbol;?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
                                                 </div>
                                                 <div id="divcamp_<?php echo $campaing['campaing_id'];?>" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
                                                         <div class="col-md-6 col-sm-6 col-xs-6">                                                            
@@ -804,6 +818,15 @@
                             </div>
                     </div>
             </section>
+            
+            <footer class="fleft100 pd-tb50 bk-fff text-center">
+                    <div class="container">
+                            <div class="fleft100 m-top40">
+                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
+                                    <span class="fleft100 cp m-top15">DUMBU - 2018 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
+                            </div>
+                    </div>
+            </footer>
     
     <!--modal_container_alert_message-->
     <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -838,12 +861,12 @@
     <!--<![endif]-->
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
     <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js?'.$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js?'.$SCRIPT_VERSION;?>"></script>
     <!-- FILTRAR -->
-    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
+    <script src="<?php echo base_url().'assets/js/filtrar.js?'.$SCRIPT_VERSION;?>"></script> 
     <!-- VALIDATE -->
-    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
+    <script src="<?php echo base_url().'assets/js/validate.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
     <!-- MASCARAS -->
     <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
     <!-- Scripts -->

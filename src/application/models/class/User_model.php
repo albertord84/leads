@@ -57,6 +57,19 @@ class User_model extends CI_Model {
                 $session->set_userdata('status_id', $user_data['status_id']);
                 $session->set_userdata('init_date', $user_data['init_date']);
                 $session->set_userdata('language', $user_data['language']);                
+                $session->set_userdata('module', "LEADS");                
+                if($user_data['brazilian']==1){
+                    $session->set_userdata('currency_symbol', "R$");               
+                }
+                else {
+                    $session->set_userdata('currency_symbol', "US$");                
+                }
+                
+                $session->set_userdata('is_admin', FALSE);
+                if($user_data['role_id']== user_role::ADMIN){
+                    $session->set_userdata('is_admin', TRUE);               
+                }
+                
                 //$campaing = $this->client_model->load_campaings($user_data['id']);
                 //$session->set_userdata('campaing', $campaing);                
                 //$array_id_campaings = $this->client_model->client_get_campaings($user_data['id'],'id');
@@ -197,8 +210,24 @@ class User_model extends CI_Model {
         return $this->db->query($query)->result_array();
     }
 
-
-
+    public function update_language($id_user, $language){
+                       
+        $update_result = NULL;
+        try{            
+            $this->db->where('id',$id_user);                        
+            $this->db->update('users', array('language' => $language));                                    
+            $update_result =  $this->db->affected_rows();
+            $this->session->set_userdata('language', $language);                
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el cancelamiento';
+        } finally {
+            return $update_result;
+        }
+        
+        
+    }
+    
 
 
 

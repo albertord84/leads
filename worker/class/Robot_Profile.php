@@ -64,11 +64,11 @@ namespace leads\cls {
                         $this->end = $rp->end;
                         return true;
                     } else{
-                            $administrators=array('egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com');                        
-                            foreach($administrators as $admin){
-//                            $this->Gmail->send_mail($admin, $admin,
-//                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
-//                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '");                            
+                        $administrators=array('josergm86@gmail.com','egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com');                        
+                        foreach($administrators as $admin){
+                            $this->Gmail->send_mail($admin, $admin,
+                            "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
+                            "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '");                            
                         }
                         if($ig==='BLOCKED_BY_INSTA' || $ig==='NOT LOGGED'){
                             $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'status_id', $BLOCKED_BY_INSTA);                            
@@ -91,7 +91,7 @@ namespace leads\cls {
                 $RP->login = $client_data->login;
                 $RP->pass = $client_data->pass;
                 $RP->ds_user_id = $client_data->ds_user_id;               
-                $RP->file_cookies = $client_data->file_cookies;               
+                $RP->cookies = $client_data->cookies;               
                 $RP->init = $client_data->init;               
                 $RP->end = $client_data->end;               
             }

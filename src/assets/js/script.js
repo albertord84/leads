@@ -40,16 +40,20 @@ $('.deslize').click(function() {
 
 $(document).ready(function(){
   $('.cartao').click(function() {
-    $('.blt').toggle("hide");
-    $('.ctr').toggle("slow");
-    $('.cartao').addClass("ativo");
-    $('.boleto').removeClass("ativo");
+    if(!$("#pago_cartao").hasClass('ativo')){
+        $('.blt').toggle("hide");
+        $('.ctr').toggle("slow");
+        $('.cartao').addClass("ativo");
+        $('.boleto').removeClass("ativo");
+    }
   });
   $('.boleto').click(function() {
-    $('.blt').toggle("slow");
-    $('.ctr').toggle("hide");
-    $('.cartao').removeClass("ativo");
-    $('.boleto').addClass("ativo");
+    if(!$("#pago_boleto").hasClass('ativo')){
+        $('.blt').toggle("slow");
+        $('.ctr').toggle("hide");
+        $('.cartao').removeClass("ativo");
+        $('.boleto').addClass("ativo");
+    }
   });
   $('.cl').click(function() {
     $('.menu_btn').removeClass("hover");    

@@ -79,21 +79,40 @@ class bank_ticket_model extends CI_Model {
             return $ticket_row;
         }
     }
+    
+    public function get_available_ticket_bank_money($id_client){        
+        $available = 0;
+        try{
+            $this->db->select('*');
+            $this->db->from('bank_ticket');
+            $this->db->where( array('client_id' => $id_client) );                       
+            $ticket_row =  $this->db->get()->result_array();
+            
+            foreach ($ticket_row as $ticket_bank) {
+                $available += $ticket_bank['amount_payed_value']-$ticket_bank['amount_used_value'];
+            }
+                
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $available;
+        }
+    }
  
     public function get_number_order(){        
         $number_row = NULL;
         try{
             $this->db->select('value');
-            $this->db->from('leads_system_config');
+            $this->db->from('dumbu_emails_system_config');
             $this->db->where( array('name' => 'ORDER_NUMBER') );                       
             $number_row =  $this->db->get()->row_array();
 
             $this->db->set('value', 'value+1', FALSE);       
             $this->db->where( array('name' => 'ORDER_NUMBER') );                       
-            $this->db->update('leads_system_config');
+            $this->db->update('dumbu_emails_system_config');
 
             $this->db->select('value');
-            $this->db->from('leads_system_config');
+            $this->db->from('dumbu_emails_system_config');
             $this->db->where( array('name' => 'ORDER_NUMBER') );                               
             $new_number_row =  $this->db->get()->row_array();
             
