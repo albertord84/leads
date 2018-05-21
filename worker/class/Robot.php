@@ -101,7 +101,7 @@ namespace leads\cls {
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }else
                 if($this->next_work->profile->profile_type_id== profile_type::HASHTAG) {
-                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,50, $cursor);
+                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,10, $cursor);
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }
@@ -285,7 +285,7 @@ namespace leads\cls {
             }
             catch (\Exception $exc) {
                 //echo $exc->getTraceAsString();
-                throw $exc;//new Exception("Not followers from geolocation");
+                throw new \Exception("Not followers from geolocation");
             }
         }
         
@@ -322,12 +322,12 @@ namespace leads\cls {
                         var_dump($output);
                         print_r($curl_str);
                         echo ("<br>\n Untrated error in Geolocation!!!");
-                        throw new Exception("Not followers from geolocation");
+                        throw new \Exception("Not followers from geolocation");
                     }
                 return $json;
             } catch (\Exception $exc) {
                 //echo $exc->getTraceAsString();
-                throw $exc;//new Exception("Not followers from geolocation");
+                throw new \Exception("Not followers from geolocation");
             }
         }
         
@@ -410,7 +410,7 @@ namespace leads\cls {
             }
             catch (\Exception $exc) {
                 //echo $exc->getTraceAsString();
-                throw $exc;//new Exception("Not followers from hastag");
+                throw new \Exception("Not followers from hastag");
             }
         }
 //        
@@ -442,12 +442,12 @@ namespace leads\cls {
                     var_dump($output);
                     print_r($curl_str);
                     echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
-                    throw new Exception("Not followers from hashtag");
+                    throw new \Exception("Not followers from hashtag");
                 }
                 return $json;
             } catch (\Exception $exc) {
                 echo $exc->getTraceAsString();
-                throw  $exc;
+                throw new \Exception("Not followers from hashtag");
             }
         }
         
