@@ -51,6 +51,9 @@
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
+            <style>
+                .modal { overflow: auto !important; }
+            </style>
     </head>
     <body style="background-color:#fff">
             <!-- Modal Criar -->
