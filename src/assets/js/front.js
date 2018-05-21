@@ -210,6 +210,7 @@ $(document).ready(function () {
        var pass = $('#pass_registration').val();
        var email = $('#email_registration').val()       
        var telf = $('#telf_registration').val()       
+       var promotional_code = $('#promotional_code').val()       
        var UTM = typeof getUrlVars()["utm_source"] !== 'undefined' ? getUrlVars()["utm_source"] : '';
        
        if (login != '' && pass != '' && email != '') {
@@ -226,13 +227,14 @@ $(document).ready(function () {
                                     'client_name': name,
                                     'client_login': login,
                                     'client_pass': pass,
+                                    'promotional_code': promotional_code,
                                     'language': language,
                                     'utm_source': UTM
                                 },
                                 type: 'POST',
                                 dataType: 'json',
                                 success: function (response) {
-                                    if (response['success']) {                                        
+                                    if (response['success']) {
                                         //campo para recivir codigo de 4 digitos
                                         message_container(T('Para continuar o cadastro use o número enviado a seu e-mail!',language),'#container_sigin_message','green');                                                  
                                         document.getElementById("datas_form").style.display = 'none';                                        

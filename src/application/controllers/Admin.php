@@ -87,6 +87,54 @@ class Admin extends CI_Controller {
         }
         echo json_encode($result);
     }
+
+    public function show_robots() {
+        $CI =& get_instance();
+        $this->load_language();
+        $lang= $this->session->userdata('language');
+        $lang1=$lang1.'<option value="1">'.$CI->T("ATIVO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';                                        
+
+        if ($this->session->userdata('id')){            
+            $this->load->model('class/admin_model');
+            $datas = $this->input->post();
+            $robots_results = $this->admin_model->get_robots($datas);
+            $robots = array();
+            foreach($robots_results as $robot){
+                $robots[] = array(
+                                'id' => $robot['id'],
+                                'login' => $robot['login'],
+                                'pass' => $robot['pass'],
+                                'ds_user_id' => $robot['ds_user_id'],
+                                'status_id' => $robot['status_id'],
+                                'init' => $robot['init'],
+                                'end' => $robot['end']
+                                );
+            }
+            $result['options']=$lang1;
+            if(count($robots) > 0){                    
+                $result['success'] = true;
+                $result['message'] = 'Existem robots';
+                $result['resource'] = 'index';
+                $result['robots_array'] = $robots;
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não existem robots para esses filtros", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
+    }
+
     
     public function index() {    
         $this->load->model('class/user_role');        
