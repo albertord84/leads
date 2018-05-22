@@ -385,10 +385,13 @@
                                                         <input id="boleto_cpf" value="" placeholder="CPF" type="text" class = "number cpf" maxlength="11">
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
-                                                        <div style="width: 60%; float:left">
+                                                        <div style="width: 65%; float:left">
                                                                 <input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">
                                                         </div>
-                                                        <div style="width: 40%; float:right" class="pd-lr5">
+                                                        <div class="pd-lr5">
+                                                                <!--<input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">-->
+                                                        </div>
+                                                        <div style="width: 30%; float:right">
                                                             <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
                                                         </div>
                                                     </div>
