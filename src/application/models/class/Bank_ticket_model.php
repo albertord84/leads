@@ -48,6 +48,39 @@ class bank_ticket_model extends CI_Model {
             return $ticket_row;
         }
     }
+    public function insert_promotional_ticket($datas){        
+        $ticket_row = NULL;
+        try{            
+            $now = time();
+            $data_ticket['client_id'] = $datas['user_id'];            
+            $data_ticket['emission_money_value'] = $datas['emission_money_value'];
+            $data_ticket['amount_payed_value'] = $datas['emission_money_value'];
+            $data_ticket['amount_used_value'] = 0;
+            $data_ticket['generated_date'] = $now;
+            $data_ticket['payed'] = 1;
+            $data_ticket['payed_date'] = $now;
+            $data_ticket['cpf'] = NULL;
+            $data_ticket['name_in_ticket'] = NULL;
+            $data_ticket['ticket_link'] = NULL;
+            $data_ticket['document_number'] = NULL;
+            $data_ticket['ticket_order_key'] = NULL;
+            $data_ticket['ticket_bank_option'] = NULL;
+            $data_ticket['cep'] = NULL;
+            $data_ticket['street_address'] = NULL;
+            $data_ticket['house_number'] = NULL;
+            $data_ticket['neighborhood_address'] = NULL;
+            $data_ticket['municipality_address'] = NULL;
+            $data_ticket['state_address'] = NULL;
+            
+            $this->db->insert('bank_ticket',$data_ticket);
+            $ticket_row = $this->db->insert_id();
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $ticket_row;
+        }
+    }
 
     public function update_bank_ticket($datas){        
         $ticket_row = NULL;
