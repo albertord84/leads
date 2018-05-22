@@ -51,43 +51,46 @@
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
+            <style>
+                .modal { overflow: auto !important; }
+            </style>
     </head>
     <body style="background-color:#fff">
             <!-- Modal Criar -->
             <div id="criar" class="modal fade" role="dialog">
-              <div class="modal-dialog mxw-600">                
+              <div class="modal-dialog mxw-600">
                 <div class="modal-content fleft100 text-center pd-20">
                             <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
                             <a class="close" data-dismiss="modal" >&times;</a>
                             <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Nova Campanha", array(),$language);?></span>
                             <span class="ft-size13 fleft100"> <?php echo $CI->T("Inicio", array(),$language)." ".date("d/m/Y");?></span>                            
                             <div class="fleft100 gastos pd-15 m-top20">
-                                    <div class="col-md-1 col-sm-1 col-xs-12 pd-0">
-                                        <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
+                                <div class="col-md-1 col-sm-1 col-xs-12 pd-0">
+                                    <img src="<?php echo base_url().'assets/img/gt.png'?>" alt="">
+                                </div>
+                                <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
+                                    <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol; ?></span>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <input id="daily_value" type="text" placeholder="0.00" value="0.00" class="orc number">
                                     </div>
-                                    <div class="col-md-11 col-sm-11 col-xs-12 pd-lr5 pd-0-xs">
-                                            <span class="fw-600 fleft100 text-left pd-lr15 center-xs"><?php echo $CI->T("Orçamento diário em ", array(),$language).$currency_symbol; ?></span>
-                                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                                    <input id="daily_value" type="text" placeholder="0.00" value="0.00" class="orc number">
-                                            </div>
-                                            <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <!--<span class="ft-size11 fw-600 fleft100"><?php // echo $CI->T("Gasto atual: ", array(),$language);?><br>R$0,00 de <span class="cl-green">R$0,00</span></span>-->
-                                            </div>
-                                            <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
-                                                    <!--<a href="" class="bt-silver"><?php // echo $CI->T("Salvar orçamento", array(),$language);?></a>-->
-                                            </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
+                                            <!--<span class="ft-size11 fw-600 fleft100"><?php // echo $CI->T("Gasto atual: ", array(),$language);?><br>R$0,00 de <span class="cl-green">R$0,00</span></span>-->
                                     </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12 text-left center-xs m-top10-xs pd-lr5">
+                                            <!--<a href="" class="bt-silver"><?php // echo $CI->T("Salvar orçamento", array(),$language);?></a>-->
+                                    </div>
+                                </div>
                             </div>                            
                             <hr class="fleft100">
                             <span class="fleft100"><?php echo $CI->T("PERFIS PARA CAPTAÇÃO DE LEADS", array(),$language);?></span>
                             <div class="fleft100 text-center">
                                     <div class="i-block mxw-250">
-                                            <span class="fleft100 fw-600 m-top20 m-b5"><?php echo $CI->T("Objetivo da campanha:", array(),$language);?></span>
-                                            <select name="" id="campaing_type" class="sel">
-                                                    <option value="1"><?php echo $CI->T("PERFIS DE REFERÊNCIA", array(),$language);?></option>
-                                                    <option value="2"><?php echo $CI->T("GEOLOCALIZAÇÃO", array(),$language);?></option>
-                                                    <option value="3"><?php echo $CI->T("HASHTAG", array(),$language);?></option>
-                                            </select>
+                                        <span class="fleft100 fw-600 m-top20 m-b5"><?php echo $CI->T("Objetivo da campanha:", array(),$language);?></span>
+                                        <select name="" id="campaing_type" class="sel">
+                                            <option value="1"><?php echo $CI->T("PERFIS DE REFERÊNCIA", array(),$language);?></option>
+                                            <option value="2"><?php echo $CI->T("GEOLOCALIZAÇÃO", array(),$language);?></option>
+                                            <option value="3"><?php echo $CI->T("HASHTAG", array(),$language);?></option>
+                                        </select>
                                     </div>
                                     <div id = "profiles_painel" class="i-block mxw-350">
                                             <ul class="key m-top20">
@@ -293,46 +296,42 @@
             <div id="pagamento" class="modal fade" role="dialog">
               <div class="modal-dialog mxw-600 pgment">
                 <div class="modal-content fleft100 text-center">
-                            <div class="fleft100 bk-silver pd-20">
-                                <a class="close" data-dismiss="modal" >&times;</a>
-                            </div>
-                            <div class="fleft100 bk-silver pd-10">
-                                    <?php
-                                        //if(!$client_data['has_payment']){
-                                    ?>
-                                        <!--<span id ="ops"><h3>Ops! Você ainda não possui um método de pagamento.</h3></span>-->
-                                    <?php
-                                        //}
-                                    ?>
-                                    <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
-                            </div>
+                    <div class="fleft100 bk-silver pd-20">
+                        <a class="close" data-dismiss="modal" >&times;</a>
+                    </div>
+                    <div class="fleft100 bk-silver pd-10">
+                            <?php
+                                //if(!$client_data['has_payment']){
+                            ?>
+                                <!--<span id ="ops"><h3>Ops! Você ainda não possui um método de pagamento.</h3></span>-->
+                            <?php
+                                //}
+                            ?>
+                            <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
+                    </div>
                             <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
                                             <div class="col-md-7 col-sm-7 col-xs-7 pd-lr5 carbol">
-                                                    <a id = "pago_cartao" class="cl-black cartao ativo c-pointer">
-                                                            <span class="col-md-2 col-sm-2 col-xs-12 pd-0">
-                                                                <img src="<?php echo base_url().'assets/img/cr.png'?>" class="mxw-50 wauto-xs">
-                                                            </span>
-                                                            <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
-                                                                    <?php echo $CI->T("Cartão de crédito", array(),$language);?>
-                                                            </span>
-                                                    </a>
+                                                <a id = "pago_cartao" class="cl-black cartao ativo c-pointer">
+                                                    <span class="col-md-2 col-sm-2 col-xs-12 pd-0">
+                                                        <img src="<?php echo base_url().'assets/img/cr.png'?>" class="mxw-50 wauto-xs">
+                                                    </span>
+                                                    <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
+                                                            <?php echo $CI->T("Cartão de crédito", array(),$language);?>
+                                                    </span>
+                                                </a>
                                             </div>
                                             <div class="col-md-5 col-sm-5 col-xs-5 pd-lr5 carbol">
-                                                    <?php
-                                                    if($this->session->userdata('brazilian')==1){
-                                                    ?>                                                    
+                                                <?php if($this->session->userdata('brazilian')==1){?>                                                    
                                                     <a id = "pago_boleto" class="cl-black boleto c-pointer">
-                                                            <span class="col-md-2 col-sm-2 col-xs-12 pd-0">
-                                                                <img src="<?php echo base_url().'assets/img/bol.png'?>" class="mxw-50 wauto-xs">
-                                                            </span>
-                                                            <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
-                                                                    <?php echo $CI->T("Boleto", array(),$language);?>
-                                                            </span>
+                                                        <span class="col-md-2 col-sm-2 col-xs-12 pd-0">
+                                                            <img src="<?php echo base_url().'assets/img/bol.png'?>" class="mxw-50 wauto-xs">
+                                                        </span>
+                                                        <span class="col-md-10 col-sm-10 col-xs-12 pd-lr5 text-left center-xs">
+                                                                <?php echo $CI->T("Boleto", array(),$language);?>
+                                                        </span>
                                                     </a>
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                <?php }?>
                                             </div>
                                             <div class="fleft100 ctr m-top5">
                                                     <div class="fleft100 pd-lr5">
@@ -382,7 +381,7 @@
                                                         <input id="boleto_cpf" value="" placeholder="CPF" type="text" class = "number cpf" maxlength="11">
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
-                                                            <input id="boleto_cpe" type="text" placeholder="CPE" class = "number cep" maxlength="8">
+                                                            <input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                         <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
