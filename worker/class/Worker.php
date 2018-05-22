@@ -128,8 +128,6 @@ namespace leads\cls {
             }
             else
             if(strpos($exception_message, 'Requested resource does not exist') !== FALSE){
-                //sleep(3);
-                //$this->init ++;
             }
             else
             if(strpos($exception_message, 'User not found') !== FALSE){
@@ -140,7 +138,6 @@ namespace leads\cls {
             else
             if(strpos($exception_message, 'No response from server. Either a connection or configuration error') !== FALSE){
                 sleep(4);
-                //$this->init ++;
             }
             else
             if(strpos($exception_message, 'Challenge required') !== FALSE){                
@@ -177,59 +174,8 @@ namespace leads\cls {
             }
             else{
                 sleep(300);
-               //$this->init ++;
             }
         }
-        
-//        public function extract_all_leads_sequential(){
-//            //1. obtener un robot_profile para trabalhar
-//            $param_id = filter_input(INPUT_GET, 'id',FILTER_VALIDATE_INT); //identificador usado pro robot i-esimo
-//            $objRobot_Profile=new Robot_Profile();
-//            $result = $objRobot_Profile->get_robot_profile_from_backup($param_id);
-//            if(!$result['ig']){
-//                echo "<br> \n <br> \nRobot ".$param_id." not initialized by not sufficient robot_profiles actives<br> \n";
-//            } else{
-//                $this->ig = $result['ig'];
-//                $this->id =  $result['robot_profile']->id;
-//                $this->robot_profile_login = $result['robot_profile']->login;
-//                $this->robot_profile_pass = $result['robot_profile']->pass;
-//                $this->init = $result['robot_profile']->init;
-//                $this->end = $result['robot_profile']->end;
-//                echo "<br> \n <br> \nRobot ".$param_id." initialized with robot_profiles ".$this->robot_profile_login."<br>\n<br> \n";
-//                if($this->init===null || $this->init>=$this->end){ //trabajar en otro intervalo de id
-////                    $this->init = $this->DB->get_init_range_value();
-////                    $this->end = $this->init + 10000;
-//                    $bounds = $this->get_bounds($param_id);
-//                    $this->init = $bounds->init;
-//                    $this->end =  $bounds->end;
-////                    $this->DB->update_field_in_DB('leads_system_config', 
-////                        'name', 'INIT_RANGE_VALUE',
-////                        'value', $this->end +1); //voy a trabaja yo ahora, el proximo que venga comienza 10k despues
-//                    $this->DB->update_field_in_DB('robots_profiles', 
-//                        'id', $this->id,
-//                        'init', $this->init); //actualizo donde voy a empezar
-//                    $this->DB->update_field_in_DB('robots_profiles', 
-//                        'id', $this->id,
-//                        'end', $this->end+1); //actualizo donde voy a terminar
-//                }
-//                while ($this->init<=$this->end){
-//                    $result = $this->Robot->do_robot_extract_leads_by_id($this->ig,$this->init, $this->id);
-//                    if($result->has_exception){
-//                        $this->process_instagram_api_exception($result->exception_message);   
-//                    } else{
-//                        sleep(2);
-//                        $this->init ++;
-//                    }
-//                    $this->DB->update_field_in_DB('robots_profiles', 
-//                        'id', $this->id,
-//                        'init', $this->init); //actualizo donde voy a continuar
-//                }
-//                $Gmail = new leads\cls\Gmail();
-//                $Gmail->send_mail("josergm86@gmail.com", "Jose Ramon ",'DUMBU-LEADS robot_profile '.$this->id.' has ended his task','DUMBU-LEADS robot_profile '.$this->id.' has ended his task');
-//                die('DUMBU-LEADS robot_profile '.$this->id.' has ended his task');
-//                //$this->extract_all_leads();
-//            }
-//        }
         
         
         
