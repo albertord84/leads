@@ -368,6 +368,21 @@ class Campaing_model extends CI_Model {
                           'data_nascimento' => 'birthday',
                           'privativo' => 'is_business'
                             ];
+        $to_decode =    ['profile' => FALSE,
+                          'username' => TRUE,
+                          'full_name' => TRUE,
+                          'country_code' => TRUE,
+                          'phone_number' => TRUE,
+                          'public_phone_number' => TRUE,
+                          'contact_phone_number' => TRUE,
+                          'gender' => TRUE,
+                          'category' => FALSE,
+                          'private_email' => TRUE,
+                          'biography_email' => TRUE,
+                          'public_email' => TRUE,
+                          'birthday' => TRUE,
+                          'is_business' => TRUE
+                        ];
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
@@ -401,7 +416,7 @@ class Campaing_model extends CI_Model {
                 $this->db->where('leads.extracted_date >= ', $init_date);
             
             if($end_date)
-                $this->db->where('leads.extracted_date <= ', $end_date);
+                $this->db->where('leads.extracted_date <= ', $end_date+24*3600-1);
             
             $this->db->order_by('profiles.profile', "asc");
             $result =  $this->db->get()->result_array();
@@ -410,7 +425,8 @@ class Campaing_model extends CI_Model {
             for($i = 0; $i < $cant_leads; $i++){
                 $all_email = false;
                 foreach($result[$i] as $key => $field){
-                    $result[$i][$key] = $this->decrypt($field);
+                    if($to_decode[$key])
+                        $result[$i][$key] = $this->decrypt($field);
                 }
                 foreach($info_to_get['inf'] as $key => $field){
                     if($field != 'all_email'){

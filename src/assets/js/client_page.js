@@ -1083,12 +1083,15 @@ $(document).ready(function () {
                 dataType:'json',
                 success: function (response) {
                     if (response['success']) {
+                        var I = $('#init_date').val();
+                        var F = $('#end_date').val();
+                        
                         if(response['file']){
-                            a = document.createElement('a');
+                           a = document.createElement('a');
 
                             a.href = window.URL.createObjectURL( new Blob([response['file']]) );
                             // Give filename you wish to download
-                            a.download = "leads.csv";
+                            a.download = "leads_"+I+"_"+F+".csv";
                             a.style.display = 'none';
                             document.body.appendChild(a);
                             a.click();
