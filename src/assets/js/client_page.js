@@ -1665,3 +1665,8 @@ function  validaCPF(cpf) {
             }
         }
     }
+
+// Validar que solo pueda entrar numeros en el presupuesto diario
+$(function() {
+    $('#daily_value').mask('9.99');
+});
