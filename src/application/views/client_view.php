@@ -171,8 +171,12 @@
 <!--                            <div class="col-md-6 col-sm-6 col-xs-12">
                                     <button type="button" class="btn btn-mlds btnblue m-top10"><?php // echo $CI->T("Extrair dados", array(),$language);?></button>
                             </div>-->
+                            <div class="col-md-3 col-sm-3 col-xs-12">                            
+                            </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                     <button id= "do_save_campaing" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">                            
                             </div>
                             <small class="fleft100 m-top30 text-left">
                                 *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
@@ -371,7 +375,7 @@
                                             </div>
                                             <div class="fleft100 blt m-top5 d-none">
                                                     <div class="col-md-9 col-sm-9 col-xs-12 pd-lr5">
-                                                            <input type="text" placeholder="<?php echo $CI->T("Nome completo", array(),$language);?>" id = "boleto_nome">
+                                                            <input type="text" onkeyup="javascript:this.value = this.value.toUpperCase();" placeholder="<?php echo $CI->T("Nome completo", array(),$language);?>" id = "boleto_nome">
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5">
                                                         <input type="text" placeholder="<?php echo $CI->T("Valor", array(),$language);?>" id = "boleto_value" maxlength="7">
@@ -450,10 +454,10 @@
                                         <input type="checkbox" class = "inf" name = "inf[]" value="name"> <?php echo $CI->T("Nome completo do perfil extraido", array(),$language);?><br>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="all_email"> <?php echo $CI->T("", array(),$language);?>Todos os e-mails
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="all_email"> <?php echo $CI->T("Todos os e-mails", array(),$language);?>
                                     </div>
                                     <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="code_coutry"><?php echo $CI->T("Código telefónico do pais", array(),$language);?> 
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="code_coutry"> <?php echo $CI->T("Código telefónico do pais", array(),$language);?> 
                                     </div>
                                     <div>
                                         <input type="checkbox" class = "inf" name = "inf[]"  value="telf"> <?php echo $CI->T("Número de telefone", array(),$language);?>
@@ -530,9 +534,14 @@
                                     
                             </div>
                             <hr class="fleft100">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">                                    
+                            </div>                            
+                            <div class="col-md-6 col-sm-6 col-xs-12 text-center">
                                     <button id = "do_get_leads" type="button" class="btn btn-mlds btnblue m-top10">Extrair leads</button>
                             </div>                            
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">                            
+                            </div>                            
+                                                      
                             <small class="fleft100 m-top30 text-left">
                                     *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
                                     **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
