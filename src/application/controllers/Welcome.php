@@ -165,6 +165,8 @@ class Welcome extends CI_Controller {
             $param['min_daily_value'] = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;
             $param['min_ticket_bank'] = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;
             
+            
+            
             $this->load->view('client_view', $param);
         }
         else{            
