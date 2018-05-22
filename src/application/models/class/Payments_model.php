@@ -21,7 +21,7 @@ class Payments_model extends CI_Model {
         $amount = 0;
          try{
             $this->db->select('*');
-            $this->db->from('clients');
+            $this->db->from('users');
             $this->db->where('promotional_code', $str);
             $resp=$this->db->get()->result_array();
             $amount = count($resp);
