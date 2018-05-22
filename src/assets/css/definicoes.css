@@ -1028,3 +1028,7 @@ form input,textarea{
 #main_dropdown {
     margin-top: 20px;
 }
+
+#locales ul.dropdown-menu {
+    margin-top: 20px;
+}
