@@ -71,7 +71,7 @@
                                 <li>
                                     <!--<a href="#"><?php // echo $CI->T("ENTRAR", array(),$language);?></a>-->
                                     <?php
-                                    if($this->session->userdata('login')){
+                                    if($this->session->userdata('login') && $this->session->userdata('module') == "LEADS"){
                                         if($this->session->userdata('is_admin')==TRUE){
                                     ?>  
                                             <li>                                    
@@ -530,20 +530,27 @@
                                                             </div>       
                                                             <div id="datas_form">
                                                                 <div class="form-group">
-                                                                    <label for="nome"><?php echo $CI->T("Nome de usuário", array(),$language);?></label>
+                                                                    <label for="nome"><?php echo $CI->T("Nome de usuário", array(),$language).'(*)';?></label>
                                                                     <input class="form-control" id="user_registration" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="email">E-mail</label>
+                                                                    <label for="email">E-mail(*)</label>
                                                                     <input type="email" class="form-control" id="email_registration">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="telf"><?php echo $CI->T("Telefone", array(),$language);?></label>
+                                                                    <label for="telf"><?php echo $CI->T("Telefone", array(),$language).'(*)';?></label>
                                                                     <input class="form-control" id="telf_registration" maxlength="15">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="pass"><?php echo $CI->T("Senha", array(),$language);?></label>
+                                                                    <label for="pass"><?php echo $CI->T("Senha", array(),$language).'(*)';?></label>
                                                                     <input type="password" class="form-control" id="pass_registration">
+                                                                </div>   
+                                                                <div class="form-group">
+                                                                    <label for="code"><?php echo $CI->T("Código promocional", array(),$language);?></label>
+                                                                    <input type="text" class="form-control" id="promotional_code">
+                                                                </div>   
+                                                                <div class="form-group">
+                                                                    <label for="obs"><?php echo '(*)'.$CI->T("Obrigatório", array(),$language);?></label>                                                                    
                                                                 </div>   
                                                             </div>
                                                             <div id ="show_number" class="form-group" style="display:none;">

@@ -149,7 +149,7 @@ $(document).ready(function () {
         var client_objetive = $('#objective').val();
         
        
-        if (total_daily_value != '' && client_objetive != '') {
+        if(total_daily_value != '' && client_objetive != '') {
             if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
                 validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {
@@ -1083,12 +1083,15 @@ $(document).ready(function () {
                 dataType:'json',
                 success: function (response) {
                     if (response['success']) {
+                        var I = $('#init_date').val();
+                        var F = $('#end_date').val();
+                        
                         if(response['file']){
-                            a = document.createElement('a');
+                           a = document.createElement('a');
 
                             a.href = window.URL.createObjectURL( new Blob([response['file']]) );
                             // Give filename you wish to download
-                            a.download = "leads.csv";
+                            a.download = "leads_"+I+"_"+F+".csv";
                             a.style.display = 'none';
                             document.body.appendChild(a);
                             a.click();
@@ -1662,3 +1665,8 @@ function  validaCPF(cpf) {
             }
         }
     }
+
+// Validar que solo pueda entrar numeros en el presupuesto diario
+$(function() {
+    $('#daily_value').mask('9.99');
+});

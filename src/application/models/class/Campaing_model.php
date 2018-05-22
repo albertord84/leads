@@ -368,6 +368,21 @@ class Campaing_model extends CI_Model {
                           'data_nascimento' => 'birthday',
                           'privativo' => 'is_business'
                             ];
+        $to_decode =    ['profile' => FALSE,
+                          'username' => TRUE,
+                          'full_name' => TRUE,
+                          'country_code' => TRUE,
+                          'phone_number' => TRUE,
+                          'public_phone_number' => TRUE,
+                          'contact_phone_number' => TRUE,
+                          'gender' => TRUE,
+                          'category' => FALSE,
+                          'private_email' => TRUE,
+                          'biography_email' => TRUE,
+                          'public_email' => TRUE,
+                          'birthday' => TRUE,
+                          'is_business' => TRUE
+                        ];
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
@@ -401,19 +416,23 @@ class Campaing_model extends CI_Model {
                 $this->db->where('leads.extracted_date >= ', $init_date);
             
             if($end_date)
-                $this->db->where('leads.extracted_date <= ', $end_date);
+                $this->db->where('leads.extracted_date <= ', $end_date+24*3600-1);
             
             $this->db->order_by('profiles.profile', "asc");
             $result =  $this->db->get()->result_array();
             
             $cant_leads = count($result);
             for($i = 0; $i < $cant_leads; $i++){
-            $all_email = false;
-            foreach($info_to_get['inf'] as $key => $field){
-                if($field != 'all_email'){
-                    $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];
+                $all_email = false;
+                foreach($result[$i] as $key => $field){
+                    if($to_decode[$key])
+                        $result[$i][$key] = $this->decrypt($field);
                 }
-                else{
+                foreach($info_to_get['inf'] as $key => $field){
+                    if($field != 'all_email'){
+                        $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];
+                    }
+                    else{
                         $all_email = true;                       
                         $data_lead[$i]['public_email'] = $result[$i]['public_email'];
                         $data_lead[$i]['private_email'] = $result[$i]['private_email'];
@@ -422,7 +441,7 @@ class Campaing_model extends CI_Model {
                 }
                 if(!$all_email){
                     if($result[$i]['public_email']){
-                            $data_lead[$i]['e_mail'] = $result[$i]['public_email'];
+                        $data_lead[$i]['e_mail'] = $result[$i]['public_email'];
                     }
                     else{
                         if($result[$i]['private_email']){
@@ -442,6 +461,29 @@ class Campaing_model extends CI_Model {
         } finally {
             return $data_lead;
         }        
+    }
+    
+    public function crypt($str_plane){
+        $seed = "mi chicho lindo";
+        $key_number = md5($seed);
+        $cipher = "aes-256-ctr";
+        $tag = 'GCM';
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $str = openssl_encrypt ($str_plane, $cipher, $key_number,$options=0, '1234567812345678');
+        return base64_encode($str);
+    }
+
+    public function decrypt($str_encrypted){
+        $seed = "mi chicho lindo";
+        $key_number = md5($seed);
+        $cipher = "aes-256-ctr";
+        $tag = 'GCM';
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $str_encrypted= base64_decode($str_encrypted);
+        $str = openssl_decrypt ($str_encrypted, $cipher, $key_number,$options=0, '1234567812345678');
+        return $str;
     }
 }
 

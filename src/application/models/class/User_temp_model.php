@@ -99,6 +99,8 @@ class User_temp_model extends CI_Model {
             $data_user['temp_date'] = time();            //desde el controlador                        
             $data_user['language'] = $datas['language']; 
             $data_user['ip'] = $datas['ip']; 
+            $data_user['promotional_code'] = $datas['promotional_code']; 
+            $data_user['valid_code'] = $datas['valid_code']; 
             $data_user['utm_source'] = $datas['utm_source']; 
 
             if(!$user_row2){

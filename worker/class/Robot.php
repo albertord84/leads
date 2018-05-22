@@ -32,7 +32,7 @@ namespace leads\cls {
         public $DB;
         
         //--------principal functions--------------
-        function __construct($DB = NULL, $conf_file = "/../../../LEADS_CONFIG.INI") {
+        function __construct($DB = NULL, $conf_file = "/../../../LEADS.INI") {
             $config = parse_ini_file(dirname(__FILE__) . $conf_file, true);
             $this->DB = $DB ? $DB : new \leads\cls\DB();
             $this->utils = new \leads\cls\Utils();
@@ -101,7 +101,7 @@ namespace leads\cls {
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }else
                 if($this->next_work->profile->profile_type_id== profile_type::HASHTAG) {
-                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,50, $cursor);
+                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,10, $cursor);
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }
@@ -163,7 +163,7 @@ namespace leads\cls {
                         }
                             
                         //A.4 se nao tiver orçamento disponivel, eliminar trabalho dessa campanha
-                        if($this->next_work->campaing->available_daily_value <= $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
+                        if($this->next_work->campaing->available_daily_value < $fixed_price){ //não tem orçamento disponível nem pra uma leads mais
                             $this->DB->delete_daily_work_by_campaing($this->next_work->campaing->id);
                             break;
                         }
@@ -179,7 +179,7 @@ namespace leads\cls {
                     $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
-                        'profile_status_id',profile_status::ENDED);
+                        'profile_status_id',profiles_status::ENDED);
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
                         'profile_status_date',time());
@@ -258,36 +258,43 @@ namespace leads\cls {
             
             $leads = $this->mysql_escape_mimic($leads);
             return $leads;
-        }   
+        }
         
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
             $Profiles = array();
-            $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
-            if (is_object($json_response) && $json_response->status == 'ok') {
-                if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
-                    $page_info = $json_response->data->location->edge_location_to_media->page_info;
-                    foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
-                        $profile = new \stdClass();
-                        $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
-                        array_push($Profiles, $profile->node->username);
+            try{
+                $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
+                if (is_object($json_response) && $json_response->status == 'ok') {
+                    if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
+                        $page_info = $json_response->data->location->edge_location_to_media->page_info;
+                        foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
+                            $profile = new \stdClass();
+                            $profile->node = $this->get_geo_post_user_info($cookies, $rp_insta_id, $Edge->node->shortcode);
+                            array_push($Profiles, $profile->node->username);
+                        }
+                        $error = FALSE;
+                    } else {
+                        $page_info->end_cursor = NULL;
+                        $page_info->has_next_page = false;
                     }
-                    $error = FALSE;
-                } else {
-                    $page_info->end_cursor = NULL;
-                    $page_info->has_next_page = false;
                 }
+                return (object)array(
+                    'followers'=> $Profiles,
+                    'cursor'=>$cursor
+                );
             }
-            return (object)array(
-                'followers'=> $Profiles,
-                'cursor'=>$cursor
-            );
+            catch (\Exception $exc) {
+                //echo $exc->getTraceAsString();
+                throw new \Exception("Not followers from geolocation");
+            }
         }
         
-        public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
+        public function get_insta_geomedia($cookies, $location, $N, &$cursor = NULL) {
             try {
+//                $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);
@@ -316,12 +323,12 @@ namespace leads\cls {
                         var_dump($output);
                         print_r($curl_str);
                         echo ("<br>\n Untrated error in Geolocation!!!");
-                        throw new Exception("Not followers from geolocation");
+                        throw new \Exception("Not followers from geolocation");
                     }
                 return $json;
             } catch (\Exception $exc) {
                 //echo $exc->getTraceAsString();
-                throw new Exception("Not followers from geolocation");
+                throw new \Exception("Not followers from geolocation");
             }
         }
         
@@ -350,17 +357,17 @@ namespace leads\cls {
             return NULL;
         }
         
-        public function make_curl_followers_query($query, $variables, $login_data=NULL){            
+        public function make_curl_followers_query($query, $variables, $cookies=NULL){            
             $variables = urlencode($variables);
             $url = "https://www.instagram.com/graphql/query/?query_hash=$query&variables=$variables";            
             $curl_str = "curl '$url' ";
-            if($login_data !== NULL)
+            if($cookies !== NULL)
             {
-                if($login_data->mid == NULL|| $login_data->csrftoken == NULL || $login_data->sessionid == NULL ||
-                        $login_data->ds_user_id == NULL)
+                if($cookies->mid == NULL|| $cookies->csrftoken == NULL || $cookies->sessionid == NULL ||
+                        $cookies->ds_user_id == NULL)
                     return NULL;
-               $curl_str .= "-H 'Cookie: mid=$login_data->mid; sessionid=$login_data->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$login_data->csrftoken; ds_user_id=$login_data->ds_user_id' ";            
-               $curl_str .= "-H 'X-CSRFToken: $login_data->csrftoken' ";
+               $curl_str .= "-H 'Cookie: mid=$cookies->mid; sessionid=$cookies->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$cookies->csrftoken; ds_user_id=$cookies->ds_user_id' ";            
+               $curl_str .= "-H 'X-CSRFToken: $cookies->csrftoken' ";
             }
             
             $curl_str .= "-H 'Origin: https://www.instagram.com' ";
@@ -381,32 +388,39 @@ namespace leads\cls {
         
         public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor) {
             $Profiles = array();
-            $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
-            if (is_object($json_response)) {
-                if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
-                    $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
-                    foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
-                        $profile = new \stdClass();
-                        $profile->node = $this->get_tag_post_user_info($login_data,  $Edge->node->shortcode);
-                        array_push($Profiles, $profile->node->username);
+            try{
+                $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
+                if (is_object($json_response)) {
+                    if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
+                        $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
+                        foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
+                            $profile = new \stdClass();
+                            $profile->node = $this->get_tag_post_user_info($cookies,  $Edge->node->shortcode);
+                            array_push($Profiles, $profile->node->username);
+                        }
+                        $error = FALSE;
+                    } else {
+                        $page_info->end_cursor = NULL;
+                        $page_info->has_next_page = false;
                     }
-                    $error = FALSE;
-                } else {
-                    $page_info->end_cursor = NULL;
-                    $page_info->has_next_page = false;
                 }
+                return (object)array(
+                    'followers'=> $Profiles,
+                    'cursor'=>$cursor
+                );
             }
-            return (object)array(
-                'followers'=> $Profiles,
-                'cursor'=>$cursor
-            );
+            catch (\Exception $exc) {
+                //echo $exc->getTraceAsString();
+                throw new \Exception("Not followers from hastag");
+            }
         }
 //        
-        public function get_insta_tagmedia($login_data, $tag, $N, &$cursor = NULL) {
+        public function get_insta_tagmedia($cookies, $tag, $N, &$cursor = NULL) {
             try {
-                $tag_query = '298b92c8d7cad703f7565aa892ede943';
+//                $tag_query = '298b92c8d7cad703f7565aa892ede943';
+                $tag_query = 'ded47faa9a1aaded10161a2ff32abb6b';
                 $variables = "{\"tag_name\":\"$tag\",\"first\":2,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);
@@ -430,11 +444,12 @@ namespace leads\cls {
                     var_dump($output);
                     print_r($curl_str);
                     echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
-                    throw new Exception("Not followers from hashtag");
+                    throw new \Exception("Not followers from hashtag");
                 }
                 return $json;
             } catch (\Exception $exc) {
                 echo $exc->getTraceAsString();
+                throw new \Exception("Not followers from hashtag");
             }
         }
         
