@@ -149,7 +149,7 @@ $(document).ready(function () {
         var client_objetive = $('#objective').val();
         
        
-        if(total_daily_value != '' && client_objetive != '') {
+        if(total_daily_value.trim() != '' && client_objetive != '') {
             if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
                 validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {
@@ -1316,9 +1316,11 @@ $(document).ready(function () {
                             okButtonTxt+
                         '</div></spam>'+
             '</button>'+
-            '<a href="#!" class="btn" data-dismiss="modal">' + 
-              cancelButtonTxt + 
-            '</a>' +
+            '<button id="cancelButton" data-dismiss="modal" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            cancelButtonTxt+
+                        '</div></spam>'+
+            '</button>'+
           '</div>' +
           '</div>' +
           '</div>' +
@@ -1356,9 +1358,11 @@ $(document).ready(function () {
                             okButtonTxt+
                         '</div></spam>'+
             '</button>'+
-            '<a href="#!" class="btn" data-dismiss="modal">' + 
-              cancelButtonTxt + 
-            '</a>' +
+            '<button id="cancelButton" data-dismiss="modal" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            cancelButtonTxt+
+                        '</div></spam>'+
+            '</button>'+            
           '</div>' +
           '</div>' +
           '</div>' +

@@ -61,7 +61,7 @@
               <div class="modal-dialog mxw-600">
                 <div class="modal-content fleft100 text-center pd-20">
                             <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
-                            <a class="close" data-dismiss="modal" >&times;</a>
+                            <a class="close" data-dismiss="modal" >&times;</a>                            
                             <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Nova Campanha", array(),$language);?></span>
                             <span class="ft-size13 fleft100"> <?php echo $CI->T("Inicio", array(),$language)." ".date("d/m/Y");?></span>                            
                             <div class="fleft100 gastos pd-15 m-top20">
@@ -385,10 +385,13 @@
                                                         <input id="boleto_cpf" value="" placeholder="CPF" type="text" class = "number cpf" maxlength="11">
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
-                                                        <div class="col-md-9 col-sm-9 col-xs-9 pd-lr5">
+                                                        <div style="width: 65%; float:left">
                                                                 <input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">
                                                         </div>
-                                                        <div class="col-md-3 col-sm-3 col-xs-3p  pd-lr5">
+                                                        <div class="pd-lr5">
+                                                                <!--<input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">-->
+                                                        </div>
+                                                        <div style="width: 30%; float:right">
                                                             <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
                                                         </div>
                                                     </div>
