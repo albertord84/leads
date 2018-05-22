@@ -1630,6 +1630,24 @@ class Welcome extends CI_Controller {
 
             return $csv;
     }
+    
+    public function convert_from_latin1_to_utf8_recursively($dat)
+   {
+      if (is_string($dat)) {
+         return mb_convert_encoding($dat, 'UTF-8', 'UTF-8');//utf8_encode($dat);
+      } elseif (is_array($dat)) {
+         $ret = [];
+         foreach ($dat as $i => $d) $ret[ $i ] = $this->convert_from_latin1_to_utf8_recursively($d);
+
+         return $ret;
+      } elseif (is_object($dat)) {
+         foreach ($dat as $i => $d) $dat->$i = $this->convert_from_latin1_to_utf8_recursively($d);
+
+         return $dat;
+      } else {
+         return $dat;
+      }
+   }
   
     public function get_leads_campaing(){
         $this->load_language();
@@ -1658,12 +1676,13 @@ class Welcome extends CI_Controller {
                                                                     $end_date,
                                                                     $info_to_get
                                                                     );                    
-                    $out = $this->str_putcsv2($result_sql);
+                    $result_sql = $this->convert_from_latin1_to_utf8_recursively($result_sql);
+                    $out = $this->str_putcsv2($result_sql);                    
 
                     $result['success'] = true;
                     $result['message'] = '';
                     $result['resource'] = 'leads_view';
-                    $result['file'] = (count($result_sql)>0)?$out:NULL;
+                    $result['file'] = count($result_sql)>0?$out:NULL;
                 }
                 else{
                     $result['success'] = false;            
@@ -1683,7 +1702,14 @@ class Welcome extends CI_Controller {
             $result['resource'] = 'front_page';
         }
         
-        echo json_encode($result);        
+        $json = json_encode($result);        
+        echo $json;
+//        $msg = json_last_error_msg();
+//        if ($json)
+//            echo $json;
+//        else
+//            echo json_last_error_msg();
+//        
     }
     
     public function add_credit_card(){
