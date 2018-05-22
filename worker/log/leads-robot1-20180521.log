@@ -1,14 +1,14 @@
 Worker-Robot Leads Inited...!<br>
 2018-05-22 01:17:04am<br />
-<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS_CONFIG.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
+<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
 <br />
-<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS_CONFIG.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
+<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
 <br />
 <b>Warning</b>:  chmod(): Operation not permitted in <b>/opt/lampp/htdocs/leads/worker/externals/vendor/mgp25/instagram-php/src/Utils.php</b> on line <b>926</b><br />
 <br />
-<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS_CONFIG.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
+<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
 <br />
-<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS_CONFIG.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
+<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/Robot.php</b> on line <b>36</b><br />
 Robot1 initialized with robot_profile dumbu.09<br>
 <br>
 <br>
