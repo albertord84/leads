@@ -1670,7 +1670,26 @@ function  validaCPF(cpf) {
         }
     }
 
-// Validar que solo pueda entrar numeros en el presupuesto diario
 $(function() {
-    $('#daily_value').mask('9.99');
+    // Solo numeros con coma o sin coma en lo que gastara por dia
+    var i = $('#daily_value');
+    i.keydown(function(ev) {
+        var permittedKeys = /[0-9\.]/;
+        var v = ev.target.value;
+        var k = ev.originalEvent.key;
+        var c = ev.originalEvent.keyCode.toString();
+        var ctrl = /^(8|35|36|37|38|39|40|46)$/;
+        if (k.match(permittedKeys)===null && c.match(ctrl)===null) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+        if (k === '.' && v.indexOf('.') !== -1) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+        if (v.length === 5 && c.match(ctrl)===null) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+    });
 });
