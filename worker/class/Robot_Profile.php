@@ -51,7 +51,7 @@ namespace leads\cls {
                     $id = $rp->id;
                     $objRobot=new Robot();
                     $resp = $objRobot->do_instagram_login_by_API($rp->login,$rp->pass);
-                    if(is_object($resp->ig)){
+                    if(is_object($resp) && is_object($resp->ig)){
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'status_id', $OCCUPED);
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'cookies', json_encode($resp->cookies));
                         $this->id = $rp->id;
