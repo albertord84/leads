@@ -45,11 +45,15 @@ class Welcome extends CI_Controller {
         if($_SERVER['REMOTE_ADDR'] === "127.0.0.1")
             return 1;
         
-        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
-        $response = json_decode($datas);
-        if(is_object($response) && $response->country_code == "BR")
+        if($_SERVER['REMOTE_ADDR'] === "191.252.100.122")
             return 1;
+        
         return 0;
+//        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
+//        $response = json_decode($datas);
+//        if(is_object($response) && $response->country_code == "BR")
+//            return 1;
+//        return 0;
     }
     
     public function mysql_escape_mimic($inp) {
