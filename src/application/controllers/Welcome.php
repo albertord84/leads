@@ -5433,6 +5433,7 @@ class Welcome extends CI_Controller {
             if(trim($datas['promotional_code'])==''){
                 $response['success']=true;
                 $response['valid_code']=0;
+                return $response;
             }
             if($datas['promotional_code']=='FIRST-SIGN-IN-BUY'){
                 //contar si la cantidad en la base de datos es menor que 100 personas usando

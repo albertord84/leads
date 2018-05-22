@@ -388,7 +388,7 @@
                                                         <div class="col-md-9 col-sm-9 col-xs-9 pd-lr5">
                                                                 <input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">
                                                         </div>
-                                                        <div class="col-md-3 col-sm-3 col-xs-3 pd-lr5">
+                                                        <div class="col-md-3 col-sm-3 col-xs-3p  pd-lr5">
                                                             <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
                                                         </div>
                                                     </div>
