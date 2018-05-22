@@ -334,7 +334,7 @@ class Welcome extends CI_Controller {
         
     }
     
-    public function signin() {     
+    public function signin() {
         $datas = $this->input->post();
         $this->load_language($datas['language']);
         $promotion = $this->validate_promotional_code($datas);
@@ -348,9 +348,9 @@ class Welcome extends CI_Controller {
                 $this->load->model('class/user_temp_model');
                 $this->load->model('class/user_role');
                 $this->load->model('class/user_status');                                                                                                                                                                                                                            
-                $this->load->model('class/client_model');                                                                                                                                                                                                                            
+                $this->load->model('class/client_model');
 
-                if ( $this->is_valid_user_name($datas['client_login']) ){                
+                if ( $this->is_valid_user_name($datas['client_login']) ){
                     if ( $this->is_valid_phone($datas['client_telf']) ){
                         if ( $this->is_valid_email($datas['client_email']) ){
                             $datas['check_pass'] = false;    //check only by the user name
