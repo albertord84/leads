@@ -1674,7 +1674,7 @@ $(function() {
     // Solo numeros con coma o sin coma en lo que gastara por dia
     var i = $('#daily_value');
     i.keydown(function(ev) {
-        var permittedChars = /[0-9\.]/;
+        var permittedChars = /[0-9\.,]/;
         var v = ev.target.value;
         var k = ev.originalEvent.key;
         var c = ev.originalEvent.keyCode.toString();
@@ -1687,12 +1687,32 @@ $(function() {
             ev.originalEvent.preventDefault();
             return;
         }
-        if (v.length === 5 && c.match(ctrlKeys)===null) {
+        if (v.length === 7 && c.match(ctrlKeys)===null) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+    });
+    var i2 = $('#edit_daily_value');
+    i2.keydown(function(ev) {
+        var permittedChars = /[0-9\.,]/;
+        var v = ev.target.value;
+        var k = ev.originalEvent.key;
+        var c = ev.originalEvent.keyCode.toString();
+        var ctrlKeys = /^(8|35|36|37|38|39|40|46)$/; // delete, backspace, left, right...
+        if (k.match(permittedChars)===null && c.match(ctrlKeys)===null) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+        if (k === '.' && v.indexOf('.') !== -1) {
+            ev.originalEvent.preventDefault();
+            return;
+        }
+        if (v.length === 7 && c.match(ctrlKeys)===null) {
             ev.originalEvent.preventDefault();
             return;
         }
     });
     // Tarjeta de credito
-    $('#credit_card_number').mask('999.999.999-99', { placeholder: ' ' });
-    $('#credit_card_cvc').mask('***/***', { placeholder: ' ' });
+    //$('#credit_card_number').mask('999.999.999-99', { placeholder: ' ' });
+    //$('#credit_card_cvc').mask('***/***', { placeholder: ' ' });
 });
