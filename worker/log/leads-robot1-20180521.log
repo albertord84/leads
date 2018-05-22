@@ -1,0 +1,4 @@
+Worker-Robot Leads Inited...!<br>
+2018-05-22 12:54:18am<br />
+<b>Warning</b>:  parse_ini_file(/opt/lampp/htdocs/leads/worker/class/../../../LEADS_CONFIG.INI): failed to open stream: No such file or directory in <b>/opt/lampp/htdocs/leads/worker/class/DB.php</b> on line <b>22</b><br />
+Can't load system config vars...!!
