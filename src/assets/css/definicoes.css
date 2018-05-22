@@ -1010,18 +1010,38 @@ form input,textarea{
 }
 
 @media (min-width: 280px) {
-    #dl-menu ul li:first-child {
+    .dl-menu > li:nth-child(1) {
         margin-top: 5px;
+        margin-bottom: 5px;
         text-align: center;
     }
     #login_container1 form div.form-group:first-child {
         display: none;
     }
-    #locales_cell ul.dl-submenu {
-        display: inline-block;
+    #lnk_language1_cell {
+        padding-left: 0px;
     }
-    #locales_cell ul.dl-submenu li a span {
+    ul.dl-submenu {
+        cursor: pointer;
+    }
+    ul.dl-submenu.dropdown-menu {
+        left: 0px;
+        margin-top: 65px;
+        width: 60px;
+        margin-left: 15px;
+        border-radius: 3px;
+        background-color: #f6f6f6;
+    }
+    li#locales_cell a {
+        text-decoration: none;
+        color: #bebebe;
+    }
+    li#locales_cell a.btn.dropdown-toggle span {
         color: white;
+    }
+    ul.dl-submenu.dropdown-menu li:hover {
+        font-weight: bold;
+        color: black;
     }
 }
 

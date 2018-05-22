@@ -127,39 +127,39 @@
                                     <?php }?>        
                                 </li>
                                 <li id="locales_cell">
-                                    <a  id="lnk_language1_cell" href="#">
+                                    <a  id="lnk_language1_cell" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                                         <?php if ($language === 'EN') { ?>
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
-                                            <span id="txt_language1" style="color: white">EN</span>
+                                            <span id="txt_language1">EN</span>
                                         <?php }
                                         elseif ($language === 'PT') { ?> 
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us">
-                                            <span id="txt_language1" style="color: white">PT</span>
+                                            <span id="txt_language1">PT</span>
                                         <?php }
                                         else { ?>
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us">
-                                            <span id="txt_language1" style="color: white">ES</span>
+                                            <span id="txt_language1">ES</span>
                                         <?php } ?>
                                     </a>
-                                    <ul class="dl-submenu">
+                                    <ul class="dl-submenu dropdown-menu">
                                         <li>
 
                                         <?php if ($language === 'EN') { ?>
                                             <a id="lnk_language2_cell">
                                             <img id="img_language2" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
-                                            <span id="txt_language2" style="color: black">PT</span>
+                                            <span id="txt_language2">PT</span>
                                             </a>
                                         <?php }
                                         elseif ($language === 'PT') { ?>
                                             <a id="lnk_language2_cell" href="#">
                                             <img id="img_language2" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
-                                            <span id="txt_language2" style="color: black">ES</span>
+                                            <span id="txt_language2">ES</span>
                                             </a>
                                         <?php }
                                         else { ?>
                                             <a id="lnk_language2_cell" href="#">
                                             <img id="img_language2" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
-                                            <span id="txt_language2" style="color: black">EN</span>
+                                            <span id="txt_language2">EN</span>
                                             </a>
                                         <?php } ?>
 
@@ -169,19 +169,19 @@
                                         <?php if ($language === 'EN') { ?>
                                             <a id="lnk_language3_cell" href="#">
                                             <img id="img_language3" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
-                                            <span id="txt_language3" style="color: black">ES</span>
+                                            <span id="txt_language3">ES</span>
                                             </a>
                                         <?php }
                                         elseif ($language === 'PT') { ?>
                                             <a id="lnk_language3_cell" href="#">
                                             <img id="img_language3" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
-                                            <span id="txt_language3" style="color: black">EN</span>
+                                            <span id="txt_language3">EN</span>
                                             </a>
                                         <?php }
                                         else { ?>
                                             <a id="lnk_language3_cell" href="#">
                                             <img id="img_language3" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
-                                            <span id="txt_language3" style="color: black">PT</span>
+                                            <span id="txt_language3">PT</span>
                                             </a>
                                         <?php } ?>
 
