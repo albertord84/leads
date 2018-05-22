@@ -40,6 +40,12 @@ namespace leads\cls {
             $this->DB->truncate_daily_work();
         }
         
+        function prepare_all_robot_profiles() {
+            /*
+            //1. recuperar todos lo rp que pueden trabajar
+            */            
+        }
+        
         function prepare_daily_work() {
             //0. botar todos os robot_profiles em activo
             $this->DB->reset_robot_profiles();

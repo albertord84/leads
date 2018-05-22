@@ -1,5 +1,6 @@
 <?php
-namespace leads\cls {    
+namespace leads\cls {
+    require_once 'user_status.php';    
 
     class DB {
 
@@ -29,8 +30,8 @@ namespace leads\cls {
         }
         
         public function reset_robot_profiles() {
-            $sql='UPDATE dumbu_emails_db.robots_profiles SET status_id = 1 WHERE status_id > 0 AND status_id <> 4';
-            return mysqli_query($this->connection, $sql); 
+            $sql='UPDATE dumbu_emails_db.robots_profiles SET status_id = '.user_status::ACTIVE.' WHERE status_id > 0 AND status_id <> '.user_status::DELETED.' AND status_id <> '.user_status::DONT_DISTURB.';';
+            return mysqli_query($this->connection, $sql);
         }
         
         public function truncate_daily_work() {
