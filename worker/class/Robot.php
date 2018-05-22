@@ -258,7 +258,7 @@ namespace leads\cls {
             
             $leads = $this->mysql_escape_mimic($leads);
             return $leads;
-        }   
+        }
         
         public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
             $Profiles = array();
