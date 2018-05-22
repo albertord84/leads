@@ -171,8 +171,12 @@
 <!--                            <div class="col-md-6 col-sm-6 col-xs-12">
                                     <button type="button" class="btn btn-mlds btnblue m-top10"><?php // echo $CI->T("Extrair dados", array(),$language);?></button>
                             </div>-->
+                            <div class="col-md-3 col-sm-3 col-xs-12">                            
+                            </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                     <button id= "do_save_campaing" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">                            
                             </div>
                             <small class="fleft100 m-top30 text-left">
                                 *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
@@ -530,8 +534,12 @@
                                     
                             </div>
                             <hr class="fleft100">
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">                                    
+                            </div>                            
                             <div class="col-md-6 col-sm-6 col-xs-12 text-center">
                                     <button id = "do_get_leads" type="button" class="btn btn-mlds btnblue m-top10">Extrair leads</button>
+                            </div>                            
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">                            
                             </div>                            
                                                       
                             <small class="fleft100 m-top30 text-left">

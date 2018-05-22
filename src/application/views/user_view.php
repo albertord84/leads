@@ -545,10 +545,10 @@
                                                                     <label for="pass"><?php echo $CI->T("Senha", array(),$language).'(*)';?></label>
                                                                     <input type="password" class="form-control" id="pass_registration">
                                                                 </div>   
-<!--                                                                <div class="form-group">
+                                                                <div class="form-group">
                                                                     <label for="pass"><?php //echo $CI->T("Código promocional", array(),$language);?></label>
                                                                     <input type="text" class="form-control" id="promotional_code">
-                                                                </div>   -->
+                                                                </div>   
                                                                 <div class="form-group">
                                                                     <label for="pass"><?php echo '(*)'.$CI->T("Obrigatório", array(),$language);?></label>                                                                    
                                                                 </div>   
