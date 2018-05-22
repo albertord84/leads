@@ -149,7 +149,7 @@ $(document).ready(function () {
         var client_objetive = $('#objective').val();
         
        
-        if (total_daily_value != '' && client_objetive != '') {
+        if(total_daily_value != '' && client_objetive != '') {
             if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
                 validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
                 validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {

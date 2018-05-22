@@ -182,110 +182,6 @@
                 </div>   
                 <div class="col-md-1"></div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Perfil do cliente</b>
-                        <input id = "profile_client" type="text" class="form-control"  placeholder="Perfil do cliente">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Email do cliente</b>                        
-                        <input id="email_client" type="email" class="form-control" placeholder="Email do cliente">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>ID do cliente</b>
-                        <input id="client_id" class="form-control" placeholder="ID do cliente">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Insta ID</b>
-                        <input id="ds_user_id" class="form-control" placeholder="ds_user_id">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Credit Card name</b>
-                        <input id="credit_card_name" class="form-control" placeholder="Credit Card Name">
-                    </div>
-                </div>
-            </div>
-            <br>
-
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Plano</b>   
-                        <select id="plane" class="form-control">
-                            <option value="0">--SELECT--</option>
-                            <option value="1">1</option>
-                            <option value="2">2 (LOW)</option>
-                            <option value="3">3 (MODERATED)</option>
-                            <option value="4">4 (FAST)</option>
-                            <option value="5">5 (TURBO)</option>
-                        </select>
-                    </div> 
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Mais de </b>   
-                        <select id="tentativas" class="form-control">
-                            <option value="0">--SELECT--</option>
-                            <?php for ($tentativas = 1; $tentativas <= 9; $tentativas++) { ?>
-                                    <option value="<?php echo $tentativas; ?>"><?php echo $tentativas; ?></option>
-                            <?php } ?>
-                        </select>
-                        <b>tentativas de compra</b> 
-                    </div> 
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Observações</b> 
-                        <select id="observations" class="form-control" >
-                            <option>--SELECT--</option>
-                            <option>NAO</option>
-                            <option>SIM</option>
-                        </select>    
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Cód. Promocional</b>
-                        <select id="cod_promocional" class="form-control" >                            
-                            <option>--SELECT--</option>
-                            <option>PEIXE URBANO</option>
-                            <option title="7 dias de graça">INSTA-DIRECT</option>
-                            <option title="7 dias de graça">MALADIRETA</option>
-                            <option title="15 dias de graça">INSTA15D</option>
-                            <option title="1 mês de graça">AMIGOSDOPEDRO</option>
-                            <option title="20% de desconto de por vida">DUMBUDF20</option>
-                            <option title="50% de desconto o primeiro mês">INSTA50P</option>
-                            <option title="50% de desconto o primeiro mês">BACKTODUMBU</option>
-                            <option title="50% de desconto o primeiro mês">BACKTODUMBU-DNLO</option>
-                            <option title="50% de desconto o primeiro mês">BACKTODUMBU-EGBTO</option>
-                            <option>FITNESS</option>
-                            <option>SHENIA</option>
-                            <option>VANESSA</option>
-                            <option>CAROL</option>
-                            <option>NINA</option>
-                            <option>NICOLE</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Order Key</b>
-                        <input id="order_key_client"  class="form-control" placeholder="Order Key">
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -294,61 +190,7 @@
                         <input id="days_no_work"  class="form-control" placeholder="Número de dias">
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <br>
-                        <b>Paused</b> 
-                        <select id="paused" class="form-control" >
-                            <option value="-1">--SELECT--</option>
-                            <option value="0">NAO</option>
-                            <option value="1">SIM</option>
-                        </select>    
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <br>
-                        <b>Total Unfollow</b> 
-                        <select id="total_unfollow" class="form-control" >
-                            <option value="-1">--SELECT--</option>
-                            <option value="0">NAO</option>
-                            <option value="1">SIM</option>
-                        </select>    
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <br>
-                        <b>Autolike</b> 
-                        <select id="autolike" class="form-control" >
-                            <option value="-1">--SELECT--</option>
-                            <option value="0">NAO</option>
-                            <option value="1">SIM</option>
-                        </select>    
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <br>
-                        <b>UTM source</b> 
-                        <select id="utm_source" class="form-control" >
-                            <option>--SELECT--</option>
-                            <?php
-                                if (isset($utm_source_list)){
-                                    $num_rows = count($utm_source_list);
-                                    for ($i = 0; $i < $num_rows; $i++) {
-                                        if ($utm_source_list[$i]['utm_source'] === null)
-                                            echo '<option title="null in database">---</option>';
-                                        else
-                                            echo '<option>'.$utm_source_list[$i]['utm_source'].'</option>';
-                                    }
-                                }
-                            ?>
-                        </select>    
-                    </div>
-                </div>
             </div>
-            <br>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -379,7 +221,7 @@
                 <div class="col-md-3">
                     <div class="center">
                         <br>
-                        <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                        <button  style="min-width:150px" id = "do_show_robots" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
                             <span class="ladda-label">Listar</span>
                         </button>
                     </div>
@@ -392,6 +234,8 @@
                         </button>
                     </div>
                 </div>
+                        <div id="container_robots">
+                        </div>
             <footer class="fleft100 pd-tb50 bk-fff text-center">
                     <div class="container">
                             <div class="fleft100 m-top40">
