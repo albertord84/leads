@@ -138,7 +138,9 @@
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
                                                     <input type="hidden" id = "profile_type_temp" value="0">
                                                     <input type="hidden" id = "profile_insta_temp" value="0">
-                                                    <a id="do_add_profile_temp" style="text-decoration:none" class="add pointer_mouse"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
+                                                    <div style="width: 90%; margin: 0 auto;">
+                                                        <a id="do_add_profile_temp" style="text-decoration:none" class="add pointer_mouse"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
+                                                    </div>
                                             </div>
                                     </div>
                             </div>
@@ -243,7 +245,9 @@
                                                     <input id ="profile_insta_edit" type="hidden">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
+                                                <div style="width: 90%; margin: 0 auto;">    
                                                     <a id ="do_add_profile" style="text-decoration:none" class="pointer_mouse add"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
+                                                </div>
                                             </div>
                                         <div class="row">
                                         <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
