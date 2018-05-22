@@ -61,10 +61,7 @@
               <div class="modal-dialog mxw-600">
                 <div class="modal-content fleft100 text-center pd-20">
                             <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
-                            <a class="close" data-dismiss="modal" >&times;</a>
-                            <div class="alert alert-danger">
-                                <strong>Message</strong> <div id = "message_criar"></div>.
-                            </div>
+                            <a class="close" data-dismiss="modal" >&times;</a>                            
                             <span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Nova Campanha", array(),$language);?></span>
                             <span class="ft-size13 fleft100"> <?php echo $CI->T("Inicio", array(),$language)." ".date("d/m/Y");?></span>                            
                             <div class="fleft100 gastos pd-15 m-top20">

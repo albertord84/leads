@@ -1316,9 +1316,11 @@ $(document).ready(function () {
                             okButtonTxt+
                         '</div></spam>'+
             '</button>'+
-            '<a href="#!" class="btn" data-dismiss="modal">' + 
-              cancelButtonTxt + 
-            '</a>' +
+            '<button id="cancelButton" data-dismiss="modal" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            cancelButtonTxt+
+                        '</div></spam>'+
+            '</button>'+
           '</div>' +
           '</div>' +
           '</div>' +
@@ -1356,9 +1358,11 @@ $(document).ready(function () {
                             okButtonTxt+
                         '</div></spam>'+
             '</button>'+
-            '<a href="#!" class="btn" data-dismiss="modal">' + 
-              cancelButtonTxt + 
-            '</a>' +
+            '<button id="cancelButton" data-dismiss="modal" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+                        '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
+                            cancelButtonTxt+
+                        '</div></spam>'+
+            '</button>'+            
           '</div>' +
           '</div>' +
           '</div>' +
