@@ -89,8 +89,10 @@ namespace leads\cls {
                 if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
                     
                     $rankToken = \InstagramAPI\Signatures::generateUUID();
+                    //$ig=null; $id=get_an_robot_profile(&$ig);
                     $userId = $ig->people->getUserIdForName($rp);
                     $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
+                    // release_robot_profile($id);
                     $followers = $response->getUsers();
                     $new_cursor = $response->getNextMaxId();
                 } else
@@ -212,11 +214,13 @@ namespace leads\cls {
         
         public function extract_leads($ig, $method, $method_value){
             $leads = array();
+            //$ig=null; $id=get_an_robot_profile(&$ig);
             if($method ==='username')
                 $profileInfo = $ig->people->getInfoByName($method_value);
             elseif($method === 'user_id')
                 $profileInfo = $ig->people->getInfoById($method_value);  
             $user=$profileInfo->getUser();
+            // release_robot_profile($id);
             
             $leads['username']= $user->getUsername();
             $leads['ds_user_id'] = $user->getPk();

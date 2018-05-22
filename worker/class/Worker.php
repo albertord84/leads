@@ -42,13 +42,15 @@ namespace leads\cls {
         
         function prepare_all_robot_profiles() {
             /*
-            //1. recuperar todos lo rp que pueden trabajar
+            //1. recuperar todos lo rp que pueden trabajar st<>4,11
+            //. para cada uno, loguearlo con la API y guardar el objeto ig en un arreglo global persistente
+             
             */            
         }
         
         function prepare_daily_work() {
             //0. botar todos os robot_profiles em activo
-            $this->DB->reset_robot_profiles();
+            // no se va a  hacer mas   $this->DB->reset_robot_profiles();
             //1. seleccionar clientes activos (que pueden trabajar)
             $GLOBALS['all_client_cookies']=array();
             $objClient=new Client();
