@@ -1,3 +1,5 @@
 /nbproject/private/
 worker/externals/vendor/mgp25/instagram-php/sessions/
 /worker/externals/vendor/mgp25/instagram-php/sessions/
+
+src/application/logs
