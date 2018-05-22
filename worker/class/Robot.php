@@ -179,7 +179,7 @@ namespace leads\cls {
                     $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
-                        'profile_status_id',profile_status::ENDED);
+                        'profile_status_id',profiles_status::ENDED);
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
                         'profile_status_date',time());
@@ -269,7 +269,7 @@ namespace leads\cls {
                         $page_info = $json_response->data->location->edge_location_to_media->page_info;
                         foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
                             $profile = new \stdClass();
-                            $profile->node = $this->get_geo_post_user_info($login_data, $rp_insta_id, $Edge->node->shortcode);
+                            $profile->node = $this->get_geo_post_user_info($cookies, $rp_insta_id, $Edge->node->shortcode);
                             array_push($Profiles, $profile->node->username);
                         }
                         $error = FALSE;
@@ -289,11 +289,11 @@ namespace leads\cls {
             }
         }
         
-        public function get_insta_geomedia($login_data, $location, $N, &$cursor = NULL) {
+        public function get_insta_geomedia($cookies, $location, $N, &$cursor = NULL) {
             try {
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);
@@ -356,17 +356,17 @@ namespace leads\cls {
             return NULL;
         }
         
-        public function make_curl_followers_query($query, $variables, $login_data=NULL){            
+        public function make_curl_followers_query($query, $variables, $cookies=NULL){            
             $variables = urlencode($variables);
             $url = "https://www.instagram.com/graphql/query/?query_hash=$query&variables=$variables";            
             $curl_str = "curl '$url' ";
-            if($login_data !== NULL)
+            if($cookies !== NULL)
             {
-                if($login_data->mid == NULL|| $login_data->csrftoken == NULL || $login_data->sessionid == NULL ||
-                        $login_data->ds_user_id == NULL)
+                if($cookies->mid == NULL|| $cookies->csrftoken == NULL || $cookies->sessionid == NULL ||
+                        $cookies->ds_user_id == NULL)
                     return NULL;
-               $curl_str .= "-H 'Cookie: mid=$login_data->mid; sessionid=$login_data->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$login_data->csrftoken; ds_user_id=$login_data->ds_user_id' ";            
-               $curl_str .= "-H 'X-CSRFToken: $login_data->csrftoken' ";
+               $curl_str .= "-H 'Cookie: mid=$cookies->mid; sessionid=$cookies->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$cookies->csrftoken; ds_user_id=$cookies->ds_user_id' ";            
+               $curl_str .= "-H 'X-CSRFToken: $cookies->csrftoken' ";
             }
             
             $curl_str .= "-H 'Origin: https://www.instagram.com' ";
@@ -394,7 +394,7 @@ namespace leads\cls {
                         $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
                         foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
                             $profile = new \stdClass();
-                            $profile->node = $this->get_tag_post_user_info($login_data,  $Edge->node->shortcode);
+                            $profile->node = $this->get_tag_post_user_info($cookies,  $Edge->node->shortcode);
                             array_push($Profiles, $profile->node->username);
                         }
                         $error = FALSE;
@@ -414,11 +414,11 @@ namespace leads\cls {
             }
         }
 //        
-        public function get_insta_tagmedia($login_data, $tag, $N, &$cursor = NULL) {
+        public function get_insta_tagmedia($cookies, $tag, $N, &$cursor = NULL) {
             try {
                 $tag_query = '298b92c8d7cad703f7565aa892ede943';
                 $variables = "{\"tag_name\":\"$tag\",\"first\":2,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);

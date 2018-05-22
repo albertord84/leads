@@ -381,7 +381,7 @@
                                                         <input id="boleto_cpf" value="" placeholder="CPF" type="text" class = "number cpf" maxlength="11">
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
-                                                            <input id="boleto_cpe" type="text" placeholder="CPE" class = "number cep" maxlength="8">
+                                                            <input id="boleto_cpe" type="text" placeholder="CEP" class = "number cep" maxlength="8">
                                                     </div>
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                         <button id = "find_cep" type="button" class="fa fa-search btn-search btngreen"></button>
