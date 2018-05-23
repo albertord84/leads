@@ -67,8 +67,8 @@ class Welcome extends CI_Controller {
 
         return $inp;
     } 
-    
-    public function index() {
+        
+    public function index() {        
         
         $this->load->model('class/user_role');        
         $param = array();
