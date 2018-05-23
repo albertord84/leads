@@ -779,7 +779,7 @@ class Welcome extends CI_Controller {
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
                     <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$this->T($campaing['campaing_type_id_string'], array(), $GLOBALS['language']).'</span></span>
-                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
+                    <span class="fleft100 fw-600 ft-size16"><label id="capt_'.$campaing['campaing_id'].'">'.$campaing['amount_leads'].'</label> '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
                     <span class="ft-size11 fw-600 m-top8 fleft100">'.$this->T("Gasto atual", array(), $GLOBALS['language']).': <br>'.$this->session->userdata('currency_symbol').' <label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.$this->session->userdata('currency_symbol').' <label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
             </div>';
         $html .= '<div id="divcamp_'.$campaing['campaing_id'].'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
