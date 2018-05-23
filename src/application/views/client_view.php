@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head> 
-             <meta http-equiv="refresh" content="300">
+            <meta>
             <?php 
                 function reduce_profile($profile){
                     if(strlen($profile) >= 9){
@@ -802,7 +802,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
                                                         <span class="fleft100 ft-size12"><?php echo $CI->T("Tipo", array(),$language); ?>: <span class="cl-green"><?php echo $CI->T($campaing['campaing_type_id_string'], array(),$language); ?></span></span>
-                                                        <span class="fleft100 fw-600 ft-size16"><?php echo $campaing['amount_leads']; ?> <?php echo $CI->T("leads captados", array(),$language); ?></span>
+                                                        <span class="fleft100 fw-600 ft-size16"><label id="capt_<?php echo $campaing['campaing_id'];?>"><?php echo $campaing['amount_leads']; ?></label> <?php echo $CI->T("leads captados", array(),$language); ?></span>
                                                         <span class="ft-size11 fw-600 m-top8 fleft100"><?php echo $CI->T("Gasto atual", array(),$language); ?>: <br><?php echo $currency_symbol;?> <label id="show_gasto_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', ''); ?></label> <?php echo $CI->T("de", array(),$language); ?> <span class="cl-green"><?php echo $currency_symbol;?> <label id="show_total_<?php echo $campaing['campaing_id'];?>"><?php echo number_format((float)$campaing['total_daily_value']/100, 2, '.', ''); ?></label></span></span>
                                                 </div>
                                                 <div id="divcamp_<?php echo $campaing['campaing_id'];?>" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">

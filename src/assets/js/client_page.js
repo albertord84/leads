@@ -1419,6 +1419,37 @@ $(document).ready(function () {
             this.checked = flag;                        
         });
     });
+    
+    setInterval(function() {
+        //your jQuery ajax code each X minutes
+        $.ajax({
+            url: base_url + 'index.php/welcome/get_campaings',            
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                
+                    var campaings = response['data'];
+                    var num_campaings = campaings.length;
+                    
+                    for(i = 0; i < num_campaings; i++)
+                    {                        
+                        var captured = campaings[i]['amount_leads'];
+                        var gastado = Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2);
+                        
+                        if ( $( "#show_gasto_"+campaings[i]['campaing_id'] ).length ){
+                            document.getElementById('show_gasto_'+campaings[i]['campaing_id']).innerHTML = gastado;  
+                        }
+                        if ( $( "#capt_"+campaings[i]['campaing_id'] ).length ){
+                            document.getElementById('capt_'+campaings[i]['campaing_id']).innerHTML = captured;  
+                        }
+                    }                    
+                }                                
+            },
+            error: function (xhr, status) {
+                set_global_var('flag', true);
+            }
+        });
+    }, 1000 * 60 * 5); 
 });
    
 function reset_element(element_selector, style) {
@@ -1585,7 +1616,7 @@ function show_campaings(campaings){
             html += '</span> </li> </div> </ul> </div>';
             html += '<div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">'+
                     '<span class="fleft100 ft-size12">'+T('Tipo',language)+': <span class="cl-green">'+ T(campaings[i]['campaing_type_id_string'],language)+'</span></span>'+
-                    '<span class="fleft100 fw-600 ft-size16">'+campaings[i]['amount_leads']+' '+T('leads captados',language)+'</span>'+
+                    '<span class="fleft100 fw-600 ft-size16"> <label id="capt_'+campaings[i]['campaing_id']+'">'+campaings[i]['amount_leads']+'</label> '+T('leads captados',language)+'</span>'+
                     '<span class="ft-size11 fw-600 m-top8 fleft100">'+T('Gasto atual',language)+': <br>'+currency_symbol+' <label id="show_gasto_'+campaings[i]['campaing_id']+'">'+Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2)+'</label> '+T('de',language)+' <span class="cl-green">'+currency_symbol+' <label id="show_total_'+campaings[i]['campaing_id']+'">'+Number(campaings[i]['total_daily_value']/100).toFixed(2)+'</label></span></span>'+
                     '</div>';
             html += '<div id="divcamp_'+campaings[i]['campaing_id']+'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">'+
