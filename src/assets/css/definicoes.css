@@ -1046,6 +1046,21 @@ form input,textarea{
     }
 }
 
+@media (max-width: 420px) {
+    .blblue > div:nth-child(2) > div:nth-child(1) > div:nth-child(2),
+    .blblue > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
+    .blblue > div:nth-child(2) > div:nth-child(3) > div:nth-child(2),
+    div.m-top20:nth-child(1) > div:nth-child(2),
+    div.col-md-8:nth-child(2),
+    .blblue > div:nth-child(3) > div:nth-child(3) > div:nth-child(2) {
+        display: none;
+    }
+}
+
+h2.fw-600 {
+    text-align: center;
+}
+
 #main_dropdown {
     margin-top: 20px;
 }
