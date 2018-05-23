@@ -638,6 +638,7 @@
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Leads extraídos", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
+                                                                <label id ="total_capt">
                                                                 <?php
                                                                     $total_captados = 0;
                                                                     foreach ($campaings as $campaing) {
@@ -645,6 +646,7 @@
                                                                     }
                                                                     echo $total_captados;
                                                                 ?>
+                                                                </label>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">

@@ -1430,11 +1430,12 @@ $(document).ready(function () {
                 if (response['success']) {                
                     var campaings = response['data'];
                     var num_campaings = campaings.length;
-                    
+                    var total_capt = 0;
                     for(i = 0; i < num_campaings; i++)
                     {                        
                         var captured = campaings[i]['amount_leads'];
                         var gastado = Number((campaings[i]['total_daily_value'] - campaings[i]['available_daily_value'])/100).toFixed(2);
+                        total_capt += captured;
                         
                         if ( $( "#show_gasto_"+campaings[i]['campaing_id'] ).length ){
                             document.getElementById('show_gasto_'+campaings[i]['campaing_id']).innerHTML = gastado;  
@@ -1443,6 +1444,7 @@ $(document).ready(function () {
                             document.getElementById('capt_'+campaings[i]['campaing_id']).innerHTML = captured;  
                         }
                     }                    
+                    document.getElementById('total_capt').innerHTML = total_capt;  
                 }                                
             },
             error: function (xhr, status) {
