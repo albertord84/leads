@@ -1449,7 +1449,7 @@ $(document).ready(function () {
                 set_global_var('flag', true);
             }
         });
-    }, 1000 * 60 * 0.1); 
+    }, 1000 * 60 * 5); 
 });
    
 function reset_element(element_selector, style) {
