@@ -94,6 +94,8 @@ class Daily_Payment {   //extends CI_Controller {
                     $value_cents = 0;
                     if( is_object($resp) && $resp->isSuccess() ){                    
                         $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
+                    }else{
+                        var_dump($resp);
                     }
 
                     if($value_cents < $amount_to_pay){//no fue hecho el cobro
