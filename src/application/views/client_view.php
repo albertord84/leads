@@ -606,9 +606,9 @@
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
                                                     <?php echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
-<!--                                                    <a href="" data-toggle="modal" data-target="#pagamento">
-                                                        <u>Clique aqui</u>
-                                                    </a>-->
+                                                    <a href="" data-toggle="modal" data-target="#pagamento">
+                                                        <u><?php echo $CI->T("Clique aqui", array(),$language);?> </u>
+                                                    </a>
                                                 </div>
 
                                     <?php
