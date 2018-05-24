@@ -117,23 +117,23 @@
                                                     ?>                                            
                                                 </div>    
                                             </ul>
-
-                                            <div class="col-md-8 col-sm-8 col-xs-12 m-top20">
-                                                    <div class="row">
-                                                        <!--<input id = "login_profile"  type="text" style="text-transform:lowercase" class="typeahead form-control tt-query" placeholder="Perfil" onkeyup="javascript:this.value = this.value.toLowerCase();"  autocomplete="off" spellcheck="false"  required> -->
-                                                        <div class="col-sm-12">
-                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" autocomplete="off" spellcheck="false" required>
+                                            <div class="col-md-7 col-sm-7 col-xs-12 m-top20 pd-0">
+                                                    <!--<div class="row">-->                                                        
+                                                        <div style="width: 90%; margin: 0 auto;">
+                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" autocomplete="off" spellcheck="false" required>                                                            
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <!--</div>-->
+                                                    <!--<div class="row">-->
                                                         <div id="container_search_profile" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
                                                             <table id="table_search_profile" class="table">                                
                                                             </table>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <!--</div>-->
+                                                    <!--<div class="row">-->
                                                         <div id="reference_profile_message" class="form-group m-t10" style="text-align:left;visibility:hidden; font-family:sans-serif; font-size:0.9em"> </div>
-                                                    </div>
+                                                    <!--</div>-->
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12 pd-0">                                                    
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
                                                     <input type="hidden" id = "profile_type_temp" value="0">
@@ -240,24 +240,28 @@
                                                 </div>
                                             </ul>
 
-                                            <div class="col-md-8 col-sm-8 col-xs-12 m-top20">
-                                                    <input id ="profile_edit" type="text" class="addmais" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" type="text" style="text-transform:lowercase;">
+                                            <div class="col-md-7 col-sm-7 col-xs-12 m-top20">
+                                                    <div>
+                                                        <input id ="profile_edit" type="text" class="addmais" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" type="text" style="text-transform:lowercase;">
+                                                    </div>
+                                                    <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
+                                                        <table id="table_search_profile2" class="table">                                
+                                                        </table>
+                                                    </div>
                                                     <input id ="profile_insta_edit" type="hidden">
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
                                                 <div style="width: 90%; margin: 0 auto;">    
                                                     <a id ="do_add_profile" style="text-decoration:none" class="pointer_mouse add"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
                                                 </div>
                                             </div>
-                                        <div class="row">
-                                        <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
-                                            <table id="table_search_profile2" class="table">                                
-                                            </table>
-                                        </div>
-                                        </div>
-                                        <div class="row">
+                                        <!--<div class="row">-->                                        
+                                        <!--</div>-->
+                                        <!--<div class="row">-->
                                             <div id="reference_profile_message2" class="form-group m-t10" style="text-align:left;visibility:hidden; font-family:sans-serif; font-size:0.9em"> </div>
-                                        </div>
+                                        <!--</div>-->
                                     </div>
                             </div>
 <!--                            <hr class="fleft100">
