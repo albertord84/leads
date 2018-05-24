@@ -33,7 +33,7 @@ class Welcome extends CI_Controller {
         $end_date = $date;
         $now = time();
         if(date("Ymd",$date) == date("Ymd",$now))
-            $end_date = $now;
+            return $now;
         return $end_date;
     }
     
@@ -1700,7 +1700,12 @@ class Welcome extends CI_Controller {
                 if(isset($id_campaing) && !is_numeric($id_campaing))
                     $id_campaing = NULL;
                 $init_date = $datas['init_date'];
-                $end_date = $this->real_end_date($datas['end_date']);                
+                $end_date = $this->real_end_date($datas['end_date']);  
+                
+                if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                    $end_date = $init_date + 24*3600-1;
+                }
+                
                 parse_str($datas['info_to_get'], $info_to_get);
                 ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
                 
