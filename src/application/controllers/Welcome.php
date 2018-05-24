@@ -505,7 +505,7 @@ class Welcome extends CI_Controller {
                                     $this->user_model->set_session($cadastro_id,$this->session);
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
-                                    $result['resource'] = 'client';
+                                    $result['resource'] = 'client';                                    
                                 }else
                                 {
                                     $result['success'] = false;
