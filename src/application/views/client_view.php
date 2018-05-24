@@ -18,6 +18,7 @@
             <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
             <script type="text/javascript">var min_daily_value ='<?php echo $min_daily_value/100;?>';</script>
             <script type="text/javascript">var min_ticket_bank ='<?php echo $min_ticket_bank/100;?>';</script>
+            <script type="text/javascript">var price_lead ='<?php echo $price_lead;?>';</script>
             
             <meta charset="UTF-8">
             <title>Dumbu-Leads</title>
@@ -520,7 +521,7 @@
                                         <div class="form-group m-top5 m-top0-xs">
                                             <label for="init_date" class="fleft100 text-left"><?php echo $CI->T("Data incial", array(),$language); ?> </label>
                                                 <div class='input-group date' id='datetimepicker_lead'>
-                                                    <input type='text' class="form-control" id="init_date" />
+                                                    <input type='text' class="form-control" id="init_date" value="<?php echo date('d/m/Y', $date_filter['init_day']); ?>"/>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -536,7 +537,7 @@
                                         <div class="form-group m-top5 m-top0-xs">
                                             <label for="end_date" class="fleft100 text-left"><?php echo $CI->T("Data final", array(),$language); ?>  </label>
                                                 <div class='input-group date' id='datetimepicker_lead2'>
-                                                    <input type='text' class="form-control" id="end_date" />
+                                                    <input type='text' class="form-control" id="end_date" value="<?php echo date('d/m/Y', $date_filter['end_day']); ?>"/>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -672,8 +673,13 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Gasto total", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php
-                                                                    echo $currency_symbol." ".number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
+                                                                        echo $currency_symbol." ";
                                                                 ?> 
+                                                                <label id = "total_gast">
+                                                                    <?php
+                                                                        echo number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
+                                                                    ?> 
+                                                                </label>
                                                             </span>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">                                                            

@@ -770,6 +770,8 @@ $(document).ready(function () {
                     document.getElementById("list_campaings").innerHTML = html;                       
                     document.getElementById("init_day_filter").innerHTML = toDate(response['date_interval']['init_date']);
                     document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
+                    $("#init_date").val(toDate(response['date_interval']['init_date']));
+                    $("#end_date").val(toDate(response['date_interval']['end_date']));
                 } 
                 else {                 
                     document.getElementById("list_campaings").innerHTML = T('Você nao possui nenhuma criada campanha nesse periodo',language);
@@ -806,6 +808,8 @@ $(document).ready(function () {
                         document.getElementById("list_campaings").innerHTML = html;                       
                         document.getElementById("init_day_filter").innerHTML = toDate(response['date_interval']['init_date']);
                         document.getElementById("end_day_filter").innerHTML = toDate(response['date_interval']['end_date']);
+                        $("#init_date").val(toDate(response['date_interval']['init_date']));
+                        $("#end_date").val(toDate(response['date_interval']['end_date']));
                     } 
                     else {                 
                         document.getElementById("list_campaings").innerHTML = T('Você nao possui nenhuma campanha criada nesse periodo',language);
@@ -1425,6 +1429,9 @@ $(document).ready(function () {
         $.ajax({
             url: base_url + 'index.php/welcome/get_campaings',            
             type: 'POST',
+            data: {
+                    refresh: true                   
+                },
             dataType: 'json',
             success: function (response) {
                 if (response['success']) {                
@@ -1445,13 +1452,14 @@ $(document).ready(function () {
                         }
                     }                    
                     document.getElementById('total_capt').innerHTML = total_capt;  
+                    document.getElementById('total_gast').innerHTML = Number(total_capt*price_lead/100).toFixed(2);  
                 }                                
             },
             error: function (xhr, status) {
                 set_global_var('flag', true);
             }
         });
-    }, 1000 * 60 * 5); 
+    }, 1000 * 60 * 0.1); 
 });
    
 function reset_element(element_selector, style) {
@@ -1569,7 +1577,7 @@ function concert_especial_char(str){
 function show_campaings(campaings){
     var html = '';
     var num_campaings = campaings.length;
-    var i;
+    var i, total_capt = 0;
     var color_status = [];
     color_status["ATIVA"] = "camp-green";
     color_status["PAUSADA"] = "camp-silver";
@@ -1579,6 +1587,8 @@ function show_campaings(campaings){
     
     for(i = 0; i < num_campaings; i++)
     {
+        total_capt += campaings[i]['amount_leads'];        
+
         //var campaing = campaings[i];        
         html += '<div id = "campaing_'+campaings[i]['campaing_id']+'" class="fleft100 bk-silver camp '+ color_status[campaings[i]['campaing_status_id_string']]+' m-top20 center-xs">'+ 
                     '<div class="col-md-2 col-sm-2 col-xs-12 m-top10">'+
@@ -1639,6 +1649,10 @@ function show_campaings(campaings){
                                 }                            
             html += '</div></div> </div>';
     }
+    
+    document.getElementById('total_capt').innerHTML = total_capt;  
+    document.getElementById('total_gast').innerHTML = Number(total_capt*price_lead/100).toFixed(2);  
+    
     return html;
 }
 

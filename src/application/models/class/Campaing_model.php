@@ -418,7 +418,7 @@ class Campaing_model extends CI_Model {
                 $this->db->where('leads.extracted_date >= ', $init_date);
             
             if($end_date)
-                $this->db->where('leads.extracted_date <= ', $end_date+24*3600-1);
+                $this->db->where('leads.extracted_date <= ', $end_date);
             
             $this->db->order_by('profiles.campaing_id', "asc");
             

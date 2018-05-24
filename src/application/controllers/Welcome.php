@@ -29,6 +29,14 @@ class Welcome extends CI_Controller {
         }
     }
     
+    public function real_end_date($date){
+        $end_date = $date;
+        $now = time();
+        if(date("Ymd",$date) == date("Ymd",$now))
+            $end_date = $now;
+        return $end_date;
+    }
+    
     public function is_brazilian_ip(){
         /*
         $prefixos_br = array(   '45.','72.','93.','128','131','132','138','139',
@@ -1049,16 +1057,25 @@ class Welcome extends CI_Controller {
         if ($this->session->userdata('role_id')==user_role::CLIENT){
             if($this->session->userdata('status_id') != user_status::DELETED){
                 $datas = $this->input->post();                
-                $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];
                 
-                if(!is_numeric($init_date))
-                    $init_date = NULL;
-                if(!is_numeric($end_date))
-                    $end_date = NULL;
+                $init_date = $this->session->userdata('init_day');
+                $end_date = $this->session->userdata('end_day');
                 
-                $this->session->set_userdata('init_day', $init_date);
-                $this->session->set_userdata('end_day', $end_date);
+                if($datas["refresh"] != true){
+                    $init_date = $datas['init_date'];
+                    $end_date = $this->real_end_date($datas['end_date']);
+
+                    if(!is_numeric($init_date))
+                        $init_date = NULL;
+                    if(!is_numeric($end_date))
+                        $end_date = NULL;
+                    if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                        $end_date = $init_date + 24*3600-1;
+                    }
+
+                    $this->session->set_userdata('init_day', $init_date);
+                    $this->session->set_userdata('end_day', $end_date);
+                }
                 
                 $campaings = $this->client_model->load_campaings($this->session->userdata('id'),NULL,$init_date, $end_date);
                 
@@ -1683,7 +1700,7 @@ class Welcome extends CI_Controller {
                 if(isset($id_campaing) && !is_numeric($id_campaing))
                     $id_campaing = NULL;
                 $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];                
+                $end_date = $this->real_end_date($datas['end_date']);                
                 parse_str($datas['info_to_get'], $info_to_get);
                 ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
                 
