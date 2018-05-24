@@ -642,6 +642,11 @@
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Leads extraídos", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
+                                                                <a href="" class="cl-black extraer_leads" data-toggle="modal" data-id="extraer_all" >
+                                                                    <img src="<?php echo base_url().'assets/img/down.png'?>" alt="">
+                                                                        <!--<span class="fleft100 ft-size11 m-top8 fw-600"><?php // echo $CI->T("Extrair leads", array(),$language); ?></span>-->
+                                                                </a>
+                                                                 
                                                                 <label id ="total_capt">
                                                                 <?php
                                                                     $total_captados = 0;
@@ -651,7 +656,7 @@
                                                                     echo $total_captados;
                                                                 ?>
                                                                 </label>
-                                                            </span>
+                                                            </span>                                                            
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
@@ -671,14 +676,14 @@
                                                                 ?> 
                                                             </span>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">
+                                                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">                                                            
                                                             <div class="dropdown i-block dropfiltro">
                                                               <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none ft-size12 cl" style="color:#5c8fe1">
                                                                   <img src="<?php echo base_url().'assets/img/user.png'?>" alt=""> <u><b>
                                                                   <?php echo $CI->T("Campanhas por data", array(),$language);?></b></u>
                                                               </button>
                                                               <ul class="dropdown-menu text-center" aria-labelledby="dLabel">
-                                                                    <li><a class="c-pointer person"><?php echo $CI->T("Personalizado", array(),$language);?></a></li>
+                                                                <li><a class="c-pointer person"><?php echo $CI->T("Personalizado", array(),$language);?></a></li>
                                                                 <li><a class="date_filter pointer_mouse" id ="menos_0" ><?php echo $CI->T("Hoje", array(),$language);?></a></li>
                                                                 <li><a class="date_filter pointer_mouse" id ="menos_1" ><?php echo $CI->T("Ontem", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Esta semana (dom. - hoje)</a></li>-->

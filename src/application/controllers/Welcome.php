@@ -1680,12 +1680,14 @@ class Welcome extends CI_Controller {
                 $datas = $this->input->post();
                 $profile = $datas['profile'];
                 $id_campaing = $datas['id_campaing'];
+                if(isset($id_campaing) && !is_numeric($id_campaing))
+                    $id_campaing = NULL;
                 $init_date = $datas['init_date'];
                 $end_date = $datas['end_date'];                
                 parse_str($datas['info_to_get'], $info_to_get);
                 ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
                 
-                if( $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
+                if( $id_campaing==NULL || $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
                     $profile_row = $this->campaing_model->get_profile($id_campaing, $profile);
                     $result_sql = $this->campaing_model->get_leads( $this->session->userdata('id'),
                                                                     $id_campaing,

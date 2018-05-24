@@ -353,7 +353,7 @@ class Campaing_model extends CI_Model {
     
     /*Obtiene leads de una campaña 
      * Puede filtrarse además por un perfil*/    
-    public function get_leads($id_client, $id_campaing, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get){
+    public function get_leads($id_client, $id_campaing = NULL, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get){
         $result = NULL;
         $data_lead = array();        
         $decode_fields = ['perfil' => 'profile',
@@ -381,7 +381,8 @@ class Campaing_model extends CI_Model {
                           'biography_email' => TRUE,
                           'public_email' => TRUE,
                           'birthday' => TRUE,
-                          'is_business' => TRUE
+                          'is_business' => TRUE,
+                          'campaing_id' => FALSE
                         ];
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
@@ -399,13 +400,14 @@ class Campaing_model extends CI_Model {
         
         try{
             //$this->db->select('leads.sold');
-            $this->db->select( $fields );
+            $this->db->select( $fields.", campaing_id" );
             $this->db->from('leads');            
             $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
             $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
             $this->db->join('clients', 'campaings.client_id = clients.user_id');
-            $this->db->where('clients.user_id',$id_client);            
-            $this->db->where('campaings.id',$id_campaing);
+            $this->db->where('clients.user_id',$id_client);  
+            if($id_campaing != NULL)
+                $this->db->where('campaings.id',$id_campaing);
             //$this->db->where('profiles.deleted', 0);    //revisar esto
             $this->db->where('leads.sold',1);
                         
@@ -418,16 +420,19 @@ class Campaing_model extends CI_Model {
             if($end_date)
                 $this->db->where('leads.extracted_date <= ', $end_date+24*3600-1);
             
-            $this->db->order_by('profiles.profile', "asc");
+            $this->db->order_by('profiles.campaing_id', "asc");
+            
             $result =  $this->db->get()->result_array();
             
             $cant_leads = count($result);
             for($i = 0; $i < $cant_leads; $i++){
                 $all_email = false;
+                $data_lead[$i]['id_campaing'] = "ID_".$result[$i]['campaing_id'];
                 foreach($result[$i] as $key => $field){
                     if($to_decode[$key])
                         $result[$i][$key] = $this->decrypt($field);
                 }
+                
                 foreach($info_to_get['inf'] as $key => $field){
                     if($field != 'all_email'){
                         $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];

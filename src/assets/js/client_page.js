@@ -1091,7 +1091,7 @@ $(document).ready(function () {
 
                             a.href = window.URL.createObjectURL( new Blob([response['file']]) );
                             // Give filename you wish to download
-                            a.download = "leads_"+I+"_"+F+".csv";
+                            a.download = "leads_ID_"+id_campaing+"_"+I+"_"+F+".csv";
                             a.style.display = 'none';
                             document.body.appendChild(a);
                             a.click();
