@@ -447,7 +447,7 @@
                             <a class="close" data-dismiss="modal" >&times;</a>
                             <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
                             <hr class="fleft100">
-                            <span class="fleft100 m-top10 m-b30">QUAIS INFORMAÇÕES VOCÊ DESEJA CAPTAR?</span>
+                            <span class="fleft100 m-top10 m-b30"><?php echo $CI->T("QUAIS INFORMAÇÕES VOCÊ DESEJA CAPTAR?", array(),$language);?></span>
                             <div align = "left" class="col-md-6 col-sm-6 col-xs-12">
 <!--                                
                                     <div>
