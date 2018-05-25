@@ -353,7 +353,7 @@ class Campaing_model extends CI_Model {
     
     /*Obtiene leads de una campaña 
      * Puede filtrarse además por un perfil*/    
-    public function get_leads($id_client, $id_campaing, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get){
+    public function get_leads($id_client, $id_campaing = NULL, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get){
         $result = NULL;
         $data_lead = array();        
         $decode_fields = ['perfil' => 'profile',
@@ -368,6 +368,22 @@ class Campaing_model extends CI_Model {
                           'data_nascimento' => 'birthday',
                           'privativo' => 'is_business'
                             ];
+        $to_decode =    ['profile' => FALSE,
+                          'username' => TRUE,
+                          'full_name' => TRUE,
+                          'country_code' => TRUE,
+                          'phone_number' => TRUE,
+                          'public_phone_number' => TRUE,
+                          'contact_phone_number' => TRUE,
+                          'gender' => TRUE,
+                          'category' => FALSE,
+                          'private_email' => TRUE,
+                          'biography_email' => TRUE,
+                          'public_email' => TRUE,
+                          'birthday' => TRUE,
+                          'is_business' => TRUE,
+                          'campaing_id' => FALSE
+                        ];
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
@@ -384,13 +400,14 @@ class Campaing_model extends CI_Model {
         
         try{
             //$this->db->select('leads.sold');
-            $this->db->select( $fields );
+            $this->db->select( $fields.", campaing_id" );
             $this->db->from('leads');            
             $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
             $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
             $this->db->join('clients', 'campaings.client_id = clients.user_id');
-            $this->db->where('clients.user_id',$id_client);            
-            $this->db->where('campaings.id',$id_campaing);
+            $this->db->where('clients.user_id',$id_client);  
+            if($id_campaing != NULL)
+                $this->db->where('campaings.id',$id_campaing);
             //$this->db->where('profiles.deleted', 0);    //revisar esto
             $this->db->where('leads.sold',1);
                         
@@ -403,17 +420,24 @@ class Campaing_model extends CI_Model {
             if($end_date)
                 $this->db->where('leads.extracted_date <= ', $end_date);
             
-            $this->db->order_by('profiles.profile', "asc");
+            $this->db->order_by('profiles.campaing_id', "asc");
+            
             $result =  $this->db->get()->result_array();
             
             $cant_leads = count($result);
             for($i = 0; $i < $cant_leads; $i++){
-            $all_email = false;
-            foreach($info_to_get['inf'] as $key => $field){
-                if($field != 'all_email'){
-                    $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];
+                $all_email = false;
+                $data_lead[$i]['id_campaing'] = "ID_".$result[$i]['campaing_id'];
+                foreach($result[$i] as $key => $field){
+                    if($to_decode[$key])
+                        $result[$i][$key] = $this->decrypt($field);
                 }
-                else{
+                
+                foreach($info_to_get['inf'] as $key => $field){
+                    if($field != 'all_email'){
+                        $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];
+                    }
+                    else{
                         $all_email = true;                       
                         $data_lead[$i]['public_email'] = $result[$i]['public_email'];
                         $data_lead[$i]['private_email'] = $result[$i]['private_email'];
@@ -422,7 +446,7 @@ class Campaing_model extends CI_Model {
                 }
                 if(!$all_email){
                     if($result[$i]['public_email']){
-                            $data_lead[$i]['e_mail'] = $result[$i]['public_email'];
+                        $data_lead[$i]['e_mail'] = $result[$i]['public_email'];
                     }
                     else{
                         if($result[$i]['private_email']){
@@ -442,6 +466,29 @@ class Campaing_model extends CI_Model {
         } finally {
             return $data_lead;
         }        
+    }
+    
+    public function crypt($str_plane){
+        $seed = "mi chicho lindo";
+        $key_number = md5($seed);
+        $cipher = "aes-256-ctr";
+        $tag = 'GCM';
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $str = openssl_encrypt ($str_plane, $cipher, $key_number,$options=0, '1234567812345678');
+        return base64_encode($str);
+    }
+
+    public function decrypt($str_encrypted){
+        $seed = "mi chicho lindo";
+        $key_number = md5($seed);
+        $cipher = "aes-256-ctr";
+        $tag = 'GCM';
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $str_encrypted= base64_decode($str_encrypted);
+        $str = openssl_decrypt ($str_encrypted, $cipher, $key_number,$options=0, '1234567812345678');
+        return $str;
     }
 }
 

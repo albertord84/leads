@@ -20,7 +20,7 @@
             </div>
             <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
             <p> Você precisa atualizar seu pagamento para poder continuar extraindo leads!</p>
-            <p> Em caso que não atualizar será bloqueado dentro <?php echo $_GET["day_to_block"]; ?> dias</p>
+            <p> Em caso de não atualizar será bloqueado dentro <?php echo $_GET["day_to_block"]; ?> dias</p>
                         
             <p>Se tiver qualquer dúvida é só nos escrever!</p>
             <p>Obrigado por usar nossos serviços,</p>

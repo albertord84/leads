@@ -9,6 +9,11 @@ var Translation = {
             "ES": "¡No fue posible responder a su solicitud!",
             "EN": "We were unable to respond to your request!" 
         },
+"Preencha todos os dados da campanha corretamente!": 
+        {   "PT": "Deve preencher todos os dados da campanha corretamente!",
+            "ES": "Debe rellenar todos los datos de la campaña correctamente!",
+            "EN": "You must fill out all the campaign data correctly!" 
+        },
 "O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!": 
         {   "PT": "O nome de um perfil só pode conter combinações de letras, números, sublinhados e pontos!",
             "ES": "El nombre de un perfil sólo puede contener combinaciones de letras, números, subrayados y puntos!",

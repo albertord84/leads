@@ -51,7 +51,7 @@ namespace leads\cls {
                     $id = $rp->id;
                     $objRobot=new Robot();
                     $resp = $objRobot->do_instagram_login_by_API($rp->login,$rp->pass);
-                    if(is_object($resp->ig)){
+                    if(is_object($resp) && is_object($resp->ig)){
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'status_id', $OCCUPED);
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'cookies', json_encode($resp->cookies));
                         $this->id = $rp->id;
@@ -65,6 +65,7 @@ namespace leads\cls {
                         return true;
                     } else{
                         $administrators=array('josergm86@gmail.com','egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com');                        
+                        //$administrators=array('jorge85.mail@gmail.com');                        
                         foreach($administrators as $admin){
                             $this->Gmail->send_mail($admin, $admin,
                             "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",

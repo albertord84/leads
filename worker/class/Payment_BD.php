@@ -244,10 +244,11 @@ namespace leads\cls {
             $DB = new \leads\cls\DB();            
             try {
                 $DB->connect();
+                $soled_date = time();
                 $arr_as_string = implode(',', $list_leads_id);
                 $sql = ""
                         . "UPDATE leads "
-                        . "SET sold = 1 "                        
+                        . "SET sold = 1, soled_date = ".$soled_date." "                        
                         . "WHERE id IN ($arr_as_string) "
                         . "LIMIT $number_leads; ";   
                 } catch (\Exception $exc) {

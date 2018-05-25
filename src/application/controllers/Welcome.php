@@ -29,6 +29,14 @@ class Welcome extends CI_Controller {
         }
     }
     
+    public function real_end_date($date){
+        $end_date = $date;
+        $now = time();
+        if(date("Ymd",$date) == date("Ymd",$now))
+            return $now;
+        return $end_date;
+    }
+    
     public function is_brazilian_ip(){
         /*
         $prefixos_br = array(   '45.','72.','93.','128','131','132','138','139',
@@ -45,14 +53,31 @@ class Welcome extends CI_Controller {
         if($_SERVER['REMOTE_ADDR'] === "127.0.0.1")
             return 1;
         
-        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
-        $response = json_decode($datas);
-        if(is_object($response) && $response->country_code == "BR")
+        if($_SERVER['REMOTE_ADDR'] === "191.252.100.122")
             return 1;
+        
+        return 1;
         return 0;
+//        $datas = file_get_contents('https://ipstack.com/ipstack_api.php?ip='.$_SERVER['REMOTE_ADDR']);//
+//        $response = json_decode($datas);
+//        if(is_object($response) && $response->country_code == "BR")
+//            return 1;
+//        return 0;
     }
     
-    public function index() {       
+    public function mysql_escape_mimic($inp) {
+        if(is_array($inp))
+            return array_map(__METHOD__, $inp);
+
+        if(!empty($inp) && is_string($inp)) {
+            return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+        }
+
+        return $inp;
+    } 
+        
+    public function index() {        
+        
         $this->load->model('class/user_role');        
         $param = array();
         $this->load->model('class/system_config');
@@ -149,6 +174,8 @@ class Welcome extends CI_Controller {
             
             $param['min_daily_value'] = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;
             $param['min_ticket_bank'] = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;
+            
+            $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
             
             $this->load->view('client_view', $param);
         }
@@ -323,91 +350,100 @@ class Welcome extends CI_Controller {
         
     }
     
-    public function signin() {     
+    public function signin() {
         $datas = $this->input->post();
         $this->load_language($datas['language']);
-        
-        if (!$this->session->userdata('id')){
-            $this->load->model('class/user_model');
-            $this->load->model('class/user_temp_model');
-            $this->load->model('class/user_role');
-            $this->load->model('class/user_status');                                                                                                                                                                                                                            
-            
-            if ( $this->is_valid_user_name($datas['client_login']) ){                
-                if ( $this->is_valid_phone($datas['client_telf']) ){
-                    if ( $this->is_valid_email($datas['client_email']) ){
-                        $datas['check_pass'] = false;    //check only by the user name
-                        //verificar si se puede cadastar cliente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                        $user_row = $this->user_model->verify_account($datas);
-                        if(!$user_row){  
-                            $user_row = $this->user_temp_model->in_confirmation($datas);
-                            if(!$user_row){
-                                $datas['id_number'] = rand(1000, 9999);                                 
-                                $datas['name']= "";//$datas['client_name'];
-                                $datas['telf']= $datas['client_telf'];
-                                $datas['ip']= $_SERVER['REMOTE_ADDR'];
-                                
-                                $cadastro_id = $this->user_temp_model->insert_user($datas);
+        $promotion = $this->validate_promotional_code($datas);
+        if(!$promotion['success']){
+            $result['success'] = false;
+            $result['message'] = $promotion['message'];
+            $result['resource'] = 'front_page';
+        }else{
+            if (!$this->session->userdata('id')){
+                $this->load->model('class/user_model');
+                $this->load->model('class/user_temp_model');
+                $this->load->model('class/user_role');
+                $this->load->model('class/user_status');                                                                                                                                                                                                                            
+                $this->load->model('class/client_model');
 
-                                if($cadastro_id){                                    
-                                    $this->load->model('class/system_config');                    
-                                    $GLOBALS['sistem_config'] = $this->system_config->load();
-                                    $this->load->library('gmail');
-                                    //$this->Gmail = new \leads\cls\Gmail();
+                if ( $this->is_valid_user_name($datas['client_login']) ){
+                    if ( $this->is_valid_phone($datas['client_telf']) ){
+                        if ( $this->is_valid_email($datas['client_email']) ){
+                            $datas['check_pass'] = false;    //check only by the user name
+                            //verificar si se puede cadastar cliente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                            $user_row = $this->user_model->verify_account($datas);
+                            if(!$user_row){  
+                                $user_row = $this->user_temp_model->in_confirmation($datas);
+                                if(!$user_row){
+                                    $datas['id_number'] = rand(1000, 9999);                                 
+                                    $datas['name']= "";//$datas['client_name'];
+                                    $datas['telf']= $datas['client_telf'];
+                                    $datas['ip']= $_SERVER['REMOTE_ADDR'];
+                                    $datas['valid_code']= $promotion['valid_code'];
 
-                                    $result_message = $this->gmail->send_number_confirm
-                                                        (
-                                                            $datas['client_email'],
-                                                            $datas['client_login'],
-                                                            $datas['id_number'],
-                                                            $GLOBALS['language']
-                                                        );
+                                    $cadastro_id = $this->user_temp_model->insert_user($datas);
+
+                                    if($cadastro_id){
+                                        
+                                        $this->load->model('class/system_config');                    
+                                        $GLOBALS['sistem_config'] = $this->system_config->load();
+                                        $this->load->library('gmail');
+                                        //$this->Gmail = new \leads\cls\Gmail();
+
+                                        $result_message = $this->gmail->send_number_confirm
+                                                            (
+                                                                $datas['client_email'],
+                                                                $datas['client_login'],
+                                                                $datas['id_number'],
+                                                                $GLOBALS['language']
+                                                            );
+                                        $result['success'] = true;
+                                        $result['message'] = 'Signin success ';
+                                        $result['resource'] = 'client';
+                                        $result['number'] = true;
+                                    }else
+                                    {
+                                        $result['success'] = false;
+                                        $result['message'] = $this->T("Erro no cadastro", array(), $GLOBALS['language']);                        
+                                        $result['resource'] = 'front_page';
+                                    }
+                                }
+                                else{
                                     $result['success'] = true;
-                                    $result['message'] = 'Signin success ';
-                                    $result['resource'] = 'client';
+                                    $result['message'] = $this->T("Usuário em fase de cadastro. Por favor insira o número de 4 dígitos enviado a seu e-mail.", array(), $GLOBALS['language']); 
+                                    $result['resource'] = 'front_page'; 
                                     $result['number'] = true;
-                                }else
-                                {
-                                    $result['success'] = false;
-                                    $result['message'] = $this->T("Erro no cadastro", array(), $GLOBALS['language']);                        
-                                    $result['resource'] = 'front_page';
                                 }
                             }
                             else{
-                                $result['success'] = true;
-                                $result['message'] = $this->T("Usuário em fase de cadastro. Por favor insira o número de 4 dígitos enviado a seu e-mail.", array(), $GLOBALS['language']); 
+                                $result['success'] = false;
+                                $result['message'] = $this->T("Usuário existente no sistema, por favor faça o login.", array(), $GLOBALS['language']); 
                                 $result['resource'] = 'front_page'; 
-                                $result['number'] = true;
                             }
                         }
                         else{
                             $result['success'] = false;
-                            $result['message'] = $this->T("Usuário existente no sistema, por favor faça o login.", array(), $GLOBALS['language']); 
-                            $result['resource'] = 'front_page'; 
+                            $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
+                            $result['resource'] = 'front_page';
                         }
                     }
                     else{
-                        $result['success'] = false;
-                        $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
-                        $result['resource'] = 'front_page';
-                    }
+                            $result['success'] = false;
+                            $result['message'] = $this->T("O telefone só deve conter números!", array(), $GLOBALS['language']); 
+                            $result['resource'] = 'front_page';
+                        }
                 }
                 else{
-                        $result['success'] = false;
-                        $result['message'] = $this->T("O telefone só deve conter números!", array(), $GLOBALS['language']); 
-                        $result['resource'] = 'front_page';
-                    }
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
+                    $result['resource'] = 'front_page';
+                }
             }
             else{
                 $result['success'] = false;
-                $result['message'] = $this->T("Estrutura incorreta para o nome de usuário.", array(), $GLOBALS['language']); 
+                $result['message'] = $this->T("Verifique que nenhuma sessão no sistema está aberta.", array(), $GLOBALS['language']); 
                 $result['resource'] = 'front_page';
             }
-        }
-        else{
-            $result['success'] = false;
-            $result['message'] = $this->T("Verifique que nenhuma sessão no sistema está aberta.", array(), $GLOBALS['language']); 
-            $result['resource'] = 'front_page';
         }
         echo json_encode($result);
     }
@@ -419,6 +455,7 @@ class Welcome extends CI_Controller {
         if (!$this->session->userdata('id')){
             $this->load->model('class/user_model');
             $this->load->model('class/user_temp_model');
+            $this->load->model('class/bank_ticket_model');
             $this->load->model('class/user_role');
             $this->load->model('class/user_status');                                                                                                                                                                                                                            
             //$datas = $this->input->post();
@@ -440,11 +477,26 @@ class Welcome extends CI_Controller {
                                 $datas['name']= $datas['client_name'];
                                 $datas['telf']= $datas['client_telf'];
                                 $datas['brazilian'] = $this->is_brazilian_ip();
+                                if($user_row['valid_code']){
+                                    $datas['promotional_code'] = $user_row['promotional_code'];                                  
+                                }
 
                                 $this->user_temp_model->delete_temp_user($user_row['id']);
                                 $cadastro_id = $this->user_model->insert_user($datas);
 
                                 if($cadastro_id){                                    
+                                    if($user_row['valid_code']){
+                                        //crear boleto de 90 reales
+                                        $code['FIRST-SIGN-IN-BUY'] = 90*100;
+                                        $code['53C0ND-S1GN-1N-8UY'] = 5000*100;
+                                        
+                                        $value_code = $code[$datas['promotional_code']];
+                                        if(is_numeric($value_code))
+                                        {
+                                            $datas_ticket = ["user_id" => $cadastro_id, "emission_money_value" => $value_code];
+                                            $this->bank_ticket_model->insert_promotional_ticket($datas_ticket);
+                                        }
+                                    }
                                     $this->load->model('class/system_config');                    
                                     $GLOBALS['sistem_config'] = $this->system_config->load();
                                     $this->load->library('gmail');
@@ -460,7 +512,7 @@ class Welcome extends CI_Controller {
                                     $this->user_model->set_session($cadastro_id,$this->session);
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
-                                    $result['resource'] = 'client';
+                                    $result['resource'] = 'client';                                    
                                 }else
                                 {
                                     $result['success'] = false;
@@ -746,7 +798,7 @@ class Welcome extends CI_Controller {
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 m-top20-xs">
                     <span class="fleft100 ft-size12">Tipo: <span class="cl-green">'.$this->T($campaing['campaing_type_id_string'], array(), $GLOBALS['language']).'</span></span>
-                    <span class="fleft100 fw-600 ft-size16">'.$campaing['amount_leads'].' '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
+                    <span class="fleft100 fw-600 ft-size16"><label id="capt_'.$campaing['campaing_id'].'">'.$campaing['amount_leads'].'</label> '.$this->T("leads captados", array(), $GLOBALS['language']).'</span>
                     <span class="ft-size11 fw-600 m-top8 fleft100">'.$this->T("Gasto atual", array(), $GLOBALS['language']).': <br>'.$this->session->userdata('currency_symbol').' <label id="show_gasto_'.$campaing['campaing_id'].'">'.number_format((float)($campaing['total_daily_value'] - $campaing['available_daily_value'])/100, 2, '.', '').'</label> de <span class="cl-green">'.$this->session->userdata('currency_symbol').' <label id="show_total_'.$campaing['campaing_id'].'">'.number_format((float)$campaing['total_daily_value']/100, 2, '.', '').'</label></span></span>
             </div>';
         $html .= '<div id="divcamp_'.$campaing['campaing_id'].'" class="col-md-3 col-sm-3 col-xs-12 text-center m-top15">
@@ -1012,16 +1064,25 @@ class Welcome extends CI_Controller {
         if ($this->session->userdata('role_id')==user_role::CLIENT){
             if($this->session->userdata('status_id') != user_status::DELETED){
                 $datas = $this->input->post();                
-                $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];
                 
-                if(!is_numeric($init_date))
-                    $init_date = NULL;
-                if(!is_numeric($end_date))
-                    $end_date = NULL;
+                $init_date = $this->session->userdata('init_day');
+                $end_date = $this->session->userdata('end_day');
                 
-                $this->session->set_userdata('init_day', $init_date);
-                $this->session->set_userdata('end_day', $end_date);
+                if($datas["refresh"] != true){
+                    $init_date = $datas['init_date'];
+                    $end_date = $this->real_end_date($datas['end_date']);
+
+                    if(!is_numeric($init_date))
+                        $init_date = NULL;
+                    if(!is_numeric($end_date))
+                        $end_date = NULL;
+                    if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                        $end_date = $init_date + 24*3600-1;
+                    }
+
+                    $this->session->set_userdata('init_day', $init_date);
+                    $this->session->set_userdata('end_day', $end_date);
+                }
                 
                 $campaings = $this->client_model->load_campaings($this->session->userdata('id'),NULL,$init_date, $end_date);
                 
@@ -1611,6 +1672,24 @@ class Welcome extends CI_Controller {
 
             return $csv;
     }
+    
+    public function convert_from_latin1_to_utf8_recursively($dat)
+   {
+      if (is_string($dat)) {
+         return mb_convert_encoding($dat, 'UTF-8', 'UTF-8');//utf8_encode($dat);
+      } elseif (is_array($dat)) {
+         $ret = [];
+         foreach ($dat as $i => $d) $ret[ $i ] = $this->convert_from_latin1_to_utf8_recursively($d);
+
+         return $ret;
+      } elseif (is_object($dat)) {
+         foreach ($dat as $i => $d) $dat->$i = $this->convert_from_latin1_to_utf8_recursively($d);
+
+         return $dat;
+      } else {
+         return $dat;
+      }
+   }
   
     public function get_leads_campaing(){
         $this->load_language();
@@ -1625,12 +1704,19 @@ class Welcome extends CI_Controller {
                 $datas = $this->input->post();
                 $profile = $datas['profile'];
                 $id_campaing = $datas['id_campaing'];
+                if(isset($id_campaing) && !is_numeric($id_campaing))
+                    $id_campaing = NULL;
                 $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];                
+                $end_date = $this->real_end_date($datas['end_date']);  
+                
+                if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                    $end_date = $init_date + 24*3600-1;
+                }
+                
                 parse_str($datas['info_to_get'], $info_to_get);
                 ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
                 
-                if( $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
+                if( $id_campaing==NULL || $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
                     $profile_row = $this->campaing_model->get_profile($id_campaing, $profile);
                     $result_sql = $this->campaing_model->get_leads( $this->session->userdata('id'),
                                                                     $id_campaing,
@@ -1639,12 +1725,13 @@ class Welcome extends CI_Controller {
                                                                     $end_date,
                                                                     $info_to_get
                                                                     );                    
-                    $out = $this->str_putcsv2($result_sql);
+                    $result_sql = $this->convert_from_latin1_to_utf8_recursively($result_sql);
+                    $out = $this->str_putcsv2($result_sql);                    
 
                     $result['success'] = true;
                     $result['message'] = '';
                     $result['resource'] = 'leads_view';
-                    $result['file'] = (count($result_sql)>0)?$out:NULL;
+                    $result['file'] = count($result_sql)>0?$out:NULL;
                 }
                 else{
                     $result['success'] = false;            
@@ -1664,7 +1751,14 @@ class Welcome extends CI_Controller {
             $result['resource'] = 'front_page';
         }
         
-        echo json_encode($result);        
+        $json = json_encode($result);        
+        echo $json;
+//        $msg = json_last_error_msg();
+//        if ($json)
+//            echo $json;
+//        else
+//            echo json_last_error_msg();
+//        
     }
     
     public function add_credit_card(){
@@ -2050,6 +2144,42 @@ class Welcome extends CI_Controller {
         if(in_array($_SERVER['REMOTE_ADDR'],$IP_hackers)){
             die('Error IP: Sua solicitação foi negada. Por favor, contate nosso atendimento');
         }
+    }
+    
+    public function validate_promotional_code($datas){
+        $this->load->model('class/payments_model');
+        if(isset($datas['promotional_code'])){
+            if(trim($datas['promotional_code'])==''){
+                $response['success']=true;
+                $response['valid_code']=0;
+                return $response;
+            }
+                       
+            $code['FIRST-SIGN-IN-BUY'] = 100;
+            $code['53C0ND-S1GN-1N-8UY'] = 2;
+            
+            $count_code = $code[$datas['promotional_code']];
+            
+            if($count_code){
+                //contar si la cantidad en la base de datos es menor que 100 personas usando
+                $cnt =$this->payments_model->getPromotionalCodeFrequency($datas['promotional_code']);
+                if($cnt < $count_code){
+                    
+                    $response['success']=true;
+                    $response['valid_code']=1;
+                }
+                else{
+                    $response['success']=false;
+                    $response['message']=$this->T('Código promocional esgotado', array(), $this->session->userdata('language'));
+                    $response['valid_code']=0;
+                }
+            }else{
+                $response['success']=false;
+                $response['message']=$this->T('Código promocional errado', array(), $this->session->userdata('language'));
+                $response['valid_code']=0;
+            }            
+        }
+        return $response;
     }
     
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
@@ -5370,6 +5500,5 @@ class Welcome extends CI_Controller {
         else {
             $this->display_access_error();
         }
-    }
-      
+    } 
 }
