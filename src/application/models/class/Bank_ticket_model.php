@@ -119,6 +119,7 @@ class bank_ticket_model extends CI_Model {
             $this->db->select('*');
             $this->db->from('bank_ticket');
             $this->db->where( array('client_id' => $id_client) );                       
+            $this->db->where( array('payed' => 1) );                       
             $ticket_row =  $this->db->get()->result_array();
             
             foreach ($ticket_row as $ticket_bank) {
