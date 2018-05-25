@@ -202,6 +202,68 @@ class Welcome extends CI_Controller {
             $this->index();
         }        
     }
+    
+    public function password_recovery() {                
+        $language=$this->input->get();            
+        if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                $language['language'] = "PT";
+        
+        if (!$this->session->userdata('id')){
+            $this->load->view('password_recupery_view', $language);
+        }
+        else{
+            $this->index();
+        }
+    }
+    
+    public function recover_pass() {                        
+        if (!$this->session->userdata('id')){
+            $datas = $this->input->post();
+            $login = trim($datas['login']);
+            $email = $datas['email'];
+            $language = $datas['language'];
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN"){
+                $language['language'] = "PT";
+            }
+        
+            if ( $login === '' || $this->is_valid_user_name($login) ){
+                if ( $this->is_valid_email($email) ){                   
+                    
+                    $token = mt_rand().mt_rand().mt_rand();
+                    
+                    $this->load->model('class/system_config');                    
+                    $GLOBALS['sistem_config'] = $this->system_config->load();
+                    $this->load->library('gmail');
+                    
+                    $result_message = $this->gmail->send_recovery_pass
+                                        (
+                                            $email,
+                                            $token,
+                                            $language
+                                        );
+                    $result['success'] = true;
+                    //$result['message'] = $this->T("Não pode ser ", array(), $GLOBALS['language']); 
+                    $result['token'] = $token;
+                }
+                else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
+                    $result['resource'] = 'front_page';
+                }
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
+                $result['resource'] = 'front_page';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Esta operação não pode ser feita com uma sessão aberta", array(), $GLOBALS['language']); 
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
 
     public function reduce_profile($profile){
         if(strlen($profile) >= 9){
