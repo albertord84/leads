@@ -97,8 +97,9 @@ class Admin extends CI_Controller {
         $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
         $lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
         $lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';                                        
-
+        $lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
+        //$lang1=$lang1.'<option value="12">'.$CI->T("OCUPADO", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="12">OCUPADO</option>';
         if ($this->session->userdata('id')){            
             $this->load->model('class/admin_model');
             $datas = $this->input->post();

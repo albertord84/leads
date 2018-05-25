@@ -58,7 +58,7 @@ $(document).ready(function () {
 //                    }
             //html+='<div class="row">';
             //html+='<div class="col-md-2">';
-            html+='<div id="admin_form" class="row">';
+            html+='<div id="robot_form" class="row">';
             html+=    '<div class="col-md-1"></div>';
             html+=    '<div class="col-md-2">';
 
@@ -66,77 +66,100 @@ $(document).ready(function () {
             html+='</div>';
             html+='</div>';
             html+='<div class="row">';
-            html+='<div class="col-xs-10">';
+            html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
             html+='<tr class="list-group-item-success">';
-            html+='<td style="max-width:240px; padding:5px"><b>No.</b></td>';
-            html+='<td style="max-width:240px; padding:5px"><b>Dados gerais</b></td>';
-            html+='<td style="max-width:240px; padding:5px"><b>Estado atual</b></td>';
-            html+='<td style="max-width:240px; padding:5px"><b>Operações</b></td>';
+            html+='<td style="width:10%; padding:5px"><b>No.</b></td>';
+            html+='<td style="width:20%; padding:5px"><b>Dados gerais</b></td>';
+            html+='<td style="width:25%; padding:5px"><b>Estado atual</b></td>';
+            html+='<td style="width:45%; padding:5px"><b>Operações</b></td>';
             html+='</tr>';
             html+='</table>';
             html+='</div>';
             html+='</div>';
             var sel='</select>';
-            html+='<div class="row">';
-            html+='<div class="col-xs-10">';
+            html+='<div id="tablarobots">';//class="row"
+            html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
                  
                     for(var i = 0; i < num_robots; i++){
                         //html+=''
                             html+= '<tr class="list-group-item-success" id="row-client-'+robots[i]['id']+'" style="visibility: visible;display: block'; 
-                            if (i % 2==0) {html+='; background-color: #dff0d8';}
+                            var jot=i % 2;
+                            if (jot == 0) 
+                            {html+='; background-color: #dff0d8';}
+                            else
+                            {html+='; background-color: white';}
                             html+= '">';
-                                html+= '<td style="max-width:240px; padding:5px">';
+                                html+= '<td style="text-align:right; width:10%; padding:5px">';
                                     var k=i+1;
-                                    html+= '<br><br><b>'+k; html+='</b><br><br><br>';
+                                    var segme='<b>'+k;
+                                    html+= segme; html+='</b>';
                                     html+='</td>';                                
-                                    html+= '<td style="width:240px; padding:5px">';
+                                    html+= '<td style="width:30%; padding:5px">';
                                     html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
                                     html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
                                     html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
-                                    html+='<b>DS ID:</b>'; //</b><br>'+robots[i]['ds_user_id']+'<br>';
-                                    html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
-                                    html+='" type="date" class="robot_atribute" value="';
-                                    html+=toDate(robots[i]['ds_user_id'])+'">';
-                                    html+='</input>';
+                                    html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
+                                    //html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
+                                    //html+='" type="date" class="robot_atribute" value="';
+                                    //html+=toDate(robots[i]['ds_user_id'])+'">';
+                                    //html+='</input>';
                                     html+='</td>';
                                     //echo '<b>Email: </b>'.$result[$i]['email'].'<br>';
                                     //if ($SERVER_NAME == "ONE")
                                     //    echo '<b>Idioma: </b>'.$result[$i]['language'].'<br><br>';
                                     //else echo '<br>';
                                     //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
-                                    html+= '<td style="width:240px; padding:5px">';
+                                    html+= '<td style="width:30%; padding:5px">';
                                     var nid=robots[i]['status_id'];
                                     html+='<b>Status: </b><br>';
                                     html+='<select class="robot_atribute" id="idselestatus_'+robots[i]['id'];
                                     html+='" name="nameselestatus_'+robots[i]['id']+'" value="'+robots[i]['status_id'];
                                     html+='">';
-                                    html+=options_trd;
+                                    var html1='';
+                                    html1=options_trd;
+                                    html1=html1.replace('"'+robots[i]['status_id']+'"','"'+robots[i]['status_id']+'" selected');
+                                    html+=html1;
                                     html+='</select>';
                                     html+='<br>';
                                     html+='<b>Data de inicio: </b><br>';
                                     html+='<input id="idselinit_'+robots[i]['id']+'" name="nameseleinit_'+robots[i]['id'];
                                     html+='" type="date" class="robot_atribute" value="';
-                                    html+=toDate(robots[i]['init'])+'">';
+                                    //html+=toDate(robots[i]['init'])+'">';
+                                    var datemp=toDate(robots[i]['init']);
+                                    var atrib=datemp.split('/',4);
+                                    var a=atrib[2];
+                                    var m=atrib[1];
+                                    var d=atrib[0];
+                                    html+=a+'-'+m+'-'+d+'">';
                                     html+='</input>';
                                     html+='<br>';
                                     html+='<b>Data final: </b><br>';
                                     html+='<input id="idselend_'+robots[i]['id']+'" name="nameselend_'+robots[i]['id'];
                                     html+='" type="date" class="robot_atribute" value="';
-                                    html+=toDate(robots[i]['end'])+'">';
+                                    //var datemp=toDate(robots[i]['end']);
+                                    datemp=toDate(robots[i]['end']);
+                                    atrib=datemp.split('/',4);
+                                    a=atrib[2];
+                                    m=atrib[1];
+                                    d=atrib[0];
+                                    html+=a+'-'+m+'-'+d+'">';
+                                    //html+=datemp+'">';
                                     html+='</input>';
                                     html+='</td>';
-                                    html+= '<td style="width:240px; padding:5px">';
+                                    html+= '<td style="width:30%; padding:5px">';
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
-                                    html+='" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">';
-                                    html+='<span class="ladda-label">Ok</span>';
-                                    html+='</button>';
+                                    html+='" type="button" class="robotok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
+                                    //html+='<span class="ladda-label">Ok</span>';
+                                    html+='Ok</button>';
+                                    html+='<br>';
                                     html+='<br>';
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
-                                    html+='" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">';
-                                    html+='<span class="ladda-label">Cancel</span>';
-                                    html+='</button>';
+                                    html+='" type="button" class="robotcancel"  data-spinner-color="#ffffff">';//data-style="expand-left" 
+                                    //btn btn-success ladda-button
+                                    //html+='<span class="ladda-label">Cancel</span>';
+                                    html+='Cancel</button>';
                                     html+='</td>';
                                     html+='</tr>';
 
