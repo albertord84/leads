@@ -18,6 +18,7 @@
             <script type="text/javascript">var currency_symbol ='<?php echo $currency_symbol;?>';</script>
             <script type="text/javascript">var min_daily_value ='<?php echo $min_daily_value/100;?>';</script>
             <script type="text/javascript">var min_ticket_bank ='<?php echo $min_ticket_bank/100;?>';</script>
+            <script type="text/javascript">var price_lead ='<?php echo $price_lead;?>';</script>
             
             <meta charset="UTF-8">
             <title>Dumbu-Leads</title>
@@ -117,23 +118,23 @@
                                                     ?>                                            
                                                 </div>    
                                             </ul>
-
-                                            <div class="col-md-8 col-sm-8 col-xs-12 m-top20">
-                                                    <div class="row">
-                                                        <!--<input id = "login_profile"  type="text" style="text-transform:lowercase" class="typeahead form-control tt-query" placeholder="Perfil" onkeyup="javascript:this.value = this.value.toLowerCase();"  autocomplete="off" spellcheck="false"  required> -->
-                                                        <div class="col-sm-12">
-                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" autocomplete="off" spellcheck="false" required>
+                                            <div class="col-md-7 col-sm-7 col-xs-12 m-top20 pd-0">
+                                                    <!--<div class="row">-->                                                        
+                                                        <div style="width: 90%; margin: 0 auto;">
+                                                            <input id = "profile_temp"  type="text" style="text-transform:lowercase;" class="addmais form-control" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" autocomplete="off" spellcheck="false" required>                                                            
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <!--</div>-->
+                                                    <!--<div class="row">-->
                                                         <div id="container_search_profile" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
                                                             <table id="table_search_profile" class="table">                                
                                                             </table>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <!--</div>-->
+                                                    <!--<div class="row">-->
                                                         <div id="reference_profile_message" class="form-group m-t10" style="text-align:left;visibility:hidden; font-family:sans-serif; font-size:0.9em"> </div>
-                                                    </div>
+                                                    <!--</div>-->
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12 pd-0">                                                    
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
                                                     <input type="hidden" id = "profile_type_temp" value="0">
@@ -240,24 +241,28 @@
                                                 </div>
                                             </ul>
 
-                                            <div class="col-md-8 col-sm-8 col-xs-12 m-top20">
-                                                    <input id ="profile_edit" type="text" class="addmais" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" type="text" style="text-transform:lowercase;">
+                                            <div class="col-md-7 col-sm-7 col-xs-12 m-top20">
+                                                    <div>
+                                                        <input id ="profile_edit" type="text" class="addmais" placeholder="<?php echo $CI->T("digitar perfil aqui", array(),$language);?>" type="text" style="text-transform:lowercase;">
+                                                    </div>
+                                                    <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
+                                                        <table id="table_search_profile2" class="table">                                
+                                                        </table>
+                                                    </div>
                                                     <input id ="profile_insta_edit" type="hidden">
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12">
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-xs-12 m-top20 pd-0">
                                                 <div style="width: 90%; margin: 0 auto;">    
                                                     <a id ="do_add_profile" style="text-decoration:none" class="pointer_mouse add"><?php echo $CI->T("Adicionar", array(),$language);?> <i class="fa fa-plus-circle"></i></a>                                                    
                                                 </div>
                                             </div>
-                                        <div class="row">
-                                        <div id="container_search_profile2" class="col-md-12 col-sm-12 col-xs-12 text-center " style="max-height: 230px; overflow-y: auto; overflow-x: hidden;">                            
-                                            <table id="table_search_profile2" class="table">                                
-                                            </table>
-                                        </div>
-                                        </div>
-                                        <div class="row">
+                                        <!--<div class="row">-->                                        
+                                        <!--</div>-->
+                                        <!--<div class="row">-->
                                             <div id="reference_profile_message2" class="form-group m-t10" style="text-align:left;visibility:hidden; font-family:sans-serif; font-size:0.9em"> </div>
-                                        </div>
+                                        <!--</div>-->
                                     </div>
                             </div>
 <!--                            <hr class="fleft100">
@@ -442,7 +447,7 @@
                             <a class="close" data-dismiss="modal" >&times;</a>
                             <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
                             <hr class="fleft100">
-                            <span class="fleft100 m-top10 m-b30">QUAIS INFORMAÇÕES VOCÊ DESEJA CAPTAR?</span>
+                            <span class="fleft100 m-top10 m-b30"><?php echo $CI->T("QUAIS INFORMAÇÕES VOCÊ DESEJA CAPTAR?", array(),$language);?></span>
                             <div align = "left" class="col-md-6 col-sm-6 col-xs-12">
 <!--                                
                                     <div>
@@ -516,7 +521,7 @@
                                         <div class="form-group m-top5 m-top0-xs">
                                             <label for="init_date" class="fleft100 text-left"><?php echo $CI->T("Data incial", array(),$language); ?> </label>
                                                 <div class='input-group date' id='datetimepicker_lead'>
-                                                    <input type='text' class="form-control" id="init_date" />
+                                                    <input type='text' class="form-control" id="init_date" value="<?php echo date('d/m/Y', $date_filter['init_day']); ?>"/>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -532,7 +537,7 @@
                                         <div class="form-group m-top5 m-top0-xs">
                                             <label for="end_date" class="fleft100 text-left"><?php echo $CI->T("Data final", array(),$language); ?>  </label>
                                                 <div class='input-group date' id='datetimepicker_lead2'>
-                                                    <input type='text' class="form-control" id="end_date" />
+                                                    <input type='text' class="form-control" id="end_date" value="<?php echo date('d/m/Y', $date_filter['end_day']); ?>"/>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -638,6 +643,11 @@
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Leads extraídos", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
+                                                                <a href="" class="cl-black extraer_leads" data-toggle="modal" data-id="extraer_all" >
+                                                                    <img src="<?php echo base_url().'assets/img/down.png'?>" alt="">
+                                                                        <!--<span class="fleft100 ft-size11 m-top8 fw-600"><?php // echo $CI->T("Extrair leads", array(),$language); ?></span>-->
+                                                                </a>
+                                                                 
                                                                 <label id ="total_capt">
                                                                 <?php
                                                                     $total_captados = 0;
@@ -647,7 +657,7 @@
                                                                     echo $total_captados;
                                                                 ?>
                                                                 </label>
-                                                            </span>
+                                                            </span>                                                            
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 m-top5">
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Custo por extração", array(),$language);?>:</span>
@@ -663,18 +673,23 @@
                                                             <span class="fleft100 fw-600"><?php echo $CI->T("Gasto total", array(),$language);?>:</span>
                                                             <span class="fleft100 fw-600 cl-green">
                                                                 <?php
-                                                                    echo $currency_symbol." ".number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
+                                                                        echo $currency_symbol." ";
                                                                 ?> 
+                                                                <label id = "total_gast">
+                                                                    <?php
+                                                                        echo number_format((float)($total_captados*$price_lead/100),2,'.','');                                                                                                                      
+                                                                    ?> 
+                                                                </label>
                                                             </span>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">
+                                                    <div class="col-md-3 col-sm-3 col-xs-12 pd-lr5 text-right center-xs m-top10-xs filtrar">                                                            
                                                             <div class="dropdown i-block dropfiltro">
                                                               <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none ft-size12 cl" style="color:#5c8fe1">
                                                                   <img src="<?php echo base_url().'assets/img/user.png'?>" alt=""> <u><b>
                                                                   <?php echo $CI->T("Campanhas por data", array(),$language);?></b></u>
                                                               </button>
                                                               <ul class="dropdown-menu text-center" aria-labelledby="dLabel">
-                                                                    <li><a class="c-pointer person"><?php echo $CI->T("Personalizado", array(),$language);?></a></li>
+                                                                <li><a class="c-pointer person"><?php echo $CI->T("Personalizado", array(),$language);?></a></li>
                                                                 <li><a class="date_filter pointer_mouse" id ="menos_0" ><?php echo $CI->T("Hoje", array(),$language);?></a></li>
                                                                 <li><a class="date_filter pointer_mouse" id ="menos_1" ><?php echo $CI->T("Ontem", array(),$language);?></a></li>
                                                                 <!--<li><a href="">Esta semana (dom. - hoje)</a></li>-->

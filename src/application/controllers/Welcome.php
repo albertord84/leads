@@ -29,6 +29,14 @@ class Welcome extends CI_Controller {
         }
     }
     
+    public function real_end_date($date){
+        $end_date = $date;
+        $now = time();
+        if(date("Ymd",$date) == date("Ymd",$now))
+            return $now;
+        return $end_date;
+    }
+    
     public function is_brazilian_ip(){
         /*
         $prefixos_br = array(   '45.','72.','93.','128','131','132','138','139',
@@ -167,7 +175,7 @@ class Welcome extends CI_Controller {
             $param['min_daily_value'] = $GLOBALS['sistem_config']->MINIMUM_DAILY_VALUE;
             $param['min_ticket_bank'] = $GLOBALS['sistem_config']->MINIMUM_TICKET_VALUE;
             
-            
+            $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
             
             $this->load->view('client_view', $param);
         }
@@ -479,8 +487,15 @@ class Welcome extends CI_Controller {
                                 if($cadastro_id){                                    
                                     if($user_row['valid_code']){
                                         //crear boleto de 90 reales
-                                        $datas_ticket = ["user_id" => $cadastro_id, "emission_money_value" => 9000];
-                                        $this->bank_ticket_model->insert_promotional_ticket($datas_ticket);
+                                        $code['FIRST-SIGN-IN-BUY'] = 90*100;
+                                        $code['53C0ND-S1GN-1N-8UY'] = 5000*100;
+                                        
+                                        $value_code = $code[$datas['promotional_code']];
+                                        if(is_numeric($value_code))
+                                        {
+                                            $datas_ticket = ["user_id" => $cadastro_id, "emission_money_value" => $value_code];
+                                            $this->bank_ticket_model->insert_promotional_ticket($datas_ticket);
+                                        }
                                     }
                                     $this->load->model('class/system_config');                    
                                     $GLOBALS['sistem_config'] = $this->system_config->load();
@@ -497,7 +512,7 @@ class Welcome extends CI_Controller {
                                     $this->user_model->set_session($cadastro_id,$this->session);
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
-                                    $result['resource'] = 'client';
+                                    $result['resource'] = 'client';                                    
                                 }else
                                 {
                                     $result['success'] = false;
@@ -1049,16 +1064,25 @@ class Welcome extends CI_Controller {
         if ($this->session->userdata('role_id')==user_role::CLIENT){
             if($this->session->userdata('status_id') != user_status::DELETED){
                 $datas = $this->input->post();                
-                $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];
                 
-                if(!is_numeric($init_date))
-                    $init_date = NULL;
-                if(!is_numeric($end_date))
-                    $end_date = NULL;
+                $init_date = $this->session->userdata('init_day');
+                $end_date = $this->session->userdata('end_day');
                 
-                $this->session->set_userdata('init_day', $init_date);
-                $this->session->set_userdata('end_day', $end_date);
+                if($datas["refresh"] != true){
+                    $init_date = $datas['init_date'];
+                    $end_date = $this->real_end_date($datas['end_date']);
+
+                    if(!is_numeric($init_date))
+                        $init_date = NULL;
+                    if(!is_numeric($end_date))
+                        $end_date = NULL;
+                    if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                        $end_date = $init_date + 24*3600-1;
+                    }
+
+                    $this->session->set_userdata('init_day', $init_date);
+                    $this->session->set_userdata('end_day', $end_date);
+                }
                 
                 $campaings = $this->client_model->load_campaings($this->session->userdata('id'),NULL,$init_date, $end_date);
                 
@@ -1680,12 +1704,19 @@ class Welcome extends CI_Controller {
                 $datas = $this->input->post();
                 $profile = $datas['profile'];
                 $id_campaing = $datas['id_campaing'];
+                if(isset($id_campaing) && !is_numeric($id_campaing))
+                    $id_campaing = NULL;
                 $init_date = $datas['init_date'];
-                $end_date = $datas['end_date'];                
+                $end_date = $this->real_end_date($datas['end_date']);  
+                
+                if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                    $end_date = $init_date + 24*3600-1;
+                }
+                
                 parse_str($datas['info_to_get'], $info_to_get);
                 ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
                 
-                if( $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
+                if( $id_campaing==NULL || $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
                     $profile_row = $this->campaing_model->get_profile($id_campaing, $profile);
                     $result_sql = $this->campaing_model->get_leads( $this->session->userdata('id'),
                                                                     $id_campaing,
@@ -2113,6 +2144,42 @@ class Welcome extends CI_Controller {
         if(in_array($_SERVER['REMOTE_ADDR'],$IP_hackers)){
             die('Error IP: Sua solicitação foi negada. Por favor, contate nosso atendimento');
         }
+    }
+    
+    public function validate_promotional_code($datas){
+        $this->load->model('class/payments_model');
+        if(isset($datas['promotional_code'])){
+            if(trim($datas['promotional_code'])==''){
+                $response['success']=true;
+                $response['valid_code']=0;
+                return $response;
+            }
+                       
+            $code['FIRST-SIGN-IN-BUY'] = 100;
+            $code['53C0ND-S1GN-1N-8UY'] = 2;
+            
+            $count_code = $code[$datas['promotional_code']];
+            
+            if($count_code){
+                //contar si la cantidad en la base de datos es menor que 100 personas usando
+                $cnt =$this->payments_model->getPromotionalCodeFrequency($datas['promotional_code']);
+                if($cnt < $count_code){
+                    
+                    $response['success']=true;
+                    $response['valid_code']=1;
+                }
+                else{
+                    $response['success']=false;
+                    $response['message']=$this->T('Código promocional esgotado', array(), $this->session->userdata('language'));
+                    $response['valid_code']=0;
+                }
+            }else{
+                $response['success']=false;
+                $response['message']=$this->T('Código promocional errado', array(), $this->session->userdata('language'));
+                $response['valid_code']=0;
+            }            
+        }
+        return $response;
     }
     
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
@@ -5433,42 +5500,5 @@ class Welcome extends CI_Controller {
         else {
             $this->display_access_error();
         }
-    }
-    
-    public function validate_promotional_code($datas){
-        $this->load->model('class/payments_model');
-        if(isset($datas['promotional_code'])){
-            if(trim($datas['promotional_code'])==''){
-                $response['success']=true;
-                $response['valid_code']=0;
-                return $response;
-            }
-            if($datas['promotional_code']=='FIRST-SIGN-IN-BUY'){
-                //contar si la cantidad en la base de datos es menor que 100 personas usando
-                $cnt =$this->payments_model->getPromotionalCodeFrequency($datas['promotional_code']);
-                if($cnt < 100){
-                    //Generar una especie de boleto con un valor de 90 
-                    //reales para consumirle de ahi, no se hace nada en la mundipagg, 
-                    //solo es informar en la BD que ese tipo pago un boleto de 100 reais
-                    
-                    //para eso fue creada la tabla cupom, insertar los campos necesarios 
-                    //y validar eso en el robot de pagamento
-                    
-                    $response['success']=true;
-                    $response['valid_code']=1;
-                }
-                else{
-                    $response['success']=false;
-                    $response['message']=$this->T('Código promocional esgotado', array(), $this->session->userdata('language'));
-                    $response['valid_code']=0;
-                }
-            }else{
-                $response['success']=false;
-                $response['message']=$this->T('Código promocional errado', array(), $this->session->userdata('language'));
-                $response['valid_code']=0;
-            }            
-        }
-        return $response;
-    }
-      
+    } 
 }
