@@ -487,8 +487,15 @@ class Welcome extends CI_Controller {
                                 if($cadastro_id){                                    
                                     if($user_row['valid_code']){
                                         //crear boleto de 90 reales
-                                        $datas_ticket = ["user_id" => $cadastro_id, "emission_money_value" => 9000];
-                                        $this->bank_ticket_model->insert_promotional_ticket($datas_ticket);
+                                        $code['FIRST-SIGN-IN-BUY'] = 90*100;
+                                        $code['53C0ND-S1GN-1N-8UY'] = 5000*100;
+                                        
+                                        $value_code = $code[$datas['promotional_code']];
+                                        if(is_numeric($value_code))
+                                        {
+                                            $datas_ticket = ["user_id" => $cadastro_id, "emission_money_value" => $value_code];
+                                            $this->bank_ticket_model->insert_promotional_ticket($datas_ticket);
+                                        }
                                     }
                                     $this->load->model('class/system_config');                    
                                     $GLOBALS['sistem_config'] = $this->system_config->load();
@@ -2137,6 +2144,42 @@ class Welcome extends CI_Controller {
         if(in_array($_SERVER['REMOTE_ADDR'],$IP_hackers)){
             die('Error IP: Sua solicitação foi negada. Por favor, contate nosso atendimento');
         }
+    }
+    
+    public function validate_promotional_code($datas){
+        $this->load->model('class/payments_model');
+        if(isset($datas['promotional_code'])){
+            if(trim($datas['promotional_code'])==''){
+                $response['success']=true;
+                $response['valid_code']=0;
+                return $response;
+            }
+                       
+            $code['FIRST-SIGN-IN-BUY'] = 100;
+            $code['53C0ND-S1GN-1N-8UY'] = 2;
+            
+            $count_code = $code[$datas['promotional_code']];
+            
+            if($count_code){
+                //contar si la cantidad en la base de datos es menor que 100 personas usando
+                $cnt =$this->payments_model->getPromotionalCodeFrequency($datas['promotional_code']);
+                if($cnt < $count_code){
+                    
+                    $response['success']=true;
+                    $response['valid_code']=1;
+                }
+                else{
+                    $response['success']=false;
+                    $response['message']=$this->T('Código promocional esgotado', array(), $this->session->userdata('language'));
+                    $response['valid_code']=0;
+                }
+            }else{
+                $response['success']=false;
+                $response['message']=$this->T('Código promocional errado', array(), $this->session->userdata('language'));
+                $response['valid_code']=0;
+            }            
+        }
+        return $response;
     }
     
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
@@ -5457,42 +5500,5 @@ class Welcome extends CI_Controller {
         else {
             $this->display_access_error();
         }
-    }
-    
-    public function validate_promotional_code($datas){
-        $this->load->model('class/payments_model');
-        if(isset($datas['promotional_code'])){
-            if(trim($datas['promotional_code'])==''){
-                $response['success']=true;
-                $response['valid_code']=0;
-                return $response;
-            }
-            if($datas['promotional_code']=='FIRST-SIGN-IN-BUY'){
-                //contar si la cantidad en la base de datos es menor que 100 personas usando
-                $cnt =$this->payments_model->getPromotionalCodeFrequency($datas['promotional_code']);
-                if($cnt < 100){
-                    //Generar una especie de boleto con un valor de 90 
-                    //reales para consumirle de ahi, no se hace nada en la mundipagg, 
-                    //solo es informar en la BD que ese tipo pago un boleto de 100 reais
-                    
-                    //para eso fue creada la tabla cupom, insertar los campos necesarios 
-                    //y validar eso en el robot de pagamento
-                    
-                    $response['success']=true;
-                    $response['valid_code']=1;
-                }
-                else{
-                    $response['success']=false;
-                    $response['message']=$this->T('Código promocional esgotado', array(), $this->session->userdata('language'));
-                    $response['valid_code']=0;
-                }
-            }else{
-                $response['success']=false;
-                $response['message']=$this->T('Código promocional errado', array(), $this->session->userdata('language'));
-                $response['valid_code']=0;
-            }            
-        }
-        return $response;
-    }
-      
+    } 
 }
