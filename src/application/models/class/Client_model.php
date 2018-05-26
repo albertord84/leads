@@ -115,7 +115,7 @@ class Client_model extends CI_Model {
     
     /*obtiene la(s) campañas(s) de un cliente con los perfiles no borrados. 
      * Puede filtrarse además por el status de la campaña*/    
-    public function get_campaings_and_profiles($id_client, $id_campaing = NULL, $status = NULL, $init_date = NULL, $end_date = NULL){
+    public function get_campaings_and_profiles($id_client, $id_campaing = NULL, $status = NULL, $init_date = NULL, $end_date = NULL, $active_prof = NULL){
         $result = NULL;
         $this->load->model('class/profiles_status');
          try{
@@ -123,7 +123,8 @@ class Client_model extends CI_Model {
             $this->db->from('campaings');            
             $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
             $this->db->where('campaings.client_id',$id_client);
-            $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
+            if($active_prof)
+                $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
             
             if($id_campaing)
                 $this->db->where('campaings.id',$id_campaing);
@@ -156,8 +157,8 @@ class Client_model extends CI_Model {
             $this->db->from('campaings');            
             $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
             $this->db->where('campaings.client_id',$id_client);
-            $this->db->where('profiles.profile_status_id <>', profiles_status::ACTIVE);
-            $this->db->where('profiles.profile_status_id <>', profiles_status::ENDED);
+            //$this->db->where('profiles.profile_status_id <>', profiles_status::ACTIVE);
+            //$this->db->where('profiles.profile_status_id <>', profiles_status::ENDED);
             $this->db->where('campaings.campaing_status_id', campaing_status::DELETED);                        
             
             if($init_date)
