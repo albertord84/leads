@@ -303,6 +303,7 @@ class Welcome extends CI_Controller {
                 $result_update = $this->user_model->update_password($user_row['user_id'], $new_pass);
                 
                 if($result_update){
+                    $this->user_model->expire_token($user_row['id']);
                     $result['success'] = true;
                     //$result['message'] = $this->T("Não pode ser ", array(), $GLOBALS['language']); 
                     $result['token'] = $token;

@@ -207,6 +207,20 @@ class User_model extends CI_Model {
         }
     }
     
+    public function expire_token($id_token){
+        $update_result = NULL;
+        try{
+            $expired = time()-25*3600;
+            $this->db->where( array('id' => $id_token) );            
+            $update_result = $this->db->update( 'recover_pass', array('send_date' => $expired));            
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el login';
+        } finally {
+            return $update_result;
+        }
+    }
+    
     public function insert_user($datas){
         $user_row = NULL;
         try{
