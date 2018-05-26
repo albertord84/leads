@@ -2120,7 +2120,7 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }    
     
-    public function message() {
+    public function message() {        
         $this->load->model('class/system_config');                    
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->load->library('gmail');                    
