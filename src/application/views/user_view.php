@@ -115,7 +115,7 @@
                                                     </div>
                                                     <div>
                                                         <a style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
-                                                            <?php echo $CI->T("Esqueceu sea senha?", array(),$language);?>
+                                                            <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
                                                         </a>
                                                     </div>
 <!--                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
@@ -269,7 +269,7 @@
                                                             </div>
                                                             <div class="center">
                                                                 <a id = "recupery_pass" style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
-                                                                    <?php echo $CI->T("Esqueceu sea senha?", array(),$language);?>
+                                                                    <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
                                                                 </a>
                                                             </div>
 <!--                                                            <div id="container_login_force_login2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    

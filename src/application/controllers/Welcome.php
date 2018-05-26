@@ -204,12 +204,20 @@ class Welcome extends CI_Controller {
     }
     
     public function password_recovery() {                
-        $language=$this->input->get();            
-        if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
-                $language['language'] = "PT";
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         
+        $input = $this->input->get(); 
+        $language = $input['language'];
+        if($language != "PT" && $language != "ES" && $language != "EN")
+                $language = "PT";
+        $param = [];
+        $param['language'] = $language;
+        $param['token'] = $input['token'];
+        $param['login'] = $input['login'];
+        $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         if (!$this->session->userdata('id')){
-            $this->load->view('password_recupery_view', $language);
+            $this->load->view('password_recupery_view', $param);
         }
         else{
             $this->index();
@@ -218,12 +226,14 @@ class Welcome extends CI_Controller {
     
     public function recover_pass() {                        
         if (!$this->session->userdata('id')){
+            $this->load->model('class/user_model');
+            
             $datas = $this->input->post();
             $login = trim($datas['login']);
             $email = $datas['email'];
             $language = $datas['language'];
-            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN"){
-                $language['language'] = "PT";
+            if($language != "PT" && $language != "ES" && $language != "EN"){
+                $language = "PT";
             }
         
             if ( $login === '' || $this->is_valid_user_name($login) ){
@@ -231,19 +241,32 @@ class Welcome extends CI_Controller {
                     
                     $token = mt_rand().mt_rand().mt_rand();
                     
-                    $this->load->model('class/system_config');                    
-                    $GLOBALS['sistem_config'] = $this->system_config->load();
-                    $this->load->library('gmail');
-                    
-                    $result_message = $this->gmail->send_recovery_pass
-                                        (
-                                            $email,
-                                            $token,
-                                            $language
-                                        );
-                    $result['success'] = true;
-                    //$result['message'] = $this->T("Não pode ser ", array(), $GLOBALS['language']); 
-                    $result['token'] = $token;
+                    if($login === ''){
+                        $login = NULL;
+                    }
+                    $user_row = $this->user_model->get_user_by_email($email, $login);
+                    if($user_row){
+                        $this->user_model->save_recovery_token($email, $user_row['id'], $user_row['login'], $token);
+                        $this->load->model('class/system_config');                    
+                        $GLOBALS['sistem_config'] = $this->system_config->load();
+                        $this->load->library('gmail');
+
+                        $result_message = $this->gmail->send_recovery_pass
+                                            (
+                                                $email,
+                                                $user_row['login'],
+                                                $token,
+                                                $language
+                                            );
+                        $result['success'] = true;
+                        //$result['message'] = $this->T("Não pode ser ", array(), $GLOBALS['language']); 
+                        $result['token'] = $token;
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Não foi encontrado login/email.", array(), $GLOBALS['language']); 
+                        $result['resource'] = 'front_page';
+                    }
                 }
                 else{
                     $result['success'] = false;
@@ -254,6 +277,45 @@ class Welcome extends CI_Controller {
             else{
                 $result['success'] = false;
                 $result['message'] = $this->T("Estrutura incorreta do e-mail.", array(), $GLOBALS['language']); 
+                $result['resource'] = 'front_page';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Esta operação não pode ser feita com uma sessão aberta", array(), $GLOBALS['language']); 
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
+    
+    public function over_write_pass() {                        
+        if (!$this->session->userdata('id')){
+            $this->load->model('class/user_model');
+            
+            $datas = $this->input->post();            
+            $new_pass = $datas['new_pass'];
+            $token = $datas['token'];
+            $login = $datas['login'];
+            $language = $datas['language'];
+            
+            $user_row = $this->user_model->get_recover_data($login, $token);
+            if($user_row){
+                $result_update = $this->user_model->update_password($user_row['user_id'], $new_pass);
+                
+                if($result_update){
+                    $result['success'] = true;
+                    //$result['message'] = $this->T("Não pode ser ", array(), $GLOBALS['language']); 
+                    $result['token'] = $token;
+                }
+                else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("A senha não pudo ser atualizada", array(), $GLOBALS['language']); 
+                    $result['resource'] = 'front_page';
+                }
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Token não válido ou expirado", array(), $GLOBALS['language']); 
                 $result['resource'] = 'front_page';
             }
         }

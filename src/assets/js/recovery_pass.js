@@ -18,6 +18,13 @@ $(document).ready(function () {
         }
     });
     
+    $('#pass2').keypress(function (e) {
+        if (e.which == 13) {
+            $("#do_over_write_pass").click();
+            return false;
+        }
+    });
+    
     $("#do_recovery").click(function () {  
         var login = $('#user_recovery').val();        
         var email = $('#email_recovery').val();       
@@ -65,6 +72,58 @@ $(document).ready(function () {
         else{
             //modal_alert_message(T('Deve fornecer o email!',language));
             $('#container_recovery_message').text(T('Deve fornecer o email!',language));
+            $('#container_recovery_message').css('visibility', 'visible');
+            $('#container_recovery_message').css('color', 'red');            
+        }
+            
+    });
+    
+    $("#do_over_write_pass").click(function () {  
+        var pass1 = $('#pass1').val();        
+        var pass2 = $('#pass2').val();       
+        
+        if(pass1.trim() !== ''){
+            if( pass1 === pass2 ){
+                var l = Ladda.create(this);  l.start();
+                $.ajax({
+                    url: base_url + 'index.php/welcome/over_write_pass',            
+                    data:{
+                        new_pass:pass1,
+                        token:token,
+                        login:login,
+                        language:language
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {  
+                            $('#container_recovery_message').text(T('Sua senha foi modificada com sucesso! Entre com as novas credenciais',language));
+                            $('#container_recovery_message').css('visibility', 'visible');
+                            $('#container_recovery_message').css('color', 'green');
+                        } else {
+                            $('#container_recovery_message').text(response['message']);
+                            $('#container_recovery_message').css('visibility', 'visible');
+                            $('#container_recovery_message').css('color', 'red');                           
+                        }
+                        l.stop();
+                    },
+                    error: function (xhr, status) {
+                        $('#container_recovery_message').text(T('Não foi possível executar sua solicitude!',language));
+                        $('#container_recovery_message').css('visibility', 'visible');
+                        $('#container_recovery_message').css('color', 'red');
+                        l.stop();
+                    }
+                });
+            }
+            else{
+                $('#container_recovery_message').text(T('Deve repetir a nova senha!',language));
+                $('#container_recovery_message').css('visibility', 'visible');
+                $('#container_recovery_message').css('color', 'red');            
+            }
+        }
+        else{
+            //modal_alert_message(T('Deve fornecer o email!',language));
+            $('#container_recovery_message').text(T('Deve fornecer o novo password!',language));
             $('#container_recovery_message').css('visibility', 'visible');
             $('#container_recovery_message').css('color', 'red');            
         }

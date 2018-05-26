@@ -35,6 +35,21 @@ var Translation = {
             "ES": "Un email fue enviado a su email para recuperar su contraseña",
             "EN": "An email was sent to your email to recover your password" 
         },        
+"Deve repetir a nova senha!": 
+        {   "PT": "Deve repetir a nova senha!",
+            "ES": "Debe repetir exactamente la nueva contraseña!",
+            "EN": "You must repeat the new password!" 
+        },        
+"Deve fornecer o novo password!": 
+        {   "PT": "Deve fornecer a nova senha!",
+            "ES": "Debe proporcionar la nueva contraseña!",
+            "EN": "You must provide the new password!" 
+        },        
+"Sua senha foi modificada com sucesso! Entre com as novas credenciais": 
+        {   "PT": "Sua senha foi modificada com sucesso! Entre com as novas credenciais.",
+            "ES": "¡Su contraseña ha sido modificada con éxito! Entre con las nuevas credenciales.",
+            "EN": "Your password has been successfully modified! Login with the new credentials." 
+        },        
 "O telefone só pode conter números!": 
         {   "PT": "O telefone só pode conter números!",
             "ES": "El teléfono sólo puede contener números!",

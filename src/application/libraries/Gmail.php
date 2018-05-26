@@ -624,12 +624,12 @@
             return $result;
         }
         
-        public function send_recovery_pass($useremail, $token, $lang) {
+        public function send_recovery_pass($useremail, $username, $token, $lang) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to
             $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail,"");
+            $this->mail->addAddress($useremail, $username);
             $this->mail->clearCCs();
             //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
             //$this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
@@ -642,17 +642,18 @@
             if($lang == "EN")
                 $this->mail->Subject = 'DUMBU Recover password';
             if($lang == "ES")
-                $this->mail->Subject = 'DUMBU Recuperar contraseña';
+                $this->mail->Subject = 'DUMBU Recuperar contrasena';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $token = urlencode($token);            
+            $username = urlencode($username);            
             $lang = urlencode($lang);            
                 
             //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
             //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
             //$lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/recover_pass.php?token=$token"), dirname(__FILE__));
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/src/resources/$lang/emails/recover_pass.php?token=$token&username=$username"), dirname(__FILE__));
 
             //Replace the plain text body with one created manually
             //$this->mail->Subject = 'DUMBU Verificar conta';

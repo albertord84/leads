@@ -16,20 +16,20 @@
                 <p style="text-align:center;">
                     <img src='cid:logo_confirm' style="vertical-align:middle">
                 </p>                
-                <h1 style="text-align:center;">Recuperação de senha</h1>
+                <h1 style="text-align:center;">Recuperación de contraseña</h1>
             </div>    
-            <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?>!</strong></h3></p></div>
-            <p> Por favor, clique no seguinte link para redefinir sua senha no nosso sitema: </p>
+            <div ><p><h3>Hola <strong><?php echo $_GET["username"]; ?>!</strong></h3></p></div>
+            <p> Por favor, haga clic en el siguiente enlace para restablecer su contraseña en nuestro sitema: </p>
 <!--            <a href="<?php // echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"]; ?>">
                 <?php // echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"]; ?>
             </a> -->
-            <a href="<?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"].'&login='.$_GET["username"]; ?>">
-                <?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"].'&login='.$_GET["username"]; ?>
+            <a href="<?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=ES&token='.$_GET["token"].'&login='.$_GET["username"]; ?>">
+                <?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=ES&token='.$_GET["token"].'&login='.$_GET["username"]; ?>
             </a> 
             <br>
-            <p>Se tiver qualquer dúvida, por favor nos escreva!</p>
+            <p>Si tiene alguna duda, ¡solo escríbanos!</p>
             <br>
-            <p>Obrigado por usar nossos serviços,</p>
+            <p>Gracias por usar nuestros servicios,</p>
             <p>DUMBU SYSTEM</p>
         </div>
     </body>

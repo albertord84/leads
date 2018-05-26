@@ -6,6 +6,7 @@
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $language;?>';</script>
             <script type="text/javascript">var token ='<?php echo $token;?>';</script>
+            <script type="text/javascript">var login ='<?php echo $login;?>';</script>
             
             <meta charset="UTF-8">
             <title>Dumbu-Leads</title>
@@ -110,11 +111,11 @@
                                             <div id="datas_form">
                                                 <div class="form-group">
                                                     <label for="senha"><?php echo $CI->T("Nova senha", array(),$language);?>(*)</label>
-                                                    <input type="password" class="form-control" id="user_recovery" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
+                                                    <input type="password" class="form-control" id="pass1" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="senha2l"><?php echo $CI->T("Repetir senha", array(),$language);?>(*)</label>
-                                                    <input type="password" class="form-control" id="email_recovery">
+                                                    <input type="password" class="form-control" id="pass2">
                                                 </div>                                                                   
                                                 <div class="form-group">
                                                     <label for="obs"><?php echo '(*)'.$CI->T("Obrigatório", array(),$language);?></label>                                                                    

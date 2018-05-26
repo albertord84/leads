@@ -112,6 +112,101 @@ class User_model extends CI_Model {
         }
     }
     
+     public function get_user_by_email($email, $login = NULL){
+         $user_row = NULL;
+         $this->load->model('class/user_status');            
+         try{
+            $this->db->select('*');
+            $this->db->from('users');
+            $this->db->where( array('email' => $email) );
+            if($login)
+                $this->db->where( array('login' => $login) );                       
+            $this->db->where('status_id !=', user_status::DELETED); //not canceled
+            if($login)
+                $user_row =  $this->db->get()->row_array();
+            else
+                $user_row =  $this->db->get()->result_array()[0];            
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante la verificacion de usario';
+        } finally {
+            return $user_row;
+        }
+    }
+    
+    public function save_recovery_token($email, $id_user, $login, $token){
+        $recover_row = NULL;
+        $now = time();
+        try{            
+            $this->db->select('*');
+            $this->db->from('recover_pass');            
+            $this->db->where( array('login' => $login) );                                   
+            $recover_row =  $this->db->get()->row_array();           
+            
+            if($recover_row){
+                $this->db->where( array('id' => $recover_row['id']) );            
+                $update_result = $this->db->update( 'recover_pass', array('token' => $token,
+                                                                          'send_date'=> $now )
+                                                    );
+                if($update_result){
+                    $recover_row['token'] = $token;
+                    $recover_row['send_date'] = $now;
+                }
+                else{
+                    $recover_row = NULL;
+                }
+            }
+            else{            
+                $data_recover['user_id'] = $id_user;         
+                $data_recover['login'] = $login;         
+                $data_recover['email'] = $email;         
+                $data_recover['token'] = $token;         
+                $data_recover['send_date'] = $now;         
+
+                $this->db->insert('recover_pass',$data_recover);
+                $recover_row = $this->db->insert_id();
+            }
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el login';
+        } finally {
+            return $recover_row;
+        }
+    }
+    
+    public function get_recover_data($login, $token){
+        $recover_row = NULL;
+        try{            
+            $valid_date = time() - 24*3600;
+            $this->db->select('*');
+            $this->db->from('recover_pass');            
+            $this->db->where( array('login' => $login) );
+            $this->db->where( array('token' => $token) );
+            $this->db->where('send_date >',$valid_date);
+            
+            $recover_row =  $this->db->get()->row_array();            
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el login';
+        } finally {
+            return $recover_row;
+        }
+    }
+    
+    public function update_password($id_user, $new_pass){
+        $update_result = NULL;
+        try{            
+            $hashed_pass = password_hash($new_pass, PASSWORD_DEFAULT);
+            $this->db->where( array('id' => $id_user) );            
+            $update_result = $this->db->update( 'users', array('pass' => $hashed_pass));            
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el login';
+        } finally {
+            return $update_result;
+        }
+    }
+    
     public function insert_user($datas){
         $user_row = NULL;
         try{

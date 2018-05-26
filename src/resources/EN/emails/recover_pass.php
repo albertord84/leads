@@ -16,20 +16,20 @@
                 <p style="text-align:center;">
                     <img src='cid:logo_confirm' style="vertical-align:middle">
                 </p>                
-                <h1 style="text-align:center;">Recuperação de senha</h1>
+                <h1 style="text-align:center;">Password recovery</h1>
             </div>    
-            <div ><p><h3>Olá <strong><?php echo $_GET["username"]; ?>!</strong></h3></p></div>
-            <p> Por favor, clique no seguinte link para redefinir sua senha no nosso sitema: </p>
+            <div ><p><h3>Hi <strong><?php echo $_GET["username"]; ?>!</strong></h3></p></div>
+            <p> Please click on the following link to reset your password in our system: </p>
 <!--            <a href="<?php // echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"]; ?>">
                 <?php // echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"]; ?>
             </a> -->
-            <a href="<?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"].'&login='.$_GET["username"]; ?>">
-                <?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=PT&token='.$_GET["token"].'&login='.$_GET["username"]; ?>
+            <a href="<?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=EN&token='.$_GET["token"].'&login='.$_GET["username"]; ?>">
+                <?php echo 'https://dumbu.pro/leads/src/index.php/welcome/password_recovery?language=EN&token='.$_GET["token"].'&login='.$_GET["username"]; ?>
             </a> 
             <br>
-            <p>Se tiver qualquer dúvida, por favor nos escreva!</p>
+            <p>If you have any questions just write to us!</p>
             <br>
-            <p>Obrigado por usar nossos serviços,</p>
+            <p>Thank you for using our services,</p>
             <p>DUMBU SYSTEM</p>
         </div>
     </body>
