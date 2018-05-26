@@ -221,8 +221,8 @@ class Client_model extends CI_Model {
             if($id_campaing != $row['campaing_id']){
                 $id_campaing = $row['campaing_id'];
                 $index_campaing++;
-                //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
-                $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
+                $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
                 
                 $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                 $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -252,8 +252,8 @@ class Client_model extends CI_Model {
                 if($id_campaing != $row['campaing_id']){
                     $id_campaing = $row['campaing_id'];
                     $index_campaing++;
-                    //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
-                    $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
+                    $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                    //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
                                         
                     $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                     $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
