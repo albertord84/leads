@@ -395,19 +395,21 @@ class Client_model extends CI_Model {
     public function amount_leads_by_client($id_client, $id_campaing = NULL, $all = NULL){         
         $result = 0;
          try{
-            $this->db->select('leads.id');                
-            $this->db->from('leads');            
-            $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
-            $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
-            $this->db->join('clients', 'campaings.client_id = clients.user_id');
-            $this->db->where('clients.user_id',$id_client);                  
+            $query = "SELECT COUNT(dumbu_emails_db.leads.id) FROM dumbu_emails_db.leads ";
+            $query .= "INNER JOIN dumbu_emails_db.profiles ON dumbu_emails_db.profiles.id = dumbu_emails_db.leads.reference_profile_id ";
+            $query .= "INNER JOIN dumbu_emails_db.campaings ON dumbu_emails_db.campaings.id = dumbu_emails_db.profiles.campaing_id ";
+            $query .= "INNER JOIN dumbu_emails_db.clients ON dumbu_emails_db.campaings.client_id = dumbu_emails_db.clients.user_id ";
+            $query .= "WHERE dumbu_emails_db.clients.user_id = ".$id_client;
             if($id_campaing){
-                $this->db->where('campaings.id',$id_campaing);                  
-            } 
-            if(!$all){
-                $this->db->where('leads.sold',0);
+                $query .= " AND dumbu_emails_db.campaings.id = ".$id_campaing; 
             }
-            $result = $this->db->get()->num_rows();
+            if(!$all){
+                $query .= " AND dumbu_emails_db.leads.sold = 0"; 
+            }
+            $query .= ";";
+            $query_result = $this->db->query($query);
+            $result_row = $query_result->row_array();            
+            $result = $result_row['COUNT(dumbu_emails_db.leads.id)'];//->num_rows();           
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos';
         } finally {
