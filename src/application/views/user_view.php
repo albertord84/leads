@@ -113,13 +113,18 @@
                                                     </div>
                                                     <div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
                                                     </div>
-                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
+                                                    <div>
+                                                        <a style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
+                                                            <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
+                                                        </a>
+                                                    </div>
+<!--                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
                                                         <div class="col-md-2 col-sm-2 col-xs-12">
                                                             <input type="checkbox" id="check_force_login1" checked="false" style="margin-top: 0;">                                                                                                        
                                                         </div>
                                                         <div id="message_force_login1" style="with:100%" class="col-md-10 col-sm-10 col-xs-12 text-left">                                                                                        
                                                         </div>
-                                                    </div>
+                                                    </div>-->
                                                 </form>
                                             </div>
                                         </li>
@@ -262,13 +267,18 @@
                                                             </div>
                                                             <div id="container_login_message2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
                                                             </div>
-                                                            <div id="container_login_force_login2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
+                                                            <div class="center">
+                                                                <a id = "recupery_pass" style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
+                                                                    <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
+                                                                </a>
+                                                            </div>
+<!--                                                            <div id="container_login_force_login2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
                                                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                                                     <input type="checkbox" id="check_force_login2" checked="false" style="margin-top: 0;">                                                                                                        
                                                                 </div>
                                                                 <div id="message_force_login2" style="with:100%"  class="col-md-10 col-sm-10 col-xs-12 text-left">
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                         </form>
                                                     </div>
                                                 </div>
