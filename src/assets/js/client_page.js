@@ -1,6 +1,8 @@
 $(document).ready(function () {    
     $('#datetimepicker_lead').datepicker( { format: "dd/mm/yyyy", autoclose: true});
     $('#datetimepicker_lead2').datepicker( { format: "dd/mm/yyyy", autoclose: true});
+    $('#datetimepicker').datepicker( { format: "dd/mm/yyyy", autoclose: true});
+    $('#datetimepicker2').datepicker( { format: "dd/mm/yyyy", autoclose: true});
         
     function modal_alert_message(text_message){
         $('#modal_alert_message').modal('show');
