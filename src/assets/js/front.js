@@ -66,6 +66,10 @@ $(document).ready(function () {
     
     //------------desenvolvido para DUMBU-LEADS-------------------
     
+    $("#recupery_pass").click(function () {       
+        $(location).attr('href',base_url+'index.php/welcome/password_recovery?language='+language);                                        
+    });
+    
     $("#lnk_language2").click(function () {
        var new_language = $("#txt_language2").text()
         $.ajax({

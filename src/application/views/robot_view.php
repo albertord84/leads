@@ -90,8 +90,10 @@
                              echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
                              echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
                              echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
-                             echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';                                        
+                             echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';
+                             //echo '<option value="12">'.$CI->T("OCUPADO", array(),$languaje).'</option>';
                             ?>
+                            <option value="12">OCUPADO</option>
                             <!--<option value="1">ACTIVE</option>
                             <option value="2">BLOCKED_BY_PAYMENT</option>
                             <option value="3">BLOCKED_BY_PASSWORD</option>
@@ -234,8 +236,11 @@
                         </button>
                     </div>
                 </div>
+                <div style="text-align:center;"><!-- -->
+            
                         <div id="container_robots">
                         </div>
+                </div>    
             <footer class="fleft100 pd-tb50 bk-fff text-center">
                     <div class="container">
                             <div class="fleft100 m-top40">
