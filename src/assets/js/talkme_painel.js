@@ -16,7 +16,7 @@ $(document).ready(function(){
           if(name && email && message){
             var l = Ladda.create(this);  l.start(); l.start();
             $.ajax({
-                url : base_url+'index.php/welcome/message',
+                url : base_url+'index.php/welcome/message?language='+language,
                 data :{ 'name':$("#visitor_name").val(),
                         'company':$("#visitor_company").val(),
                         'email':$("#visitor_email").val(),
