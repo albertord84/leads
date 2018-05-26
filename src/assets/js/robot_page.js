@@ -86,7 +86,7 @@ $(document).ready(function () {
                         //html+=''
                             html+= '<tr class="list-group-item-success" id="row-client-'+robots[i]['id']+'" style="visibility: visible;display: block'; 
                             var jot=i % 2;
-                            if (jot == 0) 
+                            if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
                             else
                             {html+='; background-color: white';}
@@ -97,10 +97,25 @@ $(document).ready(function () {
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
                                     html+= '<td style="width:30%; padding:5px">';
-                                    html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
-                                    html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
-                                    html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
-                                    html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
+                                    html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+robots[i]['id'];
+                                    html+='" id= "idinprobdumbuid_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['id']+'"><br><br>';
+                                    //html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
+                                    html+='<b>Profile: </b><input type="text" name="naminprobprofile_'+robots[i]['id'];
+                                    html+='" id= "idinprobprofile_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['login']+'"><br><br>';
+                             
+                                    //html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
+                                    html+='<b>Password: </b><input type="text" name="naminprobpass_'+robots[i]['id'];
+                                    html+='" id= "idinprobpass_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['pass']+'"><br><br>';
+                                    
+                                    //html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
+                                    html+='<b>DS ID: </b><input type="text" name="naminprobdsid_'+robots[i]['id'];
+                                    html+='" id= "idinprobdsid_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['ds_user_id']+'"><br><br>';
+                             
+                                    
                                     //html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
                                     //html+='" type="date" class="robot_atribute" value="';
                                     //html+=toDate(robots[i]['ds_user_id'])+'">';
