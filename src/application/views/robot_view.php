@@ -81,7 +81,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Status</b>   
-                        <select id="client_status" class="form-control">
+                        <select id="status_select" class="form-control">
                             <option value="-1">--SELECT--</option>
                             <option value="0">TODOS OS STATUS</option>
                             <?php
