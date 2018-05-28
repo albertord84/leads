@@ -132,6 +132,8 @@ namespace leads\cls {
                 
                 $card_query = mysqli_query($DB->connection, $sql);
                 $card_row= $card_query->fetch_array();
+                if(!$card_row)
+                    return NULL;;
                 
                 $key_number = md5($id_client.$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
                 $key_cvc = md5($key_number);
