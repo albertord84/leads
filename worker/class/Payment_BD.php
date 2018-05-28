@@ -208,9 +208,11 @@ namespace leads\cls {
         public function update_status_user($id_user, $new_status, $status_date){
             $DB = new \leads\cls\DB();            
             try {
-                $DB->connect();                
-                if($new_status == user_status::DELETED)
+                $DB->connect();
+                $end_date = NULL;
+                if($new_status == user_status::DELETED){
                     $end_date = $status_date;
+                }
                 $sql = ""
                         . "UPDATE users ";
                         if($end_date){
