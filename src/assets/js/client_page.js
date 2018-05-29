@@ -956,10 +956,10 @@ $(document).ready(function () {
                     }
                 });
             } else {
-                modal_alert_message('A data fornecida ñao foi aceitada');
+                modal_alert_message(T('A data fornecida ñao foi aceitada',language));
             }   
         } else{
-            modal_alert_message('Verifique os dados fornecidos');
+            modal_alert_message(T('Verifique os dados fornecidos',language));
         }        
     }
     
@@ -1050,6 +1050,95 @@ $(document).ready(function () {
             modal_alert_message(T("Deve fornecer todos os dados",language));
         }
     }
+    
+    $("#do_save_cupom").click(function () {                       
+
+        var name = validate_element('#credit_card_name_cupom', "^[A-Z ]{4,50}$");
+        var number = validate_element('#credit_card_number_cupom', "^[0-9]{10,20}$");
+
+        if (number) {
+            // Validating a Visa card starting with 4, length 13 or 16 digits.
+            number = validate_element('#credit_card_number_cupom', "^(?:4[0-9]{12}(?:[0-9]{3})?)$");
+
+            if (!number) {
+                // Validating a MasterCard starting with 51 through 55, length 16 digits.
+                number = validate_element('#credit_card_number_cupom', "^(?:5[1-5][0-9]{14})$");
+
+                if (!number) {
+                    // Validating a American Express credit card starting with 34 or 37, length 15 digits.
+                    number = validate_element('#credit_card_number_cupom', "^(?:3[47][0-9]{13})$");
+
+                    if (!number) {
+                        // Validating a Discover card starting with 6011, length 16 digits or starting with 5, length 15 digits.
+                        number = validate_element('#credit_card_number_cupom', "^(?:6(?:011|5[0-9][0-9])[0-9]{12})$");
+
+                        if (!number) {
+                            // Validating a Diners Club card starting with 300 through 305, 36, or 38, length 14 digits.
+                            number = validate_element('#credit_card_number_cupom', "^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$");
+
+                            if (!number) {
+                                // Validating a Elo credit card
+                                number = validate_element('#credit_card_number_cupom', "^(?:((((636368)|(438935)|(504175)|(451416)|(636297))[0-9]{0,10})|((5067)|(4576)|(4011))[0-9]{0,12}))$");
+
+                                if (!number) {
+                                    // Validating a Hypercard
+                                    number = validate_element('#credit_card_number_cupom', "^(?:(606282[0-9]{10}([0-9]{3})?)|(3841[0-9]{15}))$");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        var cvv = validate_element('#credit_card_cvc_cupom', "^[0-9]{3,4}$");
+        var month = validate_month('#credit_card_exp_month_cupom', "^(0?[1-9]|1[012])$");
+        //validate_element('#client_email', "^([2-9][0-9]{3})$");
+        var year = validate_year('#credit_card_exp_year_cupom', "^([2-9][0-9]{3})$");            
+        var date = validate_date($('#credit_card_exp_month_cupom').val(),$('#credit_card_exp_year_cupom').val());            
+        if (name && number && cvv && month && year) {
+            if (date) {
+                //modal_alert_message('Dados corretos!');
+                var datas={                    
+                    'credit_card_number': $('#credit_card_number_cupom').val(),
+                    'credit_card_cvc': $('#credit_card_cvc_cupom').val(),
+                    'credit_card_name': $('#credit_card_name_cupom').val(),
+                    'credit_card_exp_month': $('#credit_card_exp_month_cupom').val(),
+                    'credit_card_exp_year': $('#credit_card_exp_year_cupom').val()                                        
+                };                
+                var l = Ladda.create(object);  l.start();            
+                $.ajax({
+                    url: base_url + 'index.php/welcome/add_credit_card_cupom',
+                    data: datas,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {
+                            $('#credit_card_name_cupom').val('');
+                            $('#credit_card_number_cupom').val('');
+                            $('#credit_card_cvc_cupom').val('');                            
+                            
+                            modal_alert_message(response['message']);           
+                            document.getElementById("alerta_pago").innerHTML = '';
+                            //document.getElementById("ops").innerHTML = '';                            
+                        } 
+                        else {                          
+                            modal_alert_message(response['message']);                           
+                        }
+                        l.stop();
+                    },
+                    error: function (xhr, status) {
+                        set_global_var('flag', true);
+                        l.stop();
+                    }
+                });
+            } else {
+                modal_alert_message(T('A data fornecida ñao foi aceitada',language));
+            }   
+        } else{
+            modal_alert_message(T('Verifique os dados fornecidos',language));
+        }        
+    });
     
     $(document).on('click', '.extraer_leads', function(){ 
         var id_element = $(this).data('id');
