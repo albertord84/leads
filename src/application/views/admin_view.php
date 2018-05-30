@@ -49,7 +49,13 @@
                                         <button id="do_logout" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="b-none bk-none cl-fff ft-size13">
                                             <img src="<?php echo base_url().'assets/img/user.png'?>" style="position: relative;top: -2px;right: 5px;">
                                             <?php echo $CI->T("SAIR", array(),$language);?>
-                                        </button>
+                                        </button><br>
+                                        <!--<div id="link_robot"> -->
+                                        <font color="white">
+                                            <a target=" blank" href=<?php echo base_url().'index.php/admin/robot' ?> >GERENCIAR ROBOTS PROFILES</a>
+                                        </font>
+                                        <!--</div> -->   
+
                                     </div>					
                             </div>
                     </header>
@@ -72,10 +78,13 @@
             <!--</button>
             <div id = "container_users">                
             </div> -->
-        <div id="link_robot">
-            <a target=" blank" href=<?php echo base_url().'index.php/admin/robot' ?>>Gerenciar robot-profiles</a>
-            
-        </div>    
+        <!--<div id="link_robot"> -->
+        <!--    <a target=" blank" href=-->
+            <?php 
+            //echo base_url().'index.php/admin/robot' 
+            ?>
+        <!-- >Gerenciar robot-profiles</a> -->
+        <!--</div> -->   
         <div id="login_container2">
             <div id="admin_form" class="row">
                 <div class="col-md-1"></div>
