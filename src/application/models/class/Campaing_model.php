@@ -387,17 +387,15 @@ class Campaing_model extends CI_Model {
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
-        foreach($info_to_get['inf'] as $key => $field){
-            if(in_array($field, $decode_fields)){
-                if($field != 'all_email'){                
-                    if($field != 'perfil'){
-                        $fields .= ', leads.'.$decode_fields[$field];
-                    }
-                    else{
-                        $fields .= ', profiles.'.$decode_fields[$field];
-                    }
+        foreach($info_to_get['inf'] as $key => $field){            
+            if($field != 'all_email'){                
+                if($field != 'perfil'){
+                    $fields .= ', leads.'.$decode_fields[$field];
                 }
-            }
+                else{
+                    $fields .= ', profiles.'.$decode_fields[$field];
+                }
+            }            
         }
         
         try{
@@ -508,7 +506,7 @@ class Campaing_model extends CI_Model {
         foreach($info_to_get as $key => $field){            
             if($field != 'all_email'){                
                 if($field != 'perfil'){
-                    if(in_array($field, $decode_fields)){
+                    if(in_array($field, $info_to_get)){
                         $fields .= ', leads.'.$decode_fields[$field];
                     }
                 }
