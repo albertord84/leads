@@ -47,6 +47,12 @@ class Admin_model extends CI_Model {
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
             }
+                if($filter['date_from']!='' && $filter['date_to']!=''){
+                   $this->db->where('init >=',strtotime($filter['date_from'].' 00:00:00'));
+                   $this->db->where('end <=',strtotime($filter['date_to'].' 23:59:59'));
+                }
+                
+            
             $robot_rows =  $this->db->get()->result_array();           
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos durante la verificacion de usario';

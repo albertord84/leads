@@ -32,10 +32,14 @@ $(document).ready(function () {
     
     $("#do_show_robots").click(function () { 
     var status_id = $('#status_select').val();
+    var date_from = $('#status_date_from').val();
+    var date_to=$('#status_date_to').val();
         $.ajax({
             url: base_url + 'index.php/admin/show_robots', 
             data:  {
-                        'status_id': status_id,                                       
+                        'status_id': status_id,
+                        'date_from': date_from,
+                        'date_to': date_to,
                         'language': language                                
                     }, 
             type: 'POST',
@@ -96,10 +100,11 @@ $(document).ready(function () {
                                     var segme='<b>'+k;
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
-                                    html+= '<td style="width:30%; padding:5px">';
-                                    html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+robots[i]['id'];
-                                    html+='" id= "idinprobdumbuid_'+robots[i]['id'];
-                                    html+='" value="'+robots[i]['id']+'"><br><br>';
+                                    html+= '<td style="width:25%; padding:5px">';
+                                    html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
+                                    //html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+robots[i]['id'];
+                                    //html+='" id= "idinprobdumbuid_'+robots[i]['id'];
+                                    //html+='" value="'+robots[i]['id']+'"><br><br>';
                                     //html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
                                     html+='<b>Profile: </b><input type="text" name="naminprobprofile_'+robots[i]['id'];
                                     html+='" id= "idinprobprofile_'+robots[i]['id'];
@@ -110,10 +115,20 @@ $(document).ready(function () {
                                     html+='" id= "idinprobpass_'+robots[i]['id'];
                                     html+='" value="'+robots[i]['pass']+'"><br><br>';
                                     
-                                    //html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
-                                    html+='<b>DS ID: </b><input type="text" name="naminprobdsid_'+robots[i]['id'];
-                                    html+='" id= "idinprobdsid_'+robots[i]['id'];
-                                    html+='" value="'+robots[i]['ds_user_id']+'"><br><br>';
+                                    html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
+                                    //html+='<b>DS ID: </b><input type="text" name="naminprobdsid_'+robots[i]['id'];
+                                    //html+='" id= "idinprobdsid_'+robots[i]['id'];
+                                    //html+='" value="'+robots[i]['ds_user_id']+'"><br><br>';
+                             
+                                    //html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
+                                    html+='<b>Tema: </b><input type="text" name="naminprobtheme_'+robots[i]['id'];
+                                    html+='" id= "idinprobtheme_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['profile_theme']+'"><br><br>';
+                             
+                                    //html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
+                                    html+='<b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail_'+robots[i]['id'];
+                                    html+='" id= "idinprobaccountemail_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['recuperation_email_account']+'"><br><br>';
                              
                                     
                                     //html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
@@ -126,7 +141,7 @@ $(document).ready(function () {
                                     //    echo '<b>Idioma: </b>'.$result[$i]['language'].'<br><br>';
                                     //else echo '<br>';
                                     //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
-                                    html+= '<td style="width:30%; padding:5px">';
+                                    html+= '<td style="width:25%; padding:5px">';
                                     var nid=robots[i]['status_id'];
                                     html+='<b>Status: </b><br>';
                                     html+='<select class="robot_atribute" id="idselestatus_'+robots[i]['id'];
@@ -163,7 +178,22 @@ $(document).ready(function () {
                                     //html+=datemp+'">';
                                     html+='</input>';
                                     html+='</td>';
-                                    html+= '<td style="width:30%; padding:5px">';
+                                    html+= '<td style="width:25%; padding:5px">';
+                                    html+='<b>Recobrar senha usando email: </b><br><input type="text" name="naminprobpassemail_'+robots[i]['id'];
+                                    html+='" id= "idinprobpassemail_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['recuperation_email_pass']+'"><br><br>';
+                                    
+                                    //html+='<b>Profile: </b>'+robots[i]['login']+'<br>';
+                                    html+='<b>Email de creação da conta: </b><br><input type="text" name="naminprobcreatoremail_'+robots[i]['id'];
+                                    html+='" id= "idinprobcreatoremail_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['creator_email']+'"><br><br>';
+                             
+                                    //html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
+                                    html+='<b>Recobrar conta usando telefone: </b><br><input type="text" name="naminprobaccountelf_'+robots[i]['id'];
+                                    html+='" id= "idinprobaccountelf_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['recuperation_phone']+'"><br><br>';
+                                    html+='</td>';
+                                    html+= '<td style="width:25%; padding:5px">';
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
                                     html+='" type="button" class="robotok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
@@ -176,6 +206,8 @@ $(document).ready(function () {
                                     //html+='<span class="ladda-label">Cancel</span>';
                                     html+='Cancel</button>';
                                     html+='</td>';
+                               
+                                   
                                     html+='</tr>';
 
                                     //html+='<br>';

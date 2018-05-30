@@ -86,13 +86,14 @@
                             <option value="0">TODOS OS STATUS</option>
                             <?php
                              echo '<option value="1">'.$CI->T("ATIVO", array(),$language).'</option>';                                        
-                             echo '<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$language).'</option>';                                        
+                             //echo '<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$language).'</option>';                                        
                              echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
-                             echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
-                             echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
-                             echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';
+                             //echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
+                             //echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
+                             echo '<option value="11">'.$CI->T("NÃO USAR MAIS", array(),$language).'</option>';
                              //echo '<option value="12">'.$CI->T("OCUPADO", array(),$languaje).'</option>';
                             ?>
+                            <!--<option value="11">NÃO USAR MAIS</option>-->
                             <option value="12">OCUPADO</option>
                             <!--<option value="1">ACTIVE</option>
                             <option value="2">BLOCKED_BY_PAYMENT</option>
@@ -106,10 +107,10 @@
                         </select>
                     </div> 
                 </div>
-                <div class="col-md-4">
-                    <div class="center filters">
-                    <!--<b>Assinatura (inic)</b>
-                        <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >-->
+                <!--<div class="col-md-4">
+                       <div class="center filters">
+                       <b>Assinatura (inic)</b>
+                        <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >
                         <b>Data da assinatura</b>
                     </div>
                     <div class="col-xs-1">
@@ -123,13 +124,13 @@
                     </div>
                     <div class="col-xs-5">
                         <input type="text" id="date_to" name="date_to" placeholder="mm/dd/yyyy" class="form-control">
-                    </div>
+                    </div>-->
                     <!-- <div class="center">
                         <input type="text" id="date_from" name="date_from" placeholder="mm/dd/yyyy" class="form-control" style="max-width:160px">
                         <label for="date_to">até</label>
                         <input type="text" id="date_to" name="date_to" placeholder="mm/dd/yyyy" class="form-control" style="max-width:160px">
-                    </div> -->
-                        <!-- <table>
+                    </div> 
+                         <table>
                             <tr>
                                 <th class="center filters" colspan="5">Data da assinatura</th>
                                 <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -163,8 +164,8 @@
                                 </select></td>
                             </tr>
                         </table>
-                    </div> -->
-                </div>
+                    </div> 
+                </div> -->
                 <div class="col-md-4">
                     <div class="center filters">
                         <b>Data do status</b>
@@ -173,19 +174,48 @@
                         <b>do</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="status_date_from" name="status_date_from" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="status_date_from" name="status_date_from" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <div class="col-xs-1">
                         <b>até</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="status_date_to" name="status_date_to" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="status_date_to" name="status_date_to" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                 </div>   
                 <div class="col-md-1"></div>
+                    <br>
+                    <div class="col-xs-1">
+                    <table> 
+                        <tr><td>    
+                <div class="col-md-2">
+                    <div class="col-xs-5">
+                    <div class="center filters">
+                        <button  style="min-width:150px" id = "do_show_robots" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                            <span class="ladda-label">Listar</span>
+                        </button>
+                    </div>
+                    </div>    
+                </div>
+    
+                            </td><td>
+                <div class="col-md-2">
+                    <div class="col-xs-5">
+                    <div class="center filters">
+                        
+                        <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                            <span class="ladda-label">Obter emails</span>
+                        </button>
+                    </div>
+                    </div>    
+                </div>    
+                </td></tr></table> 
+                </div>
+                </div>
+                 
             </div>
             <div class="row">
-                <div class="col-md-1"></div>
+                <!--<div class="col-md-1"></div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Não recebe trabalho há mais de</b>
@@ -219,28 +249,13 @@
                     <?php } else { ?>
                         <input id="idioma" name="idioma" type="hidden" value="--SELECT--">
                     <?php } ?>
-                </div>
-                <div class="col-md-3">
-                    <div class="center">
-                        <br>
-                        <button  style="min-width:150px" id = "do_show_robots" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
-                            <span class="ladda-label">Listar</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="center">
-                        <br>
-                        <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
-                            <span class="ladda-label">Obter emails</span>
-                        </button>
-                    </div>
-                </div>
-                <div style="text-align:center;"><!-- -->
+                </div>-->
+                <div style="text-align:center;">
             
                         <div id="container_robots">
                         </div>
-                </div>    
+                </div> 
+            </div>    
             <footer class="fleft100 pd-tb50 bk-fff text-center">
                     <div class="container">
                             <div class="fleft100 m-top40">
