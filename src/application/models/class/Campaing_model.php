@@ -505,17 +505,17 @@ class Campaing_model extends CI_Model {
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
-        foreach($info_to_get as $key => $field){
-            if(in_array($field, $decode_fields)){
-                if($field != 'all_email'){                
-                    if($field != 'perfil'){
+        foreach($info_to_get as $key => $field){            
+            if($field != 'all_email'){                
+                if($field != 'perfil'){
+                    if(in_array($field, $decode_fields)){
                         $fields .= ', leads.'.$decode_fields[$field];
                     }
-                    else{
-                        $fields .= ', profiles.'.$decode_fields[$field];
-                    }
                 }
-            }
+                else{
+                    $fields .= ', profiles.'.$decode_fields[$field];
+                }
+            }            
         }
         
         try{
