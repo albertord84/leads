@@ -1864,7 +1864,7 @@ class Welcome extends CI_Controller {
 
                         if($first_result && count($result_sql) > 0){
                             $first_result = FALSE;
-                            $filename = 'users_'.date('Ymd').'.csv'; 
+                            $filename = 'leads_'.date('Ymd', $init_date).'_'.date('Ymd', $end_date).'.csv'; 
                             header("Content-Description: File Transfer"); 
                             header("Content-Disposition: attachment; filename=$filename"); 
                             header("Content-Type: application/csv; ");
