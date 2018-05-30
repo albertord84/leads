@@ -64,10 +64,8 @@
                         <a class="close" data-dismiss="modal" >&times;</a>
                         <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
                         <hr class="fleft100">
-                        <div class="col-md-8 col-sm-8 col-xs-12 pd-0 fnone i-block">
-                            <!--<span class="bol fw-600 fleft100 ft-size15"><i></i> <?php echo $CI->T("Nova Campanha", array(),$language);?></span>-->
-                            <span class="bol fw-600 fleft100 ft-size15 m-top20"><i></i> <?php echo "CUPOM";?></span>
-                            <!--<span class="ft-size13 fleft100"> <?php echo $CI->T("Inicio", array(),$language)." ".date("d/m/Y");?></span>-->                            
+                        <div class="col-md-8 col-sm-8 col-xs-12 pd-0 fnone i-block">                            
+                            <span class="bol fw-600 fleft100 ft-size15 m-top20"><i></i> <?php echo $CI->T("PRÉ-PAGO", array(),$language);?></span>                            
                             <div class="fleft100 ctr m-top20">
                                 <div class="fleft100 pd-lr5">
                                         <input id="credit_card_name_cupom" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="<?php echo $CI->T("Nome no cartão", array(),$language);?>">
@@ -121,6 +119,9 @@
                             </div>                            
                         </div>
                         <hr class="fleft100 m-top20">    
+                        <div>
+                            <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
+                        </div>
                         <div class="col-md-2 col-sm-2 col-xs-12  m-top5">                                
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-12  m-top5">
