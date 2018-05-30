@@ -1061,10 +1061,19 @@ $(document).ready(function () {
     });
     
     
-    $("#do_get_leads").on("click", function(){
-        
+    $("#do_get_leads").on("click", function(){        
         var id_campaing = $('#id_campaing_leads').val();        
-        var info_to_get = $('.inf:checked').serialize();        
+        var info_to_get = [];//$('.inf:checked').serialize();        
+        
+        var chk_arr =  document.getElementsByName("inf[]");
+        var chklength = chk_arr.length;             
+
+        for(k=0; k < chklength; k++)
+        {
+            if(chk_arr[k]["checked"]){
+                info_to_get.push( chk_arr[k]["defaultValue"] );
+            }
+        }
         
         var initDate = $('#init_date').val();
         initDate = initDate.split("/");        
@@ -1076,9 +1085,11 @@ $(document).ready(function () {
                 
         if(init_date && end_date){
             if(init_date <= end_date){
+//                $(location).attr('href',base_url+'index.php/welcome/file_leads?id_campaing='+id_campaing+'&init_date='+init_date+'&end_date='+end_date+'&info_to_get='+info_to_get);                                        
+//                return;
                 $.ajax({
                 type: "POST",
-                url: base_url + 'index.php/welcome/get_leads_campaing', //calling method in controller
+                url: base_url + 'index.php/welcome/get_leads_client', //calling method in controller
                 data: {
                     id_campaing: id_campaing,
                     //profile: profile,
@@ -1089,22 +1100,7 @@ $(document).ready(function () {
                 dataType:'json',
                 success: function (response) {
                     if (response['success']) {
-                        var I = $('#init_date').val();
-                        var F = $('#end_date').val();
-                        
-                        if(response['file']){
-                           a = document.createElement('a');
-
-                            a.href = window.URL.createObjectURL( new Blob([response['file']]) );
-                            // Give filename you wish to download
-                            a.download = "leads_ID_"+id_campaing+"_"+I+"_"+F+".csv";
-                            a.style.display = 'none';
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                        else{
-                            modal_alert_message(T("Você não possui leads que cumplam com sua solicitude",language));
-                        }
+                        $(location).attr('href',base_url+'index.php/welcome/file_leads?id_campaing='+id_campaing+'&init_date='+init_date+'&end_date='+end_date+'&info_to_get='+info_to_get);                                                            
                     }
                     else{
                         modal_alert_message(response['message']);

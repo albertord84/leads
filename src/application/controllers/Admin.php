@@ -95,10 +95,11 @@ class Admin extends CI_Controller {
         $lang1=$lang1.'<option value="1">'.$CI->T("ATIVO", array(),$lang).'</option>';                                        
         $lang1=$lang1.'<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
         $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
+        //$lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
         //$lang1=$lang1.'<option value="12">'.$CI->T("OCUPADO", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
         if ($this->session->userdata('id')){            
             $this->load->model('class/admin_model');
@@ -112,6 +113,11 @@ class Admin extends CI_Controller {
                                 'pass' => $robot['pass'],
                                 'ds_user_id' => $robot['ds_user_id'],
                                 'status_id' => $robot['status_id'],
+                                'profile_theme' => $robot['profile_theme'],
+                                'recuperation_email_account' => $robot['recuperation_email_account'],
+                                'recuperation_email_pass' => $robot['recuperation_email_pass'],
+                                'creator_email' => $robot['creator_email'],
+                                'recuperation_phone' => $robot['recuperation_phone'],
                                 'init' => $robot['init'],
                                 'end' => $robot['end']
                                 );
