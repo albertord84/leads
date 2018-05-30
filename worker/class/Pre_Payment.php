@@ -22,24 +22,25 @@ class Pre_Payment {   //extends CI_Controller {
             $cupom_array = $BD_access->get_array_cupom();
             
             foreach ($cupom_array as $cupom) {
-                $client = $BD_access->get_user_by_id();
+                $client = $BD_access->get_user_by_id($cupom['client_id']);
                 $factor_conversion = 1;
                 if($client['brazilian'] == 0){                    
                     $factor_conversion = $GLOBALS['sistem_config']->DOLLAR_TO_REAL;
                 }
-                $datas['credit_card_number'] = $cupom_array['credit_card_number_cupom'];
-                $datas['credit_card_name'] = $cupom_array['credit_card_name_cupom'];
-                $datas['credit_card_exp_month'] = $cupom_array['credit_card_exp_month_cupom'];
-                $datas['credit_card_exp_year'] = $cupom_array['credit_card_exp_year_cupom'];
-                $datas['credit_card_cvc'] = $cupom_array['credit_card_cvc_cupom'];
-                $datas['amount_in_cents'] = $cupom_array['amount']*$factor_conversion;
+                $datas['credit_card_number'] = $cupom['credit_card_number'];
+                $datas['credit_card_name'] = $cupom['credit_card_name'];
+                $datas['credit_card_exp_month'] = $cupom['credit_card_exp_month'];
+                $datas['credit_card_exp_year'] = $cupom['credit_card_exp_year'];
+                $datas['credit_card_cvc'] = $cupom['credit_card_cvc'];
+                $datas['amount_in_cents'] = $cupom['amount']*$factor_conversion;
 
                 $resp = $this->check_mundipagg_credit_card($datas); 
 
                 if( is_object($resp) && $resp->isSuccess() ){                    
                     $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
+                     
                     //mensaje de que fue hecho el cobro
-                    echo 'Client '.$cupom_array['client_id'].' buy a cupom for '.$value_cents.' cents<br>';                     
+                    echo 'Client '.$cupom['client_id'].' buy a cupom for '.$value_cents.' cents<br>';                     
                     $result_message = $this->Gmail->send_client_response_cupom(
                                                         $client['email'],
                                                         $client['login'],                                                        
@@ -49,20 +50,24 @@ class Pre_Payment {   //extends CI_Controller {
                                                         1
                                                     ); 
                     //salvar como boleto bancario pago
+                    $BD_access->save_cupom_as_ticket($cupom['client_id'], $value_cents);
                     
                 }else{
                     var_dump($resp);
                     //mensaje de que no fue hecho el cobro
-                    echo 'Client '.$cupom_array['client_id'].' fail buying a cupom for '.$cupom_array['amount']*$factor_conversion.' cents<br>';                     
+                    echo 'Client '.$cupom['client_id'].' fail buying a cupom for '.$cupom['amount']*$factor_conversion.' cents<br>';                     
                     $result_message = $this->Gmail->send_client_response_cupom(
                                                         $client['email'],
                                                         $client['login'],                                                        
                                                         $client['language'],
                                                         $client['brazilian'],
-                                                        $cupom_array['amount'],
+                                                        $datas['amount_in_cents'],
                                                         0
                                                     ); 
-                }                
+                } 
+                
+                //eliminar de la tabla
+                $BD_access->delete_cupom($cupom['id']);
             }
             
             sleep(2*3600); //espera 2 hras para analizar la proxima lista de pedidos de cupones

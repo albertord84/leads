@@ -543,7 +543,7 @@ namespace leads\cls {
             return $result;
         }
         
-        public function send_client_response_cupom($useremail, $username, $lang, $value, $brazilian, $response) {
+        public function send_client_response_cupom($useremail, $username, $lang, $brazilian, $value, $response) {
             //Set an alternative reply-to address
             //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
             //Set who the message is to be sent to

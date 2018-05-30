@@ -401,6 +401,37 @@ namespace leads\cls {
                 echo $exc->getTraceAsString();
             }
         }
+        
+        public function save_cupom_as_ticket($id_client, $amount_cents) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $now = time();
+                $DB->connect();
+                $sql = ""
+                        . "INSERT INTO bank_ticket "
+                        . "(client_id, emission_money_value, amount_payed_value, amount_used_value, generated_date, payed, payed_date) "
+                        . "VALUES "   
+                        . "($id_client, $amount_cents, $amount_cents, 0, $now, 1, $now);";   
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
+        }
+        
+        public function delete_cupom($id) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "DELETE FROM credit_cards_cupom "                        
+                        . "WHERE id = $id; ";                        
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
+        }
     }
 }
 ?>

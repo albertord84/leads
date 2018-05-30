@@ -77,11 +77,6 @@ class Welcome extends CI_Controller {
     } 
         
     public function index() { 
-        /**/
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Pre_Payment.php';
-        $Pre = new \leads\cls\Pre_Payment(); 
-        $Pre->check_cupom_leads();
-        /**/
         
         $this->load->model('class/user_role');        
         $param = array();
