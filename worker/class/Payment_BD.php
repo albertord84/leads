@@ -132,6 +132,8 @@ namespace leads\cls {
                 
                 $card_query = mysqli_query($DB->connection, $sql);
                 $card_row= $card_query->fetch_array();
+                if(!$card_row)
+                    return NULL;
                 
                 $key_number = md5($id_client.$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
                 $key_cvc = md5($key_number);
@@ -206,9 +208,11 @@ namespace leads\cls {
         public function update_status_user($id_user, $new_status, $status_date){
             $DB = new \leads\cls\DB();            
             try {
-                $DB->connect();                
-                if($new_status == user_status::DELETED)
+                $DB->connect();
+                $end_date = NULL;
+                if($new_status == user_status::DELETED){
                     $end_date = $status_date;
+                }
                 $sql = ""
                         . "UPDATE users ";
                         if($end_date){

@@ -15,7 +15,7 @@ $('#filtro').multiselect({
     },
 });
 
-$('#datetimepicker').datepicker({
+/*$('#datetimepicker').datepicker({
     format: "dd/mm/yyyy",
     //language: "pt-BR",    
     autoclose: true
@@ -24,7 +24,7 @@ $('#datetimepicker2').datepicker({
     format: "dd/mm/yyyy",
     //language: "pt-BR",
     autoclose: true
-});
+});*/
 
 /////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////

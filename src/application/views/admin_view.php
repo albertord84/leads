@@ -6,7 +6,7 @@
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
                        
             <meta charset="UTF-8">
-            <title>Dumbo-Leads</title>
+            <title>Dumbu-Leads</title>
             <meta name="viewport" content="width=device-width">
             <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
 

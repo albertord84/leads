@@ -81,21 +81,23 @@ class Daily_Payment {   //extends CI_Controller {
 
                 if($amount_to_pay){//acabar de pagar con la tarjeta de credito
                     $credit_card = $BD_access->get_credit_card($client['user_id']);
-                    /*Hacer el cobro*/                    
-                    $datas['credit_card_number'] = $credit_card['credit_card_number'];
-                    $datas['credit_card_name'] = $credit_card['credit_card_name'];
-                    $datas['credit_card_exp_month'] = $credit_card['credit_card_exp_month'];
-                    $datas['credit_card_exp_year'] = $credit_card['credit_card_exp_year'];
-                    $datas['credit_card_cvc'] = $credit_card['credit_card_cvc'];
-                    $datas['amount_in_cents'] = $amount_to_pay;
-                    
-                    $resp=$this->check_mundipagg_credit_card($datas); 
-                    
+                    /*Hacer el cobro*/                                        
                     $value_cents = 0;
-                    if( is_object($resp) && $resp->isSuccess() ){                    
-                        $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
-                    }else{
-                        var_dump($resp);
+                    if($credit_card){
+                        $datas['credit_card_number'] = $credit_card['credit_card_number'];
+                        $datas['credit_card_name'] = $credit_card['credit_card_name'];
+                        $datas['credit_card_exp_month'] = $credit_card['credit_card_exp_month'];
+                        $datas['credit_card_exp_year'] = $credit_card['credit_card_exp_year'];
+                        $datas['credit_card_cvc'] = $credit_card['credit_card_cvc'];
+                        $datas['amount_in_cents'] = $amount_to_pay;
+
+                        $resp=$this->check_mundipagg_credit_card($datas); 
+
+                        if( is_object($resp) && $resp->isSuccess() ){                    
+                            $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
+                        }else{
+                            var_dump($resp);
+                        }
                     }
 
                     if($value_cents < $amount_to_pay){//no fue hecho el cobro

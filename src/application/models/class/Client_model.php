@@ -115,7 +115,7 @@ class Client_model extends CI_Model {
     
     /*obtiene la(s) campañas(s) de un cliente con los perfiles no borrados. 
      * Puede filtrarse además por el status de la campaña*/    
-    public function get_campaings_and_profiles($id_client, $id_campaing = NULL, $status = NULL, $init_date = NULL, $end_date = NULL){
+    public function get_campaings_and_profiles($id_client, $id_campaing = NULL, $status = NULL, $init_date = NULL, $end_date = NULL, $active_prof = NULL){
         $result = NULL;
         $this->load->model('class/profiles_status');
          try{
@@ -123,7 +123,8 @@ class Client_model extends CI_Model {
             $this->db->from('campaings');            
             $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
             $this->db->where('campaings.client_id',$id_client);
-            $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
+            if($active_prof)
+                $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
             
             if($id_campaing)
                 $this->db->where('campaings.id',$id_campaing);
@@ -156,8 +157,8 @@ class Client_model extends CI_Model {
             $this->db->from('campaings');            
             $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
             $this->db->where('campaings.client_id',$id_client);
-            $this->db->where('profiles.profile_status_id <>', profiles_status::ACTIVE);
-            $this->db->where('profiles.profile_status_id <>', profiles_status::ENDED);
+            //$this->db->where('profiles.profile_status_id <>', profiles_status::ACTIVE);
+            //$this->db->where('profiles.profile_status_id <>', profiles_status::ENDED);
             $this->db->where('campaings.campaing_status_id', campaing_status::DELETED);                        
             
             if($init_date)
@@ -222,6 +223,7 @@ class Client_model extends CI_Model {
                 $id_campaing = $row['campaing_id'];
                 $index_campaing++;
                 $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
                 
                 $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                 $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -252,6 +254,7 @@ class Client_model extends CI_Model {
                     $id_campaing = $row['campaing_id'];
                     $index_campaing++;
                     $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                    //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_by_client($id_cliente, $id_campaing, true);
                                         
                     $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                     $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -298,7 +301,7 @@ class Client_model extends CI_Model {
             if($id_campaing != $row['campaing_id']){
                 $id_campaing = $row['campaing_id'];
                 $index_campaing++;
-                $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                $campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));                
                 
                 $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                 $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -390,6 +393,30 @@ class Client_model extends CI_Model {
         }                
     }
     
+    public function amount_leads_by_client($id_client, $id_campaing = NULL, $all = NULL){         
+        $result = 0;
+         try{
+            $query = "SELECT COUNT(dumbu_emails_db.leads.id) FROM dumbu_emails_db.leads ";
+            $query .= "INNER JOIN dumbu_emails_db.profiles ON dumbu_emails_db.profiles.id = dumbu_emails_db.leads.reference_profile_id ";
+            $query .= "INNER JOIN dumbu_emails_db.campaings ON dumbu_emails_db.campaings.id = dumbu_emails_db.profiles.campaing_id ";
+            $query .= "INNER JOIN dumbu_emails_db.clients ON dumbu_emails_db.campaings.client_id = dumbu_emails_db.clients.user_id ";
+            $query .= "WHERE dumbu_emails_db.clients.user_id = ".$id_client;
+            if($id_campaing){
+                $query .= " AND dumbu_emails_db.campaings.id = ".$id_campaing; 
+            }
+            if(!$all){
+                $query .= " AND dumbu_emails_db.leads.sold = 0"; 
+            }
+            $query .= ";";
+            $query_result = $this->db->query($query);
+            $result_row = $query_result->row_array();            
+            $result = $result_row['COUNT(dumbu_emails_db.leads.id)'];//->num_rows();           
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
     
     public function update_leads($list_leads_id, $number_leads){
         $result = NULL;
