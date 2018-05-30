@@ -333,11 +333,23 @@ class User_model extends CI_Model {
             echo 'Error accediendo a la base de datos durante el cancelamiento';
         } finally {
             return $update_result;
-        }
-        
+        }       
         
     }
     
+    public function get_user($id_user){
+        $user_row = NULL;
+         try{
+            $this->db->select('*');
+            $this->db->from('users');
+            $this->db->where(array('id' => $id_user));
+            $user_row =  $this->db->get()->row_array();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $user_row;
+        }
+    }
 
 
 

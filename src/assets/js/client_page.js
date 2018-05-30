@@ -1052,7 +1052,7 @@ $(document).ready(function () {
     }
     
     $("#do_save_cupom").click(function () {                       
-
+         
         var name = validate_element('#credit_card_name_cupom', "^[A-Z ]{4,50}$");
         var number = validate_element('#credit_card_number_cupom', "^[0-9]{10,20}$");
 
@@ -1098,15 +1098,16 @@ $(document).ready(function () {
         var date = validate_date($('#credit_card_exp_month_cupom').val(),$('#credit_card_exp_year_cupom').val());            
         if (name && number && cvv && month && year) {
             if (date) {
-                //modal_alert_message('Dados corretos!');
+                //modal_alert_message('Dados corretos!');                
                 var datas={                    
                     'credit_card_number': $('#credit_card_number_cupom').val(),
                     'credit_card_cvc': $('#credit_card_cvc_cupom').val(),
                     'credit_card_name': $('#credit_card_name_cupom').val(),
                     'credit_card_exp_month': $('#credit_card_exp_month_cupom').val(),
-                    'credit_card_exp_year': $('#credit_card_exp_year_cupom').val()                                        
+                    'credit_card_exp_year': $('#credit_card_exp_year_cupom').val(),                                        
+                    'option': $('input[name=cupom_option]:checked', '#form_cupom').val()                                        
                 };                
-                var l = Ladda.create(object);  l.start();            
+                var l = Ladda.create(this);  l.start();            
                 $.ajax({
                     url: base_url + 'index.php/welcome/add_credit_card_cupom',
                     data: datas,

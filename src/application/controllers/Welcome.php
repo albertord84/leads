@@ -76,7 +76,12 @@ class Welcome extends CI_Controller {
         return $inp;
     } 
         
-    public function index() {        
+    public function index() { 
+        /**/
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/leads/worker/class/Pre_Payment.php';
+        $Pre = new \leads\cls\Pre_Payment(); 
+        $Pre->check_cupom_leads();
+        /**/
         
         $this->load->model('class/user_role');        
         $param = array();
@@ -2086,6 +2091,11 @@ class Welcome extends CI_Controller {
         $this->load->model('class/credit_card_model');        
         if ($this->session->userdata('role_id')==user_role::CLIENT){            
             $datas = $this->input->post();
+            if(!is_numeric($datas['option']) || $datas['option'] < 1 || $datas['option'] > 4){
+                $datas['option'] = 2;
+            }
+            $prepay = ['1' => 10000, '2' => 50000, '3' => 100000, '4' => 200000];
+            
             $message_error = $this->errors_in_credit_card_datas($datas['credit_card_name'],
                                                                 $datas['credit_card_number'],
                                                                 $datas['credit_card_cvc'], 
@@ -2094,15 +2104,16 @@ class Welcome extends CI_Controller {
             if(!$message_error){
                 $datas['client_id'] = $this->session->userdata('id');
                 $datas['payment_order'] = NULL; //revisar despues
+                $datas['amount'] = $prepay[ $datas['option'] ]; //revisar despues
 
                 $old_credit_card_cupom = $this->credit_card_model->get_credit_card_cupom($this->session->userdata('id'));
                 if(!$old_credit_card_cupom){
 
-                    $result_insert = $this->credit_card_model->insert_credit_card($datas);
+                    $result_insert = $this->credit_card_model->insert_credit_card_cupom($datas);
 
                     if($result_insert){
                         $result['success'] = true;
-                        $result['message'] = $this->T("Solicitado pré-pago com cartão de crédito", array(), $GLOBALS['language']);
+                        $result['message'] = $this->T("Solicitado pré-pago com cartão de crédito. Por favor, espere o nosso e-mail de confirmação.", array(), $GLOBALS['language']);
                         $result['resource'] = 'client_page';
                     }
                     else{

@@ -346,6 +346,61 @@ namespace leads\cls {
 
             return mysqli_query($DB->connection, $sql);                
         }
+        
+        public function get_array_cupom() {  
+            $card_row = array();
+            $DB = new \leads\cls\DB();
+            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "SELECT * "
+                        . "FROM credit_cards_cupom ;";
+                
+                $card_query = mysqli_query($DB->connection, $sql);
+                
+                $array_cupom = array();
+                while ($cupom = $card_query->fetch_array()) {
+                    array_push($array_cupom, $this->decode_cupom($cupom));
+                }                
+                
+                return $array_cupom;
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+        
+        public function decode_cupom($card_row){            
+            if ($card_row) {
+                
+                $key_number = md5($card_row['client_id'].$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
+                $key_cvc = md5($key_number);
+                $cipher_number = $card_row['credit_card_number'];
+                $cipher_cvc = $card_row['credit_card_cvc'];
+                $card_row['credit_card_number'] = openssl_decrypt ( $cipher_number , "aes-256-ctr" , $key_number);                
+                $card_row['credit_card_cvc'] = openssl_decrypt ( $cipher_cvc , "aes-256-ctr" , $key_cvc);
+                
+            }
+            return  $card_row;
+        }
+        
+        public function get_user_by_id($id_client) {              
+            
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "SELECT * "
+                        . "FROM users "                        
+                        . "WHERE id = $id_client; ";
+                
+                $user_query = mysqli_query($DB->connection, $sql);
+                $user = $user_query->fetch_array();
+                return $user;
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
     }
 }
 ?>

@@ -87,9 +87,11 @@ class credit_card_model extends CI_Model {
     public function get_credit_card_cupom($id_client){        
         $card_row = NULL;
         try{            
+            $now = time(); 
             $this->db->select('*');
-            $this->db->from('credit_cards');
+            $this->db->from('credit_cards_cupom');
             $this->db->where( array('client_id' => $id_client) );           
+            //$this->db->where( 'created_date >', $now-2*3600 );           
             $card_row =  $this->db->get()->row_array();
             if($card_row){
                 $key_number = md5($id_client.$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
@@ -116,9 +118,10 @@ class credit_card_model extends CI_Model {
             $data_card['credit_card_exp_month'] = $datas['credit_card_exp_month'];
             $data_card['credit_card_exp_year'] = $datas['credit_card_exp_year'];
             $data_card['payment_order'] = $datas['payment_order'];
-            $data_card['updating_date'] = time();
+            $data_card['created_date'] = time();
+            $data_card['amount'] = $datas['amount'];
             
-            $this->db->insert('credit_cards',$data_card);
+            $this->db->insert('credit_cards_cupom',$data_card);
             $card_row = $this->db->insert_id();
             
         } catch (Exception $exception) {

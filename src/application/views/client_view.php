@@ -104,18 +104,18 @@
                                         </select>
                                 </div>
                                 <hr class="fleft100 m-top50">
-                                <form action="">
+                                <form id = "form_cupom">
                                     <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
-                                        <input type="radio" name="cupom_option" value="10000"> <?php echo $currency_symbol?> 100.00<br>
+                                        <input type="radio" name="cupom_option" value="1"> <?php echo $currency_symbol?> 100.00<br>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
-                                        <input type="radio" checked="true" name="cupom_option" value="50000"> <?php echo $currency_symbol?> 500.00<br>
+                                        <input type="radio" checked="true" name="cupom_option" value="2"> <?php echo $currency_symbol?> 500.00<br>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
-                                        <input type="radio" name="cupom_option" value="100000"> <?php echo $currency_symbol?> 1000.00<br>
+                                        <input type="radio" name="cupom_option" value="3"> <?php echo $currency_symbol?> 1000.00<br>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
-                                        <input type="radio" name="cupom_option" value="200000"> <?php echo $currency_symbol?> 2000.00<br>
+                                        <input type="radio" name="cupom_option" value="4"> <?php echo $currency_symbol?> 2000.00<br>
                                     </div>
                                 </form>                            
                             </div>                            
@@ -398,7 +398,7 @@
                             ?>
                             <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
                     </div>
-                            <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
+                            <div class="fleft100 bk-fff pd-tb30 pd-lr15-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
                                             <div class="col-md-7 col-sm-7 col-xs-7 pd-lr5 carbol">
                                                 <a id = "pago_cartao" class="cl-black cartao ativo c-pointer">
@@ -456,6 +456,10 @@
                                                                         }                                                                        
                                                                     ?>
                                                             </select>
+                                                    </div>   
+                                                    <hr class="fleft100">   
+                                                    <div>
+                                                        <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
                                                     </div>
                                             </div>
                                             <div class="fleft100 blt m-top5 d-none">
@@ -495,6 +499,7 @@
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                             <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
+                                                    <hr class="fleft100">   
                                                     <div>
                                                         <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
                                                     </div>
@@ -670,9 +675,9 @@
                                     <ul>
                                             <li><a href="https:/www.dumbu.pro"><?php echo $CI->T("Captação de Seguidores", array(),$language);?></a></li>
                                             <!--<li><a href="">Extração de Leads</a></li>-->
-                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>
-                                            <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
+                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
                                             <li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pagamentos", array(),$language);?></a></li>
+                                            <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>
                             <div class="col-md-10 col-sm-12 col-xs-12 center-xs">

@@ -543,6 +543,54 @@ namespace leads\cls {
             return $result;
         }
         
+        public function send_client_response_cupom($useremail, $username, $lang, $value, $brazilian, $response) {
+            //Set an alternative reply-to address
+            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
+            //Set who the message is to be sent to
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $username);
+            $this->mail->clearCCs();
+            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
+            //$this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+
+            //Set the subject line
+            //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
+            $this->mail->Subject = 'DUMBU Resposta à solicitude pré-pago';
+            if($lang == "EN")
+                $this->mail->Subject = 'DUMBU Prepaid request response';
+            if($lang == "ES")
+                $this->mail->Subject = 'DUMBU Respuesta a la solicitud prepago';
+
+            //Read an HTML message body from an external file, convert referenced images to embedded,
+            //convert HTML into a basic plain-text alternative body
+            $username = urlencode($username);            
+            $value = urlencode($value);            
+            $brazilian = urlencode($brazilian);            
+            $response = urlencode($response);            
+            //$this->mail->msgHTML(file_get_contents("http://localhost/dumbu/worker/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
+            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
+            //$lang = $GLOBALS['sistem_config']->LANGUAGE;
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/leads/worker/resources/$lang/emails/cupom_response.php?username=$username&value=$value&brazilian=$brazilian&response=$response"), dirname(__FILE__));
+
+            //Replace the plain text body with one created manually
+//            $this->mail->Subject = 'DUMBU Boleto gerado com sucesso!';
+
+            //Attach an image file
+            //$this->mail->AddEmbeddedImage($_SERVER['SERVER_NAME'].'/leads/src/assets/img/bol.png', 'logo_boleto');
+//            $this->mail->AddEmbeddedImage(realpath('../src/assets/img/email_bol.png'), "logo_boleto", "email_bol.png", "base64", "image/png");
+            //send the message, check for errors
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
         public function  sendAuthenticationErrorMail($username, $useremail){
             
         }
