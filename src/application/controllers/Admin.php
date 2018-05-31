@@ -54,7 +54,7 @@ class Admin extends CI_Controller {
     }
     
     public function show_users() {
-        $this->load_language();
+    /*    $this->load_language();
         if ($this->session->userdata('id')){            
             $this->load->model('class/admin_model');
             $datas = $this->input->post();
@@ -85,7 +85,63 @@ class Admin extends CI_Controller {
             $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
             $result['resource'] = 'index';
         }
+        echo json_encode($result);*/
+                $CI =& get_instance();
+        $this->load_language();
+        $lang= $this->session->userdata('language');
+        $lang1=$lang1.'<option value="1">'.$CI->T("ATIVO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="12">'.$CI->T("OCUPADO", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
+        $lang1=$lang1.'<option value="12">OCUPADO</option>';
+        if ($this->session->userdata('id')){            
+            $this->load->model('class/admin_model');
+            $datas = $this->input->post();
+            $users_results = $this->admin_model->get_users($datas);
+            $users = array();
+            foreach($users_results as $user){
+                $users[] = array(
+                                'users.id' => $user['users.id'],
+                                'role_id' => $user['role_id'],
+                                'name' => $user['name'],
+                                'login' => $user['login'],
+                                'pass' => $user['pass'],
+                                'email' => $user['email'],
+                                'telf' => $user['telf'],
+                                'status_id' => $user['status_id'],
+                                'status_date' => $user['status_date'],
+                                'language' => $user['language'],
+                                'init_date' => $user['init_date'],
+                                'end_date' => $user['end_date'],
+                                'credit_card_name' => $user['credit_card_name'],
+                                'utm_source' => $user['utm_source'],
+                                'brazilian' => $user['brazilian'],
+                                'promotional_code' => $user['promotional_code'],
+                                );
+            }
+            $result['options']=$lang1;
+            if(count($users) > 0){                    
+                $result['success'] = true;
+                $result['message'] = 'Existem usuários';
+                $result['resource'] = 'index';
+                $result['users_array'] = $users;
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não existem usuários para esses filtros", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
         echo json_encode($result);
+
     }
 
     public function show_robots() {

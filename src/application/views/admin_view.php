@@ -124,13 +124,13 @@
                         <b>do</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="date_from" name="date_from" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="assin_date_from" name="assin_date_from" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <div class="col-xs-1">
                         <b>até</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="date_to" name="date_to" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="assin_date_to" name="assin_date_to" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <!-- <div class="center">
                         <input type="text" id="date_from" name="date_from" placeholder="mm/dd/yyyy" class="form-control" style="max-width:160px">
@@ -181,13 +181,13 @@
                         <b>do</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="status_date_from" name="status_date_from" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="status_date_from1" name="status_date_from1" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <div class="col-xs-1">
                         <b>até</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="text" id="status_date_to" name="status_date_to" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="status_date_to1" name="status_date_to1" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                 </div>   
                 <div class="col-md-1"></div>
@@ -198,19 +198,19 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Perfil do cliente</b>
-                        <input id = "profile_client" type="text" class="form-control"  placeholder="Perfil do cliente">
+                        <input id = "profile_client1" type="text" class="form-control"  placeholder="Perfil do cliente">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Email do cliente</b>                        
-                        <input id="email_client" type="email" class="form-control" placeholder="Email do cliente">
+                        <input id="email_client1" type="email" class="form-control" placeholder="Email do cliente">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>ID do cliente</b>
-                        <input id="client_id" class="form-control" placeholder="ID do cliente">
+                        <input id="client_id1" class="form-control" placeholder="ID do cliente">
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -222,7 +222,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Credit Card name</b>
-                        <input id="credit_card_name" class="form-control" placeholder="Credit Card Name">
+                        <input id="credit_card_name1" class="form-control" placeholder="Credit Card Name">
                     </div>
                 </div>
             </div>
@@ -371,6 +371,14 @@
                         </select>    
                     </div>
                 </div>
+                <!--<div class="col-md-1"></div>-->
+                <div class="col-md-2">
+                    <div class="center filters">
+                        <b>Ùltimo acesso:</b> 
+                       <input type="date" id="last_access1" name="last_access1" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                    
+                </div>
                 <div class="col-md-2">
                     <?php if ($SERVER_NAME == "ONE") { ?>
                         <div class="center filters">
@@ -386,7 +394,7 @@
                         <input id="idioma" name="idioma" type="hidden" value="--SELECT--">
                     <?php } ?>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="center">
                         <br>
                         <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
@@ -394,7 +402,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="center">
                         <br>
                         <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
@@ -402,6 +410,12 @@
                         </button>
                     </div>
                 </div>
+                <div style="text-align:center;">
+            
+                        <div id="container_users1">
+                        </div>
+                </div> 
+                
             <footer class="fleft100 pd-tb50 bk-fff text-center">
                     <div class="container">
                             <div class="fleft100 m-top40">
