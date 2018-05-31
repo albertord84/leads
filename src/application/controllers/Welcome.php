@@ -1823,7 +1823,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -1914,7 +1915,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -1980,7 +1982,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){                      
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            

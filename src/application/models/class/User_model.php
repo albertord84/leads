@@ -58,6 +58,7 @@ class User_model extends CI_Model {
                 $session->set_userdata('init_date', $user_data['init_date']);
                 $session->set_userdata('language', $user_data['language']);                
                 $session->set_userdata('module', "LEADS");                
+                $session->set_userdata('admin', 0);                
                 if($user_data['brazilian']==1){
                     $session->set_userdata('currency_symbol', "R$");               
                 }

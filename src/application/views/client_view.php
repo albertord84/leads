@@ -677,7 +677,7 @@
                                             <li><a href="https:/www.dumbu.pro"><?php echo $CI->T("Captação de Seguidores", array(),$language);?></a></li>
                                             <!--<li><a href="">Extração de Leads</a></li>-->
                                             <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
-                                            <li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pré-pagos", array(),$language);?></a></li>
+                                            <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
                                             <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>
