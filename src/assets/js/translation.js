@@ -228,7 +228,7 @@ var Translation = {
 "A data fornecida ñao foi aceitada": 
         {   "PT": "A data fornecida ñao foi aceitada",
             "ES": "La fecha suministrada no fue aceptada",
-            "EN": "The date provided has not been accepted" 
+            "EN": "The provided date has not been accepted" 
         },
 "Verifique os dados fornecidos": 
         {   "PT": "Verifique os dados fornecidos",

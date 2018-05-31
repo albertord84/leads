@@ -76,7 +76,7 @@ class Welcome extends CI_Controller {
         return $inp;
     } 
         
-    public function index() {        
+    public function index() { 
         
         $this->load->model('class/user_role');        
         $param = array();
@@ -1818,12 +1818,172 @@ class Welcome extends CI_Controller {
       }
    }
   
-    public function get_leads_campaing(){
+    public function file_leads(){
         $this->load_language();
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
+            if( $this->session->userdata('status_id') != user_status::BEGINNER &&
+                $this->session->userdata('status_id') != user_status::DELETED && 
+                $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
+                
+                $datas = $this->input->get();
+                
+                $profile = $datas['profile'];
+                $id_campaing = $datas['id_campaing'];
+                if(isset($id_campaing) && !is_numeric($id_campaing))
+                    $id_campaing = NULL;
+                $init_date = $datas['init_date'];
+                $end_date = $this->real_end_date($datas['end_date']);  
+                
+                if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                    $end_date = $init_date + 24*3600-1;
+                }
+                
+                //parse_str($datas['info_to_get'], $info_to_get);
+                //$info_to_get = $datas['info_to_get'];
+                $info_to_get = explode(',', $datas['info_to_get']);
+                ////$campaing_row = $this->campaing_model->get_campaing($id_campaing);
+                
+                if( $id_campaing==NULL || $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
+                    $profile_row = $this->campaing_model->get_profile($id_campaing, $profile);
+                    $max_id = 0;
+                    $result_sql = TRUE;
+                    $first_result = TRUE;
+                    while ($result_sql){
+                        $result_sql = $this->campaing_model->get_leads_limit( $this->session->userdata('id'),
+                                                                        $id_campaing,
+                                                                        $profile_row['id'],
+                                                                        $init_date,
+                                                                        $end_date,
+                                                                        $info_to_get,
+                                                                        $max_id
+                                                                        );                    
+                        $result_sql = $this->convert_from_latin1_to_utf8_recursively($result_sql);
+
+                        if($first_result && count($result_sql) > 0){
+                            $first_result = FALSE;
+                            $filename = 'leads_'.date('Ymd', $init_date).'_'.date('Ymd', $end_date).'.csv'; 
+                            header("Content-Description: File Transfer"); 
+                            header("Content-Disposition: attachment; filename=$filename"); 
+                            header("Content-Type: application/csv; ");
+
+                            // file creation 
+                            $file = fopen('php://output', 'w');
+
+                            fputcsv($file, array_keys(current($result_sql)));                            
+                        }
+                        
+                        foreach ($result_sql as $key=>$line){ 
+                          fputcsv($file,$line);                          
+                        }
+                    }
+                    if(!$first_result)
+                        fclose($file); 
+                    exit;
+                
+                
+                    $result['success'] = true;
+                    $result['message'] = '';
+                    $result['resource'] = 'leads_view';
+                    
+                }
+                else{
+                    $result['success'] = false;            
+                    $result['message'] = $this->T("Esta campanha não pertençe a este usuário.", array(), $GLOBALS['language']);    
+                    $result['resource'] = 'client_painel';
+                }
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Seu estado atual no sistema não permite a descarga de leads.", array(), $GLOBALS['language']);
+                $result['resource'] = 'front_page';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        } 
+        $this->load->view('user_view');
+    }
+    
+    public function get_leads_client(){
+        $this->load_language();
+        $this->load->model('class/user_role');        
+        $this->load->model('class/user_status');        
+        $this->load->model('class/campaing_model');        
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
+            if( $this->session->userdata('status_id') != user_status::BEGINNER &&
+                $this->session->userdata('status_id') != user_status::DELETED && 
+                $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
+                
+                $datas = $this->input->post();
+                
+                $profile = $datas['profile'];
+                $id_campaing = $datas['id_campaing'];
+                if(isset($id_campaing) && !is_numeric($id_campaing))
+                    $id_campaing = NULL;
+                $init_date = $datas['init_date'];
+                $end_date = $this->real_end_date($datas['end_date']);  
+                
+                if($init_date!=NULL && $end_date!=NULL && $init_date == $end_date){
+                    $end_date = $init_date + 24*3600-1;
+                }
+                                
+                $info_to_get = $datas['info_to_get'];
+                
+                if( $id_campaing==NULL || $this->campaing_model->verify_campaing_client($this->session->userdata('id'), $id_campaing) ){
+                    $profile_row = $this->campaing_model->get_profile($id_campaing, $profile);
+                    $num_leads = 0;
+                    $num_leads = $this->campaing_model->get_num_leads( $this->session->userdata('id'),
+                                                                        $id_campaing,
+                                                                        $profile_row['id'],
+                                                                        $init_date,
+                                                                        $end_date,
+                                                                        $info_to_get                                                                        
+                                                                        );                    
+                    if($num_leads > 0){
+                        $result['success'] = true;
+                        $result['message'] = "";
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Você não possui leads pagos no periodo solicitado", array(), $GLOBALS['language']);                                                    
+                    }
+                }
+                else{
+                    $result['success'] = false;            
+                    $result['message'] = $this->T("Esta campanha não pertençe a este usuário.", array(), $GLOBALS['language']);    
+                    $result['resource'] = 'client_painel';
+                }
+            }
+            else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Seu estado atual no sistema não permite a descarga de leads.", array(), $GLOBALS['language']);
+                $result['resource'] = 'front_page';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        
+        $json = json_encode($result);        
+        echo $json;
+    }
+    
+    public function get_leads_campaing_old(){/*obsoleta*/
+        $this->load_language();
+        $this->load->model('class/user_role');        
+        $this->load->model('class/user_status');        
+        $this->load->model('class/campaing_model');        
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){                      
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -2080,6 +2240,63 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     } 
     
+    public function add_credit_card_cupom(){
+        $this->load_language();
+        $this->load->model('class/user_role');        
+        $this->load->model('class/credit_card_model');        
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            $datas = $this->input->post();
+            if(!is_numeric($datas['option']) || $datas['option'] < 1 || $datas['option'] > 4){
+                $datas['option'] = 2;
+            }
+            $prepay = ['1' => 10000, '2' => 50000, '3' => 100000, '4' => 200000];
+            
+            $message_error = $this->errors_in_credit_card_datas($datas['credit_card_name'],
+                                                                $datas['credit_card_number'],
+                                                                $datas['credit_card_cvc'], 
+                                                                $datas['credit_card_exp_month'], 
+                                                                $datas['credit_card_exp_year']);
+            if(!$message_error){
+                $datas['client_id'] = $this->session->userdata('id');
+                $datas['payment_order'] = NULL; //revisar despues
+                $datas['amount'] = $prepay[ $datas['option'] ]; //revisar despues
+
+                $old_credit_card_cupom = $this->credit_card_model->get_credit_card_cupom($this->session->userdata('id'));
+                if(!$old_credit_card_cupom){
+
+                    $result_insert = $this->credit_card_model->insert_credit_card_cupom($datas);
+
+                    if($result_insert){
+                        $result['success'] = true;
+                        $result['message'] = $this->T("Solicitado pré-pago com cartão de crédito. Por favor, espere o nosso e-mail de confirmação.", array(), $GLOBALS['language']);
+                        $result['resource'] = 'client_page';
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Erro solicitando o pré-pago com cartão de crédito", array(), $GLOBALS['language']);
+                        $result['resource'] = 'client_page';
+                    }
+                }
+                else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Você solicitou previamente um pré-pago que ainda não foi confirmado. Espere a confirmação para poder solicitar o próximo!", array(), $GLOBALS['language']);
+                    $result['resource'] = 'client_page';                    
+                }
+            }
+            else
+            {
+                $result['success'] = false;
+                $result['message'] = $message_error;
+                $result['resource'] = 'client_page';
+            }
+        }
+        else{            
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
     
     public function update_language(){        
         $this->load->model('class/user_role');        
