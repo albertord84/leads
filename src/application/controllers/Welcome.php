@@ -76,7 +76,7 @@ class Welcome extends CI_Controller {
         return $inp;
     } 
         
-    public function index() {        
+    public function index() { 
         
         $this->load->model('class/user_role');        
         $param = array();
@@ -1823,7 +1823,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -1914,7 +1915,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){            
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -1980,7 +1982,8 @@ class Welcome extends CI_Controller {
         $this->load->model('class/user_role');        
         $this->load->model('class/user_status');        
         $this->load->model('class/campaing_model');        
-        if ($this->session->userdata('role_id') == user_role::CLIENT){            
+        if ($this->session->userdata('role_id') == user_role::CLIENT &&
+            !$this->session->userdata('admin')){                      
             if( $this->session->userdata('status_id') != user_status::BEGINNER &&
                 $this->session->userdata('status_id') != user_status::DELETED && 
                 $this->session->userdata('status_id') != user_status::DONT_DISTURB){            
@@ -2237,6 +2240,63 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     } 
     
+    public function add_credit_card_cupom(){
+        $this->load_language();
+        $this->load->model('class/user_role');        
+        $this->load->model('class/credit_card_model');        
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            $datas = $this->input->post();
+            if(!is_numeric($datas['option']) || $datas['option'] < 1 || $datas['option'] > 4){
+                $datas['option'] = 2;
+            }
+            $prepay = ['1' => 10000, '2' => 50000, '3' => 100000, '4' => 200000];
+            
+            $message_error = $this->errors_in_credit_card_datas($datas['credit_card_name'],
+                                                                $datas['credit_card_number'],
+                                                                $datas['credit_card_cvc'], 
+                                                                $datas['credit_card_exp_month'], 
+                                                                $datas['credit_card_exp_year']);
+            if(!$message_error){
+                $datas['client_id'] = $this->session->userdata('id');
+                $datas['payment_order'] = NULL; //revisar despues
+                $datas['amount'] = $prepay[ $datas['option'] ]; //revisar despues
+
+                $old_credit_card_cupom = $this->credit_card_model->get_credit_card_cupom($this->session->userdata('id'));
+                if(!$old_credit_card_cupom){
+
+                    $result_insert = $this->credit_card_model->insert_credit_card_cupom($datas);
+
+                    if($result_insert){
+                        $result['success'] = true;
+                        $result['message'] = $this->T("Solicitado pré-pago com cartão de crédito. Por favor, espere o nosso e-mail de confirmação.", array(), $GLOBALS['language']);
+                        $result['resource'] = 'client_page';
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Erro solicitando o pré-pago com cartão de crédito", array(), $GLOBALS['language']);
+                        $result['resource'] = 'client_page';
+                    }
+                }
+                else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Você solicitou previamente um pré-pago que ainda não foi confirmado. Espere a confirmação para poder solicitar o próximo!", array(), $GLOBALS['language']);
+                    $result['resource'] = 'client_page';                    
+                }
+            }
+            else
+            {
+                $result['success'] = false;
+                $result['message'] = $message_error;
+                $result['resource'] = 'client_page';
+            }
+        }
+        else{            
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
     
     public function update_language(){        
         $this->load->model('class/user_role');        
