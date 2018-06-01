@@ -24,14 +24,15 @@ class Admin_model extends CI_Model {
          $this->load->model('class/user_status');            
          try{
             $this->db->select('*');
-            $this->db->from('clients');
-            $this->db->join('users', 'clients.user_id = users.id');
-            if(filter['card_name']!='')
+            $this->db->from('users');
+            if($filter['status_id']!=$this->user_status::BEGINNER && $filter['status_id']!=0)
+                $this->db->join('clients', 'clients.user_id = users.id');
+            if($filter['card_name']!='')
             {
              $this->db->join('credit_cards', 'clients.user_id = credit_cards.client_id');
                
             }
-          if(filter['prf_client1']==''&&filter['eml_client1']==''&&filter['card_name']==''){  
+          if($filter['prf_client1']==''&&$filter['eml_client1']==''&&$filter['card_name']==''){  
             if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
@@ -52,9 +53,9 @@ class Admin_model extends CI_Model {
             
           }
           else{
-            if(filter['prf_client1']=='')
+            if($filter['prf_client1']=='')
             {
-                if(filter['eml_client1']=='')
+                if($filter['eml_client1']=='')
                 {
                         $card_name = $filter['card_name'];
                         $this->db->where(array('credit_card_name' => "$card_name"));

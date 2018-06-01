@@ -53,6 +53,7 @@ class Admin extends CI_Controller {
         echo json_encode($result);
     }
     
+    
     public function show_users() {
     /*    $this->load_language();
         if ($this->session->userdata('id')){            
@@ -86,30 +87,42 @@ class Admin extends CI_Controller {
             $result['resource'] = 'index';
         }
         echo json_encode($result);*/
-                $CI =& get_instance();
+               // $this =& get_instance();
+        $a=1;
         $this->load_language();
         $lang= $this->session->userdata('language');
-        $lang1=$lang1.'<option value="1">'.$CI->T("ATIVO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="1">'.$this->T("ATIVO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="2">'.$this->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="4">'.$this->T("ELIMINADO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="6">'.$this->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="8">'.$this->T("INICIANTE", array(),$lang).'</option>';                                        
         //$lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
-        $lang1=$lang1.'<option value="12">'.$CI->T("OCUPADO", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="12">'.$this->T("OCUPADO", array(),$lang).'</option>';
         $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
         if ($this->session->userdata('id')){            
             $this->load->model('class/admin_model');
+            $this->load->model('class/user_status');
+            $this->load->model('class/credit_card_model');
             $datas = $this->input->post();
             $users_results = $this->admin_model->get_users($datas);
             $users = array();
-            foreach($users_results as $user){
+            foreach($users_results as $user){                   
+                $id = 0;
+                if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
+                    $id = $user['id'];                    
+                }
+                else{
+                    $id = $user['user_id'];                    
+                }
+                $card = $this->credit_card_model->get_credit_card($id);
+                
                 $users[] = array(
-                                'users.id' => $user['users.id'],
+                                'user_id' => $id,
                                 'role_id' => $user['role_id'],
                                 'name' => $user['name'],
                                 'login' => $user['login'],
-                                'pass' => $user['pass'],
+                                //'pass' => $user['pass'],
                                 'email' => $user['email'],
                                 'telf' => $user['telf'],
                                 'status_id' => $user['status_id'],
@@ -117,11 +130,13 @@ class Admin extends CI_Controller {
                                 'language' => $user['language'],
                                 'init_date' => $user['init_date'],
                                 'end_date' => $user['end_date'],
-                                'credit_card_name' => $user['credit_card_name'],
+                                'credit_card_name' => $card['credit_card_name'],
                                 'utm_source' => $user['utm_source'],
                                 'brazilian' => $user['brazilian'],
                                 'promotional_code' => $user['promotional_code'],
                                 );
+                //if(!$datas['card_name'])
+                               
             }
             $result['options']=$lang1;
             if(count($users) > 0){                    
@@ -140,21 +155,23 @@ class Admin extends CI_Controller {
             $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
             $result['resource'] = 'index';
         }
-        echo json_encode($result);
-
+        //echo json_encode($result);
+        $json = json_encode($result);
+        $msg=json_last_error_msg();
+        echo $json;
     }
 
     public function show_robots() {
-        $CI =& get_instance();
+        //$this =& get_instance();
         $this->load_language();
         $lang= $this->session->userdata('language');
-        $lang1=$lang1.'<option value="1">'.$CI->T("ATIVO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
-        $lang1=$lang1.'<option value="4">'.$CI->T("ELIMINADO", array(),$lang).'</option>';                                        
-        //$lang1=$lang1.'<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
-        //$lang1=$lang1.'<option value="8">'.$CI->T("INICIANTE", array(),$lang).'</option>';                                        
-        //$lang1=$lang1.'<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$lang).'</option>';
-        //$lang1=$lang1.'<option value="12">'.$CI->T("OCUPADO", array(),$lang).'</option>';
+        $lang1=$lang1.'<option value="1">'.$this->T("ATIVO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="2">'.$this->T("BLOQUEADO POR PAGAMENTO", array(),$lang).'</option>';                                        
+        $lang1=$lang1.'<option value="4">'.$this->T("ELIMINADO", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="6">'.$this->T("PENDENTE POR PAGAMENTO", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="8">'.$this->T("INIthisANTE", array(),$lang).'</option>';                                        
+        //$lang1=$lang1.'<option value="11">'.$this->T("NÃO MOLESTAR", array(),$lang).'</option>';
+        //$lang1=$lang1.'<option value="12">'.$this->T("OCUPADO", array(),$lang).'</option>';
         $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
         if ($this->session->userdata('id')){            
@@ -208,13 +225,14 @@ class Admin extends CI_Controller {
        
     public function T($token, $array_params=NULL, $lang=NULL) {
         if(!$lang){
-            require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu/worker/class/system_config.php';
-            $GLOBALS['sistem_config'] = new dumbu\cls\system_config();
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+            
             if(isset($language['language']))
                 $param['language']=$language['language'];
             else
                 $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
-            $param['SERVER_NAME'] = $GLOBALS['sistem_config']->SERVER_NAME;        
+            //$param['SERVER_NAME'] = $GLOBALS['sistem_config']->SERVER_NAME;        
             $GLOBALS['language']=$param['language'];
             $lang=$param['language'];
         }
@@ -225,8 +243,7 @@ class Admin extends CI_Controller {
             $text = str_replace('@' . ($i + 1), $array_params[$i], $text);
         }
         return $text;
-    }
-     
+    } 
     
     //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
    

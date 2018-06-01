@@ -30,7 +30,7 @@ $(document).ready(function () {
         });                            
     });
     
-    $("#do_show_users").click(function () { 
+    $("#execute_query").click(function () { 
     var status_id = $('#client_status').val();
     var asn_date_from = $('#assin_date_from1').val();
     var asn_date_to=$('#assin_date_to1').val();
@@ -58,7 +58,8 @@ $(document).ready(function () {
                     }, 
             type: 'POST',
             dataType: 'json',
-            success: function (response) {
+            success: function (response) 
+            {
                 if (response['success']) { 
                     var users = response['users_array'];
                     var i, num_users = users.length;
@@ -102,7 +103,7 @@ $(document).ready(function () {
                  
                     for(var i = 0; i < num_users; i++){
                         //html+=''
-                            html+= '<tr class="list-group-item-success" id="row-client-'+users[i]['id']+'" style="visibility: visible;display: block'; 
+                            html+= '<tr class="list-group-item-success" id="row-client-'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
                             var jot=i % 2;
                             if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
@@ -115,7 +116,7 @@ $(document).ready(function () {
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
                                     html+= '<td style="width:33%; padding:5px">';
-                                    html+='<b>Id do cliente: </b>'+users[i]['users.id']+'<br>';
+                                    html+='<b>Id do cliente: </b>'+users[i]['user_id']+'<br>';
                                     //html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+users[i]['id'];
                                     //html+='" id= "idinprobdumbuid_'+users[i]['id'];
                                     //html+='" value="'+users[i]['id']+'"><br><br>';
@@ -124,7 +125,7 @@ $(document).ready(function () {
                                     //html+='" id= "idinprobprofile_'+users[i]['id'];
                                     //html+='" value="'+users[i]['login']+'"><br><br>';
                              
-                                    html+='<b>Password: </b>'+users[i]['pass']+'<br>';
+                                    //html+='<b>Password: </b>'+users[i]['pass']+'<br>';
                                     html+='<b>Email do cliente: </b>'+users[i]['email']+'<br>';
                                     //html+='<b>Password: </b><input type="text" name="naminprobpass_'+users[i]['id'];
                                     //html+='" id= "idinprobpass_'+users[i]['id'];
@@ -159,8 +160,8 @@ $(document).ready(function () {
                                     html+= '<td style="width:33%; padding:5px">';
                                     var nid=users[i]['status_id'];
                                     html+='<b>Status: </b><br>';
-                                    html+='<select class="user_atribute" id="idselestatus_'+users[i]['users.id'];
-                                    html+='" name="nameselestatus_'+users[i]['id']+'" value="'+users[i]['status_id'];
+                                    html+='<select class="user_atribute" id="idselestatus_'+users[i]['user_id'];
+                                    html+='" name="nameselestatus_'+users[i]['user_id']+'" value="'+users[i]['status_id'];
                                     html+='">';
                                     var html1='';
                                     html1=options_trd;
@@ -194,17 +195,24 @@ $(document).ready(function () {
                                     //html+='</input>';
                                     html+='</td>';
                                     html+= '<td style="width:33%; padding:5px">';
-                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['users.id']+'" name="namebtnapply_'+users[i]['id'];
+                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['user_id']+'" name="namebtnapply_'+users[i]['user_id'];
                                     html+='" type="button" class="userok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
                                     html+='Ok</button>';
                                     html+='<br>';
                                     html+='<br>';
-                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['users.id']+'" name="namebtnapply_'+users[i]['id'];
+                                    html+='<button  style="min-width:150px" id = "idbtndiscard_'+users[i]['user_id']+'" name="namebtndiscard_'+users[i]['user_id'];
                                     html+='" type="button" class="usercancel"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
                                     html+='Cancel</button>';
+                                    html+='<br>';
+                                    html+='<br>';
+                                    html+='<button  style="min-width:150px" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
+                                    html+='" type="button" class="userlogin"  data-spinner-color="#ffffff">';//data-style="expand-left" 
+                                    //btn btn-success ladda-button
+                                    //html+='<span class="ladda-label">Cancel</span>';
+                                    html+='Login</button>';
                                     html+='</td>';
                                
                                    
@@ -218,10 +226,10 @@ $(document).ready(function () {
                     html+='</table>';
                     html+='</div>';
                     html+='</div>';
-                    document.getElementById("container_users").innerHTML = html;
+                    document.getElementById("container_users1").innerHTML = html;
                     //modal_alert_message("Existen "+num_users+" usuarios a mostrar");
                 } else {
-                    document.getElementById("container_users").innerHTML = "";  
+                    document.getElementById("container_users1").innerHTML = "";  
                     modal_alert_message(response['message']);
                 }
             },
