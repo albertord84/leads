@@ -208,7 +208,7 @@ $(document).ready(function () {
                                     html+='Cancel</button>';
                                     html+='<br>';
                                     html+='<br>';
-                                    html+='<button  style="min-width:150px" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
+                                    html+='<button  style="min-width:150px" class = "do_login_user" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
                                     html+='" type="button" class="userlogin"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
@@ -241,7 +241,30 @@ $(document).ready(function () {
         });                            
     });
 
-
+    $(document).on('click', '.do_login_user', function(){                
+        var id_element = $(this).attr('id');
+        var res = id_element.split("_");
+        var id_user = res[res.length-1];
+        
+        $.ajax({
+            url: base_url + 'index.php/admin/login_user',
+            data:  {
+                'id_user': id_user                          
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                                
+                   $(location).attr('href',base_url+'index.php/welcome/'+response['resource']);
+                } else {
+                      modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+                modal_alert_message(T('Não foi possível executar sua solicitude!',language));                
+            }
+        });                          
+    });
     
     /* Generic Confirm func */
     function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {

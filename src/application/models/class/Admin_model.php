@@ -106,7 +106,56 @@ class Admin_model extends CI_Model {
         }
     }
 
-         
+    public function verify_account_user($id_user){
+         $user_row = NULL;                     
+         try{
+            $this->db->select('*');
+            $this->db->from('users');
+            $this->db->where( array('id' => $id_user) );    
+            $user_row =  $this->db->get()->row_array();          
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante la verificacion de usario';
+        } finally {
+            return $user_row;
+        }
+    }  
+    
+    public function set_session_as_client($user_row, $session, $datas=NULL) {
+        try {
+            $this->load->model('class/user_role');
+            $this->load->model('class/client_model');
+
+            if ($user_row) {                
+                $session->set_userdata('id', $user_row['id']);
+                //$session->set_userdata('name', $user_row['name']);
+                $session->set_userdata('login', $user_row['login']);                
+                $session->set_userdata('brazilian', $user_row['brazilian']);
+                //$session->set_userdata('email', $user_data['email']);
+                //$session->set_userdata('telf', $user_data['telf']);
+                $session->set_userdata('role_id', $user_row['role_id']);
+                $session->set_userdata('status_id', $user_data['status_id']);
+                $session->set_userdata('init_date', $user_data['init_date']);
+                $session->set_userdata('language', $user_data['language']);                
+                $session->set_userdata('module', "LEADS");                
+                $session->set_userdata('admin', 1);                
+                if($user_row['brazilian']==1){
+                    $session->set_userdata('currency_symbol', "R$");               
+                }
+                else {
+                    $session->set_userdata('currency_symbol', "US$");                
+                }
+                
+                $session->set_userdata('is_admin', FALSE);
+                
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el login';
+        }
+    }
 
 }
 
