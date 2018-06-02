@@ -5,14 +5,14 @@
         <group>
             <file>file:/opt/lampp/htdocs/leads/src/application/controllers/Welcome.php</file>
             <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Robot_model.php</file>
-            <file>file:/opt/lampp/htdocs/leads/src/assets/js/robot_page.js</file>
-            <file>file:/opt/lampp/htdocs/leads/src/application/views/robot_view.php</file>
-            <file>file:/opt/lampp/htdocs/leads/src/system/core/Common.php</file>
-            <file>file:/opt/lampp/htdocs/leads/src/application/controllers/Admin.php</file>
-            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Admin_model.php</file>
-            <file>file:/opt/lampp/htdocs/leads/src/.htaccess</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Payment_type.php</file>
             <file>file:/opt/lampp/htdocs/leads/src/system/core/Loader.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/system/core/Common.php</file>
             <file>file:/opt/lampp/htdocs/leads/src/assets/js/admin_page.js</file>
+            <file>file:/opt/lampp/htdocs/leads/src/system/database/DB_query_builder.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/controllers/Admin.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Credit_card_model.php</file>
+            <file>file:/opt/lampp/htdocs/leads/src/application/models/class/Admin_model.php</file>
             <file>file:/opt/lampp/htdocs/leads/src/application/views/admin_view.php</file>
         </group>
     </open-files>

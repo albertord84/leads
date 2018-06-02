@@ -253,7 +253,7 @@ $(document).ready(function () {
                                     html+='Cancel</button>';
                                     html+='<br>';
                                     html+='<br>';
-                                    html+='<button  style="min-width:150px" class = "do_login_user" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
+                                    html+='<button  style="min-width:150px" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
                                     html+='" type="button" class="userlogin"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
