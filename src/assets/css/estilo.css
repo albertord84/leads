@@ -592,6 +592,11 @@ header .dropdown{
 	text-decoration: underline;
 }
 
+#usersLoginForm{ padding: 1em; width: 300px;}
+.dl-menuwrapper{z-index: 9999; display: none;}
+.dl-menuwrapper li{width: 100%;}
+.date{margin-bottom: 1em;}
+
 .bt-cal{
     padding: 9px 5px;
     border: 1px solid #ccc !important;
@@ -642,4 +647,8 @@ input[type=checkbox].css-checkbox {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+@media screen and (max-width: 1000px){
+    .dl-menuwrapper{ display: block;}	
 }
