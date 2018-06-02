@@ -68,7 +68,12 @@
                     <div id="dl-menu" class="dl-menuwrapper">
                         <button class="dl-trigger">Open Menu</button>
                             <ul class="dl-menu">                                        
-                                <li>
+                                <li style="text-align: left;">
+                                    <a href="#lnk_how_work">
+                                        <?php echo $CI->T("COMO FUNCIONA?", array(),$language);?>
+                                    </a>
+                                </li>
+                                <li style="text-align: left;">
                                     <a href="#lnk_sign_in_now">
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
@@ -79,7 +84,7 @@
                                     if($this->session->userdata('login') && $this->session->userdata('module') == "LEADS"){
                                         if($this->session->userdata('is_admin')==TRUE){
                                     ?>  
-                                            <li>                                    
+                                            <!--<li>-->                                    
                                                 <a href="<?php echo base_url().'index.php/welcome/admin'; ?>">
                                                     <i class="fa fa-cog"></i>
                                                     <?php echo mb_strtoupper($CI->T("ADMINISTRAR", array(),$language));?>
@@ -89,7 +94,7 @@
                                         }
                                         else{
                                     ?>    
-                                            <li>                                    
+                                            <!--<li>-->                                    
                                                 <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
                                                     <i class="fa fa-binoculars"></i>
                                                     <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
@@ -100,8 +105,13 @@
                                     }
                                     else {
                                     ?>
+                                    
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                        <img src="<?php echo base_url().'assets/img/user.png'?>"  alt="User">
+                                            <?php echo $CI->T("ENTRAR", array(),$language);?>                                        
+                                    </a>
                                     <ul class="dl-submenu">
-                                        <li>
+                                        <li>                                            
                                             <div id="login_container1">
                                                 <form id="usersLoginForm1" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
                                                     <div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
@@ -119,25 +129,18 @@
                                                     <div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
                                                     </div>
                                                     <div>
-                                                        <a style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
+                                                        <a style="color:blue" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
                                                             <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
                                                         </a>
                                                     </div>
-<!--                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
-                                                        <div class="col-md-2 col-sm-2 col-xs-12">
-                                                            <input type="checkbox" id="check_force_login1" checked="false" style="margin-top: 0;">                                                                                                        
-                                                        </div>
-                                                        <div id="message_force_login1" style="with:100%" class="col-md-10 col-sm-10 col-xs-12 text-left">                                                                                        
-                                                        </div>
-                                                    </div>-->
                                                 </form>
                                             </div>
                                         </li>
-                                    </ul>
-                                    <?php }?>        
-                                </li>
+                                    </ul></li>
+                                    <?php }?> 
                                 <li id="locales_cell">
-                                    <a  id="lnk_language1_cell" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        &nbsp;&nbsp;&nbsp;
                                         <?php if ($language === 'EN') { ?>
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
                                             <span id="txt_language1">EN</span>
@@ -470,6 +473,7 @@
     </section>
     <section class="fleft100">
             <div class="container center-xs">
+                    <A name="lnk_how_work"></A>
                     <h1 class="fw-800 fleft100 m-b30 m-top50"><?php echo $CI->T("COMO FUNCIONA?", array(),$language);?></h1>
                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                             <div class="fleft100 pass">
