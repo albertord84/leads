@@ -109,7 +109,7 @@ class Admin extends CI_Controller {
             $users = array();
             foreach($users_results as $user){                   
                 $id = 0;
-                if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
+                if(/*!$datas['status_id'] ||*/ $datas['status_id'] == $this->user_status::BEGINNER){ 
                     $id = $user['id'];                    
                 }
                 else{
@@ -134,6 +134,10 @@ class Admin extends CI_Controller {
                                 'utm_source' => $user['utm_source'],
                                 'brazilian' => $user['brazilian'],
                                 'promotional_code' => $user['promotional_code'],
+                                'campaing_type' => $user['campaing_type'],
+                                'payment_type' => $user['payment_type'],
+                                'amount_in_cents' =>$user['amount_in_cents'],
+                                'date'=>$user['date'],
                                 );
                 //if(!$datas['card_name'])
                                

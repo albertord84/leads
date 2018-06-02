@@ -100,7 +100,7 @@
                              echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
                              echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
                              echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
-                             echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';                                        
+                             echo '<option value="11">'.$CI->T("NÃO USAR MAIS", array(),$language).'</option>';                                        
                             ?>
                             <!--<option value="1">ACTIVE</option>
                             <option value="2">BLOCKED_BY_PAYMENT</option>
@@ -233,7 +233,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Plano</b>   
-                        <select id="plane" class="form-control">
+                        <select disabled id="plane" class="form-control">
                             <option value="0">--SELECT--</option>
                             <option value="1">1</option>
                             <option value="2">2 (LOW)</option>
@@ -246,7 +246,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Mais de </b>   
-                        <select id="tentativas" class="form-control">
+                        <select disabled id="tentativas" class="form-control">
                             <option value="0">--SELECT--</option>
                             <?php for ($tentativas = 1; $tentativas <= 9; $tentativas++) { ?>
                                     <option value="<?php echo $tentativas; ?>"><?php echo $tentativas; ?></option>
@@ -258,7 +258,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Observações</b> 
-                        <select id="observations" class="form-control" >
+                        <select disabled id="observations" class="form-control" >
                             <option>--SELECT--</option>
                             <option>NAO</option>
                             <option>SIM</option>
@@ -268,7 +268,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Cód. Promocional</b>
-                        <select id="cod_promocional" class="form-control" >                            
+                        <select disabled id="cod_promocional" class="form-control" >                            
                             <option>--SELECT--</option>
                             <option>PEIXE URBANO</option>
                             <option title="7 dias de graça">INSTA-DIRECT</option>
@@ -289,6 +289,32 @@
                         </select>
                     </div>
                 </div>
+                
+                <!--<div class="col-md-4">
+                    <div class="center filters">
+                    <b>Assinatura (inic)</b>
+                        <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >
+                        <b>Requerir: </b>
+                    </div>
+                    <div class="col-xs-1">
+                        <b>Campanha: </b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="checkbox" id="requercampaing">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>Cartão: </b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="checkbox" id="requercard">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>Campanha: </b><input type="checkbox" id="requercampaing">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>Cartão: </b> <input type="checkbox" id="requercard">
+                    </div>
+                </div> -->   
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Order Key</b>
@@ -308,14 +334,14 @@
                     <div class="center filters">
                         <br>
                         <b>Paused</b> 
-                        <select id="paused" class="form-control" >
+                        <select disabled id="paused" class="form-control" >
                             <option value="-1">--SELECT--</option>
                             <option value="0">NAO</option>
                             <option value="1">SIM</option>
                         </select>    
                     </div>
                 </div>
-                <div class="col-md-2">
+                <!--<div class="col-md-2">
                     <div class="center filters">
                         <br>
                         <b>Total Unfollow</b> 
@@ -336,12 +362,52 @@
                             <option value="1">SIM</option>
                         </select>    
                     </div>
+                </div>-->
+                <div class="col-md-2">
+                    <div class="center filters">
+                    <!--<b>Assinatura (inic)</b>
+                        <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >-->
+                        <br>
+                        <b>Requerimento(s)</b>
+                        <br>
+                        <b>Criar Campanha:</b> 
+                        <!--<select id="total_unfollow" class="form-control" >
+                            <option value="-1">--SELECT--</option>
+                            <option value="0">NAO</option>
+                            <option value="1">SIM</option>
+                        </select>-->   
+                        <input type="checkbox" id="createcampaing">
+                    </div>
+                </div>
+                <!--<div class="col-md-2">
+                    <div class="center filters">
+                        <br>
+                        <br>
+                        <b>Usar Cartão</b> 
+                        <select id="autolike" class="form-control" >
+                            <option value="-1">--SELECT--</option>
+                            <option value="0">NAO</option>
+                            <option value="1">SIM</option>
+                        </select> 
+                        <input type="checkbox" id="usecard">
+                    </div>
+                </div>-->
+                <div class="col-md-2">
+                    <div class="center filters">
+                        <br>
+                        <b>Pagamento: </b> 
+                        <select id="payments_types" class="form-control" >
+                            <option value="0">--SELECT--</option>
+                            <option value="<?php echo '1'; ?>">CREDIT_CARD</option>
+                            <option value="<?php echo '2'; ?>">TICKET_BANK</option>
+                        </select>    
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <br>
                         <b>UTM source</b> 
-                        <select id="utm_source" class="form-control" >
+                        <select disabled id="utm_source" class="form-control" >
                             <option>--SELECT--</option>
                             <?php
                                 if (isset($utm_source_list)){
@@ -364,7 +430,7 @@
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Perfis de Ref. ativos</b> 
-                        <select id="pr_ativos" class="form-control" >
+                        <select disabled id="pr_ativos" class="form-control" >
                             <option>--SELECT--</option>
                             <option>NAO</option>
                             <option>SIM</option>

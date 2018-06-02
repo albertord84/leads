@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
     
     $("#execute_query").click(function () { 
-    var status_id = $('#client_status').val();
+    var status_id = Number($('#client_status').val());
     var asn_date_from = $('#assin_date_from1').val();
     var asn_date_to=$('#assin_date_to1').val();
     var date_from = $('#status_date_from1').val();
@@ -41,6 +41,11 @@ $(document).ready(function () {
     var card_name = $('#credit_card_name1').val();
     var cod_prom=$('#cod_promocional1').val();
     var lst_access1=$('#last_access1').val();
+    //var checu=document.getElementById('usecard');
+    var checc=document.getElementById('createcampaing');
+    var req_card=Number( $('#payments_types').val());
+    var req_cam=Boolean(checc.checked);
+    var verify=!(!card_name&&!eml_client1&&!prf_client1);
         $.ajax({
             url: base_url + 'index.php/admin/show_users', 
             data:  {
@@ -54,7 +59,9 @@ $(document).ready(function () {
                         'eml_client1':eml_client1,
                         'card_name':card_name,
                         'cod_prom':cod_prom,
-                        'lst_access1':lst_access1
+                        'lst_access1':lst_access1,
+                        'req_card':req_card,
+                        'req_cam':req_cam
                     }, 
             type: 'POST',
             dataType: 'json',
@@ -81,7 +88,15 @@ $(document).ready(function () {
             html+=    '<div class="col-md-1"></div>';
             html+=    '<div class="col-md-2">';
 
-            html+='<br><p><b style="color:red">Total de registros: </b><b>'+num_users+'</b></p><br>';
+            html+='<br><p><b style="color:red">Total de registros: </b><b id="total_users">';
+            //if(verify)
+            //    html+=num_users;
+            html+='</b></p><br>';
+            
+            html+='</div>';
+            html+=    '<div class="col-md-1"></div>';
+            html+=    '<div class="col-md-2" id="totalpago">';
+            html+='<br><p><b style="color:red">Pagamento Total: </b><b id="totalpayment"></b></p><br>';
             html+='</div>';
             html+='</div>';
             html+='<div class="row">';
@@ -97,12 +112,35 @@ $(document).ready(function () {
             html+='</div>';
             html+='</div>';
             var sel='</select>';
+            var cont_users=new Array(num_users);
+            var payment_users=new Array(num_users);
+            var code_payment=new Array(num_users*num_users);
+            var totalpayment=0;
+            var total_users=0;
+                   /* for(var i = 0; i < num_users; i++){
+                        //html+=''
+                           cont_users[users[i]['user_id']]=0;
+                            payment_users[users[i]['user_id']]=0;
+                        }*/        
+            
             html+='<div id="tablausers">';//class="row"
             html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
                  
                     for(var i = 0; i < num_users; i++){
+
                         //html+=''
+                        if(!cont_users[users[i]['user_id']]||verify)
+                        {  
+                         cont_users[users[i]['user_id']]=1;
+                          
+                          if(!verify)
+                          {
+                            total_users++;
+                            payment_users[users[i]['user_id']]+=users[i]['amount_in_cents'];
+                            totalpayment+=users[i]['amount_in_cents'];
+                            code_payment[users[i]['user_id']][users[i]['date']]=1;
+                          }  
                             html+= '<tr class="list-group-item-success" id="row-client-'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
                             var jot=i % 2;
                             if (jot == 1) 
@@ -140,7 +178,10 @@ $(document).ready(function () {
                                     //html+='<b>Tema: </b><input type="text" name="naminprobtheme_'+users[i]['id'];
                                     //html+='" id= "idinprobtheme_'+users[i]['id'];
                                     //html+='" value="'+users[i]['profile_theme']+'"><br><br>';
-                                    html+='<b>Nome no cartão: </b>'+users[i]['credit_card_name']+'<br>';
+                                    //html+='<b>Nome no cartão: </b>'+users[i]['credit_card_name']+'<br>';
+                                    //html+='<div class="col-md-2" id="totalpago_'+users[i]['user_id']+'">';
+                                    //html+='<b style="color:red">Pagamento Total: </b><div id="totalpayment_'+users[i]['user_id']+'">0</div></div>';
+                                    html+='<div id="totalpago_'+users[i]['user_id']+'"><b>Pagamento Total: </b><div id="totalpayment_'+users[i]['user_id']+'"></div><br></div>';
                              
                                     //html+='<b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail_'+users[i]['id'];
                                     //html+='" id= "idinprobaccountemail_'+users[i]['id'];
@@ -159,6 +200,7 @@ $(document).ready(function () {
                                     //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
                                     html+= '<td style="width:33%; padding:5px">';
                                     var nid=users[i]['status_id'];
+                                    html+='<div class="col-md-2">';
                                     html+='<b>Status: </b><br>';
                                     html+='<select class="user_atribute" id="idselestatus_'+users[i]['user_id'];
                                     html+='" name="nameselestatus_'+users[i]['user_id']+'" value="'+users[i]['status_id'];
@@ -168,6 +210,9 @@ $(document).ready(function () {
                                     html1=html1.replace('"'+users[i]['status_id']+'"','"'+users[i]['status_id']+'" selected');
                                     html+=html1;
                                     html+='</select>';
+                                    html+='</div>';
+                                    //html+='<br>';
+                                    //html+='</div>';
                                     //html+='<br>';
                                     //html+='<b>Data de inicio: </b><br>';
                                     //html+='<input id="idselinit_'+users[i]['id']+'" name="nameseleinit_'+users[i]['id'];
@@ -219,7 +264,16 @@ $(document).ready(function () {
                                     html+='</tr>';
 
                                     //html+='<br>';
-                                  
+                                }
+                                else
+                                {
+                                    if(!code_payment[users[i]['user_id']][users[i]['date']])
+                                    {    
+                                     payment_users[users[i]['user_id']]+=users[i]['amount_in_cents'];
+                                     totalpayment+=users[i]['amount_in_cents'];
+                                     code_payment[users[i]['user_id']][users[i]['date']]=1;
+                                    }
+                                }
                         
                         
                     }
@@ -227,6 +281,28 @@ $(document).ready(function () {
                     html+='</div>';
                     html+='</div>';
                     document.getElementById("container_users1").innerHTML = html;
+                    if(!verify)
+                    {
+                      document.getElementById('totalpayment').innerHTML=totalpayment.toString();  
+                      document.getElementById('total_users').innerHTML=total_users.toString();
+                    }
+                    else
+                    {    
+                      document.getElementById('totalpago').innerHTML='';
+                      document.getElementById('total_users').innerHTML=num_users.toString();
+                    }  
+                    var h;
+                    for( h in   cont_users)
+                    {
+                        if(verify)
+                        {
+                            document.getElementById('totalpago_'+h.toString()).innerHTML='';
+                        }
+                        else
+                        {
+                            document.getElementById('totalpayment_'+h.toString()).innerHTML=payment_users[h].toString();
+                        }    
+                    }    
                     //modal_alert_message("Existen "+num_users+" usuarios a mostrar");
                 } else {
                     document.getElementById("container_users1").innerHTML = "";  
