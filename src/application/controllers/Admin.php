@@ -88,7 +88,7 @@ class Admin extends CI_Controller {
         }
         echo json_encode($result);*/
                // $this =& get_instance();
-        $a=1;
+        $this->load->model('class/user_role');        
         $this->load_language();
         $lang= $this->session->userdata('language');
         $lang1=$lang1.'<option value="1">'.$this->T("ATIVO", array(),$lang).'</option>';                                        
@@ -100,7 +100,7 @@ class Admin extends CI_Controller {
         $lang1=$lang1.'<option value="12">'.$this->T("OCUPADO", array(),$lang).'</option>';
         $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
-        if ($this->session->userdata('id')){            
+        if ($this->session->userdata('role_id')==user_role::ADMIN){            
             $this->load->model('class/admin_model');
             $this->load->model('class/user_status');
             $this->load->model('class/credit_card_model');
@@ -166,6 +166,7 @@ class Admin extends CI_Controller {
     }
 
     public function show_robots() {
+        $this->load->model('class/user_role');        
         //$this =& get_instance();
         $this->load_language();
         $lang= $this->session->userdata('language');
@@ -178,7 +179,7 @@ class Admin extends CI_Controller {
         //$lang1=$lang1.'<option value="12">'.$this->T("OCUPADO", array(),$lang).'</option>';
         $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
-        if ($this->session->userdata('id')){            
+        if ($this->session->userdata('role_id')==user_role::ADMIN){            
             $this->load->model('class/admin_model');
             $datas = $this->input->post();
             $robots_results = $this->admin_model->get_robots($datas);
@@ -225,6 +226,45 @@ class Admin extends CI_Controller {
         if ($this->session->userdata('role_id')==user_role::ADMIN){
             $this->load->view('admin_view', $param);
         }
+        else{
+            $this->load->view('user_view', $param);
+        }
+    }
+    
+    
+    public function login_user() {            
+        $this->load_language();
+        $this->load->model('class/admin_model');
+        $this->load->model('class/user_role');        
+        if ($this->session->userdata('role_id')==user_role::ADMIN){        
+            
+            $datas = $this->input->post();
+            $id_user = $datas['id_user'];
+            $user_row = $this->admin_model->verify_account_user($id_user);
+            
+            if($user_row){  
+                //$this->session->sess_destroy();
+                $this->admin_model->set_session_as_client($user_row,$this->session);
+                   
+                $result['success'] = true;
+                $result['message'] = 'Login success';
+                if($user_row['role_id'] == user_role::CLIENT){
+                    $result['resource'] = 'client';
+                }else{
+                    $result['resource'] = 'index';
+                }
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Usuário inexistente.", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
     }
        
     public function T($token, $array_params=NULL, $lang=NULL) {
