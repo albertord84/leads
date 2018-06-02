@@ -9,170 +9,69 @@ require_once 'Payment.php';
 require_once 'system_config.php';
 require_once 'Gmail.php';
 
-class Daily_Payment {   //extends CI_Controller {
+class Pre_Payment {   //extends CI_Controller {
 
     //------------desenvolvido para DUMBU-LEADS-------------------
-    public function check_payment_leads() {
-        echo "Check Payment Initiated...!<br>";
-        echo date("Y-m-d h:i:sa")."<br>";
+    public function check_cupom_leads() {
         
         $GLOBALS['sistem_config'] = new system_config();        
         $this->Gmail = new Gmail();
         $BD_access = new Payment_BD();
 
-        $clients = $BD_access->get_clients_to_pay();
-        
-        foreach ($clients as $client) {
-            $factor_conversion = 1;
-            if($client['brazilian']==1){
-                $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
-            }
-            else{
-                $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
-                $factor_conversion = $GLOBALS['sistem_config']->DOLLAR_TO_REAL;
-            }
-            $leads_to_pay = $BD_access->leads_to_pay($client['user_id']); 
-            $amount_leads = count($leads_to_pay);
-            $amount_to_pay = $amount_leads * $price_per_lead;
-            $leads_sold = 0;
-            if($amount_to_pay){                
-                $list_boleto = $BD_access->get_charged_bank_ticket($client['user_id']);
-                $charged = 0;
-                if($list_boleto){                
-                    foreach ($list_boleto as $boleto) {                        
-                        $amount_available = $boleto['amount_payed_value']-$boleto['amount_used_value'];
-                        if($amount_available > $price_per_lead && $amount_to_pay > 0){
-                            $partial_charged = 0;
-                            if($amount_available > $amount_to_pay){
-                                //pagar todo con el boleto
-                                $partial_charged = $amount_to_pay;
-                                $leads_sold += $partial_charged;
-                                $charged += $partial_charged;
-                                $amount_available -= $partial_charged;                        
-                                $amount_to_pay = 0;
-                                
-                                if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
-                                    //adicionar campanhas activas
-                                    $BD_access->activate_client($client['user_id'], time());
-                                    $BD_access->add_works_by_client($client['user_id']);
-                                    echo 'Client '.$client['user_id'].' is now active <br>'; 
-                                }  
-                            }
-                            else
-                            {
-                                $partial_charged = intdiv($amount_available,$price_per_lead)*$price_per_lead;
-                                $leads_sold += $partial_charged;
-                                $charged += $partial_charged;
-                                $amount_to_pay -= $partial_charged;
-                                $amount_available -= $partial_charged;  
-                            }                        
-                            //actualizar boleto
-                            $boleto_updated = $BD_access->update_bank_ticket($client['user_id'], $boleto['id'], ($boleto['amount_payed_value']-$amount_available));
-                            if($boleto_updated){
-                                $BD_access->save_payment($client['user_id'], $partial_charged, time(), payment_type::TICKET_BANK, $boleto['id']);
-                                echo 'Charged '.$partial_charged.' for client '.$client['user_id'].' in ticket bank with id:'.$boleto['id'].'<br>'; 
-                            }
-                            else{   //error updating ticket bank
-                                $amount_to_pay += $partial_charged;
-                            }                            
-                        }                        
-                    }
+        while (true){
+            $cupom_array = $BD_access->get_array_cupom();
+            
+            foreach ($cupom_array as $cupom) {
+                $client = $BD_access->get_user_by_id($cupom['client_id']);
+                $factor_conversion = 1;
+                if($client['brazilian'] == 0){                    
+                    $factor_conversion = $GLOBALS['sistem_config']->DOLLAR_TO_REAL;
                 }
+                $datas['credit_card_number'] = $cupom['credit_card_number'];
+                $datas['credit_card_name'] = $cupom['credit_card_name'];
+                $datas['credit_card_exp_month'] = $cupom['credit_card_exp_month'];
+                $datas['credit_card_exp_year'] = $cupom['credit_card_exp_year'];
+                $datas['credit_card_cvc'] = $cupom['credit_card_cvc'];
+                $datas['amount_in_cents'] = $cupom['amount']*$factor_conversion;
 
-                if($amount_to_pay){//acabar de pagar con la tarjeta de credito
-                    $credit_card = $BD_access->get_credit_card($client['user_id']);
-                    /*Hacer el cobro*/                                        
-                    $value_cents = 0;
-                    if($credit_card){
-                        $datas['credit_card_number'] = $credit_card['credit_card_number'];
-                        $datas['credit_card_name'] = $credit_card['credit_card_name'];
-                        $datas['credit_card_exp_month'] = $credit_card['credit_card_exp_month'];
-                        $datas['credit_card_exp_year'] = $credit_card['credit_card_exp_year'];
-                        $datas['credit_card_cvc'] = $credit_card['credit_card_cvc'];
-                        $datas['amount_in_cents'] = $amount_to_pay;
+                $resp = $this->check_mundipagg_credit_card($datas); 
 
-                        $resp=$this->check_mundipagg_credit_card($datas); 
-
-                        if( is_object($resp) && $resp->isSuccess() ){                    
-                            $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
-                        }else{
-                            var_dump($resp);
-                        }
-                    }
-
-                    if($value_cents < $amount_to_pay){//no fue hecho el cobro
-                        $days_to_block = $GLOBALS['sistem_config']->DAYS_TO_BLOCK_CLIENT_BY_PAYMENT;
-                        if($client['status_id'] == user_status::ACTIVE){
-                            $BD_access->set_pendent_client($client['user_id'], time());
-                            $BD_access->delete_works_by_client($client['user_id']);
-                            echo 'Client '.$client['user_id'].' is now pendent by payment <br>'; 
-                            $result_message = $this->Gmail->send_client_pendent_status(
-                                                                $client['email'],
-                                                                $client['login'],
-                                                                $days_to_block,
-                                                                $client['language']
-                                                            ); 
-                        }
-                        else{
-                            $status_date = $client['status_date'];
-                            $diff_time = time() - $status_date;
-                            if($diff_time >= 2*24*3600 && $diff_time < 3*24*3600){//primera alerta
-                                $result_message = $this->Gmail->send_client_pendent_status(
-                                                                $client['email'],
-                                                                $client['login'],
-                                                                $days_to_block-2,
-                                                                $client['language']
-                                                            );                                
-                                echo 'Client '.$client['user_id'].' receiving first alert <br>'; 
-                            }
-                            if($diff_time >= 4*24*3600 && $diff_time < 5*24*3600){//segunda alerta
-                                $result_message = $this->Gmail->send_client_pendent_status(
-                                                                $client['email'],
-                                                                $client['login'],
-                                                                $days_to_block-4,
-                                                                $client['language']
-                                                            );
-                                echo 'Client '.$client['user_id'].' receiving second alert <br>'; 
-                            }                            
-                            if($diff_time >= 6*24*3600 ){
-                                //bloquear
-                                $result_message = $this->Gmail->send_client_bloqued_status(
-                                                                $client['email'],
-                                                                $client['login'],
-                                                                $client['language']
-                                                            );
-                                
-                                $BD_access->set_blocked_client($client['user_id'], time());
-                                echo 'Client '.$client['user_id'].' is now blocked by payment <br>'; 
-                            }                            
-                        }
-                    }
-                    else{
-                        $leads_sold = $amount_to_pay;   //todos los leads fueron vendidos
-                        
-                        $BD_access->save_payment($client['user_id'], $amount_to_pay, time(), payment_type::CREDIT_CARD, $credit_card['id']);
-                        echo 'Charged '.$amount_to_pay.' for client '.$client['user_id'].' in credit card with id:'.$credit_card['id'].'<br>'; 
-                        
-                        if($client['status_id'] == user_status::PENDENT_BY_PAYMENT){
-                            //adicionar campanhas activas
-                            $BD_access->activate_client($client['user_id'], time());
-                            $BD_access->add_works_by_client($client['user_id']);
-                            echo 'Client '.$client['user_id'].' is now active <br>'; 
-                        }                        
-                    }
-                }
-                //actualizar estado sold de los leads vendidos
-                $leads_sold /= $price_per_lead;
+                if( is_object($resp) && $resp->isSuccess() ){                    
+                    $value_cents = $resp->getData()->CreditCardTransactionResultCollection[0]->CapturedAmountInCents;
+                     
+                    //mensaje de que fue hecho el cobro
+                    echo 'Client '.$cupom['client_id'].' buy a cupom for '.$value_cents.' cents<br>';                     
+                    $result_message = $this->Gmail->send_client_response_cupom(
+                                                        $client['email'],
+                                                        $client['login'],                                                        
+                                                        $client['language'],
+                                                        $client['brazilian'],
+                                                        $value_cents,
+                                                        1
+                                                    ); 
+                    //salvar como boleto bancario pago
+                    $BD_access->save_cupom_as_ticket($cupom['client_id'], $value_cents);
+                    
+                }else{
+                    var_dump($resp);
+                    //mensaje de que no fue hecho el cobro
+                    echo 'Client '.$cupom['client_id'].' fail buying a cupom for '.$cupom['amount']*$factor_conversion.' cents<br>';                     
+                    $result_message = $this->Gmail->send_client_response_cupom(
+                                                        $client['email'],
+                                                        $client['login'],                                                        
+                                                        $client['language'],
+                                                        $client['brazilian'],
+                                                        $datas['amount_in_cents'],
+                                                        0
+                                                    ); 
+                } 
                 
-                if($leads_sold > 0){
-                    $list_leads_id = NULL;
-                    foreach ($leads_to_pay as $lead_to_pay) {
-                        $list_leads_id[] = $lead_to_pay['id'];
-                    }
-                    $BD_access->update_leads($list_leads_id, $leads_sold);
-                }
+                //eliminar de la tabla
+                $BD_access->delete_cupom($cupom['id']);
             }
-        }        
+            
+            sleep(2*3600); //espera 2 hras para analizar la proxima lista de pedidos de cupones
+        }                
     }
     
     public function check_mundipagg_credit_card($datas) {

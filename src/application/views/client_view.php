@@ -57,6 +57,83 @@
             </style>
     </head>
     <body style="background-color:#fff">
+            <!-- Modal Cupom Credito -->
+            <div id="cupom_modal" class="modal fade" role="dialog">                
+                <div class="modal-dialog mxw-600">
+                    <div class="modal-content fleft100 text-center pd-20">                    
+                        <a class="close" data-dismiss="modal" >&times;</a>
+                        <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
+                        <hr class="fleft100">
+                        <div class="col-md-8 col-sm-8 col-xs-12 pd-0 fnone i-block">                            
+                            <span class="bol fw-600 fleft100 ft-size15 m-top20"><i></i> <?php echo $CI->T("PRÉ-PAGO", array(),$language);?></span>                            
+                            <div class="fleft100 ctr m-top20">
+                                <div class="fleft100 pd-lr5">
+                                        <input id="credit_card_name_cupom" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" placeholder="<?php echo $CI->T("Nome no cartão", array(),$language);?>">
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-xs-12 pd-lr5">
+                                        <input id="credit_card_number_cupom" type="text" placeholder="<?php echo $CI->T("Número de cartão", array(),$language);?>" class = "number" maxlength="20">
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
+                                        <input id="credit_card_cvc_cupom" type="text" placeholder="CVV/CVC" class = "number" maxlength="4">
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-xs-12 pd-lr5 m-top5">
+                                        <?php echo $CI->T("Validade", array(),$language);?>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
+                                    <select name="" id="credit_card_exp_month_cupom" class="seldumbu">
+                                                <?php
+                                                    for($i = 1; $i <= 9; $i++){
+                                                        echo '<option value="'.$i.'">0'.$i.'</option>';
+                                                    }
+                                                    for($i = 10; $i <= 12; $i++){
+                                                        echo '<option value="'.$i.'">'.$i.'</option>';
+                                                    }
+                                                ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-5 col-sm-4 col-xs-12 pd-lr5">
+                                        <select name="" id="credit_card_exp_year_cupom" class="seldumbu">
+                                                <?php
+                                                    $year = date("Y");
+                                                    for($i = 0; $i < 10; $i++){
+                                                        echo '<option value="'.($year+$i).'">'.($year+$i).'</option>';
+                                                    }                                                                        
+                                                ?>
+                                        </select>
+                                </div>
+                                <hr class="fleft100 m-top50">
+                                <form id = "form_cupom">
+                                    <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
+                                        <input type="radio" name="cupom_option" value="1"> <?php echo $currency_symbol?> 100.00<br>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
+                                        <input type="radio" checked="true" name="cupom_option" value="2"> <?php echo $currency_symbol?> 500.00<br>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
+                                        <input type="radio" name="cupom_option" value="3"> <?php echo $currency_symbol?> 1000.00<br>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12  m-top10">                                
+                                        <input type="radio" name="cupom_option" value="4"> <?php echo $currency_symbol?> 2000.00<br>
+                                    </div>
+                                </form>                            
+                            </div>                            
+                        </div>
+                        <hr class="fleft100 m-top20">    
+                        <div>
+                            <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12  m-top5">                                
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-12  m-top5">
+                            <button id= "do_save_cupom" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12  m-top5">                                
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <!-- Fecha Modal Cupom Credito -->
+            
             <!-- Modal Criar -->
             <div id="criar" class="modal fade" role="dialog">
               <div class="modal-dialog mxw-600">
@@ -322,7 +399,7 @@
                             ?>
                             <h4 class="fleft100 pd-lr60 m-top10 fw-600 pd-lr0-xs"><?php echo $CI->T("Para poder obter seus leads, adicione seus dados de pagamento abaixo", array(),$language);?>:</h4>
                     </div>
-                            <div class="fleft100 bk-fff pd-tb50 pd-lr25-xs">
+                            <div class="fleft100 bk-fff pd-tb30 pd-lr15-xs">
                                     <div class="col-md-7 col-sm-7 col-xs-12 pd-0 fnone i-block">
                                             <div class="col-md-7 col-sm-7 col-xs-7 pd-lr5 carbol">
                                                 <a id = "pago_cartao" class="cl-black cartao ativo c-pointer">
@@ -380,6 +457,10 @@
                                                                         }                                                                        
                                                                     ?>
                                                             </select>
+                                                    </div>   
+                                                    <hr class="fleft100">   
+                                                    <div>
+                                                        <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
                                                     </div>
                                             </div>
                                             <div class="fleft100 blt m-top5 d-none">
@@ -419,6 +500,7 @@
                                                     <div class="col-md-2 col-sm-2 col-xs-12 pd-lr5">
                                                             <input id="boleto_estado" type="text" placeholder="<?php echo $CI->T("UF", array(),$language);?>" maxlength="2">
                                                     </div>
+                                                    <hr class="fleft100">   
                                                     <div>
                                                         <?php echo $CI->T("Total disponível:", array(),$language)." ".$currency_symbol." ".number_format((float)($available_ticket/100),2,'.',''); ?>
                                                     </div>
@@ -594,7 +676,8 @@
                                     <ul>
                                             <li><a href="https:/www.dumbu.pro"><?php echo $CI->T("Captação de Seguidores", array(),$language);?></a></li>
                                             <!--<li><a href="">Extração de Leads</a></li>-->
-                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>
+                                            <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
+                                            <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
                                             <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>

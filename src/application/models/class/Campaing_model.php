@@ -387,7 +387,7 @@ class Campaing_model extends CI_Model {
         
         $fields = 'leads.private_email, leads.biography_email, leads.public_email';
         
-        foreach($info_to_get['inf'] as $key => $field){
+        foreach($info_to_get['inf'] as $key => $field){            
             if($field != 'all_email'){                
                 if($field != 'perfil'){
                     $fields .= ', leads.'.$decode_fields[$field];
@@ -395,7 +395,7 @@ class Campaing_model extends CI_Model {
                 else{
                     $fields .= ', profiles.'.$decode_fields[$field];
                 }
-            }
+            }            
         }
         
         try{
@@ -465,6 +465,211 @@ class Campaing_model extends CI_Model {
             echo 'Error accediendo a la base de datos';
         } finally {
             return $data_lead;
+        }        
+    }
+    
+    public function get_leads_limit($id_client, $id_campaing = NULL, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get, &$max_id){
+        $result = NULL;
+        $data_lead = array();        
+        $decode_fields = ['perfil' => 'profile',
+                          'username' => 'username',
+                          'name' => 'full_name',
+                          'code_coutry' => 'country_code',
+                          'telf' => 'phone_number',
+                          'public_telf' => 'public_phone_number',
+                          'contact_telf' => 'contact_phone_number',
+                          'sexo' => 'gender',
+                          'categoria' => 'category',
+                          'data_nascimento' => 'birthday',
+                          'privativo' => 'is_business'
+                            ];
+        $to_decode =    ['profile' => FALSE,
+                          'username' => TRUE,
+                          'full_name' => TRUE,
+                          'country_code' => TRUE,
+                          'phone_number' => TRUE,
+                          'public_phone_number' => TRUE,
+                          'contact_phone_number' => TRUE,
+                          'gender' => TRUE,
+                          'category' => FALSE,
+                          'private_email' => TRUE,
+                          'biography_email' => TRUE,
+                          'public_email' => TRUE,
+                          'birthday' => TRUE,
+                          'is_business' => TRUE,
+                          'campaing_id' => FALSE,
+                          'id' => FALSE
+                        ];
+        
+        $fields = 'leads.private_email, leads.biography_email, leads.public_email';
+        
+        foreach($info_to_get as $key => $field){            
+            if($field != 'all_email'){                
+                if($field != 'perfil'){
+                    if(in_array($field, $info_to_get)){
+                        $fields .= ', leads.'.$decode_fields[$field];
+                    }
+                }
+                else{
+                    $fields .= ', profiles.'.$decode_fields[$field];
+                }
+            }            
+        }
+        
+        try{
+            //$this->db->select('leads.sold');
+            if(!$max_id)
+                $max_id = 0;
+            $this->db->select( $fields.", campaing_id, leads.id" );
+            $this->db->from('leads');            
+            $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
+            $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
+            $this->db->join('clients', 'campaings.client_id = clients.user_id');
+            $this->db->where('clients.user_id',$id_client);  
+            $this->db->where('leads.id >',$max_id);
+            
+            if($id_campaing != NULL)
+                $this->db->where('campaings.id',$id_campaing);
+            //$this->db->where('profiles.deleted', 0);    //revisar esto
+            $this->db->where('leads.sold',1);
+                        
+            if($id_profile)
+                $this->db->where('profiles.id',$id_profile);
+            
+            if($init_date)
+                $this->db->where('leads.extracted_date >= ', $init_date);
+            
+            if($end_date)
+                $this->db->where('leads.extracted_date <= ', $end_date);
+            
+            $this->db->order_by('leads.id', "asc");
+            
+            $this->db->limit(10000);    //maximo solicitado por consulta
+            $result =  $this->db->get()->result_array();
+            
+            $cant_leads = count($result);
+            for($i = 0; $i < $cant_leads; $i++){                
+                $max_id = $result[$i]['id'];
+                $all_email = false;
+                $data_lead[$i]['id_campaing'] = "ID_".$result[$i]['campaing_id'];
+                foreach($result[$i] as $key => $field){
+                    if($to_decode[$key])
+                        $result[$i][$key] = $this->decrypt($field);
+                }
+                
+                foreach($info_to_get as $key => $field){
+                    if($field != 'all_email'){
+                        $data_lead[$i][$field] = $result[$i][$decode_fields[$field]];
+                    }
+                    else{
+                        $all_email = true;                       
+                        $data_lead[$i]['public_email'] = $result[$i]['public_email'];
+                        $data_lead[$i]['private_email'] = $result[$i]['private_email'];
+                        $data_lead[$i]['biography_email'] = $result[$i]['biography_email'];                        
+                    }
+                }
+                if(!$all_email){
+                    if($result[$i]['public_email']){
+                        $data_lead[$i]['e_mail'] = $result[$i]['public_email'];
+                    }
+                    else{
+                        if($result[$i]['private_email']){
+                            $data_lead[$i]['e_mail'] = $result[$i]['private_email'];
+                        }
+                        else{
+                            if($result[$i]['biography_email']){
+                                $data_lead[$i]['e_mail'] = $result[$i]['biography_email'];
+                            }
+                        }
+                    }
+                }
+            }                
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $data_lead;
+        }        
+    }
+    
+    public function get_num_leads($id_client, $id_campaing = NULL, $id_profile = NULL, $init_date = NULL, $end_date = NULL, $info_to_get){
+        $result = 0;
+        $data_lead = array();        
+        $decode_fields = ['perfil' => 'profile',
+                          'username' => 'username',
+                          'name' => 'full_name',
+                          'code_coutry' => 'country_code',
+                          'telf' => 'phone_number',
+                          'public_telf' => 'public_phone_number',
+                          'contact_telf' => 'contact_phone_number',
+                          'sexo' => 'gender',
+                          'categoria' => 'category',
+                          'data_nascimento' => 'birthday',
+                          'privativo' => 'is_business'
+                            ];
+        $to_decode =    ['profile' => FALSE,
+                          'username' => TRUE,
+                          'full_name' => TRUE,
+                          'country_code' => TRUE,
+                          'phone_number' => TRUE,
+                          'public_phone_number' => TRUE,
+                          'contact_phone_number' => TRUE,
+                          'gender' => TRUE,
+                          'category' => FALSE,
+                          'private_email' => TRUE,
+                          'biography_email' => TRUE,
+                          'public_email' => TRUE,
+                          'birthday' => TRUE,
+                          'is_business' => TRUE,
+                          'campaing_id' => FALSE,
+                          'id' => FALSE
+                        ];
+        
+        $fields = 'leads.private_email, leads.biography_email, leads.public_email';
+        
+        foreach($info_to_get as $key => $field){
+            if($field != 'all_email'){                
+                if($field != 'perfil'){
+                    $fields .= ', leads.'.$decode_fields[$field];
+                }
+                else{
+                    $fields .= ', profiles.'.$decode_fields[$field];
+                }
+            }
+        }
+        
+        try{
+            //$this->db->select('leads.sold');        
+            $this->db->select( "leads.id" );
+            $this->db->from('leads');            
+            $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
+            $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
+            $this->db->join('clients', 'campaings.client_id = clients.user_id');
+            $this->db->where('clients.user_id',$id_client);              
+            
+            if($id_campaing != NULL)
+                $this->db->where('campaings.id',$id_campaing);
+            //$this->db->where('profiles.deleted', 0);    //revisar esto
+            $this->db->where('leads.sold',1);
+                        
+            if($id_profile)
+                $this->db->where('profiles.id',$id_profile);
+            
+            if($init_date)
+                $this->db->where('leads.extracted_date >= ', $init_date);
+            
+            if($end_date)
+                $this->db->where('leads.extracted_date <= ', $end_date);
+            
+            $this->db->order_by('leads.id', "asc");
+                        
+            $result = $this->db->count_all_results();            
+            return $result;  
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
         }        
     }
     

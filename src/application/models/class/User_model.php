@@ -58,6 +58,7 @@ class User_model extends CI_Model {
                 $session->set_userdata('init_date', $user_data['init_date']);
                 $session->set_userdata('language', $user_data['language']);                
                 $session->set_userdata('module', "LEADS");                
+                $session->set_userdata('admin', 0);                
                 if($user_data['brazilian']==1){
                     $session->set_userdata('currency_symbol', "R$");               
                 }
@@ -333,11 +334,23 @@ class User_model extends CI_Model {
             echo 'Error accediendo a la base de datos durante el cancelamiento';
         } finally {
             return $update_result;
-        }
-        
+        }       
         
     }
     
+    public function get_user($id_user){
+        $user_row = NULL;
+         try{
+            $this->db->select('*');
+            $this->db->from('users');
+            $this->db->where(array('id' => $id_user));
+            $user_row =  $this->db->get()->row_array();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $user_row;
+        }
+    }
 
 
 

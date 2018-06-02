@@ -132,6 +132,8 @@ namespace leads\cls {
                 
                 $card_query = mysqli_query($DB->connection, $sql);
                 $card_row= $card_query->fetch_array();
+                if(!$card_row)
+                    return NULL;
                 
                 $key_number = md5($id_client.$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
                 $key_cvc = md5($key_number);
@@ -206,9 +208,11 @@ namespace leads\cls {
         public function update_status_user($id_user, $new_status, $status_date){
             $DB = new \leads\cls\DB();            
             try {
-                $DB->connect();                
-                if($new_status == user_status::DELETED)
+                $DB->connect();
+                $end_date = NULL;
+                if($new_status == user_status::DELETED){
                     $end_date = $status_date;
+                }
                 $sql = ""
                         . "UPDATE users ";
                         if($end_date){
@@ -336,6 +340,92 @@ namespace leads\cls {
                         . "(client_id, amount_in_cents, date, payment_type, source_id) "
                         . "VALUES "   
                         . "($id_client, $amount_cents, $date, $payment_type, $id_source);";   
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
+        }
+        
+        public function get_array_cupom() {  
+            $card_row = array();
+            $DB = new \leads\cls\DB();
+            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "SELECT * "
+                        . "FROM credit_cards_cupom ;";
+                
+                $card_query = mysqli_query($DB->connection, $sql);
+                
+                $array_cupom = array();
+                while ($cupom = $card_query->fetch_array()) {
+                    array_push($array_cupom, $this->decode_cupom($cupom));
+                }                
+                
+                return $array_cupom;
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+        
+        public function decode_cupom($card_row){            
+            if ($card_row) {
+                
+                $key_number = md5($card_row['client_id'].$card_row['credit_card_exp_month'].$card_row['credit_card_exp_year']);
+                $key_cvc = md5($key_number);
+                $cipher_number = $card_row['credit_card_number'];
+                $cipher_cvc = $card_row['credit_card_cvc'];
+                $card_row['credit_card_number'] = openssl_decrypt ( $cipher_number , "aes-256-ctr" , $key_number);                
+                $card_row['credit_card_cvc'] = openssl_decrypt ( $cipher_cvc , "aes-256-ctr" , $key_cvc);
+                
+            }
+            return  $card_row;
+        }
+        
+        public function get_user_by_id($id_client) {              
+            
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "SELECT * "
+                        . "FROM users "                        
+                        . "WHERE id = $id_client; ";
+                
+                $user_query = mysqli_query($DB->connection, $sql);
+                $user = $user_query->fetch_array();
+                return $user;
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+        
+        public function save_cupom_as_ticket($id_client, $amount_cents) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $now = time();
+                $DB->connect();
+                $sql = ""
+                        . "INSERT INTO bank_ticket "
+                        . "(client_id, emission_money_value, amount_payed_value, amount_used_value, generated_date, payed, payed_date) "
+                        . "VALUES "   
+                        . "($id_client, $amount_cents, $amount_cents, 0, $now, 1, $now);";   
+                } catch (\Exception $exc) {
+                    echo $exc->getTraceAsString();
+                }
+
+            return mysqli_query($DB->connection, $sql);                
+        }
+        
+        public function delete_cupom($id) {  
+            $DB = new \leads\cls\DB();            
+            try {
+                $DB->connect();
+                $sql = ""
+                        . "DELETE FROM credit_cards_cupom "                        
+                        . "WHERE id = $id; ";                        
                 } catch (\Exception $exc) {
                     echo $exc->getTraceAsString();
                 }
