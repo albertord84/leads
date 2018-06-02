@@ -243,7 +243,7 @@ $(document).ready(function () {
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['user_id']+'" name="namebtnapply_'+users[i]['user_id'];
                                     html+='" type="button" class="userok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
-                                    html+='Ok</button>';
+                                    html+='Salvar em BD</button>';
                                     html+='<br>';
                                     html+='<br>';
                                     html+='<button  style="min-width:150px" id = "idbtndiscard_'+users[i]['user_id']+'" name="namebtndiscard_'+users[i]['user_id'];
@@ -254,7 +254,7 @@ $(document).ready(function () {
                                     html+='<br>';
                                     html+='<br>';
                                     html+='<button  style="min-width:150px" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
-                                    html+='" type="button" class="userlogin"  data-spinner-color="#ffffff">';//data-style="expand-left" 
+                                    html+='" type="button" class="do_login_user"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
                                     html+='Login</button>';
