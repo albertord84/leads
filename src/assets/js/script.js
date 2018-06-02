@@ -72,4 +72,18 @@ $(document).ready(function () {
     $(document).on('click', function (e) {    
         if (!$(e.target).closest('.hover').length) $('.menu_btn').removeClass("hover");
     });
+    
+    
+});
+
+$(function() {            
+    $( '#dl-menu' ).dlmenu({
+        animationClasses : { classin : 'dl-animate-in-4', classout : 'dl-animate-out-4' }
+    });
+    $( ".ancora-mobile" ).on( "click", function() {
+        $( "#dl-menu" ).removeClass("bg-menu-mobile");
+        $( ".dl-menu" ).removeClass( 'dl-menuopen' );
+        $( ".dl-menu" ).addClass( 'dl-menu-toggle' );
+        $( ".dl-trigger" ).removeClass( 'dl-active' );
+    });
 });

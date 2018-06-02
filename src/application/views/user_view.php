@@ -14,11 +14,16 @@
             <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
             
+            
+            <link rel="stylesheet" href="<?php echo base_url().'assets/js/menu_mobile/css/default.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/js/menu_mobile/css/component.css?'.$SCRIPT_VERSION;?>"/>
+            
+            
             <!-- Bootstrap -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>"/>
             <!--<link rel="stylesheet" href="<?php //echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>"/>-->
-
+            
             <!-- CSS -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css?'.$SCRIPT_VERSION;?>"/>
@@ -61,7 +66,7 @@
             <header class="">
                 <div class="container">
                     <div id="dl-menu" class="dl-menuwrapper">
-                        <!--<button class="dl-trigger">Open Menu</button>-->
+                        <button class="dl-trigger">Open Menu</button>
                             <ul class="dl-menu">                                        
                                 <li>
                                     <a href="#lnk_sign_in_now">
@@ -382,7 +387,7 @@
                                     <div class="blblue fleft100">
                                             <h2 class="fw-600 text-left m-b30 pd-lr15"><?php echo $CI->T("Quais dados consigo exportar?", array(),$language);?></h2>
                                             <div class="fleft100">
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/tel.png'?>" alt="">
                                                             </div>
@@ -390,7 +395,7 @@
                                                                     <?php echo $CI->T("Número telefônico", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/mail.png'?>" alt="">
                                                             </div>
@@ -398,7 +403,7 @@
                                                                     <?php echo $CI->T("E-mail", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/insta.png'?>" alt="">
                                                             </div>
@@ -408,7 +413,7 @@
                                                     </div>
                                             </div>
                                             <div class="fleft100 m-top20">
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/local.png'?>" alt="">
                                                             </div>
@@ -416,7 +421,7 @@
                                                                     <?php echo $CI->T("Local", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-4 col-sm-4 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/sexo.png'?>" alt="">
                                                             </div>
@@ -424,20 +429,24 @@
                                                                     <?php echo $CI->T("Gênero", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-2 col-sm-2 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/user.png'?>" alt="">
                                                             </div>
                                                             <div class="col-md-10 col-sm-10 col-xs-12 text-left pd-lr0-xs center-xs fw-600 pd-lr5 ft-size13">
-                                                                    <?php echo $CI->T("Tipo de perfil", array(),$language);?>
+                                                                <div class="col-12">
+                                                                     <?php echo $CI->T("Tipo de perfil", array(),$language);?>
+                                                                </div>
+                                                                <div class="col-12">                                                                    
                                                                     <span class="ft-size8">(<?php echo $CI->T("Pessoal ou Empresa", array(),$language);?>)</span>
+                                                                </div>
                                                             </div>
                                                     </div>
                                             </div>
                                     </div>
                             </div>
 
-                            <div class="fleft100">
+                            <div class="fleft100 m-top5">
                                     <div class="col-md-6 col-sm-12 col-xs-12 pf pull-right">
                                             <span class="fleft100 m-b10 hidden-xs"><img src="<?php echo base_url().'assets/img/s-up.png'?>" alt=""></span>
                                             <img src="<?php echo base_url().'assets/img/pf.png'?>" alt="">
@@ -682,5 +691,9 @@
     <!-- Scripts -->
     <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
     <script src="<?php echo base_url().'assets/js/talkme_painel.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
+        
+    <script src="<?php echo base_url().'assets/js/menu_mobile/js/modernizr.custom.js'?>"></script>
+    <script src="<?php echo base_url().'assets/js/menu_mobile/js/jquery.dlmenu.js'?>"></script>
+    
     
 </html>
