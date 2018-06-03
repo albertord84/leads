@@ -14,8 +14,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.menu_login', function(){        
         document.getElementById("userLogin2").focus();
-    });    
-    
+    });
+        
     $('#pass_registration').keypress(function (e) {
         if (e.which == 13) {
             $("#do_signin").click();
