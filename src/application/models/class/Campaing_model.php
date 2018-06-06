@@ -209,7 +209,7 @@ class Campaing_model extends CI_Model {
             $this->db->from('profiles');
             $this->db->where( array('campaing_id' => $id_campaing) );
             $this->db->where('profile_status_id <>', profiles_status::CANCELED);
-            $this->db->where('profile_status_id <>', profiles_status::MISSING);
+            //$this->db->where('profile_status_id <>', profiles_status::MISSING);
             $profiles_rows =  $this->db->get()->result_array();
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos';
@@ -227,7 +227,7 @@ class Campaing_model extends CI_Model {
             $this->db->where( array('campaing_id' => $id_campaing) );
             $this->db->where( array('profile' => $profile) );
             $this->db->where('profile_status_id <>', profiles_status::CANCELED);
-            $this->db->where('profile_status_id <>', profiles_status::MISSING);
+            //$this->db->where('profile_status_id <>', profiles_status::MISSING);
             $profile_row =  $this->db->get()->row_array();
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos';
