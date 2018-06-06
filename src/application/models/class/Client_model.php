@@ -138,6 +138,8 @@ class Client_model extends CI_Model {
             if($end_date)
                 $this->db->where('campaings.created_date <= ', $end_date);
             
+            $this->db->where('profiles.profile_status_id <>', profiles_status::CANCELED);
+            
             $this->db->order_by('campaings.created_date','DESC');
             
             $result =  $this->db->get()->result_array();
