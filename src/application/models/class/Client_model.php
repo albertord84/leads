@@ -219,32 +219,34 @@ class Client_model extends CI_Model {
         $index_campaing = -1;
         $campaing = [];
         foreach( $result as $row ){
-            if($id_campaing != $row['campaing_id']){
-                $id_campaing = $row['campaing_id'];
-                $index_campaing++;
-                //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
-                $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
-                
-                $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
-                $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
-                $campaing[$index_campaing]['campaing_type_id_string'] = $type[$row['campaing_type_id']];
-                $campaing[$index_campaing]['campaing_status_id'] = $row['campaing_status_id'];
-                $campaing[$index_campaing]['campaing_status_id_string'] = $status[$row['campaing_status_id']];
-                $campaing[$index_campaing]['total_daily_value'] = $row['total_daily_value'];
-                $campaing[$index_campaing]['available_daily_value'] = $row['available_daily_value'];
-                $campaing[$index_campaing]['client_objetive'] = $row['client_objetive'];
-                $campaing[$index_campaing]['created_date'] = $row['created_date'];
-                $campaing[$index_campaing]['end_date'] = $row['end_date'];
-                //$campaing[$index_campaing]['amount_leads'] = $row['amount_leads'];                        
-                //$campaing[$index_campaing]['amount_analysed_profiles'] = $row['amount_analysed_profiles'];                        
-            }
-            
-            $profile['profile'] = $row['profile'];
-            $profile['insta_id'] = $row['insta_id'];
-            $profile['id'] = $row['id'];
-            //$campaing[$index_campaing]['amount_leads'] += $row['amount_leads'];
+            if($row['campaing_status_id'] != campaing_status::DELETED){
+                if($id_campaing != $row['campaing_id']){
+                    $id_campaing = $row['campaing_id'];
+                    $index_campaing++;
+                    //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
+                    $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
 
-            $campaing[$index_campaing]['profile'][] = $profile;
+                    $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
+                    $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
+                    $campaing[$index_campaing]['campaing_type_id_string'] = $type[$row['campaing_type_id']];
+                    $campaing[$index_campaing]['campaing_status_id'] = $row['campaing_status_id'];
+                    $campaing[$index_campaing]['campaing_status_id_string'] = $status[$row['campaing_status_id']];
+                    $campaing[$index_campaing]['total_daily_value'] = $row['total_daily_value'];
+                    $campaing[$index_campaing]['available_daily_value'] = $row['available_daily_value'];
+                    $campaing[$index_campaing]['client_objetive'] = $row['client_objetive'];
+                    $campaing[$index_campaing]['created_date'] = $row['created_date'];
+                    $campaing[$index_campaing]['end_date'] = $row['end_date'];
+                    //$campaing[$index_campaing]['amount_leads'] = $row['amount_leads'];                        
+                    //$campaing[$index_campaing]['amount_analysed_profiles'] = $row['amount_analysed_profiles'];                        
+                }
+
+                $profile['profile'] = $row['profile'];
+                $profile['insta_id'] = $row['insta_id'];
+                $profile['id'] = $row['id'];
+                //$campaing[$index_campaing]['amount_leads'] += $row['amount_leads'];
+
+                $campaing[$index_campaing]['profile'][] = $profile;
+            }
         }
         if(!$campaing_id){
             $result = $this->get_canceled_campaings_and_profiles($id_cliente, $init_date, $end_date);
