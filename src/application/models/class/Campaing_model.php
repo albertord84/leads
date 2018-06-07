@@ -389,7 +389,7 @@ class Campaing_model extends CI_Model {
         
         foreach($info_to_get['inf'] as $key => $field){            
             if($field != 'all_email'){                
-                if($field != 'perfil'){
+                if($field != 'perfil' && $decode_fields[$field]){
                     $fields .= ', leads.'.$decode_fields[$field];
                 }
                 else{
@@ -506,7 +506,7 @@ class Campaing_model extends CI_Model {
         foreach($info_to_get as $key => $field){            
             if($field != 'all_email'){                
                 if($field != 'perfil'){
-                    if(in_array($field, $info_to_get)){
+                    if(in_array($field, $info_to_get) && $decode_fields[$field]){
                         $fields .= ', leads.'.$decode_fields[$field];
                     }
                 }
