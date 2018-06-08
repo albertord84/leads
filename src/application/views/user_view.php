@@ -14,11 +14,16 @@
             <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
             
+            
+            <link rel="stylesheet" href="<?php echo base_url().'assets/js/menu_mobile/css/default.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/js/menu_mobile/css/component.css?'.$SCRIPT_VERSION;?>"/>
+            
+            
             <!-- Bootstrap -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>"/>
             <!--<link rel="stylesheet" href="<?php //echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>"/>-->
-
+            
             <!-- CSS -->
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/style2.css?'.$SCRIPT_VERSION;?>"/>
@@ -61,9 +66,14 @@
             <header class="">
                 <div class="container">
                     <div id="dl-menu" class="dl-menuwrapper">
-                        <!--<button class="dl-trigger">Open Menu</button>-->
+                        <button class="dl-trigger">Open Menu</button>
                             <ul class="dl-menu">                                        
-                                <li>
+                                <li style="text-align: left;">
+                                    <a href="#lnk_how_work">
+                                        <?php echo $CI->T("COMO FUNCIONA?", array(),$language);?>
+                                    </a>
+                                </li>
+                                <li style="text-align: left;">
                                     <a href="#lnk_sign_in_now">
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
@@ -74,7 +84,7 @@
                                     if($this->session->userdata('login') && $this->session->userdata('module') == "LEADS"){
                                         if($this->session->userdata('is_admin')==TRUE){
                                     ?>  
-                                            <li>                                    
+                                            <!--<li>-->                                    
                                                 <a href="<?php echo base_url().'index.php/welcome/admin'; ?>">
                                                     <i class="fa fa-cog"></i>
                                                     <?php echo mb_strtoupper($CI->T("ADMINISTRAR", array(),$language));?>
@@ -84,7 +94,7 @@
                                         }
                                         else{
                                     ?>    
-                                            <li>                                    
+                                            <!--<li>-->                                    
                                                 <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
                                                     <i class="fa fa-binoculars"></i>
                                                     <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
@@ -95,8 +105,13 @@
                                     }
                                     else {
                                     ?>
+                                    
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                        <img src="<?php echo base_url().'assets/img/user.png'?>"  alt="User">
+                                            <?php echo $CI->T("ENTRAR", array(),$language);?>                                        
+                                    </a>
                                     <ul class="dl-submenu">
-                                        <li>
+                                        <li>                                            
                                             <div id="login_container1">
                                                 <form id="usersLoginForm1" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
                                                     <div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
@@ -114,25 +129,18 @@
                                                     <div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
                                                     </div>
                                                     <div>
-                                                        <a style="text-decoration:none;" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
+                                                        <a style="color:blue" href="<?php echo base_url().'index.php/welcome/password_recovery?language='.$GLOBALS['language']; ?>">
                                                             <?php echo $CI->T("Esqueceu sua senha?", array(),$language);?>
                                                         </a>
                                                     </div>
-<!--                                                    <div id="container_login_force_login1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">                                                                                                    
-                                                        <div class="col-md-2 col-sm-2 col-xs-12">
-                                                            <input type="checkbox" id="check_force_login1" checked="false" style="margin-top: 0;">                                                                                                        
-                                                        </div>
-                                                        <div id="message_force_login1" style="with:100%" class="col-md-10 col-sm-10 col-xs-12 text-left">                                                                                        
-                                                        </div>
-                                                    </div>-->
                                                 </form>
                                             </div>
                                         </li>
-                                    </ul>
-                                    <?php }?>        
-                                </li>
+                                    </ul></li>
+                                    <?php }?> 
                                 <li id="locales_cell">
-                                    <a  id="lnk_language1_cell" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        &nbsp;&nbsp;&nbsp;
                                         <?php if ($language === 'EN') { ?>
                                             <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
                                             <span id="txt_language1">EN</span>
@@ -382,7 +390,7 @@
                                     <div class="blblue fleft100">
                                             <h2 class="fw-600 text-left m-b30 pd-lr15"><?php echo $CI->T("Quais dados consigo exportar?", array(),$language);?></h2>
                                             <div class="fleft100">
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/tel.png'?>" alt="">
                                                             </div>
@@ -390,7 +398,7 @@
                                                                     <?php echo $CI->T("Número telefônico", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/mail.png'?>" alt="">
                                                             </div>
@@ -398,7 +406,7 @@
                                                                     <?php echo $CI->T("E-mail", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/insta.png'?>" alt="">
                                                             </div>
@@ -408,7 +416,7 @@
                                                     </div>
                                             </div>
                                             <div class="fleft100 m-top20">
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-3 col-sm-3 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/local.png'?>" alt="">
                                                             </div>
@@ -416,7 +424,7 @@
                                                                     <?php echo $CI->T("Local", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-4 col-sm-4 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/sexo.png'?>" alt="">
                                                             </div>
@@ -424,20 +432,24 @@
                                                                     <?php echo $CI->T("Gênero", array(),$language);?>
                                                             </div>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 m-top20">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 m-top20">
                                                             <div class="col-md-2 col-sm-2 col-xs-12 pd-0">
                                                                     <img src="<?php echo base_url().'assets/img/user.png'?>" alt="">
                                                             </div>
                                                             <div class="col-md-10 col-sm-10 col-xs-12 text-left pd-lr0-xs center-xs fw-600 pd-lr5 ft-size13">
-                                                                    <?php echo $CI->T("Tipo de perfil", array(),$language);?>
+                                                                <div class="col-12">
+                                                                     <?php echo $CI->T("Tipo de perfil", array(),$language);?>
+                                                                </div>
+                                                                <div class="col-12">                                                                    
                                                                     <span class="ft-size8">(<?php echo $CI->T("Pessoal ou Empresa", array(),$language);?>)</span>
+                                                                </div>
                                                             </div>
                                                     </div>
                                             </div>
                                     </div>
                             </div>
 
-                            <div class="fleft100">
+                            <div class="fleft100 m-top5">
                                     <div class="col-md-6 col-sm-12 col-xs-12 pf pull-right">
                                             <span class="fleft100 m-b10 hidden-xs"><img src="<?php echo base_url().'assets/img/s-up.png'?>" alt=""></span>
                                             <img src="<?php echo base_url().'assets/img/pf.png'?>" alt="">
@@ -459,8 +471,10 @@
                     </div>
             </div>
     </section>
+        
     <section class="fleft100">
             <div class="container center-xs">
+                    <A name="lnk_how_work"></A>
                     <h1 class="fw-800 fleft100 m-b30 m-top50"><?php echo $CI->T("COMO FUNCIONA?", array(),$language);?></h1>
                     <div class="col-md-4 col-sm-4 col-xs-12 pd-lr5">
                             <div class="fleft100 pass">
@@ -522,8 +536,20 @@
                                     </p>
                             </div>
                     </div>
+                </div>
+        </section>
+        <!--<section class="fleft100">
+            ainda não esta pronto o video pra home, mas ele vai aqui, é so botar o link dele que esta no youtube
+            <div class="container center-xs m-top50">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/Eo2Lr1trSKs" allowfullscreen></iframe>                                    </div>
+                </div>
+                <div class="col-sm-2"></div>
             </div>
-
+        </section>-->
+        <section class="fleft100">
             <div class="fleft100 bk-silver pd-tb30 m-top50 text-center">
                     <div class="container">
                             <A name="lnk_sign_in_now"></A>
@@ -682,5 +708,9 @@
     <!-- Scripts -->
     <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
     <script src="<?php echo base_url().'assets/js/talkme_painel.js?'.$SCRIPT_VERSION;?>" type="text/javascript"></script>
+        
+    <script src="<?php echo base_url().'assets/js/menu_mobile/js/modernizr.custom.js'?>"></script>
+    <script src="<?php echo base_url().'assets/js/menu_mobile/js/jquery.dlmenu.js'?>"></script>
+    
     
 </html>

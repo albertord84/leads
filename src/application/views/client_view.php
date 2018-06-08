@@ -375,7 +375,7 @@
                             <small class="fleft100 m-top30 text-left">
                                     *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
                                     **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
-                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
+                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?> 
                             </small>
                 </div>
               </div>
@@ -641,7 +641,8 @@
                             <small class="fleft100 m-top30 text-left">
                                     *<?php echo $CI->T("Consideramos 1 lead como um perfil, incluindo todos os dados disponíveis (e-mail, telefone, local, gênero, perfil e tipo de perfil). Nem todos os leads têm todos os dados disponíveis, nosso dado principal é o e-mail.", array(),$language);?>          <br>                                    
                                     **<?php echo $CI->T("O valor é cobrado por lead extraído, podendo ser apenas o e-mail ou todos os dados (e-mail, telefone, local, gênero, perfil e tipo). Sempre extraímos todos os dados disponíveis.", array(),$language);?>  <br>
-                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>          
+                                    ***<?php echo $CI->T("Cobramos apenas por leads únicos, ou seja, caso você extraia um lead que já foi extraído na sua conta anteriormente, ele não será cobrado.", array(),$language);?>   <br> 
+                                    <!--****<?php // echo $CI->T("A exportação de seus leads será medianto um arquivo com formato ", array(),$language);?>  <a target="_blank" href="https://<?php // echo $language;?>.wikipedia.org/wiki/Comma-separated_values">CSV</a>-->         
                             </small>
                 </div>
               </div>

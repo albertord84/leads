@@ -3,11 +3,11 @@
 set_time_limit(0);
 date_default_timezone_set('UTC');
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/../externals/vendor/autoload.php';
 
 
-$username = 'trevelinalexa';
-$password = 'trevelinalexateste';
+$username = 'thiagokurt';
+$password = 'thiaguinho8078812421br';
 
 $debug = false; //true;
 $truncatedDebug = true; //false;
