@@ -219,6 +219,10 @@
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
                                 </li>
+                                <li>
+                                    <a target=" blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
+                                </li>
+                               
                                 <?php
                                 if($this->session->userdata('login')){
                                     if($this->session->userdata('is_admin')==TRUE){

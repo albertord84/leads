@@ -5847,5 +5847,15 @@ class Welcome extends CI_Controller {
         else {
             $this->display_access_error();
         }
-    } 
+    }
+    
+            public function faq() {
+        $this->load->model('class/user_role');                
+        $this->load->model('class/system_config');
+        
+            $param = array();            
+            $param['language'] = $this->session->userdata('language');
+            $this->load->view('faq_view', $param);
+    }
+
 }
