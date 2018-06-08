@@ -41,11 +41,18 @@ $(document).ready(function () {
     var card_name = $('#credit_card_name1').val();
     var cod_prom=$('#cod_promocional1').val();
     var lst_access1=$('#last_access1').val();
+    var lst_access3=$('#last_access3').val();
+    var lst_access2=$('#last_access2').val();
+    var lst_access4=$('#last_access4').val();
     //var checu=document.getElementById('usecard');
     var checc=document.getElementById('createcampaing');
     var req_card=Number( $('#payments_types').val());
-    var req_cam=Boolean(checc.checked);
-    var verify=!(!card_name&&!eml_client1&&!prf_client1);
+    //var req_cam=Boolean(checc.checked);
+    var req_cam='';
+    if(checc.checked)
+        req_cam=true;
+    //var verify=!(!card_name&&!eml_client1&&!prf_client1);
+    var verify=false;
         $.ajax({
             url: base_url + 'index.php/admin/show_users', 
             data:  {
@@ -60,6 +67,9 @@ $(document).ready(function () {
                         'card_name':card_name,
                         'cod_prom':cod_prom,
                         'lst_access1':lst_access1,
+                        'lst_access3':lst_access3,
+                        'lst_access2':lst_access2,
+                        'lst_access4':lst_access4,
                         'req_card':req_card,
                         'req_cam':req_cam
                     }, 
@@ -114,7 +124,7 @@ $(document).ready(function () {
             var sel='</select>';
             var cont_users=new Array(num_users);
             var payment_users=new Array(num_users);
-            var code_payment=new Array(num_users*num_users);
+            var code_payment=new Array(num_users);
             var totalpayment=0;
             var total_users=0;
                    /* for(var i = 0; i < num_users; i++){
@@ -126,14 +136,23 @@ $(document).ready(function () {
             html+='<div id="tablausers">';//class="row"
             html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
-                 
+            /*var y,z;
+            if(num_users>1)
+            {    
+              for (y in users[0]){
+                z=y;
+                            
+              }      
+            }
+             y=z; */   
                     for(var i = 0; i < num_users; i++){
 
                         //html+=''
-                        if(!cont_users[users[i]['user_id']]||verify)
+                        if((typeof cont_users[users[i]['user_id']]=="undefined")||verify)
                         {  
                          cont_users[users[i]['user_id']]=1;
-                          
+                         code_payment[users[i]['user_id']]=new Array(num_users);
+                         payment_users[users[i]['user_id']]=0;
                           if(!verify)
                           {
                             total_users++;
@@ -142,14 +161,14 @@ $(document).ready(function () {
                             code_payment[users[i]['user_id']][users[i]['date']]=1;
                           }  
                             html+= '<tr class="list-group-item-success" id="row-client-'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
-                            var jot=i % 2;
+                            var jot=total_users % 2;
                             if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
                             else
                             {html+='; background-color: white';}
                             html+= '">';
                                 html+= '<td style="text-align:right; width:10%; padding:5px">';
-                                    var k=i+1;
+                                    var k=total_users;
                                     var segme='<b>'+k;
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
@@ -243,7 +262,7 @@ $(document).ready(function () {
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['user_id']+'" name="namebtnapply_'+users[i]['user_id'];
                                     html+='" type="button" class="userok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
-                                    html+='Salvar em BD</button>';
+                                    html+='Salvar status</button>';
                                     html+='<br>';
                                     html+='<br>';
                                     html+='<button  style="min-width:150px" id = "idbtndiscard_'+users[i]['user_id']+'" name="namebtndiscard_'+users[i]['user_id'];

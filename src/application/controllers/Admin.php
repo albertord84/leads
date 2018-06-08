@@ -109,16 +109,21 @@ class Admin extends CI_Controller {
             $users = array();
             foreach($users_results as $user){                   
                 $id = 0;
-                if(/*!$datas['status_id'] ||*/ $datas['status_id'] == $this->user_status::BEGINNER){ 
+                if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
                     $id = $user['id'];                    
                 }
                 else{
                     $id = $user['user_id'];                    
                 }
                 $card = $this->credit_card_model->get_credit_card($id);
+           /* foreach ($user as $k => $dat) 
+            {
+             if($k!=-50)
+                 echo $k;
+            }  */ 
                 
                 $users[] = array(
-                                'user_id' => $id,
+                                'user_id' => $user['login'],//'user_id' => $id,
                                 'role_id' => $user['role_id'],
                                 'name' => $user['name'],
                                 'login' => $user['login'],
@@ -219,6 +224,119 @@ class Admin extends CI_Controller {
         }
         echo json_encode($result);
     }
+
+        public function get_robot_by_id() {
+        $this->load->model('class/user_role');        
+        //$this =& get_instance();
+        //$this->load_language();
+        if ($this->session->userdata('role_id')==user_role::ADMIN){            
+            $this->load->model('class/admin_model');
+            $datas = $this->input->post();
+            $robots_results = $this->admin_model->get_robot_by_id($datas);
+            $robots = array();
+            foreach($robots_results as $robot){
+                $robots[] = array(
+                                'id' => $robot['id'],
+                                'login' => $robot['login'],
+                                'pass' => $robot['pass'],
+                                'ds_user_id' => $robot['ds_user_id'],
+                                'status_id' => $robot['status_id'],
+                                'profile_theme' => $robot['profile_theme'],
+                                'recuperation_email_account' => $robot['recuperation_email_account'],
+                                'recuperation_email_pass' => $robot['recuperation_email_pass'],
+                                'creator_email' => $robot['creator_email'],
+                                'recuperation_phone' => $robot['recuperation_phone'],
+                                'init' => $robot['init'],
+                                'end' => $robot['end']
+                                );
+            }
+            if(count($robots) > 0){                    
+                $result['success'] = true;
+                $result['message'] = 'Existem robots';
+                $result['resource'] = 'index';
+                $result['robots_array'] = $robots;
+            } else{
+                $result['success'] = false;
+                $result['message'] = $this->T("Não existem robots para esses filtros", array(), $GLOBALS['language']); 
+                $result['resource'] = 'index';
+            }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
+    }
+    
+    public function insert_robot(){        
+        $this->load->model('class/admin_model');        
+        
+        $datas = $this->input->post();
+        //$language = $datas['new_language'];
+
+        if ($this->session->userdata('id')){            
+        //    if($language != "PT" && $language != "ES" && $language != "EN"){
+        //        $language = $this->session->userdata('language');
+        //    }
+
+         $this->admin_model->insert_robot($datas);
+
+         $result['success'] = true;
+                //$result['message'] = $this->T("Robot alterado!", array(), $GLOBALS['language']);
+         $result['message'] ="Robot inserido com sucesso!";
+         $result['resource'] = 'robot_page';
+        }
+        else{
+            
+            //if($language != "PT" && $language != "ES" && $language != "EN"){
+                //$language = $GLOBALS['language'];
+            //}
+            //else{
+              //  $GLOBALS['language'] = $language;
+            //}
+            
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'admin_page';
+        }
+        echo json_encode($result);
+    }    
+    
+
+    public function update_robot(){        
+        $this->load->model('class/admin_model');        
+        
+        $datas = $this->input->post();
+        //$language = $datas['new_language'];
+
+        if ($this->session->userdata('id')){            
+        //    if($language != "PT" && $language != "ES" && $language != "EN"){
+        //        $language = $this->session->userdata('language');
+        //    }
+
+            $result_update = $this->admin_model->update_robot($datas);
+
+                $result['success'] = true;
+                //$result['message'] = $this->T("Robot alterado!", array(), $GLOBALS['language']);
+                $result['message'] ="Robot alterado com sucesso!";
+                $result['resource'] = 'robot_page';
+        }
+        else{
+            
+            //if($language != "PT" && $language != "ES" && $language != "EN"){
+                //$language = $GLOBALS['language'];
+            //}
+            //else{
+              //  $GLOBALS['language'] = $language;
+            //}
+            
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'robot_page';
+        }
+        echo json_encode($result);
+    }    
 
     
     public function index() {    

@@ -76,6 +76,15 @@
             
         </div>    
         <div id="login_container2">
+            <div class="row">
+            <div class="col-xs-10" style="margin-left: 100px;">
+            <table class="table">
+            <tr class="list-group-item-success">
+            <td style="width:100%; padding:5px"><b>Configuração da filtragem</b></td>
+            </tr>
+            </table>
+            </div>
+            </div>
             <div id="admin_form" class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -107,6 +116,7 @@
                         </select>
                     </div> 
                 </div>
+                <!--<br>-->
                 <!--<div class="col-md-4">
                        <div class="center filters">
                        <b>Assinatura (inic)</b>
@@ -211,8 +221,107 @@
                 </div>    
                 </td></tr></table> 
                 </div>
-                </div>
-                 
+            </div>
+            <br>                
+            
+            <div class="row">
+            <div class="col-xs-10" style="margin-left: 100px;">
+            <table class="table">
+            <tr class="list-group-item-success">
+            <td style="width:100%; padding:5px"><b>Dados do novo robot-profile</b></td>
+            </tr>
+            </table>
+            </div>
+            </div>
+
+            <div class="row">
+            <div class="col-xs-10" style="margin-left: 100px;">
+            <table class="table">
+            <tr class="list-group-item-success">
+            <td style="width:32%; padding:5px"><b>Dados gerais</b></td>
+            <td style="width:26%; padding:5px"><b>Estado atual</b></td>
+            <td style="width:32%; padding:5px"><b>Dados de contato</b></td>
+            <td style="width:10%; padding:5px"><b>Operações</b></td>
+            </tr>
+            </table>
+            </div>
+            </div>
+            <div id="tablarobots">
+            <div class="col-xs-10" style="margin-left: 100px;">
+            <table class="table">
+
+                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8'; background-color: white">
+                                <td style="text-align:right; width:5%; padding:5px">
+                                    <b></b>
+                                    </td>                                
+                                    <td style="width:30%; padding:5px">
+                                    <!--<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid" id= "idinprobdumbuid" value=""><br><br>-->
+                                    <b>Profile: </b><input type="text" name="naminprobprofile" id= "idinprobprofile" value=""><br><br>
+                             
+                                    <b>Password: </b><input type="text" name="naminprobpass" id= "idinprobpass" value=""><br><br>
+                                    <b>DS ID: </b><input type="text" name="naminprobdsid" id= "idinprobdsid" value=""><br><br>
+                             
+                                    <b>Tema: </b><input type="text" name="naminprobtheme" id= "idinprobtheme" value=""><br><br></td>
+                                    <td style="width:25%; padding:5px">
+                                    <b>Status: </b><br>
+                                    <select class="robot_atribute" id="idselestatus" name="nameselestatus" value="">
+                            <option value="-1">--SELECT--</option>
+                            <option value="0">TODOS OS STATUS</option>
+                            <?php
+                             echo '<option value="1">'.$CI->T("ATIVO", array(),$language).'</option>';                                        
+                             //echo '<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$language).'</option>';                                        
+                             echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
+                             //echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
+                             //echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
+                             echo '<option value="11">'.$CI->T("NÃO USAR MAIS", array(),$language).'</option>';
+                             //echo '<option value="12">'.$CI->T("OCUPADO", array(),$languaje).'</option>';
+                            ?>
+                            <!--<option value="11">NÃO USAR MAIS</option>-->
+                            <option value="12">OCUPADO</option>
+                            <!--<option value="1">ACTIVE</option>
+                            <option value="2">BLOCKED_BY_PAYMENT</option>
+                            <option value="3">BLOCKED_BY_PASSWORD</option>
+                            <option value="4">DELETED</option>
+                            <option value="6">PENDENT_BY_PAYMENT</option>
+                            <option value="7">UNFOLLOW</option>
+                            <option value="8">BEGINNER</option>
+                            <option value="9">VERIFY_ACCOUNT</option>
+                            <option value="10">BLOCKED_BY_TIME</option>-->
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <b>Data de inicio: </b><br>
+                                    <input id="idselinit" name="nameseleinit" type="date" class="robot_atribute" value="">
+                                    </input>
+                                    <br>
+                                    <br>
+                                    <b>Data final: </b><br>
+                                    <input id="idselend" name="nameselend" type="date" class="robot_atribute" value="">
+                                    </input>
+                                    </td>
+                                    <td style="width:30%; padding:5px">
+                                    <b>Recobrar senha usando email: </b><br><input type="text" name="naminprobpassemail" id= "idinprobpassemail" value=""><br><br>
+                                    <b>Email de creação da conta: </b><br><input type="text" name="naminprobcreatoremail" id= "idinprobcreatoremail" value=""><br><br>
+                             
+                                    <b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail" id= "idinprobaccountemail" value=""><br><br>
+                                    </td>
+                                    <td style="width:10%; padding:5px">
+                                    <button  style="min-width:150px" id = "idbtnapply" name="namebtnapply" type="button" class="robotok"  data-spinner-color="#ffffff">                                    
+                                    Inserir</button>
+                                    <!--<br>
+                                    <br>
+                                    <button  style="min-width:150px" id = "idbtnapply" name="namebtnapply" type="button" class="robotcancel"  data-spinner-color="#ffffff"> 
+                                    Cancel</button>-->
+                                    </td>
+                               
+                                   
+                                    </tr>
+ 
+                
+            </table>
+            </div>
+            </div>
+                
             </div>
             <div class="row">
                 <!--<div class="col-md-1"></div>
