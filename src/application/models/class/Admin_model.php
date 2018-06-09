@@ -28,66 +28,135 @@ class Admin_model extends CI_Model {
          try{
             $this->db->select('*');
             $this->db->from('users');
-            if($filter['status_id']!=$this->user_status::BEGINNER/* && $filter['status_id']!=0*/)
-                $this->db->join('clients', 'clients.user_id = users.id');
-            if($filter['card_name']!=''&& $filter['status_id']!=$this->user_status::BEGINNER)
-            {
-             $this->db->join('credit_cards', 'clients.user_id = credit_cards.client_id');
-               
-            }
-
+            if($filter['req_cam']||$filter['card_name'])
+              $this->db->join('credit_cards', 'users.id = credit_cards.client_id','left');
+            $this->db->join('payments','users.id=payments.client_id','left');
+            if($filter['req_cam'])
+                $this->db->join('campaings','users.id=campaings.client_id');
+            //$this->db->join('clients','users.id=clients.user_id','left');
           $this->db->where('role_id <>',$this->user_role::ADMIN);
-          if($filter['prf_client1']==''&&$filter['eml_client1']==''&&$filter['card_name']==''&& $filter['status_id']!=$this->user_status::BEGINNER){  
-           //if($filter['req_card'])
-               $this->db->join('payments','clients.user_id=payments.client_id');
-           if($filter['req_cam'])
-               $this->db->join('campaings','clients.user_id=campaings.client_id');
-            if($filter['status_id']){
+          if($filter['prf_client1']==''&& $filter['eml_client1']==''&&$filter['card_name']==''){  
+             if($filter['status_id']>0 && $filter['status_id']!= user_status::BEGINNER)
+             {    
+              if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
-            }
+              }
             
-            if($filter['date_from']!='' && $filter['date_to']!=''){
-               $this->db->where('status_date >=',strtotime($filter['date_from'].' 00:00:00'));
-               $this->db->where('status_date <=',strtotime($filter['date_to'].' 23:59:59'));
-            }
-            if($filter['asn_date_from']!='' && $filter['asn_date_to']!=''){
+              if($filter['date_from']!=''){
+                $this->db->where('status_date >=',strtotime($filter['date_from'].' 00:00:00'));
+              }
+              if($filter['date_to']!=''){
+                $this->db->where('status_date <=',strtotime($filter['date_to'].' 23:59:59'));
+              }
+             
+              if( $filter['asn_date_to']!=''){
+               $this->db->where('init_date <=',strtotime($filter['asn_date_to'].' 23:59:59'));
+              }
+
+              if($filter['asn_date_from']!=''){
                $this->db->where('init_date >=',strtotime($filter['asn_date_from'].' 00:00:00'));
-               $this->db->where('end_date <=',strtotime($filter['asn_date_to'].' 23:59:59'));
-            }
-            /*if($filter['lst_access1']!=''){
+              }
+              
+              
+              /*if($filter['lst_access1']!=''){
                $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
                $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
             }*/
-            if($filter['req_card'])
-            {
+              if($filter['req_card'])
+              {
               
                 //$this->db->where(array('payments_type' => $this->payment_type::CREDIT_CARD));
                 $this->db->where(array('payments_type' => $filter['req_card']));
-            }
+              }
             
-            if($filter['lst_access1']!=''){
-             if($filter['req_card'])
-             {
-               $this->db->where('payments.date >=',strtotime($filter['lst_access1'].' 00:00:00'));
-               $this->db->where('payments.date <=',strtotime($filter['lst_access1'].' 23:59:59'));
-             }  
-             if($filter['req_cam'])
-             {
+              if($filter['lst_access1']!=''){
+               if($filter['req_card'])
+               {
+                $this->db->where('payments.date >=',strtotime($filter['lst_access1'].' 00:00:00'));
+               }  
+              if($filter['req_cam'])
+              {
                $this->db->where('campaings.created_date >=',strtotime($filter['lst_access1'].' 00:00:00'));
-               $this->db->where('campaings.created_date <=',strtotime($filter['lst_access1'].' 23:59:59'));
-             } 
+              } 
              //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
              //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
              //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
              //}
-             }   
+               }   
+
+              if($filter['lst_access3']!=''){
+               if($filter['req_card'])
+               {
+                $this->db->where('payments.date <=',strtotime($filter['lst_access3'].' 23:59:59'));
+               }  
+              if($filter['req_cam'])
+              {
+               $this->db->where('campaings.created_date <=',strtotime($filter['lst_access3'].' 23:59:59'));
+              } 
+             //if(!$filter['req_card']&&!$filter['req_cam'])
+             //{
+             //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
+             //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
+             //}
+               }   
+               
+               if($filter['lst_access2']==''&& $filter['lst_access4']==''){
+                  //$this->db->where('clients.last_accesed =null'); 
+               
+                 $this->db->join('clients','users.id=clients.user_id','left');    
+               }
+               
+               if($filter['lst_access2']!=''){
+                 $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access2'].' 00:00:00'));
+            //if(!$filter['req_card']&&!$filter['req_cam'])
+             //{
+             //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
+             //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
+             //}
+               }   
+               if($filter['lst_access4']!=''){
+                 $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access4'].' 23:59:59'));
+            //if(!$filter['req_card']&&!$filter['req_cam'])
+             //{
+             //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
+             //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
+             //}
+               }
             
             //if($filter['req_cam'])
             //  $this->db->join('campaings','clients.user_id=campaings.client_id');
+             }
+             else
+             {
+              if($filter['status_id']){
+                $status_id = $filter['status_id'];
+                $this->db->where(array('status_id' => "$status_id"));
+              }
+              if($filter['status_id']){
+                $status_id = $filter['status_id'];
+                $this->db->where(array('status_id' => "$status_id"));
+              }
             
-          }
+              if($filter['date_from']!=''){
+                $this->db->where('status_date >=',strtotime($filter['date_from'].' 00:00:00'));
+              }
+              if($filter['date_to']!=''){
+                $this->db->where('status_date <=',strtotime($filter['date_to'].' 23:59:59'));
+              }
+             
+              if( $filter['asn_date_to']!=''){
+               $this->db->where('init_date <=',strtotime($filter['asn_date_to'].' 23:59:59'));
+              }
+
+              if($filter['asn_date_from']!=''){
+               $this->db->where('init_date >=',strtotime($filter['asn_date_from'].' 00:00:00'));
+              }
+
+              
+             }
+           }
           else{
               $identify=true;
             if($filter['prf_client1']=='')
@@ -119,7 +188,81 @@ class Admin_model extends CI_Model {
         }
     }
     
-        public function get_robots($filter = NULL){
+        public function insert_robot($datas){
+                       
+        $robot_row=NULL;
+        try{
+
+            $this->db->insert('robots_profiles',$datas);
+            $robot_row = $this->db->insert_id();
+    
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $robot_row;
+        }
+        
+    }
+
+    
+    public function update_robot($datas){
+                       
+        $id_robot=$datas['id'];
+        $update_result;
+        try{            
+            foreach ($datas as $k => $dat) 
+            {
+             if($k!='id')
+             {   
+               $this->db->where('id',$id_robot);
+               $this->db->update('robots_profiles', array($k => $dat));
+               $update_result +=  $this->db->affected_rows();
+             }
+            }   
+/*               $this->db->where('id',$id_robot);                        
+               $this->db->update('robots_profiles', array(
+                                'id' => $datas['id'],
+                                'login' => $datas['login'],
+                                'pass' => $datas['pass'],
+                                'status_id' => $datas['status_id'],
+                                'profile_theme' => $datas['profile_theme'],
+                                'recuperation_email_account' => $datas['recuperation_email_account'],
+                                'recuperation_email_pass' => $datas['recuperation_email_pass'],
+                                'creator_email' => $datas['creator_email'],
+                                'recuperation_phone' => $datas['recuperation_phone'],
+                                'init' => $datas['init'],
+                                'end' => $datas['end']
+                                ));                                    
+            */
+            //$this->session->set_userdata('language', $language);                
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el cancelamiento';
+        } finally {
+            return $update_result;
+        }       
+        
+    }
+
+    public function get_robot_by_id($filter = NULL){
+         $robot_rows = NULL;
+         $this->load->model('class/user_status');            
+         try{
+            $this->db->select('*');
+            $this->db->from('robots_profiles');
+            $id = $filter['id'];
+            $this->db->where(array('id' => "$id"));
+            $robot_rows =  $this->db->get()->result_array();           
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante la verificacion de usario';
+        } finally {
+            return $robot_rows;
+        }
+    }
+
+    
+    public function get_robots($filter = NULL){
          $robot_rows = NULL;
          $this->load->model('class/user_status');            
          try{

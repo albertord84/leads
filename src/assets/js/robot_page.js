@@ -30,6 +30,163 @@ $(document).ready(function () {
         });                            
     });
     
+            $("#idbtnapply").click(function(){                
+        //var login=document.getElementById('idinprobprofile_'+id.toString());
+        var login=$('#idinprobprofile').val();
+        //var pass=document.getElementById('idinprobpass_'+id.toString());
+        var pass=$('#idinprobpass').val();
+        var profile_theme=$('#idinprobtheme').val();
+        var recuperation_email_account=$('#idinprobaccountemail').val();
+        var status_id=$('#idselestatus').val();
+        var init=toTimestamp($('#idselinit').val().toString()+' 00:00:00');
+        var end=toTimestamp($('#idselend').val().toString()+' 00:00:00');
+        var creator_email=$('#idinprobcreatoremail').val();
+        //var recuperation_phone=$('#idinprobaccountelf').val();
+        $.ajax({
+            url: base_url + 'index.php/admin/insert_robot',
+            data:  {
+                'login':login,
+                'pass':pass,
+                'profile_theme':profile_theme,
+                'recuperation_email_account':recuperation_email_account,
+                'status_id':status_id,
+                'init':init,
+                'end':end,
+                'creator_email':creator_email//,
+                //'recuperation_phone':recuperation_phone
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                /*if (response['success']) {                                
+                   $(location).attr('href',base_url+'index.php/admin/robot'+response['resource']);
+                } else {
+                      modal_alert_message(response['message']);
+                }*/
+                modal_alert_message(response['message']);
+            },
+            error: function (xhr, status) {
+                modal_alert_message(T('Não foi possível executar sua solicitude!',language));                
+            }
+        });                          
+    });
+
+        $(document).on('click', '.robotok', function(){                
+        var id_element = $(this).attr('id');
+        var res = id_element.split("_");
+        var id = res[res.length-1];
+        //var login=document.getElementById('idinprobprofile_'+id.toString());
+        var login=$('#idinprobprofile_'+id.toString()).val();
+        //var pass=document.getElementById('idinprobpass_'+id.toString());
+        var pass=$('#idinprobpass_'+id.toString()).val();
+        var profile_theme=$('#idinprobtheme_'+id.toString()).val();
+        var recuperation_email_account=$('#idinprobaccountemail_'+id.toString()).val();
+        var status_id=$('#idselestatus_'+id.toString()).val();
+        var init=toTimestamp($('#idselinit_'+id.toString()).val().toString()+' 00:00:00');
+        var end=toTimestamp($('#idselend_'+id.toString()).val().toString()+' 00:00:00');
+        var creator_email=$('#idinprobcreatoremail_'+id.toString()).val();
+        //var recuperation_phone=$('#idinprobaccountelf_'+id.toString()).val();
+        $.ajax({
+            url: base_url + 'index.php/admin/update_robot',
+            data:  {
+                'id': id,
+                'login':login,
+                'pass':pass,
+                'profile_theme':profile_theme,
+                'recuperation_email_account':recuperation_email_account,
+                'status_id':status_id,
+                'init':init,
+                'end':end,
+                'creator_email':creator_email//,
+                //'recuperation_phone':recuperation_phone
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                /*if (response['success']) {                                
+                   $(location).attr('href',base_url+'index.php/admin/robot'+response['resource']);
+                } else {
+                      modal_alert_message(response['message']);
+                }*/
+                modal_alert_message(response['message']);
+            },
+            error: function (xhr, status) {
+                modal_alert_message(T('Não foi possível executar sua solicitude!',language));                
+            }
+        });                          
+    });
+
+    
+    $(document).on('click', '.robotcancel', function(){                
+        var id_element = $(this).attr('id');
+        var res = id_element.split("_");
+        var id = res[res.length-1];
+        //var recuperation_phone=$('#idinprobaccountelf_'+id.toString()).val();
+        $.ajax({
+            url: base_url + 'index.php/admin/get_robot_by_id',
+            data:  {
+                'id': id,
+            },   
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {                                
+                  //$(location).attr('href',base_url+'index.php/admin/robot'+response['resource']);
+                  var robots = response['robots_array'];
+                  //var login=$('#idinprobprofile_'+id.toString()).val();
+                  document.getElementById('idinprobprofile_'+id.toString()).value=robots[0]['login'].toString();
+                  //var pass=$('#idinprobpass_'+id.toString()).val();
+                  document.getElementById('idinprobpass_'+id.toString()).value=robots[0]['pass'].toString();
+                  //var profile_theme=$('#idinprobtheme_'+id.toString()).val();
+                  document.getElementById('idinprobtheme_'+id.toString()).value=robots[0]['profile_theme'].toString();
+                  //var recuperation_email_account=$('#idinprobaccountemail_'+id.toString()).val();
+                  document.getElementById('idinprobaccountemail_'+id.toString()).value=robots[0]['recuperaton_email_account'];
+                  //var status_id=$('#idselestatus_'+id.toString()).val();
+                  document.getElementById('idselestatus_'+id.toString()).value=robots[0]['status_id'];
+                  //var init=toTimestamp($('#idselinit_'+id.toString()).val().toString()+' 00:00:00');
+                                    var datemp=toDate(robots[0]['init']);
+                                    var atrib=datemp.split('/',4);
+                                    var a=atrib[2];
+                                    var m=atrib[1];
+                                    var d=atrib[0];
+                                    var html=a+'-'+m+'-'+d;
+                                    //$('#idselinit_'+id.toString()).datepicker();
+                                    //var a1=toInt(a);
+                                    //var datemp1=new Date(datemp.getFullYear(),datemp.getMonth(),datemp.getDate());
+                                    //$('#idselinit_'+id.toString()).datepicker('setDate', toDate(robots[0]['init']));
+                                    //$('#idselinit_'+id.toString()).attr('value', new Date(robots[0]['init']));
+                                    //document.getElementById('#idselinit_'+id.toString()).innerHTML=html;
+                                    //$datepick.datepicker('setDate', html);
+                                    //document.getElementById('#idselinit_'+id.toString()).value=html;
+                  //var end=toTimestamp($('#idselend_'+id.toString()).val().toString()+' 00:00:00');
+                  //var creator_email=$('#idinprobcreatoremail_'+id.toString()).val();
+                                    datemp=toDate(robots[0]['end']);
+                                    atrib=datemp.split('/',4);
+                                    a=atrib[2];
+                                    m=atrib[1];
+                                    d=atrib[0];
+                                    html=a+'-'+m+'-'+d;
+                                    $datepick = $('idselend_'+id.toString());
+                                    $datepick.datepicker();
+                                    $datepick.datepicker('setDate', datemp);
+                                    //$datepick.datepicker('setDate', html);
+                  //document.getElementById('#idselend_'+id.toString()).value=html;
+                  document.getElementById('idinprobcreatoremail_'+id.toString()).value=robots[0]['creator_email'];
+                                   //var datemp=toDate(robots[i]['end']);
+                } else {
+                      modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+                modal_alert_message(T('Não foi possível executar sua solicitude!',language));                
+            }
+        //var login=document.getElementById('idinprobprofile_'+id.toString());
+        //var pass=document.getElementById('idinprobpass_'+id.toString());
+        
+        });                          
+    });
+
+    
     $("#do_show_robots").click(function () { 
     var status_id = $('#status_select').val();
     var date_from = $('#status_date_from').val();
@@ -63,6 +220,15 @@ $(document).ready(function () {
             //html+='<div class="row">';
             //html+='<div class="col-md-2">';
             html+='<div id="robot_form" class="row">';
+            html+='<div class="row">';
+            html+='<div class="col-xs-10" style="margin-left: 100px;">';
+            html+='<table class="table">';
+            html+='<tr class="list-group-item-success">';
+            html+='<td style="width:100%; padding:5px"><b>Resultados da filtragem</b></td>';
+            html+='</tr>';
+            html+='</table>';
+            html+='</div>';
+            html+='</div>';
             html+=    '<div class="col-md-1"></div>';
             html+=    '<div class="col-md-2">';
 
@@ -73,10 +239,11 @@ $(document).ready(function () {
             html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
             html+='<tr class="list-group-item-success">';
-            html+='<td style="width:10%; padding:5px"><b>No.</b></td>';
-            html+='<td style="width:20%; padding:5px"><b>Dados gerais</b></td>';
+            html+='<td style="width:5%; padding:5px"><b>No.</b></td>';
+            html+='<td style="width:30%; padding:5px"><b>Dados gerais</b></td>';
             html+='<td style="width:25%; padding:5px"><b>Estado atual</b></td>';
-            html+='<td style="width:45%; padding:5px"><b>Operações</b></td>';
+            html+='<td style="width:30%; padding:5px"><b>Dados de contato</b></td>';
+            html+='<td style="width:10%; padding:5px"><b>Operações</b></td>';
             html+='</tr>';
             html+='</table>';
             html+='</div>';
@@ -88,20 +255,21 @@ $(document).ready(function () {
                  
                     for(var i = 0; i < num_robots; i++){
                         //html+=''
-                            html+= '<tr class="list-group-item-success" id="row-client-'+robots[i]['id']+'" style="visibility: visible;display: block'; 
+                            html+= '<tr class="list-group-item-success" id="row-client_'+robots[i]['id']+'" style="visibility: visible;display: block'; 
                             var jot=i % 2;
                             if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
                             else
                             {html+='; background-color: white';}
                             html+= '">';
-                                html+= '<td style="text-align:right; width:10%; padding:5px">';
+                                html+= '<td style="text-align:right; width:5%; padding:5px">';
                                     var k=i+1;
                                     var segme='<b>'+k;
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
-                                    html+= '<td style="width:25%; padding:5px">';
+                                    html+= '<td style="width:30%; padding:5px">';
                                     html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
+                                    html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br><br>';
                                     //html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+robots[i]['id'];
                                     //html+='" id= "idinprobdumbuid_'+robots[i]['id'];
                                     //html+='" value="'+robots[i]['id']+'"><br><br>';
@@ -115,7 +283,6 @@ $(document).ready(function () {
                                     html+='" id= "idinprobpass_'+robots[i]['id'];
                                     html+='" value="'+robots[i]['pass']+'"><br><br>';
                                     
-                                    html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br>';
                                     //html+='<b>DS ID: </b><input type="text" name="naminprobdsid_'+robots[i]['id'];
                                     //html+='" id= "idinprobdsid_'+robots[i]['id'];
                                     //html+='" value="'+robots[i]['ds_user_id']+'"><br><br>';
@@ -126,9 +293,6 @@ $(document).ready(function () {
                                     html+='" value="'+robots[i]['profile_theme']+'"><br><br>';
                              
                                     //html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
-                                    html+='<b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail_'+robots[i]['id'];
-                                    html+='" id= "idinprobaccountemail_'+robots[i]['id'];
-                                    html+='" value="'+robots[i]['recuperation_email_account']+'"><br><br>';
                              
                                     
                                     //html+='<input id="idseldsid_'+robots[i]['id']+'" name="nameseledsid_'+robots[i]['id'];
@@ -153,6 +317,7 @@ $(document).ready(function () {
                                     html+=html1;
                                     html+='</select>';
                                     html+='<br>';
+                                    html+='<br>';
                                     html+='<b>Data de inicio: </b><br>';
                                     html+='<input id="idselinit_'+robots[i]['id']+'" name="nameseleinit_'+robots[i]['id'];
                                     html+='" type="date" class="robot_atribute" value="';
@@ -164,6 +329,7 @@ $(document).ready(function () {
                                     var d=atrib[0];
                                     html+=a+'-'+m+'-'+d+'">';
                                     html+='</input>';
+                                    html+='<br>';
                                     html+='<br>';
                                     html+='<b>Data final: </b><br>';
                                     html+='<input id="idselend_'+robots[i]['id']+'" name="nameselend_'+robots[i]['id'];
@@ -178,7 +344,7 @@ $(document).ready(function () {
                                     //html+=datemp+'">';
                                     html+='</input>';
                                     html+='</td>';
-                                    html+= '<td style="width:25%; padding:5px">';
+                                    html+= '<td style="width:30%; padding:5px">';
                                     html+='<b>Recobrar senha usando email: </b><br><input type="text" name="naminprobpassemail_'+robots[i]['id'];
                                     html+='" id= "idinprobpassemail_'+robots[i]['id'];
                                     html+='" value="'+robots[i]['recuperation_email_pass']+'"><br><br>';
@@ -188,23 +354,26 @@ $(document).ready(function () {
                                     html+='" id= "idinprobcreatoremail_'+robots[i]['id'];
                                     html+='" value="'+robots[i]['creator_email']+'"><br><br>';
                              
+                                    html+='<b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail_'+robots[i]['id'];
+                                    html+='" id= "idinprobaccountemail_'+robots[i]['id'];
+                                    html+='" value="'+robots[i]['recuperation_email_account']+'"><br><br>';
                                     //html+='<b>Password: </b>'+robots[i]['pass']+'<br>';
-                                    html+='<b>Recobrar conta usando telefone: </b><br><input type="text" name="naminprobaccountelf_'+robots[i]['id'];
-                                    html+='" id= "idinprobaccountelf_'+robots[i]['id'];
-                                    html+='" value="'+robots[i]['recuperation_phone']+'"><br><br>';
+                                    //html+='<b>Recobrar conta usando telefone: </b><br><input type="text" name="naminprobaccountelf_'+robots[i]['id'];
+                                    //html+='" id= "idinprobaccountelf_'+robots[i]['id'];
+                                    //html+='" value="'+robots[i]['recuperation_phone']+'"><br><br>';
                                     html+='</td>';
-                                    html+= '<td style="width:25%; padding:5px">';
+                                    html+= '<td style="width:10%; padding:5px">';
                                     html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
                                     html+='" type="button" class="robotok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
-                                    html+='Ok</button>';
+                                    html+='Salvar</button>';
                                     html+='<br>';
                                     html+='<br>';
-                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" name="namebtnapply_'+robots[i]['id'];
+                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+robots[i]['id']+'" disabled="disabled" name="namebtnapply_'+robots[i]['id'];
                                     html+='" type="button" class="robotcancel"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
-                                    html+='Cancel</button>';
+                                    html+='Cancelar</button>';
                                     html+='</td>';
                                
                                    
