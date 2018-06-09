@@ -65,31 +65,31 @@
             <div id="faq">
                 <b>DÚVIDAS FREQUENTES LEADS</b><br>
                 <b>Como escolho o meu público alvo?</b><br>
-  <div id="r1">Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo. 
-  Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece. por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação.
-  </div><br>
-  <b>Como posso utilizar meus Leads?</b><br>
-  <div id="r2">Com os Leads exportados, você poderá criar campanhas direcionadas através de ferramentas de marketing como Google, Facebook e Instagram, para os usuários que possivelmente se interessam pelo seu conteúdo. 
-  </div><br>
-  <b>Quantos Leads posso captar por dia?</b>
-  <div id="r3">?????</div><br>
+                <div id="r1">Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo. 
+                Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece. por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação.
+                </div><br>
+                <b>Como posso utilizar meus Leads?</b><br>
+                <div id="r2">Com os Leads exportados, você poderá criar campanhas direcionadas através de ferramentas de marketing como Google, Facebook e Instagram, para os usuários que possivelmente se interessam pelo seu conteúdo. 
+                </div><br>
+                <b>Quantos Leads posso captar por dia?</b>
+                <div id="r3">?????</div><br>
 
-  <b>Quanto custa cada lead?</b>
-  <div id="r4">O valor por Lead é de R$0,25 (Vinte e cinco centavos por Lead)</div><br>
+                <b>Quanto custa cada lead?</b>
+                <div id="r4">O valor por Lead é de R$0,25 (Vinte e cinco centavos por Lead)</div><br>
 
-  <b>Como o serviço é cobrado?</b>
-  <div id="r5">A cobrança é feita diariamente de acordo com a captação feita durante o dia. Lembre-se que você pode controlar o orçamento diário de cada campanha, tendo assim, o controle de gasto diariamente.</div><br> 
+                <b>Como o serviço é cobrado?</b>
+                <div id="r5">A cobrança é feita diariamente de acordo com a captação feita durante o dia. Lembre-se que você pode controlar o orçamento diário de cada campanha, tendo assim, o controle de gasto diariamente.</div><br> 
 
-            <b>Qual o método de pagamento?</b>
-  <div id="r5">Cartão de crédito - Você pode cadastrar seu cartão de crédito, a cobrança é feita automaticamente durante os dias.
-  Boleto bancário - Você irá escolher o valor que deseja investir e esse valor entra como crédito em sua conta após o boleto ser compensado.
-</div>
-<b>Como criar uma campanha?</b>
-  Para criar uma campanha, primeiro você definirá o orçamento diário da campanha, depois você irá selecionar se deseja captar os leads utilizando um perfis (Ex.: @neymar), uma hashtags (Ex. #moda) ou localizações. 
-
-<b>Como vou exportar meus Leads?</b>
-<div id="r5">Para exportar seus Leads você só precisa escolher a campanha que deseja obter os leads captados e clicar em ‘Extrair leads’. Você poderá exportar apenas um período específico ou todo o período da campanha. Você também pode exportar informações específicas, como apenas os nomes de usuário, ou apenas o e-mails dos usuários.
-</div>
+                <b>Qual o método de pagamento?</b>
+                <div id="r6">Cartão de crédito - Você pode cadastrar seu cartão de crédito, a cobrança é feita automaticamente durante os dias.
+                Boleto bancário - Você irá escolher o valor que deseja investir e esse valor entra como crédito em sua conta após o boleto ser compensado.
+                </div><br>
+                 <b>Como criar uma campanha?</b>
+                <div id="r7"> Para criar uma campanha, primeiro você definirá o orçamento diário da campanha, depois você irá selecionar se deseja captar os leads utilizando um perfis (Ex.: @neymar), uma hashtags (Ex. #moda) ou localizações. 
+                </div><br>
+                <b>Como vou exportar meus Leads?</b>
+                <div id="r8">Para exportar seus Leads você só precisa escolher a campanha que deseja obter os leads captados e clicar em ‘Extrair leads’. Você poderá exportar apenas um período específico ou todo o período da campanha. Você também pode exportar informações específicas, como apenas os nomes de usuário, ou apenas o e-mails dos usuários.
+                </div>
 
 </div>
 </body>

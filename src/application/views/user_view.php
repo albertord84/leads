@@ -205,7 +205,7 @@
                         </div>
 
                         <nav class="navbar navbar-default navbar-static-top" style="background-color:transparent; margin-top:20px">
-                            <div class="logo pabsolute fleft100 text-center">
+                            <div class="logo pabsolute fleft100" style="text-align:center; width:95%;">
                                 <a class="navbar-brand i-block" href="#">
                                     <img alt="Brand" src="<?php echo base_url().'assets/img/logo.png'?>">
                                 </a>
@@ -219,9 +219,9 @@
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
                                 </li>
-                                <li>
+<!--                                <li>
                                     <a target=" blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
-                                </li>
+                                </li>-->
                                
                                 <?php
                                 if($this->session->userdata('login')){

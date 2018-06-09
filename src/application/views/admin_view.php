@@ -495,7 +495,7 @@
             <br>
                         <table class="table">
 
-                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8'; background-color: white">
+                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8">
                                 <td style="text-align:center; width:30%; padding:5px">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2">
