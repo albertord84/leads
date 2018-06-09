@@ -205,7 +205,7 @@
                         </div>
 
                         <nav class="navbar navbar-default navbar-static-top" style="background-color:transparent; margin-top:20px">
-                            <div class="logo pabsolute fleft100 text-center">
+                            <div class="logo pabsolute fleft100" style="text-align:center; width:95%;">
                                 <a class="navbar-brand i-block" href="#">
                                     <img alt="Brand" src="<?php echo base_url().'assets/img/logo.png'?>">
                                 </a>
@@ -219,6 +219,10 @@
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
                                 </li>
+<!--                                <li>
+                                    <a target=" blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
+                                </li>-->
+                               
                                 <?php
                                 if($this->session->userdata('login')){
                                     if($this->session->userdata('is_admin')==TRUE){
@@ -471,6 +475,7 @@
                     </div>
             </div>
     </section>
+        
     <section class="fleft100">
             <div class="container center-xs">
                     <A name="lnk_how_work"></A>
@@ -535,8 +540,20 @@
                                     </p>
                             </div>
                     </div>
+                </div>
+        </section>
+        <!--<section class="fleft100">
+            ainda não esta pronto o video pra home, mas ele vai aqui, é so botar o link dele que esta no youtube
+            <div class="container center-xs m-top50">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/Eo2Lr1trSKs" allowfullscreen></iframe>                                    </div>
+                </div>
+                <div class="col-sm-2"></div>
             </div>
-
+        </section>-->
+        <section class="fleft100">
             <div class="fleft100 bk-silver pd-tb30 m-top50 text-center">
                     <div class="container">
                             <A name="lnk_sign_in_now"></A>

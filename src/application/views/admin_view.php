@@ -221,7 +221,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="center filters">
-                        <b>Credit Card name</b>
+                        <b>Credit Card nome</b>
                         <input id="credit_card_name1" class="form-control" placeholder="Credit Card Name">
                     </div>
                 </div>
@@ -438,13 +438,88 @@
                     </div>
                 </div>
                 <!--<div class="col-md-1"></div>-->
+                <!--<div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="center filters">
+                        <b>Data solicitada:</b> 
+                       <input type="date" id="last_access1" name="last_access1" placeholder="mm/dd/yyyy" class="form-control">
+                      </input>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Ùltimo acesso:</b> 
-                       <input type="date" id="last_access1" name="last_access1" placeholder="mm/dd/yyyy" class="form-control">
+                       <input type="date" id="last_access2" name="last_access2" placeholder="mm/dd/yyyy" class="form-control">
+                      </input>
                     </div>
-                    
+                </div>-->
+                <div class="col-md-4">
+                    <div class="center filters">
+                    <!--<b>Assinatura (inic)</b>
+                        <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >-->
+                        <b>Data procurada</b>
+                    </div>
+                    <div class="col-xs-1">
+                        <b>do</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="last_access1" name="last_access1" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>até</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="last_access3" name="last_access3" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="center filters">
+                        <b>Último acesso:</b>
+                    </div>
+                    <div class="col-xs-1">
+                        <b>do</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="last_access2" name="last_access2" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>até</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="last_access4" name="last_access4" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                </div>   
+            </div>  
+            <!--<div class="row">-->
+            <br>
+                        <table class="table">
+
+                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8">
+                                <td style="text-align:center; width:30%; padding:5px">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                           <div class="center">
+                                              <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                                                <span class="ladda-label">Listar</span>
+                                              </button>
+                                           </div>
+                                        </div>
+                                </td>                                
+                                <td style="text-align:center; width:30%; padding:5px">
+                                    <div class="col-md-1"></div>
+                                      <div class="col-md-2">
+                                        <div class="center">
+                                             <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                                                 <span class="ladda-label">Obter emails</span>
+                                             </button>
+                                        </div>
+                                     </div>
+                                </td>
+                            </tr>    
+                        </table>
+                    <br>
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <?php if ($SERVER_NAME == "ONE") { ?>
                         <div class="center filters">
@@ -459,22 +534,6 @@
                     <?php } else { ?>
                         <input id="idioma" name="idioma" type="hidden" value="--SELECT--">
                     <?php } ?>
-                </div>
-                <div class="col-md-2">
-                    <div class="center">
-                        <br>
-                        <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
-                            <span class="ladda-label">Listar</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="center">
-                        <br>
-                        <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
-                            <span class="ladda-label">Obter emails</span>
-                        </button>
-                    </div>
                 </div>
                 <div style="text-align:center;">
             
