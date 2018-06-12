@@ -26,7 +26,7 @@ class Admin_model extends CI_Model {
          $this->load->model('class/payment_type');
          $identify=false;
          try{
-            $this->db->select('*');
+            $this->db->select('users.id as id_usr, login, email, telf, status_id, amount_in_cents, date');
             $this->db->from('users');
             if($filter['req_cam']||$filter['card_name'])
               $this->db->join('credit_cards', 'users.id = credit_cards.client_id','left');
@@ -87,10 +87,10 @@ class Admin_model extends CI_Model {
                }   
 
               if($filter['lst_access3']!=''){
-               if($filter['req_card'])
-               {
+               //if($filter['req_card'])
+               //{
                 $this->db->where('payments.date <=',strtotime($filter['lst_access3'].' 23:59:59'));
-               }  
+               //}  
               if($filter['req_cam'])
               {
                $this->db->where('campaings.created_date <=',strtotime($filter['lst_access3'].' 23:59:59'));
@@ -180,7 +180,19 @@ class Admin_model extends CI_Model {
             }
           }    
          
-            $user_rows =  $this->db->get()->result_array();           
+            $user_rows =  $this->db->get()->result_array(); 
+            /*$a=array();
+            foreach ($user_rows as $usr) {
+                foreach ($usr as $key => $value) {
+                    $ide=$key;
+                    
+                } 
+                if($usr['login']=='a')
+                {
+                    $a[$usr['id']]=1;
+                }
+            }
+            $l= count($a);*/
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos durante la verificacion de usario';
         } finally {

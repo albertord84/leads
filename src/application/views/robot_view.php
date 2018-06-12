@@ -250,7 +250,7 @@
             <div class="col-xs-10" style="margin-left: 100px;">
             <table class="table">
 
-                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8'; background-color: white">
+                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8; background-color: white">
                                 <td style="text-align:right; width:5%; padding:5px">
                                     <b></b>
                                     </td>                                
