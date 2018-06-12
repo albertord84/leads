@@ -143,7 +143,7 @@ class Admin extends CI_Controller {
                                 //'campaing_type' => $user['campaing_type'],
                                 //'payment_type' => $user['payment_type'],
                                 'amount_in_cents' =>$user['amount_in_cents'],
-                                'date'=>$user['date'],
+                                'date'=>$user['idpay'],
                                 );
                 //if(!$datas['card_name'])
                                

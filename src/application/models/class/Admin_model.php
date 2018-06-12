@@ -26,36 +26,42 @@ class Admin_model extends CI_Model {
          $this->load->model('class/payment_type');
          $identify=false;
          try{
-            $this->db->select('users.id as id_usr, login, email, telf, status_id, amount_in_cents, date');
+            $this->db->select('users.id as id_usr, login, email, telf, status_id, amount_in_cents, payments.id as idpay');
             $this->db->from('users');
-            if($filter['req_cam']||$filter['card_name'])
+            if(/*$filter['req_cam']||*/$filter['card_name'])
               $this->db->join('credit_cards', 'users.id = credit_cards.client_id','left');
-            $this->db->join('payments','users.id=payments.client_id','left');
-            if($filter['req_cam'])
-                $this->db->join('campaings','users.id=campaings.client_id');
+            //$this->db->join('payments','users.id=payments.client_id','left');
+            //if($filter['req_cam'])
+                //$this->db->join('campaings','users.id=campaings.client_id');
             //$this->db->join('clients','users.id=clients.user_id','left');
           $this->db->where('role_id <>',$this->user_role::ADMIN);
           if($filter['prf_client1']==''&& $filter['eml_client1']==''&&$filter['card_name']==''){  
-             if($filter['status_id']>0 && $filter['status_id']!= user_status::BEGINNER)
+             if(/*$filter['status_id']>0 &&*/ $filter['status_id']!= user_status::BEGINNER)
              {    
-              if($filter['status_id']){
+                $cnf=1;             
+                 if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
+                $cnf=0;
               }
             
               if($filter['date_from']!=''){
                 $this->db->where('status_date >=',strtotime($filter['date_from'].' 00:00:00'));
+                $cnf=0;
               }
               if($filter['date_to']!=''){
                 $this->db->where('status_date <=',strtotime($filter['date_to'].' 23:59:59'));
+                $cnf=0;
               }
              
               if( $filter['asn_date_to']!=''){
                $this->db->where('init_date <=',strtotime($filter['asn_date_to'].' 23:59:59'));
+               $cnf=0;
               }
 
               if($filter['asn_date_from']!=''){
                $this->db->where('init_date >=',strtotime($filter['asn_date_from'].' 00:00:00'));
+                $cnf=0;
               }
               
               
@@ -69,16 +75,19 @@ class Admin_model extends CI_Model {
                 //$this->db->where(array('payments_type' => $this->payment_type::CREDIT_CARD));
                 $frq= $filter['req_card']; 
                 $this->db->where(array('payment_type' => "$frq"));
+                $cnf=0;
               }
             
               if($filter['lst_access1']!=''){
                //if($filter['req_card'])
                //{
+                $cnf=0;
                 $this->db->where('date >=',strtotime($filter['lst_access1'].' 00:00:00'));
                //}  
               if($filter['req_cam'])
               {
                $this->db->where('created_date >=',strtotime($filter['lst_access1'].' 00:00:00'));
+                $cnf=0;
               } 
              //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
@@ -90,11 +99,13 @@ class Admin_model extends CI_Model {
               if($filter['lst_access3']!=''){
                //if($filter['req_card'])
                //{
+                $cnf=0;
                 $this->db->where('date <=',strtotime($filter['lst_access3'].' 23:59:59'));
                //}  
               if($filter['req_cam'])
               {
                $this->db->where('created_date <=',strtotime($filter['lst_access3'].' 23:59:59'));
+               $cnf=0;
               } 
              //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
@@ -106,7 +117,8 @@ class Admin_model extends CI_Model {
                if($filter['lst_access2']!=''|| $filter['lst_access4']!=''){
                   //$this->db->where('clients.last_accesed =null'); 
                
-                 $this->db->join('clients','users.id=clients.user_id','left');    
+                 $this->db->join('clients','users.id=clients.user_id');    
+                    $cnf=0;
                }
                
                if($filter['lst_access2']!=''){
@@ -116,6 +128,7 @@ class Admin_model extends CI_Model {
              //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
              //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
              //}
+                $cnf=0;
                }   
                if($filter['lst_access4']!=''){
                  $this->db->where('last_accesed <=',strtotime($filter['lst_access4'].' 23:59:59'));
@@ -124,10 +137,22 @@ class Admin_model extends CI_Model {
              //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
              //  $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access1'].' 23:59:59'));
              //}
+                $cnf=0;
                }
             
             //if($filter['req_cam'])
             //  $this->db->join('campaings','clients.user_id=campaings.client_id');
+              if($cnf)
+              { 
+                $this->db->join('payments','users.id=payments.client_id','left');
+              } 
+              else 
+              {
+                $this->db->join('payments','users.id=payments.client_id');
+              }
+              if($filter['req_cam'])
+                $this->db->join('campaings','users.id=campaings.client_id');
+
              }
              else
              {
@@ -135,6 +160,7 @@ class Admin_model extends CI_Model {
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
               }*/
+              $this->db->join('payments','users.id=payments.client_id','left');
               if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
@@ -160,6 +186,10 @@ class Admin_model extends CI_Model {
            }
           else{
               $identify=true;
+              $this->db->join('payments','users.id=payments.client_id');
+              if($filter['req_cam'])
+                $this->db->join('campaings','users.id=campaings.client_id');
+
             if($filter['prf_client1']=='')
             {
                 if($filter['eml_client1']=='')

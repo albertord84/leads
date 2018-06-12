@@ -72,7 +72,7 @@
 					<button class="dl-trigger">Open Menu</button>
 					<ul class="dl-menu">
                                                 <li>
-                                                    <a href="#"><?php  echo $CI->T("ENTRAR", array(), $lenguage);?></a>
+                                                   <!-- <a href="#"><?php  echo $CI->T("ENTRAR", array(), $lenguage);?></a>
 							<ul class="dl-submenu">
 								<li>
                                                                     <div id="login_container1">
@@ -87,9 +87,9 @@
 										<div class="form-group">
 											<input id="userPassword1" type="password" class="form-control" placeholder="Senha" required="">
 										</div>
-										<!--<div class="form-group">
+										<div class="form-group">
                                                                                     <button type="button" name="" value="" id="btn_dumbu_login1" style="white-space: normal;" class="btn btn-success" ><spam class="ladda-label"></spam></button>
-										</div>-->
+										</div>
 										
 										<div class="form-group">
 											<input type="submit" name="" value="ENTRAR" id="btn_dumbu_login1" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff" />
@@ -99,11 +99,11 @@
 									</form>
                                                                     </div>
 								</li>
-							</ul>
+							</ul>-->
 						</li>
                                                 
                                                                                             <li>
-                                                    <a id="fechar_faq" href="#">FECHAR</a>
+                                                    <!--<a id="fechar_faq" href="#">FECHAR</a>-->
                                                 </li>
 					</ul>
 				</div><!-- /dl-menuwrapper -->
@@ -117,7 +117,7 @@
 					</div>
 					<ul class="nav navbar-nav navbar-right menu-principal">
                                                 <li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="https://dumbu.pro/follows/src/assets/images/user.png" class="wauto us" alt="User">ENTRAR<spam class="caret"></spam></a>
+							<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="https://dumbu.pro/follows/src/assets/images/user.png" class="wauto us" alt="User">ENTRAR<spam class="caret"></spam></a>-->
 							<ul class="dropdown-menu">
 								<li>
 									<div class="row">
@@ -133,11 +133,11 @@
 												<div class="form-group">
 													<input id="userPassword2" type="password" class="form-control" placeholder="Senha" required="">
 												</div>
-												<div class="form-group">
+												<!--<div class="form-group">
 													<button id="btn_dumbu_login2" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff">
 														<spam class="ladda-label">Entrar</spam>
 													</button>
-												</div>
+												</div>-->
 												<div id="container_login_message2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
 												</div>
 											</form>
@@ -148,7 +148,7 @@
 							</ul>
 						</li> 
                                                 <li>
-                                                    <a id="fechar_faq2" href="#"><?php echo $CI->T("FECHAR", array(), $lenguage)?><img src="https://dumbu.pro/leads/src/assets/img/FECHAR.png" class="wauto us" alt="User"></a>
+                                                   <!-- <a id="fechar_faq2" href="#"><?php echo $CI->T("FECHAR", array(), $lenguage)?><img src="https://dumbu.pro/leads/src/assets/img/FECHAR.png" class="wauto us" alt="User"></a>-->
                                                 </li>
 					</ul>
 				</nav>
@@ -290,9 +290,9 @@ array(), $language); ?>
                     <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                                              <img src="https://dumbu.pro/follows/src/assets/images/FECHAR.png" alt="cancel"> <!--<spam aria-hidden="true">&times;</spam>-->
-                                </button>
+                                <!--<button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                              <img src="https://dumbu.pro/follows/src/assets/images/FECHAR.png" alt="cancel"> <!--<spam aria-hidden="true">&times;</spam>
+                                </button>-->
                                 <h5 class="modal-title" id="myModalLabel"><b>Mensagem</b></h5>                        
                             </div>
                             <div class="modal-body">                                            
