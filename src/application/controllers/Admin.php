@@ -110,10 +110,10 @@ class Admin extends CI_Controller {
             foreach($users_results as $user){                   
                 $id = 0;
                 if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
-                    $id = $user['id'];                    
+                    $id = $user['id_usr'];                    
                 }
                 else{
-                    $id = $user['user_id'];                    
+                    $id = $user['id_usr'];                    
                 }
                 $card = $this->credit_card_model->get_credit_card($id);
            /* foreach ($user as $k => $dat) 
@@ -123,7 +123,8 @@ class Admin extends CI_Controller {
             }  */ 
                 
                 $users[] = array(
-                                'user_id' => $user['login'],//'user_id' => $id,
+                                //'user_id' => $user['id'],
+                                'user_id' => $user['id_usr'],
                                 'role_id' => $user['role_id'],
                                 'name' => $user['name'],
                                 'login' => $user['login'],
@@ -131,16 +132,16 @@ class Admin extends CI_Controller {
                                 'email' => $user['email'],
                                 'telf' => $user['telf'],
                                 'status_id' => $user['status_id'],
-                                'status_date' => $user['status_date'],
-                                'language' => $user['language'],
-                                'init_date' => $user['init_date'],
-                                'end_date' => $user['end_date'],
-                                'credit_card_name' => $card['credit_card_name'],
-                                'utm_source' => $user['utm_source'],
-                                'brazilian' => $user['brazilian'],
-                                'promotional_code' => $user['promotional_code'],
-                                'campaing_type' => $user['campaing_type'],
-                                'payment_type' => $user['payment_type'],
+                                //'status_date' => $user['status_date'],
+                                //'language' => $user['language'],
+                                //'init_date' => $user['init_date'],
+                                //'end_date' => $user['end_date'],
+                                //'credit_card_name' => $card['credit_card_name'],
+                                //'utm_source' => $user['utm_source'],
+                                //'brazilian' => $user['brazilian'],
+                                //'promotional_code' => $user['promotional_code'],
+                                //'campaing_type' => $user['campaing_type'],
+                                //'payment_type' => $user['payment_type'],
                                 'amount_in_cents' =>$user['amount_in_cents'],
                                 'date'=>$user['date'],
                                 );
