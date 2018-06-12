@@ -156,11 +156,12 @@ $(document).ready(function () {
                           if(!verify)
                           {
                             total_users++;
-                            payment_users[users[i]['user_id']]+=users[i]['amount_in_cents'];
-                            totalpayment+=users[i]['amount_in_cents'];
+                            payment_users[users[i]['user_id']]=0;
+                            payment_users[users[i]['user_id']]+=Number(users[i]['amount_in_cents']);
+                            totalpayment+=Number(users[i]['amount_in_cents']);
                             code_payment[users[i]['user_id']][users[i]['date']]=1;
                           }  
-                            html+= '<tr class="list-group-item-success" id="row-client-'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
+                            html+= '<tr class="list-group-item-success" id="row-client_'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
                             var jot=total_users % 2;
                             if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
@@ -286,10 +287,10 @@ $(document).ready(function () {
                                 }
                                 else
                                 {
-                                    if(!code_payment[users[i]['user_id']][users[i]['date']])
+                                    if(typeof code_payment[users[i]['user_id']][users[i]['date']]=="undefined")
                                     {    
-                                     payment_users[users[i]['user_id']]+=users[i]['amount_in_cents'];
-                                     totalpayment+=users[i]['amount_in_cents'];
+                                     payment_users[users[i]['user_id']]+=Number(users[i]['amount_in_cents']);
+                                     totalpayment+=Number(users[i]['amount_in_cents']);
                                      code_payment[users[i]['user_id']][users[i]['date']]=1;
                                     }
                                 }
@@ -302,7 +303,8 @@ $(document).ready(function () {
                     document.getElementById("container_users1").innerHTML = html;
                     if(!verify)
                     {
-                      document.getElementById('totalpayment').innerHTML=totalpayment.toString();  
+                      var z1=totalpayment/100;
+                      document.getElementById('totalpayment').innerHTML=z1.toLocaleString('de-DE', { style: 'currency', currency: 'USD' });  
                       document.getElementById('total_users').innerHTML=total_users.toString();
                     }
                     else
@@ -319,7 +321,8 @@ $(document).ready(function () {
                         }
                         else
                         {
-                            document.getElementById('totalpayment_'+h.toString()).innerHTML=payment_users[h].toString();
+                            var z=Number(payment_users[h]/100);
+                            document.getElementById('totalpayment_'+h.toString()).innerHTML=z.toLocaleString('de-DE',{ style: 'currency', currency: 'USD' });//z.toLocaleString('de-DE', { style: 'currency', decimal: '2' });
                         }    
                     }    
                     //modal_alert_message("Existen "+num_users+" usuarios a mostrar");
@@ -536,6 +539,78 @@ function real_date(number){
     var datum = Date.parse(t);
     return datum;
 }
+
+    function numberFormat(numero){
+
+        // Variable que contendra el resultado final
+
+        var resultado = "";
+
+ 
+
+        // Si el numero empieza por el valor "-" (numero negativo)
+
+        if(numero[0]=="-")
+
+        {
+
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+
+            // el signo negativo
+
+            nuevoNumero=numero.replace(/\./g,'').substring(1);
+
+        }else{
+
+            // Cogemos el numero eliminando los posibles puntos que tenga
+
+            nuevoNumero=numero.replace(/\./g,'');
+
+        }
+
+ 
+
+        // Si tiene decimales, se los quitamos al numero
+
+        if(numero.indexOf(",")>=0)
+
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf(","));
+
+ 
+
+        // Ponemos un punto cada 3 caracteres
+
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ".": "") + resultado;
+
+ 
+
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+
+        // los separadores de miles
+
+        if(numero.indexOf(",")>=0)
+
+            resultado+=numero.substring(numero.indexOf(","));
+
+ 
+
+        if(numero[0]=="-")
+
+        {
+
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+
+            return "-"+resultado;
+
+        }else{
+
+            return resultado;
+
+        }
+
+    }
 
 function capitalize(s){
     return s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } );

@@ -1,149 +1,324 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-    <head>            <?php  $CI =& get_instance();?>
-            <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
-            <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
-                       
-            <meta charset="UTF-8">
-            <title>Dumbu-Leads</title>
-            <meta name="viewport" content="width=device-width">
-            <link rel="icon" type="image/png" href="<?php echo base_url().'assets/img/icon.png'?>">
-
-            <!-- Font Awesome -->
-            <!--<link rel="stylesheet" href="<?php // echo base_url().'assets/fonts/font-awesome.min.css'?>">-->            
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">            
-            
-            <!-- Tooltip -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/js/popper.min.js'?>">
-            
-            <!-- Bootstrap -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>">
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-multiselect.css'?>">
-            <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>">
-
-            <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
-                        
-            <!-- jQuery -->
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
-            
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/robot_page.js'?>"></script>
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
-            
-            <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
-            <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
+ <!DOCTYPE html>
+<html lang="en">
+    <head>
+          <?php  $CI =& get_instance();?>        
+        <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
+        <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
+        <meta charset="utf-8">
+        <title>FAQ</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="title" content="Extraia dados de futuros clientes usando o Instagram. Sem limite de extração diária. | Mais de 500 milhões de Leads que podem ser seus agora! ">
+        <meta name="description" content="Extraia dados de futuros clientes usando o Instagram. www.dumbu.pro te permite extrair leads no Instagram 100% reais e qualificados. Extraia dados de futuros clientes usando o Instagram.">
+        <meta name="keywords" content="ganhar, leads, Instagram, clientes segmentados, hashtags, followers, geolocalizção, perfiles, vendas">
+        <meta name="revisit-after" content="7 days">
+        <meta name="robots" content="index, leads">
+        <meta name="distribution" content="global"> 
+        
+        <link rel="shortcut icon" href="https://dumbu.pro/leads/src/assets/img/logo.png"> 
+        <!-- jQuery -->
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/jquery.js"></script>
+        <!-- Bootstrap -->
+        <link href="https://dumbu.pro/leads/src/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"  />
+        <!--<link href="https://dumbu.pro/leads/src/assets/bootstrap/css/loading.css" rel="stylesheet" />-->
+        <!--<link href="https://dumbu.pro/follows/src/assets/bootstrap/css/style.css" rel="stylesheet"/>-->
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/style2.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/media.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/font-awesome/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/definicoes.css" />
+        <link rel="stylesheet" href="https://dumbu.pro/leads/src/assets/css/ladda-themeless.min.css">
+        
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/modernizr.custom.js"></script>                
+        <script src="https://dumbu.pro/leads/src/assets/js/spin.min.js"></script>
+        <script src="https://dumbu.pro/leads/src/assets/js/ladda.min.js"></script>                
+        <script type="text/javascript">var base_url = 'https://dumbu.pro/leads/src/';</script>
+        <script type="text/javascript">var language = 'PT';</script>
+        <script type="text/javascript">var SERVER_NAME = 'PRO';</script>
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/translation.js?"></script>
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/talkme_painel.js"></script>                
+        <!--<script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/user.js?"></script>
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/sign_painel.js"></script>
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script> 
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>-->
+        
+        
     </head>
-    <body style="background-color:#fff">
-            <section class="topo-home fleft100 bk-black">
-                    <header class="fleft100 pd-tb20">
-                            <div class="container">
-                                    <div class="col-md-2 col-sm-6 col-xs-6 col-md-offset-2">
-                                        <a href=""><img src="<?php echo base_url().'assets/img/logo.png'?>" alt=""></a>
-                                    </div>
-                            </div>
-                    </header>
-            </section>
-            <!--Admin Painel-->
-            <!--<select name="" id="status_select">-->
-                <?php
-                   // echo '<option value="1">'.$CI->T("ATIVO", array(),$language).'</option>';                                        
-                   // echo '<option value="2">'.$CI->T("BLOQUEADO POR PAGAMENTO", array(),$language).'</option>';                                        
-                   // echo '<option value="4">'.$CI->T("ELIMINADO", array(),$language).'</option>';                                        
-                   // echo '<option value="6">'.$CI->T("PENDENTE POR PAGAMENTO", array(),$language).'</option>';                                        
-                   // echo '<option value="8">'.$CI->T("INICIANTE", array(),$language).'</option>';                                        
-                   // echo '<option value="11">'.$CI->T("NÃO MOLESTAR", array(),$language).'</option>';                                        
-                ?>
-            <!--</select>
-            <button type="button" id="do_show_users" class="btn btn-success">-->
-                <?php 
-                //echo $CI->T("MOSTRAR USUÁRIOS", array(),$language);
-                ?>
-            <div id="faq">
-                <b>DÚVIDAS FREQUENTES LEADS</b><br>
-                <b>Como escolho o meu público alvo?</b><br>
-                <div id="r1">Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo. 
-                Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece. por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação.
-                </div><br>
-                <b>Como posso utilizar meus Leads?</b><br>
-                <div id="r2">Com os Leads exportados, você poderá criar campanhas direcionadas através de ferramentas de marketing como Google, Facebook e Instagram, para os usuários que possivelmente se interessam pelo seu conteúdo. 
-                </div><br>
-                <b>Quantos Leads posso captar por dia?</b>
-                <div id="r3">?????</div><br>
-
-                <b>Quanto custa cada lead?</b>
-                <div id="r4">O valor por Lead é de R$0,25 (Vinte e cinco centavos por Lead)</div><br>
-
-                <b>Como o serviço é cobrado?</b>
-                <div id="r5">A cobrança é feita diariamente de acordo com a captação feita durante o dia. Lembre-se que você pode controlar o orçamento diário de cada campanha, tendo assim, o controle de gasto diariamente.</div><br> 
-
-                <b>Qual o método de pagamento?</b>
-                <div id="r6">Cartão de crédito - Você pode cadastrar seu cartão de crédito, a cobrança é feita automaticamente durante os dias.
-                Boleto bancário - Você irá escolher o valor que deseja investir e esse valor entra como crédito em sua conta após o boleto ser compensado.
-                </div><br>
-                 <b>Como criar uma campanha?</b>
-                <div id="r7"> Para criar uma campanha, primeiro você definirá o orçamento diário da campanha, depois você irá selecionar se deseja captar os leads utilizando um perfis (Ex.: @neymar), uma hashtags (Ex. #moda) ou localizações. 
-                </div><br>
-                <b>Como vou exportar meus Leads?</b>
-                <div id="r8">Para exportar seus Leads você só precisa escolher a campanha que deseja obter os leads captados e clicar em ‘Extrair leads’. Você poderá exportar apenas um período específico ou todo o período da campanha. Você também pode exportar informações específicas, como apenas os nomes de usuário, ou apenas o e-mails dos usuários.
-                </div>
-
-</div>
-</body>
-            <footer class="fleft100 pd-tb50 bk-fff text-center">
-                    <div class="container">
-                            <div class="fleft100 m-top40">
-                                    <img src="<?php echo base_url().'assets/img/copy.png'?>" alt="">
-                                    <span class="fleft100 cp m-top15">DUMBU - 2016 - <?php echo $CI->T("TODOS OS DIREITOS RESERVADOS", array(),$language);?></span>
-                            </div>
+<body id="my_body">
+                
+                
+		<div class="windows8">
+                    <div class="wBall" id="wBall_1">
+                     <div class="wInnerBall"></div>
                     </div>
-            </footer>
+                    <div class="wBall" id="wBall_2">
+                     <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_3">
+                     <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_4">
+                     <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_5">
+                     <div class="wInnerBall"></div>
+                    </div>
+		</div>
     
-    <!--modal_container_alert_message-->
-    <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <img src="<?php echo base_url().'assets/img/FECHAR.png'?>" alt="cancel"> <!--<spam aria-hidden="true">&times;</spam>-->
-                    </button>
-                    <h5 class="modal-title" id="myModalLabel"><b><?php echo $CI->T("Mensagem", array(),$language) ?></b></h5>                        
-                </div>
-                <div class="modal-body">                                            
-                    <p id="message_text"></p>                        
-                </div>
-                <div class="modal-footer text-center">
-                    <button id="accept_modal_alert_message" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
-                        <spam class="ladda-label"><div style="color:white; font-weight:bold">OK</div></spam>
-                    </button>                    
-                </div>
-            </div>
-        </div>                                                        
+       
+    <header class="bk-black">
+			<div class="container">
+				<div id="dl-menu" class="dl-menuwrapper">
+					<button class="dl-trigger">Open Menu</button>
+					<ul class="dl-menu">
+                                                <li>
+                                                    <a href="#"><?php  echo $CI->T("ENTRAR", array(), $lenguage);?></a>
+							<ul class="dl-submenu">
+								<li>
+                                                                    <div id="login_container1">
+									<form id="usersLoginForm" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
+										<div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
+										<?php  echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(), $lenguage);?>										</div>
+										<div class="form-group center" style="font-family:sans-serif; font-size:0.7em">
+										<?php  echo $CI->T("Use login e senha de Instagram", array(), $lenguage);?>										</div>
+										<div class="form-group">
+											<input id="userLogin1" type="text" class="form-control" placeholder="Usuário" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+										</div>
+										<div class="form-group">
+											<input id="userPassword1" type="password" class="form-control" placeholder="Senha" required="">
+										</div>
+										<!--<div class="form-group">
+                                                                                    <button type="button" name="" value="" id="btn_dumbu_login1" style="white-space: normal;" class="btn btn-success" ><spam class="ladda-label"></spam></button>
+										</div>-->
+										
+										<div class="form-group">
+											<input type="submit" name="" value="ENTRAR" id="btn_dumbu_login1" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff" />
+										</div>
+										<div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
+										</div>
+									</form>
+                                                                    </div>
+								</li>
+							</ul>
+						</li>
+                                                
+                                                                                            <li>
+                                                    <a id="fechar_faq" href="#">FECHAR</a>
+                                                </li>
+					</ul>
+				</div><!-- /dl-menuwrapper -->
+                                
+				<nav class="navbar navbar-default navbar-static-top">
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="logo pabsolute fleft100 text-center">
+						<a class="navbar-brand i-block" href="https://dumbu.pro/follows/src/index.php">
+                                                    <img alt="Brand" src="https://dumbu.pro/follows/src/assets/images/logo.png">
+						</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right menu-principal">
+                                                <li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="https://dumbu.pro/follows/src/assets/images/user.png" class="wauto us" alt="User">ENTRAR<spam class="caret"></spam></a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="row">
+										<div class="col-md-12">
+                                                                                    <div id="login_container2">
+											<form id="usersLoginForm" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
+												<div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
+                                                                                                    <?php  echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(), $lenguage);?>						<div class="form-group center" style="font-family:sans-serif; font-size:0.7em">
+                                                				                    <?php  echo $CI->T("Use login e senha de Instagram", array(), $lenguage);?>										</div>
+												<div class="form-group">
+                                                                                                    <input id="userLogin2" type="text" class="form-control" placeholder="Usuário" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+												</div>
+												<div class="form-group">
+													<input id="userPassword2" type="password" class="form-control" placeholder="Senha" required="">
+												</div>
+												<div class="form-group">
+													<button id="btn_dumbu_login2" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff">
+														<spam class="ladda-label">Entrar</spam>
+													</button>
+												</div>
+												<div id="container_login_message2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
+												</div>
+											</form>
+                                                                                    </div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li> 
+                                                <li>
+                                                    <a id="fechar_faq2" href="#"><?php echo $CI->T("FECHAR", array(), $lenguage)?><img src="https://dumbu.pro/leads/src/assets/img/FECHAR.png" class="wauto us" alt="User"></a>
+                                                </li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+        
+    <div class="container">
+        <b/>
+        <b/>
+        <b/>
+        <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes", array(), $lenguage)?></h2>
+                
+        
+            <div class="accordion-container">
+                <a href="#" class="accordion-titulo">
+                <?php echo $CI->T("Como escolho o meu público alvo?",array(), $language); ?>
+                    <span class="toggle-icon"></span></a><div class="accordion-content">
+                        <p><p ALIGN="justify">
+                  <?php 
+                  echo $CI->T(
+                          "Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo. 
+  Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece.",array(), $language); ?>
+                          <p><p ALIGN="justify">
+                  <?php 
+                  echo $CI->T(
+                          "Por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação."
+                           ,array(), $language); ?>
+                            
+                        </p>
+ </p></div><a href="#" class="accordion-titulo">
+<?php echo $CI->T("Como posso utilizar meus Leads?, </b><br>",array(), $language); ?>     
+     <span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">
+                 <?php 
+                  echo $CI->T(
+          "Com os Leads exportados, você poderá criar campanhas direcionadas através de ferramentas de marketing como Google, Facebook e Instagram, para os usuários que possivelmente se interessam pelo seu conteúdo.",
+                          array(), $language); ?>
+                              </p>
+</p></div><a href="#" class="accordion-titulo">
+    <?php echo $CI->T("Quantos Leads posso captar por dia?", array(), $language); ?>                          
+    <span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">???</p>
+</p></div><a href="#" class="accordion-titulo">
+                 <?php echo $CI->T("Quanto custa cada lead?", array(), $language); ?>
+<span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">
+                <?php echo $CI->T("O valor por Lead é de R$0,25 (Vinte e cinco centavos por Lead)", array(), $language); ?>                          
+</p></p></div><a href="#" class="accordion-titulo">
+<?php echo $CI->T("Como o serviço é cobrado?", array(), $language); ?>
+    <span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">
+                  <?php 
+                  echo $CI->T(
+                        "A cobrança é feita diariamente de acordo com a captação feita durante o dia. Lembre-se que você pode controlar o orçamento diário de cada campanha, tendo assim, o controle de gasto diariamente.",
+array(), $language); ?>
+</p> 
+</p></div><a href="#" class="accordion-titulo">
+                <?php echo $CI->T("Qual o método de pagamento?", array(), $language); ?>
+    <span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">
+                  <?php 
+                  echo $CI->T(
+                          "Cartão de crédito - Você pode cadastrar seu cartão de crédito, a cobrança é feita automaticamente durante os dias.",array(), $language); ?>
+                          <p><p ALIGN="justify">
+                  <?php 
+                  echo $CI->T(
+                          "Boleto bancário - Você irá escolher o valor que deseja investir e esse valor entra como crédito em sua conta após o boleto ser compensado.",
+array(), $language); ?>
+                              
+                          </p>
+</p></div><a href="#" class="accordion-titulo">
+                <?php echo $CI->T( "Como criar uma campanha?",array(), $language); ?>
+<span class="toggle-icon"></span></a><div class="accordion-content">
+                          <p><p ALIGN="justify">
+                <?php 
+                  echo $CI->T(
+                          "Para criar uma campanha, primeiro você definirá o orçamento diário da campanha, depois você irá selecionar se deseja captar os leads utilizando um perfis (Ex.: @neymar), uma hashtags (Ex. #moda) ou localizações.", 
+                         array(), $language); ?>
+</p></p></div><a href="#" class="accordion-titulo">
+                    <?php echo $CI->T( "Como vou exportar meus Leads?",array(), $language); ?>
+<span class="toggle-icon"></span></a><div class="accordion-content">
+    <p><p ALIGN="justify">
+                <?php 
+                  echo $CI->T(
+                          "Para exportar seus Leads você só precisa escolher a campanha que deseja obter os leads captados e clicar em ‘Extrair leads’. Você poderá exportar apenas um período específico ou todo o período da campanha. Você também pode exportar informações específicas, como apenas os nomes de usuário, ou apenas o e-mails dos usuários.",
+array(), $language); ?>
+</p>
+</p></div>            </div>
     </div>
     
-    </body>
+        <section id="contato" class="fleft100 input-form">
+			<div class="container">
+				<spam style="color:black; font-size:1.6em" class="fleft100 text-center m-t10">SE FICOU COM ALGUMA DUVIDA FALE CONOSCO</spam>
+                                <div class="col-md-3 col-sm-3 col-xs-12"><br></div>
+                                <div id="talkme_frm" class="col-md-6 col-sm-6 col-xs-12 no-pd">
+                                                                        
+					<div class="col-md-6 col-sm-6 col-xs-12 pd-r15">
+						<fieldset>
+							<input id="visitor_name" type="text" placeholder="Nome">
+						</fieldset>
+						<fieldset>
+							<input id="visitor_email" type="text" placeholder="E-mail">
+						</fieldset>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-12 pd-l15">
+						<fieldset>
+							<input id="visitor_company" type="text" placeholder="Empresa">
+						</fieldset>
+						<fieldset>
+							<input id="visitor_phone" type="text" placeholder="Telefone">
+						</fieldset>
+					</div>
+					<div class="col-md-12 col-sm-12 col-xs-12 no-pd">
+						<textarea id="visitor_message" name="" placeholder="Mensagem" id=""  rows="8"></textarea>
+                                                
+                                                <p class="text-center"><?php echo $CI->T( "Enviando para: atendimento@dumbu.pro",array(), $language); ?>                                                </p>
+                                                
+						<div class="text-center">
+                                                    <button id="btn_send_message" class="btn-primary btn-475f66 m-t20 ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                                                        <?php echo $CI->T( "ENVIAR MENSAGEM",array(), $language); ?>                                                   </button>
+                                                </div>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-3 col-xs-12"><br></div>
+                        </div>
+        </section>
+            
+           
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+		<script src="https://dumbu.pro/follows/src/assets/js/jquery.dlmenu.js"></script>
+		<script>
+			$(function() {
+				$( '#dl-menu' ).dlmenu();
+			});
+		</script>
+                
+                <!--modal_container_alert_message-->
+                <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                              <img src="https://dumbu.pro/follows/src/assets/images/FECHAR.png" alt="cancel"> <!--<spam aria-hidden="true">&times;</spam>-->
+                                </button>
+                                <h5 class="modal-title" id="myModalLabel"><b>Mensagem</b></h5>                        
+                            </div>
+                            <div class="modal-body">                                            
+                                <p id="message_text"></p>                        
+                            </div>
+                            <div class="modal-footer text-center">
+                                <button id="accept_modal_alert_message" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                                    <spam class="ladda-label"><div style="color:white; font-weight:bold">ACEITAR</div></spam>
+                                </button>
+                            </div>
+                        </div>
+                    </div>                                                        
+                </div> 
+                
+        <!-- Afilio Master Tag Home Page-->
+                                <script type="text/javascript" src="https://secure.afilio.com.br/?progid=2289&type=homepage&id_partner=dumbupro&url_product=https://dumbu.pro/follows/src/"></script>        
+                                
     
+    <div class="container">
+        <div class="col-md-3 col-sm-3 col-xs-12"><br></div>
+            <footer class="text-center fleft100 m-t30 m-b10"><img src="https://dumbu.pro/follows/src/assets/images/logo-footer.png" class="wauto" alt="Dumbu Footer Logo"></footer>
+    </div>
+                    
     
-    <!--[if lt IE 9]>
-    <script src="js/jquery-1.9.1.js"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-<!--    <script src="<?php //echo base_url().'assets/js/jquery-3.1.1.min.js'?>"></script>-->
-    <!--<![endif]-->
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-multiselect.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.min.js'?>"></script>
-    <script src="<?php echo base_url().'assets/bootstrap/js/bootstrap-datepicker.pt-BR.min.js'?>"></script>
-    <!-- FILTRAR -->
-    <script src="<?php echo base_url().'assets/js/filtrar.js'?>"></script> 
-    <!-- VALIDATE -->
-    <script src="<?php echo base_url().'assets/js/validate.js'?>" type="text/javascript"></script>
-    <!-- MASCARAS -->
-    <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
-    <!-- Scripts -->
-    <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
-
-</html>
+    <!--Start of Boostbox Tag Script-->
+                <script async="1" src="//tags.fulllab.com.br/scripts/master-tag/produto_dumbu.js"></script>
+        <!--End of Boostbox Tag Script-->
+</body>
+</html>    
