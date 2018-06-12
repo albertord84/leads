@@ -5849,13 +5849,28 @@ class Welcome extends CI_Controller {
         }
     }
     
-            public function faq() {
+    public function faq() {
         $this->load->model('class/user_role');                
         $this->load->model('class/system_config');
         
-            $param = array();            
+        $param = array();            
+        if($this->session->userdata('id')){
+            $this->load->model('class/system_config');
+            $GLOBALS['sistem_config'] = $this->system_config->load();
+
+            $language=$this->input->get();            
+            if($language['language'] != "PT" && $language['language'] != "ES" && $language['language'] != "EN")
+                    $language['language'] = NULL;
+
+            if(isset($language['language']))                
+                $param['language']=$language['language'];            
+            else
+                $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;
+        }
+        else{
             $param['language'] = $this->session->userdata('language');
-            $this->load->view('faq_view', $param);
+        }
+        $this->load->view('faq_view', $param);
     }
 
 

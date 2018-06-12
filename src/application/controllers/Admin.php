@@ -113,7 +113,7 @@ class Admin extends CI_Controller {
                     $id = $user['id_usr'];                    
                 }
                 else{
-                    $id = $user['user_id'];                    
+                    $id = $user['id_usr'];                    
                 }
                 $card = $this->credit_card_model->get_credit_card($id);
            /* foreach ($user as $k => $dat) 
@@ -124,7 +124,7 @@ class Admin extends CI_Controller {
                 
                 $users[] = array(
                                 //'user_id' => $user['id'],
-                                'user_id' => $id,
+                                'user_id' => $user['id_usr'],
                                 'role_id' => $user['role_id'],
                                 'name' => $user['name'],
                                 'login' => $user['login'],

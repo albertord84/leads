@@ -67,17 +67,18 @@ class Admin_model extends CI_Model {
               {
               
                 //$this->db->where(array('payments_type' => $this->payment_type::CREDIT_CARD));
-                $this->db->where(array('payments_type' => $filter['req_card']));
+                $frq= $filter['req_card']; 
+                $this->db->where(array('payment_type' => "$frq"));
               }
             
               if($filter['lst_access1']!=''){
-               if($filter['req_card'])
-               {
-                $this->db->where('payments.date >=',strtotime($filter['lst_access1'].' 00:00:00'));
-               }  
+               //if($filter['req_card'])
+               //{
+                $this->db->where('date >=',strtotime($filter['lst_access1'].' 00:00:00'));
+               //}  
               if($filter['req_cam'])
               {
-               $this->db->where('campaings.created_date >=',strtotime($filter['lst_access1'].' 00:00:00'));
+               $this->db->where('created_date >=',strtotime($filter['lst_access1'].' 00:00:00'));
               } 
              //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
@@ -89,11 +90,11 @@ class Admin_model extends CI_Model {
               if($filter['lst_access3']!=''){
                //if($filter['req_card'])
                //{
-                $this->db->where('payments.date <=',strtotime($filter['lst_access3'].' 23:59:59'));
+                $this->db->where('date <=',strtotime($filter['lst_access3'].' 23:59:59'));
                //}  
               if($filter['req_cam'])
               {
-               $this->db->where('campaings.created_date <=',strtotime($filter['lst_access3'].' 23:59:59'));
+               $this->db->where('created_date <=',strtotime($filter['lst_access3'].' 23:59:59'));
               } 
              //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
@@ -102,14 +103,14 @@ class Admin_model extends CI_Model {
              //}
                }   
                
-               if($filter['lst_access2']==''&& $filter['lst_access4']==''){
+               if($filter['lst_access2']!=''|| $filter['lst_access4']!=''){
                   //$this->db->where('clients.last_accesed =null'); 
                
                  $this->db->join('clients','users.id=clients.user_id','left');    
                }
                
                if($filter['lst_access2']!=''){
-                 $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access2'].' 00:00:00'));
+                 $this->db->where('last_accesed >=',strtotime($filter['lst_access2'].' 00:00:00'));
             //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
              //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
@@ -117,7 +118,7 @@ class Admin_model extends CI_Model {
              //}
                }   
                if($filter['lst_access4']!=''){
-                 $this->db->where('clients.last_accesed <=',strtotime($filter['lst_access4'].' 23:59:59'));
+                 $this->db->where('last_accesed <=',strtotime($filter['lst_access4'].' 23:59:59'));
             //if(!$filter['req_card']&&!$filter['req_cam'])
              //{
              //  $this->db->where('clients.last_accesed >=',strtotime($filter['lst_access1'].' 00:00:00'));
@@ -130,10 +131,10 @@ class Admin_model extends CI_Model {
              }
              else
              {
-              if($filter['status_id']){
+              /*if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
-              }
+              }*/
               if($filter['status_id']){
                 $status_id = $filter['status_id'];
                 $this->db->where(array('status_id' => "$status_id"));
