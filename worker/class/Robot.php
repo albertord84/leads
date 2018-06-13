@@ -129,11 +129,16 @@ namespace leads\cls {
                         'amount_analysed_profiles', $this->next_work->profile->amount_analysed_profiles
                     );
                     
+                    $existing_lead = true;
+                    if($leads->private_email || $leads->biography_email || $leads->public_email){
+                        $existing_lead = $this->DB->existing_lead($leads->ds_user_id);
+                    }
+                            
                     //2. determinar tabelas para inserir as leads e possivel RP futuro
                     $multi_level_result = $this->get_multi_level_hash($leads->ds_user_id, $multi_level);
                     
                     //2.3 salvar as leads extraidas do perfil atual e a informacion correspondiente
-                    if($leads->private_email || $leads->biography_email || $leads->public_email){
+                    if(($leads->private_email || $leads->biography_email || $leads->public_email) && !$existing_lead){
                         //A.1 salvar a lead
                         $resp = $this->DB->save_extracted_crypt_leads($this->next_work->profile->id, $leads, $multi_level_result->table_to_leads);
                         //A.2 incrementar a quantidade total de leads extraidos da campanha
