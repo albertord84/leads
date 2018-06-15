@@ -211,7 +211,7 @@ namespace leads\cls {
                         . "FROM leads "                        
                         . "WHERE ds_user_id = $ds_user_id; ";
                 
-                $result_query = mysqli_query($DB->connection, $sql);
+                $result_query = mysqli_query($this->connection, $sql);
                 $lead = $result_query->fetch_array();
                 if ($lead) {
                     return true;
