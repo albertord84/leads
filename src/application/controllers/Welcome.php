@@ -77,7 +77,6 @@ class Welcome extends CI_Controller {
     } 
         
     public function index() { 
-        
         $this->load->model('class/user_role');        
         $param = array();
         $this->load->model('class/system_config');
@@ -635,6 +634,9 @@ class Welcome extends CI_Controller {
                                                         );
                                     
                                     $this->user_model->set_session($cadastro_id,$this->session);
+                                    
+                                    $this->send_email_marketing($datas['client_login'], $datas['client_email'], $datas['client_telf']);
+                                            
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
                                     $result['resource'] = 'client';                                    
@@ -2529,6 +2531,31 @@ class Welcome extends CI_Controller {
         return $response;
     }
     
+    public function send_email_marketing($name, $email, $phone){
+        
+        $postData = array(
+            'id' => 180608,
+           'pid' => 6378385,
+           'list_id' => 180608,
+           'provider' => 'leadlovers',
+           'name' => $name,
+           'email' => $email,
+           'phone' => $phone,           
+           'source' => "https://dumbu.pro/leads/src/"           
+        );        
+        
+        $postFields = http_build_query($postData);
+        
+        $url = 'https://leadlovers.com/Pages/Index/180608';
+        $handler = curl_init();
+        curl_setopt($handler, CURLOPT_URL, $url);  
+        curl_setopt($handler, CURLOPT_POST,true);  
+        curl_setopt($handler, CURLOPT_RETURNTRANSFER,true);  
+        curl_setopt($handler, CURLOPT_POSTFIELDS, $postFields);  
+        $response = curl_exec($handler);                
+        curl_close($handler);
+    }
+
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
     public function language() {
