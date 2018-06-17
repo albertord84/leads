@@ -204,6 +204,27 @@ namespace leads\cls {
             
         }
          
+         public function existing_lead($ds_user_id){            
+            try {                
+                $sql = ""
+                        . "SELECT * "
+                        . "FROM leads "                        
+                        . "WHERE ds_user_id = $ds_user_id; ";
+                
+                $result_query = mysqli_query($this->connection, $sql);
+                $lead = $result_query->fetch_array();
+                if ($lead) {
+                    return true;
+                }
+                else{
+                    return false;//nuevo lead adquirido!!!
+                }
+                
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+                return true;
+            }
+         }
          
          public function save_extracted_crypt_leads($profile_id, $lead, $table){
             try {

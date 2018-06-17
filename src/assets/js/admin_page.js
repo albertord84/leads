@@ -529,7 +529,8 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response['success']) {                                
-                   $(location).attr('href',base_url+'index.php/welcome/'+response['resource']);
+                    var url = base_url+'index.php/welcome/'+response['resource'];
+                    window.open(url);
                 } else {
                       modal_alert_message(response['message']);
                 }
