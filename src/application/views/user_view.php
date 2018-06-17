@@ -39,6 +39,35 @@
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>
         
+<style>
+/* unvisited link */
+a:link {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* selected link */
+a:active {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+</style>
     </head>
     <body>
     <section class="topo-home fleft100 bk-black">
@@ -214,14 +243,44 @@
                                 <li >
                                     <a href="https://dumbu.pro/dumbu/src" class="a-border i-block hidden-xs text-right"><?php echo $CI->T("Quer seguidores?", array(),$language);?> <br><?php echo $CI->T("Clique aqui", array(),$language);?></a>
                                 </li>
-                                <li >
+                                <li>
                                     <a href="#lnk_sign_in_now">
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
                                 </li>
-<!--                                <li>
-                                    <a target=" blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
-                                </li>-->
+                                <li>
+                                   <style>
+/* unvisited link */
+a:link {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* selected link */
+a:active {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+                                  </style>                                 
+ 
+                                    <a target="_blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
+                                </li>
                                
                                 <?php
                                 if($this->session->userdata('login')){
@@ -691,7 +750,12 @@
                 </div>
             </div>
         </div>                                                        
-    </div> 
+    </div>
+    <!-- BEGIN JIVOSITE CODE -->
+<script type='text/javascript'>
+(function(){ var widget_id = 'Af9Dp13Ek6';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+<!-- END JIVOSITE CODE -->
     </body>
     <!--[if lt IE 9]>
     <script src="js/jquery-1.9.1.js"></script>

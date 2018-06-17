@@ -156,9 +156,6 @@
 		</header>
         
     <div class="container">
-        <b/>
-        <b/>
-        <b/>
         <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes", array(), $lenguage)?></h2>
                 
         
@@ -169,12 +166,11 @@
                         <p><p ALIGN="justify">
                   <?php 
                   echo $CI->T(
-                          "Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo. 
-  Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece.",array(), $language); ?>
+                          "Nossa ferramenta de leads é 100% segmentada. Você pode escolher captar Leads através de perfis, locais ou hashtags. Ou seja, você irá escolher perfis, locais e hashtags do Instagram que possivelmente tenham seguidores que irão adquirir seu serviço, produto ou conteúdo.",array(), $language); ?>
                           <p><p ALIGN="justify">
                   <?php 
                   echo $CI->T(
-                          "Por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação."
+                          "Foque em escolher uma estratégia onde os usuários ligados a sua campanha tenha algo a ver com o serviço que você oferece. Por exemplo: Se você trabalha com moda, utilize hashtags ligadas a moda e beleza. Uma dica boa é: Escolha perfis, locais e hashtags que possuem muitos seguidores e interação."
                            ,array(), $language); ?>
                             
                         </p>
@@ -320,5 +316,10 @@ array(), $language); ?>
     <!--Start of Boostbox Tag Script-->
                 <script async="1" src="//tags.fulllab.com.br/scripts/master-tag/produto_dumbu.js"></script>
         <!--End of Boostbox Tag Script-->
+        <!-- BEGIN JIVOSITE CODE -->
+<script type='text/javascript'>
+(function(){ var widget_id = 'Af9Dp13Ek6';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+<!-- END JIVOSITE CODE -->
 </body>
 </html>    

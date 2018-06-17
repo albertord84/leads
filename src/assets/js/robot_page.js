@@ -116,6 +116,12 @@ $(document).ready(function () {
         });                          
     });
 
+    $('#login_container2').keypress(function (e) {
+        if (e.which == 13) {
+            $("#do_show_robots").click();
+            return false;
+        }
+    });
     
     $(document).on('click', '.robotcancel', function(){                
         var id_element = $(this).attr('id');

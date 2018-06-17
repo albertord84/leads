@@ -37,6 +37,27 @@
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
+<style>
+/* unvisited link */
+a:link {
+    color: white;
+}
+
+/* visited link */
+a:visited {
+    color: white;
+}
+
+/* mouse over link */
+a:hover {
+    color: white;
+}
+
+/* selected link */
+a:active {
+    color: white;
+}
+</style>
     </head>
     <body style="background-color:#fff">
             <section class="topo-home fleft100 bk-black">
@@ -51,9 +72,9 @@
                                             <?php echo $CI->T("SAIR", array(),$language);?>
                                         </button><br>
                                         <!--<div id="link_robot"> -->
-                                        <font color="white">
-                                            <a target=" blank" href=<?php echo base_url().'index.php/admin/robot' ?> >GERENCIAR ROBOTS PROFILES</a>
-                                        </font>
+                                        <!--<font color="white">-->
+                                            <a target="_blank" href=<?php echo base_url().'index.php/admin/robot' ?>>GERENCIAR ROBOTS PROFILES</a>
+                                        <!--</font>-->
                                         <!--</div> -->   
 
                                     </div>					
@@ -85,7 +106,7 @@
             ?>
         <!-- >Gerenciar robot-profiles</a> -->
         <!--</div> -->   
-        <div id="login_container2">
+        <div id="login_container1">
             <div id="admin_form" class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -124,13 +145,13 @@
                         <b>do</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="date" id="assin_date_from" name="assin_date_from" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="assin_date_from1" name="assin_date_from1" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <div class="col-xs-1">
                         <b>até</b>
                     </div>
                     <div class="col-xs-5">
-                        <input type="date" id="assin_date_to" name="assin_date_to" placeholder="mm/dd/yyyy" class="form-control">
+                        <input type="date" id="assin_date_to1" name="assin_date_to1" placeholder="mm/dd/yyyy" class="form-control">
                     </div>
                     <!-- <div class="center">
                         <input type="text" id="date_from" name="date_from" placeholder="mm/dd/yyyy" class="form-control" style="max-width:160px">
@@ -213,56 +234,16 @@
                         <input id="client_id1" class="form-control" placeholder="ID do cliente">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <!--<div class="col-md-2">
                     <div class="center filters">
                         <b>Insta ID</b>
                         <input id="ds_user_id" class="form-control" placeholder="ds_user_id">
                     </div>
-                </div>
+                </div>-->
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Credit Card nome</b>
                         <input id="credit_card_name1" class="form-control" placeholder="Credit Card Name">
-                    </div>
-                </div>
-            </div>
-            <br>
-
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Plano</b>   
-                        <select disabled id="plane" class="form-control">
-                            <option value="0">--SELECT--</option>
-                            <option value="1">1</option>
-                            <option value="2">2 (LOW)</option>
-                            <option value="3">3 (MODERATED)</option>
-                            <option value="4">4 (FAST)</option>
-                            <option value="5">5 (TURBO)</option>
-                        </select>
-                    </div> 
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Mais de </b>   
-                        <select disabled id="tentativas" class="form-control">
-                            <option value="0">--SELECT--</option>
-                            <?php for ($tentativas = 1; $tentativas <= 9; $tentativas++) { ?>
-                                    <option value="<?php echo $tentativas; ?>"><?php echo $tentativas; ?></option>
-                            <?php } ?>
-                        </select>
-                        <b>tentativas de compra</b> 
-                    </div> 
-                </div>
-                <div class="col-md-2">
-                    <div class="center filters">
-                        <b>Observações</b> 
-                        <select disabled id="observations" class="form-control" >
-                            <option>--SELECT--</option>
-                            <option>NAO</option>
-                            <option>SIM</option>
-                        </select>    
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -289,7 +270,47 @@
                         </select>
                     </div>
                 </div>
-                
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <!--<div class="col-md-2">
+                    <div class="center filters">
+                        <b>Plano</b>   
+                        <select disabled id="plane" class="form-control">
+                            <option value="0">--SELECT--</option>
+                            <option value="1">1</option>
+                            <option value="2">2 (LOW)</option>
+                            <option value="3">3 (MODERATED)</option>
+                            <option value="4">4 (FAST)</option>
+                            <option value="5">5 (TURBO)</option>
+                        </select>
+                    </div> 
+                </div>-->
+                <!--<div class="col-md-2">
+                    <div class="center filters">
+                        <b>Mais de </b>   
+                        <select disabled id="tentativas" class="form-control">
+                            <option value="0">--SELECT--</option>
+                            <?php for ($tentativas = 1; $tentativas <= 9; $tentativas++) { ?>
+                                    <option value="<?php echo $tentativas; ?>"><?php echo $tentativas; ?></option>
+                            <?php } ?>
+                        </select>
+                        <b>tentativas de compra</b> 
+                    </div> 
+                </div>-->
+                <!--<div class="col-md-2">
+                    <div class="center filters">
+                        <b>Observações</b> 
+                        <select disabled id="observations" class="form-control" >
+                            <option>--SELECT--</option>
+                            <option>NAO</option>
+                            <option>SIM</option>
+                        </select>    
+                    </div>
+                </div>-->
+              
                 <!--<div class="col-md-4">
                     <div class="center filters">
                     <b>Assinatura (inic)</b>
@@ -315,22 +336,40 @@
                         <b>Cartão: </b> <input type="checkbox" id="requercard">
                     </div>
                 </div> -->   
-                <div class="col-md-2">
+                <!--<div class="col-md-2">
                     <div class="center filters">
                         <b>Order Key</b>
                         <input id="order_key_client"  class="form-control" placeholder="Order Key">
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <div class="center filters">
                         <b>Não recebe trabalho há mais de</b>
-                        <input id="days_no_work"  class="form-control" placeholder="Número de dias">
+                        <input disabled id="days_no_work"  class="form-control" placeholder="Número de dias">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <!--<div class="col-md-1"></div>-->
+                <div class="col-md-4"><br>
+                    <div class="center filters">
+                        <b>Intervalo de campanhas:</b>
+                    </div>
+                    <div class="col-xs-1">
+                        <b>do</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="campaigns_from" name="campaigns_from" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                    <div class="col-xs-1">
+                        <b>até</b>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="date" id="campaigns_to" name="campaigns_to" placeholder="mm/dd/yyyy" class="form-control">
+                    </div>
+                </div>   
+                <!--<div class="col-md-2">
                     <div class="center filters">
                         <br>
                         <b>Paused</b> 
@@ -340,7 +379,7 @@
                             <option value="1">SIM</option>
                         </select>    
                     </div>
-                </div>
+                </div>-->
                 <!--<div class="col-md-2">
                     <div class="center filters">
                         <br>
@@ -403,9 +442,12 @@
                         </select>    
                     </div>
                 </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <div class="center filters">
-                        <br>
                         <b>UTM source</b> 
                         <select disabled id="utm_source" class="form-control" >
                             <option>--SELECT--</option>
@@ -423,11 +465,7 @@
                         </select>    
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
+                <!--<div class="col-md-2">
                     <div class="center filters">
                         <b>Perfis de Ref. ativos</b> 
                         <select disabled id="pr_ativos" class="form-control" >
@@ -436,7 +474,7 @@
                             <option>SIM</option>
                         </select>    
                     </div>
-                </div>
+                </div>-->
                 <!--<div class="col-md-1"></div>-->
                 <!--<div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -493,31 +531,53 @@
             </div>  
             <!--<div class="row">-->
             <br>
-                        <table class="table">
+                        <!--<table class="table">
 
-                            <tr class="list-group-item-success" id="row-client" style="visibility: visible;display: block; background-color: #dff0d8">
-                                <td style="text-align:center; width:30%; padding:5px">
+                            <tr class="list-group-item-success" id="row-client" style="text-align:center; width:100%; align-items:center; visibility: visible; background-color: #dff0d8">
+                                <td style="text-align:center; align-items:center; width:50%; padding:5px">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2">
                                            <div class="center">
-                                              <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                                              <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-center" data-spinner-color="#ffffff">
                                                 <span class="ladda-label">Listar</span>
                                               </button>
                                            </div>
                                         </div>
                                 </td>                                
-                                <td style="text-align:center; width:30%; padding:5px">
+                                <td style="text-align:center; align-items:center; width:50%; padding:5px">
                                     <div class="col-md-1"></div>
                                       <div class="col-md-2">
                                         <div class="center">
-                                             <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-left" data-spinner-color="#ffffff">
+                                             <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-center" data-spinner-color="#ffffff">
                                                  <span class="ladda-label">Obter emails</span>
                                              </button>
                                         </div>
                                      </div>
                                 </td>
                             </tr>    
-                        </table>
+                        </table>-->
+            <div id="user_form" class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <!--<br><p><b style="color:red">Total de registros: </b><b id="total_users">
+                   </b></p><br>-->
+                                       <div class="center">
+                                              <button  style="min-width:150px" id = "execute_query" type="button" class="btn btn-success ladda-button"  data-style="expand-center" data-spinner-color="#ffffff">
+                                                <span class="ladda-label">Listar</span>
+                                              </button>
+                                        </div>
+            </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2" id="totalpago">
+            <!--<br><p><b style="color:red">Pagamento Total: </b><b id="totalpayment"></b></p><br>-->
+                                       <div class="center">
+                                             <button  style="min-width:150px" id = "execute_query_email" type="button" class="btn btn-success ladda-button"  data-style="expand-center" data-spinner-color="#ffffff">
+                                                 <span class="ladda-label">Obter emails</span>
+                                             </button>
+                                        </div>
+                 </div>
+            </div>
+             
                     <br>
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -571,7 +631,7 @@
             </div>
         </div>                                                        
     </div>
-    
+   </div>
     </body>
     
     
