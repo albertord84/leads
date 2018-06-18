@@ -156,6 +156,98 @@ $(document).ready(function(){
     $("#fechar_faq2").click(function(){
         window.close();
     });
+
+    $("#lnk_language2").click(function () {
+       var new_language = $("#txt_language2").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
+    });
+    
+    $("#lnk_language3").click(function () {
+       var new_language = $("#txt_language3").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
+    });
+    
+        $("#lnk_language2_cell").click(function () {
+       var new_language = $("#txt_language2").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
+    });
+    
+        $("#lnk_language3_cell").click(function () {
+       var new_language = $("#txt_language3").text()
+        $.ajax({
+            url: base_url + 'index.php/welcome/update_language',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });
+    });
     
     /*$(".help").hover(
         function(){
@@ -244,7 +336,29 @@ $(document).ready(function(){
 //        $("#img_language2").attr("src",img_tmp);
 //        $("#txt_language2").text(txt_tmp);
 //        $(location).attr("href",base_url+"index.php?language="+$("#txt_language1").text());
-       $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
+       //$(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
+       var new_language = $("#txt_language2").text();
+       //$('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
+        $.ajax({
+            url: base_url + 'index.php/welcome/faq',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
+       
         
     });
     $("#lnk_language3").click(function () {
@@ -255,16 +369,80 @@ $(document).ready(function(){
 //        $("#img_language3").attr("src",img_tmp);
 //        $("#txt_language3").text(txt_tmp);
 //        $(location).attr("href",base_url+"index.php?language="+$("#txt_language1").text()); 
-        $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text()); 
+        //$(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text()); 
+               var new_language = $("#txt_language2").text();
+      // $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
+        $.ajax({
+            url: base_url + 'index.php/welcome/faq',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
+
     });
     
 
     $("#lnk_language2_cell").click(function () {
-       $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
+       //$(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
+       var new_language = $("#txt_language2").text();
+       //$('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
+        $.ajax({
+            url: base_url + 'index.php/welcome/faq',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
     });
     
     $("#lnk_language3_cell").click(function () {
-       $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());
+       //$(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());
+               var new_language = $("#txt_language3").text();
+      // $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
+        $.ajax({
+            url: base_url + 'index.php/welcome/faq',
+            data: {                                
+                'new_language': new_language
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (!response['success']) {                    
+                    modal_alert_message(response['message']);
+                }          
+                else{
+                    $(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());        
+                }
+            },
+            error: function (xhr, status) {
+                //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
+            }
+        });                        
     });
     
     $("#lnk_language1faq").click(function () {

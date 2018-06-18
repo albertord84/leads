@@ -1,9 +1,10 @@
  <!DOCTYPE html>
 <html lang="en">
     <head>
-          <?php  $CI =& get_instance();?>        
+          <?php  $CI =& get_instance();?>
+          <?php $datas= $this->input->post();?>        
         <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
-        <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
+        <script type="text/javascript">var language ='<?php echo $datas['language'];?>';</script>
         <meta charset="utf-8">
         <title>FAQ</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +23,8 @@
         <link href="https://dumbu.pro/leads/src/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"  />
         <!--<link href="https://dumbu.pro/leads/src/assets/bootstrap/css/loading.css" rel="stylesheet" />-->
         <!--<link href="https://dumbu.pro/follows/src/assets/bootstrap/css/style.css" rel="stylesheet"/>-->
-        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/style2.css" />
+<!--        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/style2.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/stylenew.css" />
         <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/estilo.css" />
         <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/css/media.css" />
         <link rel="stylesheet" type="text/css" href="https://dumbu.pro/leads/src/assets/font-awesome/font-awesome.min.css" />
@@ -36,12 +38,36 @@
         <script type="text/javascript">var language = 'PT';</script>
         <script type="text/javascript">var SERVER_NAME = 'PRO';</script>
         <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/translation.js?"></script>
-        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/talkme_painel.js"></script>                
+        <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/talkme_painel.js"></script>-->                
+
         <!--<script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/user.js?"></script>
         <script type="text/javascript" src="https://dumbu.pro/leads/src/assets/js/sign_painel.js"></script>
-        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script> 
-        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>-->
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script>--> 
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>
+
+        <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"  />
+        <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/loading.css" rel="stylesheet" />
+        <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/style.css" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/stylenew.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/defaultnew.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/fonts/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/component.css" />
+        <link rel="stylesheet" href="https://dumbu.pro/follows/src/assets/css/ladda-themeless.min.css">
         
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/modernizr.custom.js"></script>                
+        <script src="https://dumbu.pro/follows/src/assets/js/spin.min.js"></script>
+        <script src="https://dumbu.pro/follows/src/assets/js/ladda.min.js"></script>                
+        <script type="text/javascript">var base_url = 'https://dumbu.pro/follows/src/';</script>
+        <script type="text/javascript">var language = 'PT';</script>
+        <script type="text/javascript">var SERVER_NAME = 'PRO';</script>
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/PT/internalization.js?"></script>
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/user.js?"></script>
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/sign_painel.js"></script>
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/talkme_painel.js"></script>                
+        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script> 
+<!--        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>
+-->
         
     </head>
 <body id="my_body">
@@ -66,11 +92,74 @@
 		</div>
     
        
-    <header class="bk-black">
+    <header class=""><!--bk-black-->
 			<div class="container">
 				<div id="dl-menu" class="dl-menuwrapper">
 					<button class="dl-trigger">Open Menu</button>
 					<ul class="dl-menu">
+                                <li id="locales_cell">
+                                    <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <?php if ($language === 'EN') { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
+                                            <span id="txt_language1">EN</span>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?> 
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us">
+                                            <span id="txt_language1">PT</span>
+                                        <?php }
+                                        else { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us">
+                                            <span id="txt_language1">ES</span>
+                                        <?php } ?>
+                                    </a>
+                                    <ul class="dl-submenu dropdown-menu">
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language2_cell">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language2">PT</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language2">ES</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language2">EN</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language3">ES</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language3">EN</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language3">PT</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                    </ul>
+                                </li>
                                                 <li>
                                                    <!-- <a href="#"><?php  echo $CI->T("ENTRAR", array(), $lenguage);?></a>
 							<ul class="dl-submenu">
@@ -102,8 +191,8 @@
 							</ul>-->
 						</li>
                                                 
-                                                                                            <li>
-                                                    <!--<a id="fechar_faq" href="#">FECHAR</a>-->
+                                                <li>
+                                                    <a id="fechar_faq" href="#">FECHAR</a>
                                                 </li>
 					</ul>
 				</div><!-- /dl-menuwrapper -->

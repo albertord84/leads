@@ -71,7 +71,8 @@ $(document).ready(function () {
     });
     
     $("#lnk_language2").click(function () {
-       var new_language = $("#txt_language2").text()
+       var new_language = $("#txt_language2").text();
+       $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
         $.ajax({
             url: base_url + 'index.php/welcome/update_language',
             data: {                                
@@ -94,7 +95,8 @@ $(document).ready(function () {
     });
     
     $("#lnk_language3").click(function () {
-       var new_language = $("#txt_language3").text()
+       var new_language = $("#txt_language3").text();
+       $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
         $.ajax({
             url: base_url + 'index.php/welcome/update_language',
             data: {                                
@@ -117,7 +119,8 @@ $(document).ready(function () {
     });
     
         $("#lnk_language2_cell").click(function () {
-       var new_language = $("#txt_language2").text()
+       var new_language = $("#txt_language2").text();
+       $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
         $.ajax({
             url: base_url + 'index.php/welcome/update_language',
             data: {                                
@@ -140,7 +143,8 @@ $(document).ready(function () {
     });
     
         $("#lnk_language3_cell").click(function () {
-       var new_language = $("#txt_language3").text()
+       var new_language = $("#txt_language3").text();
+       $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
         $.ajax({
             url: base_url + 'index.php/welcome/update_language',
             data: {                                

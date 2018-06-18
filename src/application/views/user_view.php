@@ -123,7 +123,7 @@ a:active {
                                         }
                                         else{
                                     ?>    
-                                            <!--<li>-->                                    
+                                            <li>                                   
                                                 <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
                                                     <i class="fa fa-binoculars"></i>
                                                     <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
@@ -165,7 +165,7 @@ a:active {
                                                 </form>
                                             </div>
                                         </li>
-                                    </ul></li>
+                                    </ul>
                                     <?php }?> 
                                 <li id="locales_cell">
                                     <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -279,7 +279,7 @@ a:active {
 }
                                   </style>                                 
  
-                                    <a target="_blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
+                                    <a id="lnk_faq" target="_blank" href=<?php echo base_url().'index.php/welcome/faq?language='.$language ?> >FAQs</a>
                                 </li>
                                
                                 <?php
