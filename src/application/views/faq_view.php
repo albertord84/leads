@@ -339,28 +339,28 @@ array(), $language); ?>
     
         <section id="contato" class="fleft100 input-form">
 			<div class="container">
-				<spam style="color:black; font-size:1.6em" class="fleft100 text-center m-t10">SE FICOU COM ALGUMA DUVIDA FALE CONOSCO</spam>
+				<spam style="color:black; font-size:1.6em" class="fleft100 text-center m-t10"><?php echo $CI->T("SE FICOU COM ALGUMA DUVIDA FALE CONOSCO",array(),$language); ?>"</spam>
                                 <div class="col-md-3 col-sm-3 col-xs-12"><br></div>
                                 <div id="talkme_frm" class="col-md-6 col-sm-6 col-xs-12 no-pd">
                                                                         
 					<div class="col-md-6 col-sm-6 col-xs-12 pd-r15">
 						<fieldset>
-							<input id="visitor_name" type="text" placeholder="Nome">
+							<input id="visitor_name" type="text" placeholder="<?php echo $CI->T("Nome",array(),$language); ?>">
 						</fieldset>
 						<fieldset>
-							<input id="visitor_email" type="text" placeholder="E-mail">
+							<input id="visitor_email" type="text" placeholder="<?php echo $CI->T("E-mail",array(),$language); ?>">
 						</fieldset>
 					</div>
 					<div class="col-md-6 col-sm-6 col-xs-12 pd-l15">
 						<fieldset>
-							<input id="visitor_company"( type="text" placeholder="<?php $CI->T("Empresa",array(),$language)?>">
+							<input id="visitor_company"( type="text" placeholder="<?php echo $CI->T("Empresa",array(),$language); ?>">
 						</fieldset>
 						<fieldset>
-							<input id="visitor_phone" type="text" placeholder="<?php $CI->T("Telefone",array(),$language)?>">
+							<input id="visitor_phone" type="text" placeholder="<?php echo $CI->T("Telefone",array(),$language); ?>">
 						</fieldset>
 					</div>
 					<div class="col-md-12 col-sm-12 col-xs-12 no-pd">
-						<textarea id="visitor_message" name="" placeholder="<?php $CI->T("Mensagem",array(),$language)?>" id=""  rows="8"></textarea>
+						<textarea id="visitor_message" name="" placeholder="<?php echo $CI->T("Mensagem",array(),$language); ?>" id=""  rows="8"></textarea>
                                                 
                                                 <p class="text-center"><?php echo $CI->T( "Enviando para: atendimento@dumbu.pro",array(), $language); ?>                                                </p>
                                                 
