@@ -279,7 +279,7 @@ a:active {
 }
                                   </style>                                 
  
-                                    <a id="lnk_faq" target="_blank" href=<?php echo base_url().'index.php/welcome/faq?language='.$language ?> >FAQs</a>
+                                    <a id="lnk_faq" target="_blank" href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> >FAQs</a>
                                 </li>
                                
                                 <?php

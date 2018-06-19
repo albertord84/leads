@@ -2,7 +2,12 @@
 <html lang="en">
     <head>
           <?php  $CI =& get_instance();?>
-          <?php $datas= $this->input->post();?>        
+          <?php $datas= $this->input->post();
+           if(count($datas)<1)
+           {
+            $datas= $this->input->get();   
+           }
+          ?>        
         <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
         <script type="text/javascript">var language ='<?php echo $datas['language'];?>';</script>
         <meta charset="utf-8">
@@ -45,7 +50,7 @@
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script>--> 
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>
 
-        <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"  />
+        <!--<link href="https://dumbu.pro/follows/src/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"  />-->
         <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/loading.css" rel="stylesheet" />
         <link href="https://dumbu.pro/follows/src/assets/bootstrap/css/style.css" rel="stylesheet"/>
         <link rel="stylesheet" type="text/css" href="https://dumbu.pro/follows/src/assets/css/style.css" />
@@ -58,17 +63,24 @@
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/modernizr.custom.js"></script>                
         <script src="https://dumbu.pro/follows/src/assets/js/spin.min.js"></script>
         <script src="https://dumbu.pro/follows/src/assets/js/ladda.min.js"></script>                
-        <script type="text/javascript">var base_url = 'https://dumbu.pro/follows/src/';</script>
-        <script type="text/javascript">var language = 'PT';</script>
+        <!--<script type="text/javascript">var base_url = 'https://dumbu.pro/follows/src/';</script>-->
+        <!--<script type="text/javascript">var language = 'PT';</script>-->
         <script type="text/javascript">var SERVER_NAME = 'PRO';</script>
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/PT/internalization.js?"></script>
-        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/user.js?"></script>
+        <!--<script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/user.js?"></script>-->
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/sign_painel.js"></script>
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/talkme_painel.js"></script>                
         <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/js/controllers.js"></script> 
 <!--        <script type="text/javascript" src="https://dumbu.pro/follows/src/assets/bootstrap/js/bootstrapold.min.js"></script>
 -->
-        
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>        
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/faq_page.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script>                
+            
+            <!--<script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/faq_page.js'?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> -->
+    
     </head>
 <body id="my_body">
                 
@@ -96,7 +108,7 @@
 			<div class="container">
 				<div id="dl-menu" class="dl-menuwrapper">
 					<button class="dl-trigger">Open Menu</button>
-					<ul class="dl-menu">
+					<!--<ul class="dl-menu">
                                 <li id="locales_cell">
                                     <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         &nbsp;&nbsp;&nbsp;
@@ -161,40 +173,9 @@
                                     </ul>
                                 </li>
                                                 <li>
-                                                   <!-- <a href="#"><?php  echo $CI->T("ENTRAR", array(), $lenguage);?></a>
-							<ul class="dl-submenu">
-								<li>
-                                                                    <div id="login_container1">
-									<form id="usersLoginForm" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
-										<div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
-										<?php  echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(), $lenguage);?>										</div>
-										<div class="form-group center" style="font-family:sans-serif; font-size:0.7em">
-										<?php  echo $CI->T("Use login e senha de Instagram", array(), $lenguage);?>										</div>
-										<div class="form-group">
-											<input id="userLogin1" type="text" class="form-control" placeholder="Usuário" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
-										</div>
-										<div class="form-group">
-											<input id="userPassword1" type="password" class="form-control" placeholder="Senha" required="">
-										</div>
-										<div class="form-group">
-                                                                                    <button type="button" name="" value="" id="btn_dumbu_login1" style="white-space: normal;" class="btn btn-success" ><spam class="ladda-label"></spam></button>
-										</div>
-										
-										<div class="form-group">
-											<input type="submit" name="" value="ENTRAR" id="btn_dumbu_login1" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff" />
-										</div>
-										<div id="container_login_message1" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
-										</div>
-									</form>
-                                                                    </div>
-								</li>
-							</ul>-->
-						</li>
-                                                
-                                                <li>
                                                     <a id="fechar_faq" href="#">FECHAR</a>
                                                 </li>
-					</ul>
+					</ul>-->
 				</div><!-- /dl-menuwrapper -->
                                 
 				<nav class="navbar navbar-default navbar-static-top">
@@ -205,39 +186,71 @@
 						</a>
 					</div>
 					<ul class="nav navbar-nav navbar-right menu-principal">
-                                                <li class="dropdown">
-							<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="https://dumbu.pro/follows/src/assets/images/user.png" class="wauto us" alt="User">ENTRAR<spam class="caret"></spam></a>-->
-							<ul class="dropdown-menu">
-								<li>
-									<div class="row">
-										<div class="col-md-12">
-                                                                                    <div id="login_container2">
-											<form id="usersLoginForm" action="#" method="#" class="form" role="form" accept-charset="UTF-8">
-												<div class="form-group center" style="font-family:sans-serif; font-size:0.9em">
-                                                                                                    <?php  echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(), $lenguage);?>						<div class="form-group center" style="font-family:sans-serif; font-size:0.7em">
-                                                				                    <?php  echo $CI->T("Use login e senha de Instagram", array(), $lenguage);?>										</div>
-												<div class="form-group">
-                                                                                                    <input id="userLogin2" type="text" class="form-control" placeholder="Usuário" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
-												</div>
-												<div class="form-group">
-													<input id="userPassword2" type="password" class="form-control" placeholder="Senha" required="">
-												</div>
-												<!--<div class="form-group">
-													<button id="btn_dumbu_login2" class="btn btn-success btn-block ladda-button" type="button" data-style="expand-left" data-spinner-color="#ffffff">
-														<spam class="ladda-label">Entrar</spam>
-													</button>
-												</div>-->
-												<div id="container_login_message2" class="form-group" style="text-align:justify;visibility:hidden; font-family:sans-serif; font-size:0.9em">
-												</div>
-											</form>
-                                                                                    </div>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li> 
+                                <li id="locales_cell">
+                                    <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <?php if ($language === 'EN') { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us">
+                                            <span id="txt_language1">EN</span>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?> 
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us">
+                                            <span id="txt_language1">PT</span>
+                                        <?php }
+                                        else { ?>
+                                            <img id="img_language1" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us">
+                                            <span id="txt_language1">ES</span>
+                                        <?php } ?>
+                                    </a>
+                                    <ul class="dl-submenu dropdown-menu">
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language2_cell">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language2">PT</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language2">ES</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language2_cell" href="#">
+                                            <img id="img_language2" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language2">EN</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                        <li>
+
+                                        <?php if ($language === 'EN') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/es_flag.png'?>" alt="ES" class="wauto us"/>
+                                            <span id="txt_language3">ES</span>
+                                            </a>
+                                        <?php }
+                                        elseif ($language === 'PT') { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/en_flag.png'?>" alt="EN" class="wauto us"/>
+                                            <span id="txt_language3">EN</span>
+                                            </a>
+                                        <?php }
+                                        else { ?>
+                                            <a id="lnk_language3_cell" href="#">
+                                            <img id="img_language3" src="<?php echo base_url().'assets/img/pt_flag.png'?>" alt="PT" class="wauto us"/>
+                                            <span id="txt_language3">PT</span>
+                                            </a>
+                                        <?php } ?>
+
+                                        </li>
+                                    </ul>
+                                </li>
                                                 <li>
-                                                   <!-- <a id="fechar_faq2" href="#"><?php echo $CI->T("FECHAR", array(), $lenguage)?><img src="https://dumbu.pro/leads/src/assets/img/FECHAR.png" class="wauto us" alt="User"></a>-->
+                                                    <a id="fechar_faq" href="#">FECHAR</a>
                                                 </li>
 					</ul>
 				</nav>
@@ -245,7 +258,7 @@
 		</header>
         
     <div class="container">
-        <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes", array(), $lenguage)?></h2>
+        <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes.", array(), $lenguage)?></h2>
                 
         
             <div class="accordion-container">
@@ -264,7 +277,7 @@
                             
                         </p>
  </p></div><a href="#" class="accordion-titulo">
-<?php echo $CI->T("Como posso utilizar meus Leads?, </b><br>",array(), $language); ?>     
+<?php echo $CI->T("Como posso utilizar meus Leads?",array(), $language); ?>     
      <span class="toggle-icon"></span></a><div class="accordion-content">
                           <p><p ALIGN="justify">
                  <?php 

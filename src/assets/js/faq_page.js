@@ -157,7 +157,7 @@ $(document).ready(function(){
         window.close();
     });
 
-    $("#lnk_language2").click(function () {
+/*    $("#lnk_language2").click(function () {
        var new_language = $("#txt_language2").text()
         $.ajax({
             url: base_url + 'index.php/welcome/update_language',
@@ -247,7 +247,7 @@ $(document).ready(function(){
                 //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
             }
         });
-    });
+    });*/
     
     /*$(".help").hover(
         function(){
@@ -339,7 +339,8 @@ $(document).ready(function(){
        //$(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
        var new_language = $("#txt_language2").text();
        //$('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
-        $.ajax({
+               translat(new_language);
+        /*$.ajax({
             url: base_url + 'index.php/welcome/faq',
             data: {                                
                 'new_language': new_language
@@ -357,7 +358,7 @@ $(document).ready(function(){
             error: function (xhr, status) {
                 //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
             }
-        });                        
+        });*/                        
        
         
     });
@@ -370,9 +371,10 @@ $(document).ready(function(){
 //        $("#txt_language3").text(txt_tmp);
 //        $(location).attr("href",base_url+"index.php?language="+$("#txt_language1").text()); 
         //$(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text()); 
-               var new_language = $("#txt_language2").text();
+               var new_language = $("#txt_language3").text();
       // $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
-        $.ajax({
+               translat(new_language);
+        /*$.ajax({
             url: base_url + 'index.php/welcome/faq',
             data: {                                
                 'new_language': new_language
@@ -390,7 +392,7 @@ $(document).ready(function(){
             error: function (xhr, status) {
                 //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
             }
-        });                        
+        });*/                        
 
     });
     
@@ -399,7 +401,8 @@ $(document).ready(function(){
        //$(location).attr("href",base_url+"index.php?language="+$("#txt_language2").text());
        var new_language = $("#txt_language2").text();
        //$('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
-        $.ajax({
+       translat(new_language);
+        /*$.ajax({
             url: base_url + 'index.php/welcome/faq',
             data: {                                
                 'new_language': new_language
@@ -417,14 +420,15 @@ $(document).ready(function(){
             error: function (xhr, status) {
                 //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
             }
-        });                        
+        }); */                       
     });
     
     $("#lnk_language3_cell").click(function () {
        //$(location).attr("href",base_url+"index.php?language="+$("#txt_language3").text());
                var new_language = $("#txt_language3").text();
+               translat(new_language);
       // $('#lnk_faq').attr("href",base_url+"index.php/welcome/faq?language="+new_language)
-        $.ajax({
+       /* $.ajax({
             url: base_url + 'index.php/welcome/faq',
             data: {                                
                 'new_language': new_language
@@ -442,8 +446,14 @@ $(document).ready(function(){
             error: function (xhr, status) {
                 //message_container('Não foi possível responder a sua solicitude!',fieldErrorMessage,'red');                                           
             }
-        });                        
+        });*/                        
     });
+    
+    function translat(leng){
+        
+        $(location).attr("href",base_url+"index.php/welcome/faqget?language="+leng);        
+        
+    }
     
     $("#lnk_language1faq").click(function () {
         //alert($('#img_language1').attr('src'));
