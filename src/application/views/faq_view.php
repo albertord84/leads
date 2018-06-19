@@ -258,7 +258,7 @@
 		</header>
         
     <div class="container">
-        <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes.", array(), $lenguage)?></h2>
+        <h2 id= "cabeçalho" class="text-center"><?php echo $CI->T("Confira abaixo as perguntas mais frequentes.", array(), $language)?></h2>
                 
         
             <div class="accordion-container">
@@ -353,14 +353,14 @@ array(), $language); ?>
 					</div>
 					<div class="col-md-6 col-sm-6 col-xs-12 pd-l15">
 						<fieldset>
-							<input id="visitor_company" type="text" placeholder="Empresa">
+							<input id="visitor_company"( type="text" placeholder="<?php $CI->T("Empresa",array(),$language)?>">
 						</fieldset>
 						<fieldset>
-							<input id="visitor_phone" type="text" placeholder="Telefone">
+							<input id="visitor_phone" type="text" placeholder="<?php $CI->T("Telefone",array(),$language)?>">
 						</fieldset>
 					</div>
 					<div class="col-md-12 col-sm-12 col-xs-12 no-pd">
-						<textarea id="visitor_message" name="" placeholder="Mensagem" id=""  rows="8"></textarea>
+						<textarea id="visitor_message" name="" placeholder="<?php $CI->T("Mensagem",array(),$language)?>" id=""  rows="8"></textarea>
                                                 
                                                 <p class="text-center"><?php echo $CI->T( "Enviando para: atendimento@dumbu.pro",array(), $language); ?>                                                </p>
                                                 

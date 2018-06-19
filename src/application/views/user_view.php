@@ -39,35 +39,6 @@
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>
         
-<style>
-/* unvisited link */
-a:link {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* visited link */
-a:visited {
-    color: yellow;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* mouse over link */
-a:hover {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* selected link */
-a:active {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-</style>
     </head>
     <body>
     <section class="topo-home fleft100 bk-black">
@@ -249,36 +220,6 @@ a:active {
                                     </a>
                                 </li>
                                 <li>
-                                   <style>
-/* unvisited link */
-a:link {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* visited link */
-a:visited {
-    color: yellow;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* mouse over link */
-a:hover {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-/* selected link */
-a:active {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-}
-                                  </style>                                 
- 
                                     <a id="lnk_faq" target="_blank" href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> >FAQs</a>
                                 </li>
                                
