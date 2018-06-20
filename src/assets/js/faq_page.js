@@ -153,7 +153,7 @@ $(document).ready(function(){
         window.close();
     });
     
-    $("#fechar_faq2").click(function(){
+    $("#fechar_faq_cell").click(function(){
         window.close();
     });
 

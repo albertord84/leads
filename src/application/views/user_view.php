@@ -138,6 +138,9 @@
                                         </li>
                                     </ul>
                                     <?php }?> 
+                                <li>
+                                    <a id="lnk_faq_cell" target="_blank" href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> >FAQs</a>
+                                </li>
                                 <li id="locales_cell">
                                     <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         &nbsp;&nbsp;&nbsp;
