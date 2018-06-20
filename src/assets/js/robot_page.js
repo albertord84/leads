@@ -116,6 +116,12 @@ $(document).ready(function () {
         });                          
     });
 
+    $('#login_container2').keypress(function (e) {
+        if (e.which == 13) {
+            $("#do_show_robots").click();
+            return false;
+        }
+    });
     
     $(document).on('click', '.robotcancel', function(){                
         var id_element = $(this).attr('id');
@@ -262,12 +268,12 @@ $(document).ready(function () {
                             else
                             {html+='; background-color: white';}
                             html+= '">';
-                                html+= '<td style="text-align:right; width:5%; padding:5px">';
+                                html+= '<td style="text-align:left; width:5%; padding:5px">';
                                     var k=i+1;
                                     var segme='<b>'+k;
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
-                                    html+= '<td style="width:30%; padding:5px">';
+                                    html+= '<td style="text-align:left; width:30%; padding:5px">';
                                     html+='<b>Dumbu ID: </b>'+robots[i]['id']+'<br>';
                                     html+='<b>DS ID:</b>'+robots[i]['ds_user_id']+'<br><br>';
                                     //html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+robots[i]['id'];

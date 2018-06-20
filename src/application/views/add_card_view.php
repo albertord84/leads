@@ -53,6 +53,5 @@
     <button id="do_add_card" type="button" class="btn btn-success active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
       <spam class="ladda-label"><div style="color:white; font-weight:bold">Add credit card</div></spam>
     </button>
-        
   </body>
 </html>

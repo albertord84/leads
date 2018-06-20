@@ -10,6 +10,13 @@ $(document).ready(function () {
     });
     
     //------------desenvolvido para DUMBU-LEADS-------------------    
+    $('#login_container1').keypress(function (e) {
+        if (e.which == 13) {
+            $("#execute_query").click();
+            return false;
+        }
+    });
+    
     $("#do_logout").click(function () {                
         $.ajax({
             url: base_url + 'index.php/admin/logout',            
@@ -30,9 +37,11 @@ $(document).ready(function () {
         });                            
     });
     
-    $("#execute_query").click(function () { 
+    $("#execute_query_email").click(function () {
+    
     var status_id = Number($('#client_status').val());
     var asn_date_from = $('#assin_date_from1').val();
+    var client_id=$('#client_id1').val();
     var asn_date_to=$('#assin_date_to1').val();
     var date_from = $('#status_date_from1').val();
     var date_to=$('#status_date_to1').val();
@@ -44,6 +53,8 @@ $(document).ready(function () {
     var lst_access3=$('#last_access3').val();
     var lst_access2=$('#last_access2').val();
     var lst_access4=$('#last_access4').val();
+    var campaigns_from=$('#campaigns_from').val();
+    var campaigns_to=$('#campaigns_to').val();
     //var checu=document.getElementById('usecard');
     var checc=document.getElementById('createcampaing');
     var req_card=Number( $('#payments_types').val());
@@ -57,7 +68,8 @@ $(document).ready(function () {
             url: base_url + 'index.php/admin/show_users', 
             data:  {
                         'status_id': status_id,
-                        'language': language,                                
+                        'language': language, 
+                        'client_id': client_id,
                         'asn_date_from': asn_date_from,
                         'asn_date_to':asn_date_to,
                         'date_from':date_from,
@@ -71,7 +83,170 @@ $(document).ready(function () {
                         'lst_access2':lst_access2,
                         'lst_access4':lst_access4,
                         'req_card':req_card,
-                        'req_cam':req_cam
+                        'req_cam':req_cam,
+                        'campaigns_from':campaigns_from,
+                        'campaigns_to':campaigns_to
+                    }, 
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) 
+            {
+                if (response['success']) { 
+                    var users = response['users_array'];
+                    var i, num_users = users.length;
+                    var html = "";
+                    var options_trd=response['options'];
+//                    for(i = 0; i < num_users; i++){
+//                        html += '<div id="user_'+users[i]['id']+'" >';
+//                            html += '<b>login: </b>' + users[i]['login']+'<br>';
+//                            html += '<b>status: </b>' + users[i]['status_id']+'<br>';
+//                            html += '<b>data: </b>' + toDate(users[i]['init']) + '<br><br>';
+//                            html += '<b>email: </b>' + users[i]['end']+'<br>'
+//                            html += '---------------------------------- <br>';
+//
+//                                                html += '</div>';
+//                    }
+            //html+='<div class="row">';
+            //html+='<div class="col-md-2">';
+            html+='<div id="user_form" class="row">';
+            html+=    '<div class="col-md-1"></div>';
+            html+=    '<div class="col-md-2">';
+
+            html+='<br><p><b style="color:red">Total de registros: </b><b id="total_users">';
+            //if(verify)
+            //    html+=num_users;
+            html+='</b></p><br>';
+            
+            html+='</div>';
+            /*html+=    '<div class="col-md-1"></div>';
+            html+=    '<div class="col-md-2" id="totalpago">';
+            html+='<br><p><b style="color:red">Pagamento Total: </b><b id="totalpayment"></b></p><br>';
+            html+='</div>';*/
+            html+='</div>';
+            html+='<div class="row">';
+            html+='<div class="col-xs-10" style="margin-left: 100px;">';
+            html+='<table class="table">';
+            html+='<tr class="list-group-item-success">';
+            html+='<td style="text-align:left; width:100%; padding:5px"><b>Emails</b></td>';
+            /*html+='<td style="text-align:left; width:40%; padding:5px"><b>Dados gerais</b></td>';
+            html+='<td style="text-align:left; width:30%; padding:5px"><b>Estado atual</b></td>';
+            html+='<td style="text-align:left; width:20%; padding:5px"><b>Operações</b></td>';*/
+            html+='</tr>';
+            html+='</table>';
+            html+='</div>';
+            html+='</div>';
+            var sel='</select>';
+            var cont_users=new Array(num_users);
+            var total_users=0;
+                   /* for(var i = 0; i < num_users; i++){
+                        //html+=''
+                           cont_users[users[i]['user_id']]=0;
+                            payment_users[users[i]['user_id']]=0;
+                        }*/        
+            
+            html+='<div id="tablausers">';//class="row"
+            html+='<div class="col-xs-10" style="margin-left: 100px;">';
+            html+='<table class="table">';
+            /*var y,z;
+            if(num_users>1)
+            {    
+              for (y in users[0]){
+                z=y;
+                            
+              }      
+            }
+             y=z; */   
+                    for(var i = 0; i < num_users; i++){
+
+                        //html+=''
+                        if((typeof cont_users[users[i]['user_id']]=="undefined")||verify)
+                        {  
+                            total_users++;
+                            cont_users[users[i]['user_id']]=1;
+                            html+= '<tr class="list-group-item-success" id="row-client_'+users[i]['user_id']+'" style="';//visibility: visible;display: block'; 
+                            html+='; background-color: white';
+                            html+= '">';
+                                    html+= '<td style="text-align:left; width:100%; padding:5px">';
+                                    html+= users[i]['email'];
+                                    html+='</td>';                                
+                               
+                                   
+                                    html+='</tr>';
+
+                                    //html+='<br>';
+                                }
+                        
+                        
+                    }
+                    html+='</table>';
+                    html+='</div>';
+                    html+='</div>';
+                    document.getElementById("container_users1").innerHTML = html;
+                      //document.getElementById('totalpayment').innerHTML=z1.toLocaleString('de-DE', { style: 'currency', currency: 'USD' });  
+                      document.getElementById('total_users').innerHTML=total_users.toString();
+                } else {
+                    document.getElementById("container_users1").innerHTML = "";  
+                    modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+//                $('#container_sigin_message').text('Não foi possível executar sua solicitude!');
+//                $('#container_sigin_message').css('visibility', 'visible');
+//                $('#container_sigin_message').css('color', 'red');
+            }
+        });                            
+        
+        
+    });
+    
+    $("#execute_query").click(function () { 
+    var status_id = Number($('#client_status').val());
+    var asn_date_from = $('#assin_date_from1').val();
+    var client_id=$('#client_id1').val();
+    var asn_date_to=$('#assin_date_to1').val();
+    var date_from = $('#status_date_from1').val();
+    var date_to=$('#status_date_to1').val();
+    var prf_client1 = $('#profile_client1').val();
+    var eml_client1=$('#email_client1').val();
+    var card_name = $('#credit_card_name1').val();
+    var cod_prom=$('#cod_promocional1').val();
+    var lst_access1=$('#last_access1').val();
+    var lst_access3=$('#last_access3').val();
+    var lst_access2=$('#last_access2').val();
+    var lst_access4=$('#last_access4').val();
+    var campaigns_from=$('#campaigns_from').val();
+    var campaigns_to=$('#campaigns_to').val();
+    //var checu=document.getElementById('usecard');
+    var checc=document.getElementById('createcampaing');
+    var req_card=Number( $('#payments_types').val());
+    //var req_cam=Boolean(checc.checked);
+    var req_cam='';
+    if(checc.checked)
+        req_cam=true;
+    //var verify=!(!card_name&&!eml_client1&&!prf_client1);
+    var verify=false;
+        $.ajax({
+            url: base_url + 'index.php/admin/show_users', 
+            data:  {
+                        'status_id': status_id,
+                        'language': language, 
+                        'client_id': client_id,
+                        'asn_date_from': asn_date_from,
+                        'asn_date_to':asn_date_to,
+                        'date_from':date_from,
+                        'date_to':date_to,
+                        'prf_client1':prf_client1,
+                        'eml_client1':eml_client1,
+                        'card_name':card_name,
+                        'cod_prom':cod_prom,
+                        'lst_access1':lst_access1,
+                        'lst_access3':lst_access3,
+                        'lst_access2':lst_access2,
+                        'lst_access4':lst_access4,
+                        'req_card':req_card,
+                        'req_cam':req_cam,
+                        'campaigns_from':campaigns_from,
+                        'campaigns_to':campaigns_to
                     }, 
             type: 'POST',
             dataType: 'json',
@@ -113,10 +288,10 @@ $(document).ready(function () {
             html+='<div class="col-xs-10" style="margin-left: 100px;">';
             html+='<table class="table">';
             html+='<tr class="list-group-item-success">';
-            html+='<td style="width:10%; padding:5px"><b>No.</b></td>';
-            html+='<td style="width:20%; padding:5px"><b>Dados gerais</b></td>';
-            html+='<td style="width:25%; padding:5px"><b>Estado atual</b></td>';
-            html+='<td style="width:45%; padding:5px"><b>Operações</b></td>';
+            html+='<td style="text-align:left; width:10%; padding:5px"><b>No.</b></td>';
+            html+='<td style="text-align:left; width:40%; padding:5px"><b>Dados gerais</b></td>';
+            html+='<td style="text-align:left; width:30%; padding:5px"><b>Estado atual</b></td>';
+            html+='<td style="text-align:left; width:20%; padding:5px"><b>Operações</b></td>';
             html+='</tr>';
             html+='</table>';
             html+='</div>';
@@ -161,19 +336,19 @@ $(document).ready(function () {
                             totalpayment+=Number(users[i]['amount_in_cents']);
                             code_payment[users[i]['user_id']][users[i]['date']]=1;
                           }  
-                            html+= '<tr class="list-group-item-success" id="row-client_'+users[i]['user_id']+'" style="visibility: visible;display: block'; 
+                            html+= '<tr class="list-group-item-success" id="row-client_'+users[i]['user_id']+'" style="';//visibility: visible;display: block'; 
                             var jot=total_users % 2;
                             if (jot == 1) 
                             {html+='; background-color: #dff0d8';}
                             else
                             {html+='; background-color: white';}
                             html+= '">';
-                                html+= '<td style="text-align:right; width:10%; padding:5px">';
+                                html+= '<td style="text-align:left; width:10%; padding:5px">';
                                     var k=total_users;
                                     var segme='<b>'+k;
                                     html+= segme; html+='</b>';
                                     html+='</td>';                                
-                                    html+= '<td style="width:33%; padding:5px">';
+                                    html+= '<td style="text-align:left; width:40%; padding:5px">';
                                     html+='<b>Id do cliente: </b>'+users[i]['user_id']+'<br>';
                                     //html+='<b>Dumbu ID: </b><input type="text" name="naminprobdumbuid_'+users[i]['id'];
                                     //html+='" id= "idinprobdumbuid_'+users[i]['id'];
@@ -201,7 +376,6 @@ $(document).ready(function () {
                                     //html+='<b>Nome no cartão: </b>'+users[i]['credit_card_name']+'<br>';
                                     //html+='<div class="col-md-2" id="totalpago_'+users[i]['user_id']+'">';
                                     //html+='<b style="color:red">Pagamento Total: </b><div id="totalpayment_'+users[i]['user_id']+'">0</div></div>';
-                                    html+='<div id="totalpago_'+users[i]['user_id']+'"><b>Pagamento Total: </b><div id="totalpayment_'+users[i]['user_id']+'"></div><br></div>';
                              
                                     //html+='<b>Recobrar conta usando email: </b><br><input type="text" name="naminprobaccountemail_'+users[i]['id'];
                                     //html+='" id= "idinprobaccountemail_'+users[i]['id'];
@@ -218,11 +392,11 @@ $(document).ready(function () {
                                     //    echo '<b>Idioma: </b>'.$result[$i]['language'].'<br><br>';
                                     //else echo '<br>';
                                     //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
-                                    html+= '<td style="width:33%; padding:5px">';
+                                    html+= '<td style="text-align:left; width:30%; padding:5px">';
                                     var nid=users[i]['status_id'];
-                                    html+='<div class="col-md-2">';
-                                    html+='<b>Status: </b><br>';
-                                    html+='<select class="user_atribute" id="idselestatus_'+users[i]['user_id'];
+                                    //html+='<div class="col-md-2">';
+                                    html+='<b>Status: </b>'+users[i]['st_name']+'<br>';
+                        /*          html+='<select class="user_atribute" id="idselestatus_'+users[i]['user_id'];
                                     html+='" name="nameselestatus_'+users[i]['user_id']+'" value="'+users[i]['status_id'];
                                     html+='">';
                                     var html1='';
@@ -230,7 +404,9 @@ $(document).ready(function () {
                                     html1=html1.replace('"'+users[i]['status_id']+'"','"'+users[i]['status_id']+'" selected');
                                     html+=html1;
                                     html+='</select>';
-                                    html+='</div>';
+                                    html+='</div>';*/
+                                    html+='<b>Data do status: </b>'+toDate(users[i]['status_date']).toString()+'<br>';
+                                    html+='<div id="totalpago_'+users[i]['user_id']+'"></div><br>';
                                     //html+='<br>';
                                     //html+='</div>';
                                     //html+='<br>';
@@ -259,8 +435,8 @@ $(document).ready(function () {
                                     //html+=datemp+'">';
                                     //html+='</input>';
                                     html+='</td>';
-                                    html+= '<td style="width:33%; padding:5px">';
-                                    html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['user_id']+'" name="namebtnapply_'+users[i]['user_id'];
+                                    html+= '<td style="text-align:left; width:20%; padding:5px">';
+                                    /*html+='<button  style="min-width:150px" id = "idbtnapply_'+users[i]['user_id']+'" name="namebtnapply_'+users[i]['user_id'];
                                     html+='" type="button" class="userok"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //html+='<span class="ladda-label">Ok</span>';
                                     html+='Salvar status</button>';
@@ -272,9 +448,9 @@ $(document).ready(function () {
                                     //html+='<span class="ladda-label">Cancel</span>';
                                     html+='Cancel</button>';
                                     html+='<br>';
-                                    html+='<br>';
+                                    html+='<br>';*/
                                     html+='<button  style="min-width:150px" id = "idbtnlogin_'+users[i]['user_id']+'" name="namebtnlogin_'+users[i]['user_id'];
-                                    html+='" type="button" class="do_login_user"  data-spinner-color="#ffffff">';//data-style="expand-left" 
+                                    html+='" type="button" target="_blank" class="do_login_user"  data-spinner-color="#ffffff">';//data-style="expand-left" 
                                     //btn btn-success ladda-button
                                     //html+='<span class="ladda-label">Cancel</span>';
                                     html+='Login</button>';
@@ -322,7 +498,7 @@ $(document).ready(function () {
                         else
                         {
                             var z=Number(payment_users[h]/100);
-                            document.getElementById('totalpayment_'+h.toString()).innerHTML=z.toLocaleString('de-DE',{ style: 'currency', currency: 'USD' });//z.toLocaleString('de-DE', { style: 'currency', decimal: '2' });
+                            document.getElementById('totalpago_'+h.toString()).innerHTML='<b>Pagamento Total: </b>'+z.toLocaleString('de-DE',{ style: 'currency', currency: 'USD' });//z.toLocaleString('de-DE', { style: 'currency', decimal: '2' });
                         }    
                     }    
                     //modal_alert_message("Existen "+num_users+" usuarios a mostrar");

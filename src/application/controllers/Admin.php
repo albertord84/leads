@@ -116,6 +116,8 @@ class Admin extends CI_Controller {
                     $id = $user['id_usr'];                    
                 }
                 $card = $this->credit_card_model->get_credit_card($id);
+                $st_nam= $this->T($user['st_name'], array(), $lang);
+                //$st_nam=
            /* foreach ($user as $k => $dat) 
             {
              if($k!=-50)
@@ -144,6 +146,8 @@ class Admin extends CI_Controller {
                                 //'payment_type' => $user['payment_type'],
                                 'amount_in_cents' =>$user['amount_in_cents'],
                                 'date'=>$user['idpay'],
+                                'status_date'=>$user['status_date'],
+                                'st_name'=>$st_nam,
                                 );
                 //if(!$datas['card_name'])
                                

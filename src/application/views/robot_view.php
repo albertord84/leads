@@ -209,7 +209,7 @@
                 </div>
     
                             </td><td>
-                <div class="col-md-2">
+                <!--<div class="col-md-2">
                     <div class="col-xs-5">
                     <div class="center filters">
                         
@@ -218,7 +218,7 @@
                         </button>
                     </div>
                     </div>    
-                </div>    
+                </div>-->    
                 </td></tr></table> 
                 </div>
             </div>
@@ -395,7 +395,6 @@
             </div>
         </div>                                                        
     </div>
-    
     </body>
     
     

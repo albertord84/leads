@@ -94,7 +94,7 @@
                                         }
                                         else{
                                     ?>    
-                                            <!--<li>-->                                    
+                                            <li>                                   
                                                 <a href="<?php echo base_url().'index.php/welcome/client'; ?>">
                                                     <i class="fa fa-binoculars"></i>
                                                     <?php echo mb_strtoupper($CI->T("CAMPANHAS", array(),$language));?>
@@ -136,8 +136,11 @@
                                                 </form>
                                             </div>
                                         </li>
-                                    </ul></li>
+                                    </ul>
                                     <?php }?> 
+                                <li>
+                                    <a id="lnk_faq_cell" target="_blank" href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> >FAQs</a>
+                                </li>
                                 <li id="locales_cell">
                                     <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         &nbsp;&nbsp;&nbsp;
@@ -214,14 +217,14 @@
                                 <li >
                                     <a href="https://dumbu.pro/dumbu/src" class="a-border i-block hidden-xs text-right"><?php echo $CI->T("Quer seguidores?", array(),$language);?> <br><?php echo $CI->T("Clique aqui", array(),$language);?></a>
                                 </li>
-                                <li >
+                                <li>
                                     <a href="#lnk_sign_in_now">
                                         <?php echo $CI->T("ASSINAR AGORA", array(),$language);?>
                                     </a>
                                 </li>
-<!--                                <li>
-                                    <a target=" blank" href=<?php echo base_url().'index.php/welcome/faq' ?> >FAQs</a>
-                                </li>-->
+                                <li>
+                                    <a id="lnk_faq" target="_blank" href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> >FAQs</a>
+                                </li>
                                
                                 <?php
                                 if($this->session->userdata('login')){
@@ -691,7 +694,12 @@
                 </div>
             </div>
         </div>                                                        
-    </div> 
+    </div>
+    <!-- BEGIN JIVOSITE CODE -->
+<script type='text/javascript'>
+(function(){ var widget_id = 'Af9Dp13Ek6';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+<!-- END JIVOSITE CODE -->
     </body>
     <!--[if lt IE 9]>
     <script src="js/jquery-1.9.1.js"></script>
