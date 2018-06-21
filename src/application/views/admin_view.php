@@ -496,7 +496,7 @@ a:active {
                     <div class="center filters">
                     <!--<b>Assinatura (inic)</b>
                         <input id = "signin_initial_date" type="text" class="form-control"  placeholder="MM/DD/YYYY" >-->
-                        <b>Data procurada</b>
+                        <b>Procurar pagamento</b>
                     </div>
                     <div class="col-xs-1">
                         <b>do</b>
