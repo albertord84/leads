@@ -108,6 +108,11 @@
 			<div class="container">
 				<div id="dl-menu" class="dl-menuwrapper">
 					<button class="dl-trigger">Open Menu</button>
+                                        <ul class="dl-menu">
+                                            <li>
+                                                <a id="fechar_faq_cell" href="#">FECHAR</a>
+                                            </li>
+                                        </ul>
 					<!--<ul class="dl-menu">
                                 <li id="locales_cell">
                                     <a style="color:white" id="lnk_language1_cell" href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -250,7 +255,7 @@
                                     </ul>
                                 </li>
                                                 <li>
-                                                    <a id="fechar_faq" href="#">FECHAR</a>
+                                                    <a id="fechar_faq" href="#"><?php echo $CI->T("FECHAR",array(), $language); ?></a>
                                                 </li>
 					</ul>
 				</nav>
@@ -339,7 +344,7 @@ array(), $language); ?>
     
         <section id="contato" class="fleft100 input-form">
 			<div class="container">
-				<spam style="color:black; font-size:1.6em" class="fleft100 text-center m-t10"><?php echo $CI->T("SE FICOU COM ALGUMA DUVIDA FALE CONOSCO",array(),$language); ?>"</spam>
+				<spam style="color:black; font-size:1.6em" class="fleft100 text-center m-t10"><?php echo $CI->T("SE FICOU COM ALGUMA DUVIDA FALE CONOSCO",array(),$language); ?></spam>
                                 <div class="col-md-3 col-sm-3 col-xs-12"><br></div>
                                 <div id="talkme_frm" class="col-md-6 col-sm-6 col-xs-12 no-pd">
                                                                         
