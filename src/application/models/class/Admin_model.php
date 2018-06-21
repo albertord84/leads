@@ -36,7 +36,6 @@ class Admin_model extends CI_Model {
                 //$this->db->join('campaings','users.id=campaings.client_id');
             //$this->db->join('clients','users.id=clients.user_id','left');
           $this->db->where('role_id <>',$this->user_role::ADMIN);
-          if($filter['prf_client1']==''&& $filter['eml_client1']==''&&$filter['card_name']==''&&$filter['client_id']==''){  
              if(/*$filter['status_id']>0 &&*/ $filter['status_id']!= user_status::BEGINNER)
              {    
                 $cnf=1;             
@@ -143,6 +142,46 @@ class Admin_model extends CI_Model {
             
             //if($filter['req_cam'])
             //  $this->db->join('campaings','clients.user_id=campaings.client_id');
+              if($filter['prf_client1']==''&& $filter['eml_client1']==''&&$filter['card_name']==''&&$filter['client_id']=='')
+              {  
+               $cnf=$cnf;
+               
+              }
+              else 
+              {
+                  $cnf=1;
+            if($filter['prf_client1']=='')
+            {
+                if($filter['eml_client1']=='')
+                {
+                    if($filter['client_id']=='')
+                    {    
+                        $card_name = $filter['card_name'];
+                        $this->db->where(array('credit_card_name' => "$card_name"));
+                    }
+                    else {
+                        $client1 = $filter['client_id'];
+                        $this->db->where(array('users.id' => "$client1"));
+                       
+                    }
+                    
+                }
+                else
+                {
+                    $eml_client1 = $filter['eml_client1'];
+                    $this->db->where(array('email' => "$eml_client1"));
+                }
+                
+            }
+            else
+            {
+                $prf_client1 = $filter['prf_client1'];
+                $this->db->where(array('login' => "$prf_client1"));
+            }
+                     
+                     
+              }
+                    
               if($cnf)
               { 
                 $this->db->join('payments','users.id=payments.client_id','left');
@@ -184,42 +223,6 @@ class Admin_model extends CI_Model {
 
               
              }
-           }
-          else{
-              $identify=true;
-              $this->db->join('payments','users.id=payments.client_id');
-              if($filter['req_cam'])
-                $this->db->join('campaings','users.id=campaings.client_id');
-
-            if($filter['prf_client1']=='')
-            {
-                if($filter['eml_client1']=='')
-                {
-                    if($filter['client_id']=='')
-                    {    
-                        $card_name = $filter['card_name'];
-                        $this->db->where(array('credit_card_name' => "$card_name"));
-                    }
-                    else {
-                        $client1 = $filter['client_id'];
-                        $this->db->where(array('users.id' => "$client1"));
-                       
-                    }
-                    
-                }
-                else
-                {
-                    $eml_client1 = $filter['eml_client1'];
-                    $this->db->where(array('email' => "$eml_client1"));
-                }
-                
-            }
-            else
-            {
-                $prf_client1 = $filter['prf_client1'];
-                $this->db->where(array('login' => "$prf_client1"));
-            }
-          }    
          
             $user_rows =  $this->db->get()->result_array(); 
             /*$a=array();
