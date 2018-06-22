@@ -110,7 +110,7 @@
 					<button class="dl-trigger">Open Menu</button>
                                         <ul class="dl-menu">
                                             <li>
-                                                <a id="fechar_faq_cell" href="#">FECHAR</a>
+                                                <a id="fechar_faq_cell" href="#"><?php echo $CI->T("SAIR", array(), $language); ?></a>
                                             </li>
                                         </ul>
 					<!--<ul class="dl-menu">
@@ -255,7 +255,7 @@
                                     </ul>
                                 </li>
                                                 <li>
-                                                    <a id="fechar_faq" href="#"><?php echo $CI->T("FECHAR",array(), $language); ?></a>
+                                                    <a id="fechar_faq" href="#"><?php echo $CI->T("SAIR",array(), $language); ?></a>
                                                 </li>
 					</ul>
 				</nav>
