@@ -101,12 +101,14 @@ class Admin extends CI_Controller {
         $lang1=$lang1.'<option value="11">NÃO USAR MAIS</option>';
         $lang1=$lang1.'<option value="12">OCUPADO</option>';
         if ($this->session->userdata('role_id')==user_role::ADMIN){            
-            $this->load->model('class/admin_model');
-            $this->load->model('class/user_status');
-            $this->load->model('class/credit_card_model');
-            $datas = $this->input->post();
-            $users_results = $this->admin_model->get_users($datas);
-            $users = array();
+          $this->load->model('class/admin_model');
+          $this->load->model('class/user_status');
+          $this->load->model('class/credit_card_model');
+          $datas = $this->input->post();
+          $users_results = $this->admin_model->get_users($datas);
+          $users = array();
+          if(count($users_results)>0)
+          {    
             foreach($users_results as $user){                   
                 $id = 0;
                 if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
@@ -151,6 +153,70 @@ class Admin extends CI_Controller {
                                 );
                 //if(!$datas['card_name'])
                                
+              }
+            }
+            else 
+            {
+              if (!($datas['prf_client1']==''&& $datas['eml_client1']==''&& $datas['card_name']==''&& $datas['client_id']==''))
+              {
+                        $datas['lst_access1']='';
+                        $datas['lst_access3']='';
+                        $datas['req_card']=0;
+                        $users_results = $this->admin_model->get_users($datas);
+          if(count($users_results)>0)
+          {    
+            $user_arr=array();
+              foreach($users_results as $user){
+              if(!isset($user_arr[$user['id_usr']])){
+                $user_arr[$user['id_usr']]=1;  
+                $id = 0;
+                if(!$datas['status_id'] || $datas['status_id'] == $this->user_status::BEGINNER){ 
+                    $id = $user['id_usr'];                    
+                }
+                else{
+                    $id = $user['id_usr'];                    
+                }
+                $card = $this->credit_card_model->get_credit_card($id);
+                $st_nam= $this->T($user['st_name'], array(), $lang);
+                //$st_nam=
+           /* foreach ($user as $k => $dat) 
+            {
+             if($k!=-50)
+                 echo $k;
+            }  */ 
+                
+                $users[] = array(
+                                //'user_id' => $user['id'],
+                                'user_id' => $user['id_usr'],
+                                'role_id' => $user['role_id'],
+                                'name' => $user['name'],
+                                'login' => $user['login'],
+                                //'pass' => $user['pass'],
+                                'email' => $user['email'],
+                                'telf' => $user['telf'],
+                                'status_id' => $user['status_id'],
+                                //'status_date' => $user['status_date'],
+                                //'language' => $user['language'],
+                                //'init_date' => $user['init_date'],
+                                //'end_date' => $user['end_date'],
+                                //'credit_card_name' => $card['credit_card_name'],
+                                //'utm_source' => $user['utm_source'],
+                                //'brazilian' => $user['brazilian'],
+                                //'promotional_code' => $user['promotional_code'],
+                                //'campaing_type' => $user['campaing_type'],
+                                //'payment_type' => $user['payment_type'],
+                                'amount_in_cents' =>0,
+                                'date'=>$user['idpay'],
+                                'status_date'=>$user['status_date'],
+                                'st_name'=>$st_nam,
+                                );
+                //if(!$datas['card_name'])
+                //break;             
+              
+              }
+             }
+            }
+              } 
             }
             $result['options']=$lang1;
             if(count($users) > 0){                    
