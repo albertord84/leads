@@ -544,7 +544,7 @@ class Campaing_model extends CI_Model {
             
             $this->db->order_by('leads.id', "asc");
             
-            $this->db->limit(30000);    //maximo solicitado por consulta
+            $this->db->limit(10000);    //maximo solicitado por consulta
             $result =  $this->db->get()->result_array();
             
             $cant_leads = count($result);
