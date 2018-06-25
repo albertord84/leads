@@ -225,8 +225,8 @@ class Client_model extends CI_Model {
                 if($id_campaing != $row['campaing_id']){
                     $id_campaing = $row['campaing_id'];
                     $index_campaing++;
-                    //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
-                    $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
+                    $campaing[$index_campaing]['amount_leads'] = $this->fast_leads_to_pay_by_campaing($id_campaing);                    
+                    //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
 
                     $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                     $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -246,7 +246,7 @@ class Client_model extends CI_Model {
                 $profile['insta_id'] = $row['insta_id'];
                 $profile['id'] = $row['id'];
                 //$campaing[$index_campaing]['amount_leads'] += $row['amount_leads'];
-
+                //$campaing[$index_campaing]['amount_leads'] += $row['amount_leads'];
                 $campaing[$index_campaing]['profile'][] = $profile;
             }
         }
@@ -257,8 +257,8 @@ class Client_model extends CI_Model {
                 if($id_campaing != $row['campaing_id']){
                     $id_campaing = $row['campaing_id'];
                     $index_campaing++;
-                    //$campaing[$index_campaing]['amount_leads'] = count($this->leads_to_pay($id_cliente, $id_campaing, true));
-                    $campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
+                    $campaing[$index_campaing]['amount_leads'] = $this->fast_leads_to_pay_by_campaing($id_campaing);                    
+                    //$campaing[$index_campaing]['amount_leads'] = $this->amount_leads_to_pay($id_cliente, $id_campaing, true);
                                         
                     $campaing[$index_campaing]['campaing_id'] = $row['campaing_id'];
                     $campaing[$index_campaing]['campaing_type_id'] = $row['campaing_type_id'];
@@ -372,6 +372,24 @@ class Client_model extends CI_Model {
         } finally {
             return $clients;
         }        
+    }
+    
+    public function fast_leads_to_pay_by_campaing($id_campaing){         
+        $count = 0;
+         try{
+            $this->db->select('*');                
+            $this->db->from('profiles');                        
+            $this->db->where('campaing_id',$id_campaing);                  
+            $result = $this->db->get()->result_array();
+            foreach ($result as $row) {
+                    $count += $row['amount_leads'];
+            }
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $count;
+        }                
     }
     
     public function leads_to_pay($id_client, $id_campaing = NULL, $all = NULL){         
