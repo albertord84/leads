@@ -402,7 +402,7 @@ array(), $language); ?>
                                 <p id="message_text"></p>                        
                             </div>
                             <div class="modal-footer text-center">
-                                <button id="accept_modal_alert_message" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                                <button id="accept_modal_alert_message" type="button" class="btn btngreen active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
                                     <spam class="ladda-label"><div style="color:white; font-weight:bold">ACEITAR</div></spam>
                                 </button>
                             </div>
