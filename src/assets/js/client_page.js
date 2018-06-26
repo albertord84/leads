@@ -1404,7 +1404,7 @@ $(document).ready(function () {
           '</div>' +
 
           '<div class="modal-footer">' +            
-            '<button id="okButton" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+            '<button id="okButton" type="button" class="btn btngreen active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
                         '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
                             okButtonTxt+
                         '</div></spam>'+
@@ -1446,7 +1446,7 @@ $(document).ready(function () {
           '</div>' +
 
           '<div class="modal-footer">' +            
-            '<button id="okButton2" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+            '<button id="okButton2" type="button" class="btn btngreen active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
                         '<spam class="ladda-label"><div style="color:white; font-weight:bold">'+
                             okButtonTxt+
                         '</div></spam>'+
@@ -1490,7 +1490,7 @@ $(document).ready(function () {
           '</div>' +
 
           '<div class="modal-footer">' +            
-            '<button id="okButtonCP" type="button" data-dismiss="modal" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
+            '<button id="okButtonCP" type="button" data-dismiss="modal" class="btn btngreen active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">'+
                 '<spam class="ladda-label"><div style="color:white; font-weight:bold">OK</div></spam>'+
             '</button>'+
           '</div>' +
