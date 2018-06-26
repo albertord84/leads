@@ -1043,7 +1043,8 @@ $(document).ready(function () {
                 }                       
             }
             else{
-                modal_alert_message(T("O valor minimo por boleto deve ser a partir de",language)+" "+currency_symbol+" "+curremin_ticket_bank+".00");
+                var message_error = T("O valor minimo por boleto deve ser a partir de",language) + " " + currency_symbol + " " + min_ticket_bank + ".00";
+                modal_alert_message(message_error);
             }
         }
         else{
