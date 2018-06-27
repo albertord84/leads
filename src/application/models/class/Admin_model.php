@@ -456,7 +456,237 @@ class Admin_model extends CI_Model {
             echo 'Error accediendo a la base de datos durante el login';
         }
     }
+    
+    public function payed_ticket_bank($order, $value, $date) {
+        $result = NULL;
+         try{
+            $this->db->set('amount_payed_value', 'amount_payed_value + ' . (int) $value, FALSE); 
+            $this->db->set('payed', 1); 
+            $this->db->set('payed_date', $date); 
+            $this->db->where('document_number',$order);                        
+            $this->db->limit(1);
+            $this->db->update('bank_ticket');                                    
+            $result =  $this->db->affected_rows();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }
+    }
+    
+    public function client_by_order($order_number){         
+        $result = NULL;
+         try{
+            $this->db->select('client_id');                
+            $this->db->from('bank_ticket');            
+            $this->db->where('document_number',$order_number);
+            $result = $this->db->get()->row_array()['client_id'];
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
+    
+    public function ticket_by_order($order_number){         
+        $result = NULL;
+         try{
+            $this->db->select('id');                
+            $this->db->from('bank_ticket');            
+            $this->db->where('document_number',$order_number);
+            $result = $this->db->get()->row_array()['id'];
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
+    
+    public function activate_stoped_client($client_id, $order_number, $valor_pago){         
+        $this->load->model('class/user_status');
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        $result = NULL;
+         try{
+            $this->db->select('*');                
+            $this->db->from('users');            
+            $this->db->where('id',$client_id);
+            $user = $this->db->get()->row_array();
+            //
+            if($user['status_id'] == user_status::PENDENT_BY_PAYMENT || $user['status_id'] == user_status::BLOCKED_BY_PAYMENT){
+                $factor_conversion = 1;
+                if($user['brazilian']==1){
+                    $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE;
+                }
+                else{
+                    $price_per_lead = $GLOBALS['sistem_config']->FIXED_LEADS_PRICE_EX;
+                    $factor_conversion = $GLOBALS['sistem_config']->DOLLAR_TO_REAL;
+                }
+                
+                $leads_to_pay = $this->leads_to_pay($client_id);
+                $amount_leads = count($leads_to_pay);
+                $amount_to_pay = $amount_leads * $price_per_lead;
+                if($amount_to_pay <= $valor_pago){
+                    $leads_sold = $amount_to_pay;
+                    //activar cliente y adicionar trabajo
+                    //$this->add_works_by_client($client_id);   //el cliente debe hacer eso
+                    $this->activate_client($client_id, time());
+                }
+                else{
+                    $leads_sold = $valor_pago;
+                }          
+                $source_id = $this->ticket_by_order($order_number);
+                $this->save_payment($client_id, $leads_sold, $source_id);
+                $this->update_amount_used($source_id, $leads_sold);
+                $leads_sold /= $price_per_lead;
+                foreach ($leads_to_pay as $lead_to_pay) {
+                        $list_leads_id[] = $lead_to_pay['id'];
+                    }
+                $this->update_leads($list_leads_id, $leads_sold);
+            }
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
 
+    public function save_payment($client_id, $amount_in_cents, $source_id){        
+        $this->load->model('class/payment_type');
+        $payment_row = NULL;
+        try{//client_id, amount_in_cents, date, payment_type, source_id
+            $data_payment['client_id'] = $client_id;
+            $data_payment['amount_in_cents'] = $amount_in_cents;
+            $data_payment['date'] = time();
+            $data_payment['payment_type'] = payment_type::TICKET_BANK;
+            $data_payment['source_id'] = $source_id;
+            
+            $this->db->insert('payments',$data_payment);
+            $payment_row = $this->db->insert_id();
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante';
+        } finally {
+            return $payment_row;
+        }
+    }
+    
+    public function update_amount_used($id_ticket, $value) {
+        $result = NULL;
+         try{
+            $this->db->set('amount_used_value', 'amount_used_value + ' . (int) $value, FALSE);             
+            $this->db->where('id',$id_ticket);                        
+            $this->db->limit(1);
+            $this->db->update('bank_ticket');                                    
+            $result =  $this->db->affected_rows();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }
+    }
+
+    public function update_leads($list_leads_id, $number_leads){
+        $result = NULL;
+         try{
+            $this->db->where('sold',0);            
+            $this->db->where_in( 'id', $list_leads_id );
+            $this->db->limit($number_leads);
+            $this->db->update('leads', array('sold' => 1));                                    
+            $result =  $this->db->affected_rows();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
+    
+    public function leads_to_pay($id_client, $id_campaing = NULL, $all = NULL){         
+        $result = NULL;
+         try{
+            $this->db->select('leads.id');                
+            $this->db->from('leads');            
+            $this->db->join('profiles', 'profiles.id = leads.reference_profile_id');
+            $this->db->join('campaings', 'campaings.id = profiles.campaing_id');
+            $this->db->join('clients', 'campaings.client_id = clients.user_id');
+            $this->db->where('clients.user_id',$id_client);                  
+            if($id_campaing){
+                $this->db->where('campaings.id',$id_campaing);                  
+            } 
+            if(!$all){
+                $this->db->where('leads.sold',0);
+            }
+            $result = $this->db->get()->result_array();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $result;
+        }                
+    }
+    
+    /*actualiza el status dado nuevo status y fecha*/
+    private function update_status_user($id_user, $new_status, $status_date){
+        $this->load->model('class/user_status');                
+        $update_result = NULL;
+        try{
+            if($new_status == user_status::DELETED)
+                $end_date = $status_date;
+            $this->db->where( array('id' => $id_user) );            
+            $update_result = $this->db->update( 'users', array('end_date' => $end_date,
+                                                'status_date' => $status_date,
+                                                'status_id' => $new_status));            
+            if($update_result){
+                $this->session->set_userdata('status_id', $new_status);
+            }
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante el update';
+        } finally {
+            return $update_result;
+        }
+    }
+    
+    public function activate_client($id_user, $status_date){
+        $this->load->model('class/user_status');                
+        return $this->update_status_user($id_user, user_status::ACTIVE, $status_date);
+    }
+    
+    public function add_works_by_client($id_client){
+        $this->load->model('class/campaing_status');
+        $this->load->model('class/profiles_status');
+        
+        $this->db->select('*');
+        $this->db->from('campaings');            
+        $this->db->join('profiles', 'campaings.id = profiles.campaing_id');
+        $this->db->where('campaings.client_id',$id_client);
+        $this->db->where('profiles.profile_status_id', profiles_status::ACTIVE);
+        $this->db->where('campaings.campaing_status_id', campaing_status::ACTIVE );  
+        $this->db->where('campaings.available_daily_value >', 0 );  
+        $profiles_in_campaing =  $this->db->get()->result_array();
+        $datas_works = [];
+        $current_time = time();
+        foreach($profiles_in_campaing as $p)
+            $datas_works[] = array( 'client_id' => $p['client_id'], 
+                                    'campaing_id' => $p['campaing_id'], 
+                                    'profile_id' => $p['id'],
+                                    'last_accesed' => $current_time);
+
+        $this->insert_works($datas_works);
+    }
+    
+    //inserta perfiles seleccionados de una campaña o cliente en la daily_work
+    public function insert_works($datas){
+        $work_row_results = NULL;
+        try{                       
+            $this->db->insert_batch('daily_work',$datas);
+            $work_row_results = $this->db->affected_rows();
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $work_row_results;
+        }
+    }
 }
 
 ?>
