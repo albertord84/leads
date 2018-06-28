@@ -543,6 +543,47 @@ $(document).ready(function () {
         });                          
     });
     
+    $("#do_payed_ticket").click(function () { 
+        var order_number = $('#order_number').val();        
+        var valor_pago = $('#valor_pago').val();
+        valor_pago = valor_pago.replace(",", "."); 
+        var data_pago = $('#data_pago').val();
+        
+        /*if(order_number.trim() != "" && valor_pago.trim() != "" && data_pago.trim() != ""){
+            if( (validate_element('#valor_pago', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
+                    validate_element('#valor_pago', "^[0][\.,][1-9][0-9]?$") ||
+                    validate_element('#valor_pago', "^[0][\.,][0-9]?[1-9]$"))) {*/
+        if(true){if(true){
+                $.ajax({
+                    url: base_url + 'index.php/admin/payed_ticket',
+                    data:  {
+                        'order_number': order_number,                          
+                        'valor_pago': valor_pago*100,                         
+                        'data_pago': toTimestamp(data_pago)                          
+                    },   
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response['success']) {                                
+                            modal_alert_message(response['message']);
+                        } else {
+                              modal_alert_message(response['message']);
+                        }
+                    },
+                    error: function (xhr, status) {
+                        modal_alert_message(T('Não foi possível executar sua solicitude!',language));                
+                    }
+                });                          
+            }
+            else{
+                modal_alert_message('O valor pago deve ser um valor monetário');
+            }
+        }
+        else{
+            modal_alert_message('Deve preencher todos os dados corretamente');
+        }
+    });
+    
     /* Generic Confirm func */
     function confirm(heading, question, cancelButtonTxt, okButtonTxt, callback) {
 

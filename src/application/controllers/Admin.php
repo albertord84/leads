@@ -478,6 +478,67 @@ class Admin extends CI_Controller {
         return $text;
     } 
     
+    public function payed_ticket(){
+        $this->load_language();
+        $this->load->model('class/admin_model');
+        $this->load->model('class/user_role');        
+        if ($this->session->userdata('role_id') == user_role::ADMIN){        
+            
+            $datas = $this->input->post();
+            $order_number = $datas['order_number'];
+            $valor_pago = $datas['valor_pago'];
+            $data_pago = $datas['data_pago'];
+            
+            $validate = $this->validate_payed_date($order_number, $valor_pago, $data_pago);
+            if($validate['success']){
+                
+                $result_update = $this->admin_model->payed_ticket_bank($order_number, $valor_pago, $data_pago);
+
+                if($result_update){                      
+                    $result['success'] = true;
+                    $result['message'] = $this->T("Pagamento do boleto guardado corretamente.", array(), $GLOBALS['language']);                 
+                    $id_client = $this->admin_model->client_by_order($order_number);                
+                    $result_activate = $this->admin_model->activate_stoped_client($id_client, $order_number, $valor_pago);
+
+                } else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Não foi possível atualizar o pagamento do boleto.", array(), $GLOBALS['language']);                 
+                }
+            }
+            else{
+                    $result['success'] = false;
+                    $result['message'] = $validate['message']; 
+                }
+        }
+        else{
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'index';
+        }
+        echo json_encode($result);
+    }
+
+    public function validate_payed_date($order, $value, $date){
+        $result['success'] = false;
+        $result['message'] = '';
+        if( !( preg_match("/^[1-9][0-9]*([\.,][0-9]{1,2})?$/", $value) || 
+                 preg_match("/^[0][\.,][1-9][0-9]?$/", $value) || 
+                 preg_match("/^[0][\.,][0-9]?[1-9]$/", $value)) ){
+            $result['message'] = 'O Valor Pago deve ser um valor monetário';
+            return $result;
+        }
+        if( !(is_numeric($order)) ){
+            $result['message'] = 'A ordem deve ser um número';
+            return $result;
+        }
+        if( !(is_numeric($date)) ){
+            $result['message'] = 'Problemas com a data selecionada';
+            return $result;
+        }
+        $result['success'] = true;
+        return $result;
+    }
+
     //------------ADMIN desenvolvido para DUMBU-FOLLOWS-------------------
    
     public function admin_do_login() {

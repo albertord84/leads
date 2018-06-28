@@ -179,7 +179,7 @@ namespace leads\cls {
                 die("<br>\n<br>\nRobot_profile ".$robot_profile->login." has cookies session problem<br>\n<br>\n");
             }
             else{
-                sleep(300);
+                sleep(180);
             }
         }
         

@@ -24,20 +24,23 @@
             <link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap-datepicker.min.css'?>">
 
             <!-- CSS -->
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css'?>"/>
-            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css'?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/estilo.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/definicoes.css?'.$SCRIPT_VERSION;?>"/>
+            <link rel="stylesheet" href="<?php echo base_url().'assets/css/media.css?'.$SCRIPT_VERSION;?>"/>
             <link rel="stylesheet" href="<?php echo base_url().'assets/css/ladda-themeless.min.css'?>">
             
             <!-- jQuery -->
             <script type="text/javascript" src="<?php echo base_url().'assets/js/jquery.js';?>"></script>
             
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js'?>"></script>                
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/admin_page.js'?>"></script>
-            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js'?>"></script> 
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/admin_page.js?'.$SCRIPT_VERSION;?>"></script>
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
-            <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
+            <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script> 
+            <style>
+                .modal { overflow: auto !important; }
+            </style>
 <style>
 /* unvisited link */
 a:link {
@@ -74,7 +77,8 @@ a:active {
                                         </button><br>
                                         <!--<div id="link_robot"> -->
                                         <!--<font color="white">-->
-                                            <a target="_blank" href=<?php echo base_url().'index.php/admin/robot' ?>>GERENCIAR ROBOTS PROFILES</a>
+                                            <a target="_blank" href=<?php echo base_url().'index.php/admin/robot' ?>>GERENCIAR ROBOTS PROFILES</a><br>
+                                            <a style="color:white;" class="pointer_mouse" data-toggle="modal" data-target="#reporta_boleto" ><?php echo $CI->T("REPORTAR PAGO DE BOLETO", array(),$language);?></a>                                            
                                         <!--</font>-->
                                         <!--</div> -->   
 
@@ -83,6 +87,49 @@ a:active {
                     </header>
             </section>
             <!--Admin Painel-->
+            
+            <!-- Modal Reportar Boleto -->
+            <div id="reporta_boleto" class="modal fade" role="dialog">                
+              <div class="modal-dialog mxw-600">
+                <div class="modal-content fleft100 text-center pd-20">
+                    <input id = "id_campaing_leads" type="hidden" value = ""></input>                     
+                            <a class="close" data-dismiss="modal" >&times;</a>
+                            <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
+                            <hr class="fleft100">
+                            <span class="fleft100 m-top10 m-b30"><?php echo $CI->T("INFORMAÇÕES DO PAGAMENTO DO BOLETO", array(),$language);?></span>
+                            <div align = "left" class="col-md-6 col-sm-6 col-xs-12">
+                                    <div>
+                                        <?php echo $CI->T("Número do documento", array(),$language);?><br>
+                                        <input id = "order_number" type="text" placeholder="500000000XXX"><br><br>
+                                    </div>
+                                    
+                                    <div>
+                                        <?php echo $CI->T("Valor Pago em", array(),$language);?> $R<br>
+                                        <input id = "valor_pago" type="text" placeholder="150.00"><br><br>
+                                    </div>
+                                    <div>
+                                        
+                                    </div>                                    
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div>    
+                                    <?php echo $CI->T("Data do pagamento", array(),$language);?><br>
+                                    <input id = "data_pago" type="date" placeholder="dd/mm/yyyy" min='2018-06-01' max='<?php echo date('Y-m-d');?>'><br>
+                                </div>                                      
+                            </div>
+                            <hr class="fleft100">
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">                                    
+                            </div>                            
+                            <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                                    <button id = "do_payed_ticket" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Reportar Pago", array(),$language);?></button>
+                            </div>                            
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center m-top60">                            
+                            </div>        
+                </div>
+              </div>
+            </div>
+            <!-- Fecha Modal Reportar Boleto -->
+            
             <!--<select name="" id="status_select">-->
                 <?php
                    // echo '<option value="1">'.$CI->T("ATIVO", array(),$language).'</option>';                                        
@@ -578,7 +625,7 @@ a:active {
                                         </div>
                  </div>
             </div>
-             
+                         
                     <br>
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
@@ -625,7 +672,7 @@ a:active {
                     <p id="message_text"></p>                        
                 </div>
                 <div class="modal-footer text-center">
-                    <button id="accept_modal_alert_message" type="button" class="btn btn-default active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                    <button id="accept_modal_alert_message" type="button" class="btn btngreen active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
                         <spam class="ladda-label"><div style="color:white; font-weight:bold">OK</div></spam>
                     </button>                    
                 </div>
