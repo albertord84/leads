@@ -221,6 +221,8 @@ $(document).ready(function () {
     var req_card=Number( $('#payments_types').val());
     //var req_cam=Boolean(checc.checked);
     var req_cam='';
+    if(status_id<0)
+       status_id=0; 
     if(checc.checked)
         req_cam=true;
     //var verify=!(!card_name&&!eml_client1&&!prf_client1);

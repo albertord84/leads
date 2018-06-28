@@ -308,7 +308,8 @@ class Admin_model extends CI_Model {
         }
     }
     
-        public function insert_robot($datas){
+    
+            public function insert_robot($datas){
                        
         $robot_row=NULL;
         try{
@@ -325,6 +326,7 @@ class Admin_model extends CI_Model {
         
     }
 
+    
     
     public function update_robot($datas){
                        
