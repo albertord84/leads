@@ -148,7 +148,7 @@ namespace leads\cls {
             else
             if(strpos($exception_message, 'Challenge required') !== FALSE){                
                 $this->DB->update_field_in_DB('robots_profiles', 'id', $robot_profile->id, 'status_id', user_status::VERIFY_ACCOUNT);
-                $administrators=array('egberto.caballero@gmail.com','danilo.oliveiira@hotmail.com', 'josergm86@gmail.com');                        
+                $administrators=array('danilo.oliveiira@hotmail.com', 'josergm86@gmail.com');                        
                     foreach($administrators as $admin){
                             $this->Gmail->send_mail($admin, $admin,
                                 "' CONCERTAR ISSO!!! Robot_profile login = ' $robot_profile->login ' in verify account",

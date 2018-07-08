@@ -264,8 +264,27 @@ class User_model extends CI_Model {
     }
    
     /*actualiza el status dado nuevo status y fecha*/
+    private function get_status_cad($id_status) {
+    $this->load->model('class/user_status');
+    if($id_status== user_status::ACTIVE){
+    return 'ACTIVE';
+    }
+    if($id_status== user_status::BLOCKED_BY_PAYMENT){
+    return 'BLOCKED BY PAYMENT';
+    }
+    if($id_status== user_status::DELETED){
+    return 'DELETED';
+    }
+    if($id_status== user_status::PENDENT_BY_PAYMENT){
+    return 'PENDENT BY PAYMENT';
+    }
+    if($id_status== user_status::DONT_DISTURB){
+    return 'DONT DISTURB';
+    }
+    }
     private function update_status_user($id_user, $new_status, $status_date){
-        $this->load->model('class/user_status');                
+        $this->load->model('class/user_status');
+        $watchdog_result = NULL;
         $update_result = NULL;
         try{
             if($new_status == user_status::DELETED)
@@ -276,17 +295,19 @@ class User_model extends CI_Model {
                                                 'status_id' => $new_status));            
             if($update_result){
                 $this->session->set_userdata('status_id', $new_status);
+                $watchdog_result =$this->insert_watchdog($id_user, 'FOR '.$this->get_status_by_id($new_status)['name'].' STATUS');
             }
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos durante el update';
         } finally {
-            return $update_result;
+            return $watchdog_result;
         }
     }
     
     public function activate_client($id_user, $status_date){
         $this->load->model('class/user_status');                
-        return $this->update_status_user($id_user, user_status::ACTIVE, $status_date);
+        $this->update_status_user($id_user, user_status::ACTIVE, $status_date);
+        return $this->insert_watchdog($id_user, 'ACTIVATE CLIENT');
     }
 
     public function set_pendent_client($id_user, $status_date){
@@ -545,6 +566,101 @@ class User_model extends CI_Model {
      * @return bool
      * @access public
      */
+    
+    public function insert_watchdog($id,$watch){
+   
+      $this->load->model('class/user_role');
+      $watch_result=NULL;
+      if($this->session->userdata('role_id')== user_role::CLIENT){        
+        try{
+           // $this->load->model('class/user_role');            
+            //$this->load->model('class/user_status');            
+            /*$this->load->model('class/admin_model');                                    
+            $this->load->model('class/client_model');            
+            $this->load->model('class/campaing_model');
+            $this->load->model('class/campaing_status');            
+            $this->load->model('class/profile_model');
+            $this->load->model('class/profiles_status');*/
+            $watch_row= $this->user_model->get_watchdog_type($watch);
+            if(!$watch_row)
+            {
+                $datas=array();
+                $datas['action']=$watch;
+                $datas['source']=0;
+                $this->insert_watchdog_type($datas);
+            }
+            $watch_row= $this->get_watchdog_type($watch);
+            $watch_id=$watch_row['id'];
+            $watchdog_row=array();
+            $watchdog_row['user_id']=$id;
+            $watchdog_row['type']=$watch_id;
+            $watchdog_row['date']=time();
+            $watchdog_row['robot']=null;
+            $watchdog_row['metadata']=null;
+            $watch_result= $this->add_watchdog($watchdog_row);
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $watch_result;
+        }
+      }
+ else {
+       return NULL;   
+      }
+        
+    }
+
+    
+    public function get_watchdog_type($washdog_action){        
+        $watchdog_type_row = NULL;
+        try{            
+            $this->db->select('*');
+            $this->db->from('washdog_type');
+            $this->db->where( array('action' => $washdog_action) );           
+            $watchdog_type_row =  $this->db->get()->row_array();
+            //$watchdog_type_row =  $this->db->get()->result_array();
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $watchdog_type_row;
+        }
+    }
+
+        public function insert_watchdog_type($datas){
+                       
+        $watch_row=NULL;
+        try{
+
+            $this->db->insert('washdog_type',$datas);
+            $watch_row = $this->db->insert_id();
+    
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $watch_row;
+        }
+        
+    }
+
+        public function add_watchdog($datas){
+                       
+        $watch_row=NULL;
+        try{
+
+            $this->db->insert('washdog',$datas);
+            $watch_row = $this->db->insert_id();
+    
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos';
+        } finally {
+            return $watch_row;
+        }
+        
+    }
+
+    
     public function insert_washdog($user_id,$cad) {
         $this->db->select('id');
         $this->db->from('washdog_type');

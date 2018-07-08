@@ -2,6 +2,7 @@
 <html lang="pt-BR">
     <head>
             <?php  $CI =& get_instance();?>
+            <?php $this->load->model('class/payment_type');?>
             <script type="text/javascript">var base_url ='<?php echo base_url()?>';</script>
             <script type="text/javascript">var language ='<?php echo $this->session->userdata('language');?>';</script>
                        
@@ -484,8 +485,8 @@ a:active {
                         <b>Pagamento: </b> 
                         <select id="payments_types" class="form-control" >
                             <option value="0">--SELECT--</option>
-                            <option value="<?php echo '1'; ?>">CREDIT_CARD</option>
-                            <option value="<?php echo '2'; ?>">TICKET_BANK</option>
+                            <option value="<?php echo payment_type::CREDIT_CARD; ?>">CREDIT_CARD</option>
+                            <option value="<?php echo payment_type::TICKET_BANK; ?>">TICKET_BANK</option>
                         </select>    
                     </div>
                 </div>
