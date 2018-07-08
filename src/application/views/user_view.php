@@ -38,7 +38,7 @@
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>
-        
+            
     </head>
     <body>
     <section class="topo-home fleft100 bk-black">
@@ -724,5 +724,13 @@
     <script src="<?php echo base_url().'assets/js/menu_mobile/js/modernizr.custom.js'?>"></script>
     <script src="<?php echo base_url().'assets/js/menu_mobile/js/jquery.dlmenu.js'?>"></script>
     
-    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87696730-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-87696730-1');
+    </script>
 </html>
