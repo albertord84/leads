@@ -21,6 +21,8 @@ class Campaing_model extends CI_Model {
     
     public function insert_campaing($datas){
         $campaing_row = NULL;
+        $watchdog_row = NULL;
+        $this->load->model('class/user_model');                                    
         try{
             $data_campaing['client_id'] = $datas['client_id'];             
             $data_campaing['campaing_type_id'] = $datas['campaing_type_id'];             
@@ -33,11 +35,12 @@ class Campaing_model extends CI_Model {
             $data_campaing['last_accesed'] = $datas['last_accesed'];
             $this->db->insert('campaings',$data_campaing);
             $campaing_row = $this->db->insert_id();
-            
+            $watchdog_row = $this->user_model->insert_watchdog($datas['client_id'],'CREATE CAMPAIGN');
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos';
         } finally {
-            return $campaing_row;
+            //return $campaing_row;
+            return $watchdog_row;
         }
     }
     

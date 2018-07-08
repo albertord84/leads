@@ -806,6 +806,8 @@ class Welcome extends CI_Controller {
             $user_row = $this->user_model->verify_account($datas);
             
             if($user_row){    
+                //$this->user_model->insert_washdog($this->session->userdata('id'),'CLOSING SESSION');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'CLOSING SESSION');
                 $this->session->sess_destroy();
                 session_destroy();
                 $result['success'] = true;
@@ -986,6 +988,8 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
     
+
+
     public function save_campaing() { 
         $this->load_language();
         $this->load->model('class/user_role');        
@@ -1014,15 +1018,19 @@ class Welcome extends CI_Controller {
                 if($this->is_valid_currency( $datas['total_daily_value'] && $datas['total_daily_value']>=$min_daily_value)){
                     if( $this->session->userdata('profiles_temp') && $this->same_type_of_profiles($this->session->userdata('profiles_type_temp'), $datas['campaing_type_id'])){
                         $user_row = $this->user_model->verify_account($datas);
+                        //$ativou=0;
                         if($user_row){
                             //activate the user status for beginners                            
                             $update_user_result = true;
                             $time_add_campaing = time();
                             if($user_row['status_id'] == user_status::BEGINNER){                                
                                 $update_user_result = $this->user_model->activate_client($this->session->userdata('id'), $time_add_campaing);
+                                //$ativou=1;
+                                
                             }
                             if($update_user_result){
                                //update the client table if it is necessary
+                               
                                $client_row = $this->client_model->get_client_by_id($this->session->userdata('id'));
                                $insert_client_result = true;
                                if(!$client_row ){
@@ -2576,6 +2584,7 @@ class Welcome extends CI_Controller {
                         array('access_token' =>'---***###!!!---'.$client['user_id']));
                 $this->user_model->set_sesion($client['user_id'], $this->session);
                 $this->user_model->insert_washdog($client['user_id'],'REDIRECTED FROM TICKET-BANK EMAIL LINK');
+                $this->user_model->insert_watchdog($client['user_id'],'REDIRECTED FROM TICKET-BANK EMAIL LINK');
             } else{
                 header("Location: ".base_url());
                 die();
@@ -2585,6 +2594,7 @@ class Welcome extends CI_Controller {
             //$datas = $this->input->get();
             $this->load->model('class/user_model');
             $this->user_model->insert_washdog($this->session->userdata('id'),'SUCCESSFUL PURCHASE');            
+            $this->user_model->insert_watchdog($this->session->userdata('id'),'SUCCESSFUL PURCHASE');            
             require_once $_SERVER['DOCUMENT_ROOT'] . '/dumbu/worker/class/system_config.php';
             $GLOBALS['sistem_config'] = new dumbu\cls\system_config();
             $datas['user_id'] = $this->session->userdata('id');
@@ -2893,6 +2903,7 @@ class Welcome extends CI_Controller {
                             }
                             if($st!=user_status::ACTIVE)
                                 $this->user_model->insert_washdog($user[$index]['id'],'FOR ACTIVE STATUS');                            
+                                $this->user_model->insert_watchdog($user[$index]['id'],'FOR ACTIVE STATUS');                            
                             //quitar trabajo si contrasenhas son diferentes
                             $active_profiles = $this->client_model->get_client_active_profiles($this->session->userdata('id'));
                             if ($user[$index]['pass'] != $datas['user_pass']) {
@@ -2958,8 +2969,10 @@ class Welcome extends CI_Controller {
 //                                    'cookies' => json_encode($data_insta['insta_login_response'])));
                             }
                             $this->user_model->set_sesion($user[$index]['id'], $this->session, $data_insta['insta_login_response']);
-                            if($st!=user_status::ACTIVE)
+                            if($st!=user_status::ACTIVE){
                                 $this->user_model->insert_washdog($this->session->userdata('id'),'FOR STATUS '.$cad);
+                                $this->user_model->insert_watchdog($this->session->userdata('id'),'FOR '.$cad.'STATUS ');
+                            }    
                             $result['resource'] = 'client';
                             $result['message'] = $this->T('Usuário @1 logueado', array(0 => $datas['user_login']), $GLOBALS['language']);                            
                             $result['role'] = 'CLIENT';
@@ -3100,7 +3113,8 @@ class Welcome extends CI_Controller {
                         if ($user[$index]['status_id'] != user_status::BLOCKED_BY_PAYMENT && $user[$index]['status_id'] != user_status::PENDING) {
                             $status_id = user_status::VERIFY_ACCOUNT;
                             $this->user_model->insert_washdog($user[$index]['id'],'FOR VERIFY ACCOUNT STATUS');
-                        }
+                            $this->user_model->insert_watchdog($user[$index]['id'],'FOR VERIFY_ACCOUNT STATUS');
+                       }
                         $this->user_model->update_user($user[$index]['id'], array(
                             'login' => $datas['user_login'],
                             'pass' => $datas['user_pass'],
@@ -3110,8 +3124,10 @@ class Welcome extends CI_Controller {
                         //$this->session->sess_time_to_update = 7200;
                         $this->session->cookie_secure = true;
                         $this->user_model->set_sesion($user[$index]['id'], $this->session);
-                        if ($status_id != user_status::ACTIVE)
-                            $this->user_model->insert_washdog($this->session->userdata('id'),'FOR STATUS '.$cad);
+                        if ($status_id != user_status::ACTIVE){
+                            $this->user_model->insert_washdog($this->session->userdata('id'),'FOR  STATUS '.$cad);
+                            $this->user_model->insert_watchdog($this->session->userdata('id'),'FOR '.$cad.' STATUS');
+                        }    
                         $result['role'] = 'CLIENT'; // agregado por Ruslan pa resolver problema en login
                         $result['resource'] = 'client';                        
                         $result['verify_link'] = $data_insta['verify_account_url'];
@@ -3157,7 +3173,8 @@ class Welcome extends CI_Controller {
                             if ($user[$index]['status_id'] != user_status::BLOCKED_BY_PAYMENT && $user[$index]['status_id'] != user_status::PENDING) {
                                 $status_id = user_status::VERIFY_ACCOUNT;
                                 $this->user_model->insert_washdog($user[$index]['id'],'FOR VERIFY ACCOUNT STATUS');
-                            }
+                                $this->user_model->insert_watchdog($user[$index]['id'],'FOR VERIFY_ACCOUNT STATUS');
+                        }
                             $this->user_model->update_user($user[$index]['id'], array(
                                 'login' => $datas['user_login'],
                                 'pass' => $datas['user_pass'],
@@ -3166,6 +3183,7 @@ class Welcome extends CI_Controller {
                             $cad=$this->user_model->get_status_by_id($status_id)['name'];
                             $this->user_model->set_sesion($user[$index]['id'], $this->session);
                             $this->user_model->insert_washdog($this->session->userdata('id'),'FOR STATUS '.$cad);
+                            $this->user_model->insert_watchdog($this->session->userdata('id'),'FOR '.$cad.'STATUS ');
                             $result['return_link'] = 'index';
                             $result['message'] = $this->T('Sua conta precisa ser verificada no Instagram com código enviado ao numero de telefone que comtênm os digitos ', array(0 => $data_insta['obfuscated_phone_number']), $GLOBALS['language']);
                             $result['cause'] = 'phone_verification_settings';
@@ -3208,7 +3226,8 @@ class Welcome extends CI_Controller {
                             if ($user[$index]['status_id'] != user_status::BLOCKED_BY_PAYMENT && $user[$index]['status_id'] != user_status::PENDING) {
                                 $status_id = user_status::VERIFY_ACCOUNT;
                                 $this->user_model->insert_washdog($user[$index]['id'],'FOR VERIFY ACCOUNT STATUS');
-                            }
+                                $this->user_model->insert_watchdog($user[$index]['id'],'FOR VERIFY_ACCOUNT STATUS');
+               }
                             $this->user_model->update_user($user[$index]['id'], array(
                                 'login' => $datas['user_login'],
                                 'pass' => $datas['user_pass'],
@@ -3217,6 +3236,7 @@ class Welcome extends CI_Controller {
                             $cad=$this->user_model->get_status_by_id($status_id)['name'];
                             $this->user_model->set_sesion($user[$index]['id'], $this->session);
                             $this->user_model->insert_washdog($this->session->userdata('id'),'FOR STATUS '.$cad);
+                            $this->user_model->insert_watchdog($this->session->userdata('id'),'FOR '.$cad.'STATUS ');
                             $result['resource'] = 'client';
                             $result['return_link'] = 'index';
                             $result['verify_link'] = '';
@@ -3266,8 +3286,10 @@ class Welcome extends CI_Controller {
                                 'status_id' => $status_id
                             ));
                             $cad=$this->user_model->get_status_by_id($status_id)['name'];
-                            if($st!=user_status::ACTIVE)
+                            if($st!=user_status::ACTIVE){
                                 $this->user_model->insert_washdog($user[$index]['id'],'FOR STATUS '.$cad);
+                                $this->user_model->insert_watchdog($user[$index]['id'],'FOR '.$cad.'STATUS ');
+                            }    
                             $result['resource'] = 'client';
                             $result['return_link'] = 'index';
                             $result['verify_link'] = '';
@@ -3298,6 +3320,7 @@ class Welcome extends CI_Controller {
         if($result['authenticated'] == true){
             $this->load->model('class/user_model');
             $this->user_model->insert_washdog($this->session->userdata('id'),'DID LOGIN ');
+            $this->user_model->insert_watchdog($this->session->userdata('id'),'DID LOGIN');
         }
 //        if($login_by_client)
 //            echo json_encode($result);
@@ -4134,6 +4157,7 @@ class Welcome extends CI_Controller {
             ($datas['unfollow_total']==0)?$ut='DISABLED':$ut='ACTIVATED';
             $this->load->model('class/user_model');
             $this->user_model->insert_washdog($this->session->userdata('id'),'TOTAL UNFOLLOW '.$ut);
+            $this->user_model->insert_watchdog($this->session->userdata('id'),'TOTAL UNFOLLOW '.$ut);
             
             $this->client_model->update_client($this->session->userdata('id'), array(
                 'unfollow_total' => $datas['unfollow_total']
@@ -4158,6 +4182,7 @@ class Welcome extends CI_Controller {
             ($al==0)?$ut='DISABLED':$ut='ACTIVATED';
             $this->load->model('class/user_model');
             $this->user_model->insert_washdog($this->session->userdata('id'),'AUTOLIKE '.$ut);
+            $this->user_model->insert_watchdog($this->session->userdata('id'),'AUTOLIKE '.$ut);
             
             $response['success'] = true;
             $response['autolike'] = $datas['AUTOLIKE'];
@@ -4193,6 +4218,7 @@ class Welcome extends CI_Controller {
             
             $this->load->model('class/user_model');
             $this->user_model->insert_washdog($this->session->userdata('id'),'TOOL '.$ut);
+            $this->user_model->insert_watchdog($this->session->userdata('id'),'TOOL '.$ut);
 
             
             $response['success'] = true;
@@ -4412,10 +4438,12 @@ class Welcome extends CI_Controller {
             if($this->session->userdata('id') && $result['success'] == true){
                 $this->load->model('class/user_model');
                  $this->user_model->insert_washdog($this->session->userdata('id'),'CORRECT CARD UPDATE');
+                 $this->user_model->insert_watchdog($this->session->userdata('id'),'CORRECT CARD UPDATE');
             } else{
                 if($this->session->userdata('id')){
                     $this->load->model('class/user_model');
                     $this->user_model->insert_washdog($this->session->userdata('id'),'INCORRECT CARD UPDATE');
+                    $this->user_model->insert_watchdog($this->session->userdata('id'),'INCORRECT CARD UPDATE');
                 }
             }
             
@@ -4550,6 +4578,7 @@ class Welcome extends CI_Controller {
                 $this->load->model('class/user_model');
                 // $this->user_model->insert_washdog($this->session->userdata('id'),'GEOCALIZATION INSERTED '.$profile['geolocalization']);
                 $this->user_model->insert_washdog($this->session->userdata('id'),'GEOCALIZATION INSERTED');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'GEOCALIZATION INSERTED');
             }
             echo json_encode($result);
         }
@@ -4580,6 +4609,7 @@ class Welcome extends CI_Controller {
                 $this->load->model('class/user_model');
                 //$this->user_model->insert_washdog($this->session->userdata('id'),'GEOCALIZATION ELIMINATED '.$profile['geolocalization']);
                 $this->user_model->insert_washdog($this->session->userdata('id'),'GEOCALIZATION ELIMINATED');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'GEOCALIZATION ELIMINATED');
             }
             echo json_encode($result);
         }
@@ -4680,6 +4710,7 @@ class Welcome extends CI_Controller {
                 $this->load->model('class/user_model');
                 //$this->user_model->insert_washdog($this->session->userdata('id'),'REFERENCE PROFILE INSERTED '.$profile['profile']);
                 $this->user_model->insert_washdog($this->session->userdata('id'),'REFERENCE PROFILE INSERTED');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'REFERENCE PROFILE INSERTED');
             }
             
             echo json_encode($result);
@@ -4712,6 +4743,7 @@ class Welcome extends CI_Controller {
                 $this->load->model('class/user_model');
                 //$this->user_model->insert_washdog($this->session->userdata('id'),'REFERENCE PROFILE ELIMINATED '.$profile['profile']);
                 $this->user_model->insert_washdog($this->session->userdata('id'),'REFERENCE PROFILE ELIMINATED');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'REFERENCE PROFILE ELIMINATED');
             }
             
             echo json_encode($result);
@@ -4905,6 +4937,7 @@ class Welcome extends CI_Controller {
         $data['user_active'] = false;
         $this->load->model('class/user_model');
         $this->user_model->insert_washdog($this->session->userdata('id'),'CLOSING SESSION');
+        $this->user_model->insert_watchdog($this->session->userdata('id'),'CLOSING SESSION');
         $this->session->sess_destroy();
         header('Location: ' . base_url());
     }
@@ -5004,6 +5037,7 @@ class Welcome extends CI_Controller {
         $param['language'] = $GLOBALS['sistem_config']->LANGUAGE;        
         $this->load->model('class/user_model');
         $this->user_model->insert_washdog($this->session->userdata('id'),'LOOKING AT GEOCALIZATION TIPS');
+        $this->user_model->insert_watchdog($this->session->userdata('id'),'LOOKING AT GEOCALIZATION TIPS');
         $this->load->view('dicas_geoloc', $param);
     }
     
@@ -5863,11 +5897,13 @@ class Welcome extends CI_Controller {
                 $result['success'] = true;
                 $result['message'] = 'Código de segurança confirmado corretamente';
                 $this->user_model->insert_washdog($this->session->userdata('id'),'SECURITY CODE CONFIRMATED');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'SECURITY CODE CONFIRMATED');
             } 
             else {
                 $result['success'] = false;
                 $result['message'] = 'Erro ao confirmar código de segurança';
                 $this->user_model->insert_washdog($this->session->userdata('id'),'ERROR IN SECURITY CODE CONFIRMATION');
+                $this->user_model->insert_watchdog($this->session->userdata('id'),'ERROR IN SECURITY CODE CONFIRMATION');
             }
             echo json_encode($result);
         }
@@ -5880,6 +5916,7 @@ class Welcome extends CI_Controller {
     public function faq() {
         $this->load->model('class/user_role');                
         $this->load->model('class/system_config');
+        $this->load->model('class/user_model');
         $datas = $this->input->post();
         $language = $datas['new_language'];
         
@@ -5901,12 +5938,16 @@ class Welcome extends CI_Controller {
         else{
             $param['language'] = $this->session->userdata('language');
         }*/
+        if(isset($this) && isset($this->session) && $this->session->userdata('id')){
+         $this->user_model->insert_washdog($this->session->userdata('id'),'LOOKING AT FAQ');
+        }
         $this->load->view('faq_view', $param);
     }
 
         public function faqget() {
         $this->load->model('class/user_role');                
         $this->load->model('class/system_config');
+        $this->load->model('class/user_model');
         $datas = $this->input->get();
         $language = $datas['language'];
         
@@ -5928,6 +5969,9 @@ class Welcome extends CI_Controller {
         else{
             $param['language'] = $this->session->userdata('language');
         }*/
+        if(isset($this) && isset($this->session) && $this->session->userdata('id')){
+         $this->user_model->insert_watchdog($this->session->userdata('id'),'LOOKING AT FAQ');
+        } 
         $this->load->view('faq_view', $param);
     }
 
