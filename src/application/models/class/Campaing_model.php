@@ -39,8 +39,8 @@ class Campaing_model extends CI_Model {
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos';
         } finally {
-            //return $campaing_row;
-            return $watchdog_row;
+            return $campaing_row;
+            //return $watchdog_row;
         }
     }
     

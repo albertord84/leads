@@ -680,7 +680,7 @@
                                             <!--<li><a href="">Extração de Leads</a></li>-->
                                             <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
                                             <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
-                                            <li><a href=""><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
+                                            <li><a target="_blank"  href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> ><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>
                             <div class="col-md-10 col-sm-12 col-xs-12 center-xs">
@@ -695,7 +695,8 @@
                                     ?>
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
-                                                    <?php echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
+                                                    <?php // echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
+                                                    <?php echo $CI->T("Este usuário tem pagamentos sem efetuar. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
                                                     <a href="" data-toggle="modal" data-target="#pagamento">
                                                         <u><?php echo $CI->T("Clique aqui", array(),$language);?> </u>
                                                     </a>
