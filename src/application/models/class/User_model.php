@@ -300,14 +300,14 @@ class User_model extends CI_Model {
         } catch (Exception $exception) {
             echo 'Error accediendo a la base de datos durante el update';
         } finally {
-            return $watchdog_result;
+            return $update_result;
         }
     }
     
     public function activate_client($id_user, $status_date){
         $this->load->model('class/user_status');                
-        $this->update_status_user($id_user, user_status::ACTIVE, $status_date);
-        return $this->insert_watchdog($id_user, 'ACTIVATE CLIENT');
+        $update_result = $this->update_status_user($id_user, user_status::ACTIVE, $status_date);
+        return $update_result;
     }
 
     public function set_pendent_client($id_user, $status_date){
@@ -327,8 +327,8 @@ class User_model extends CI_Model {
         $this->load->model('class/user_status');                
         $this->load->model('class/credit_card_model');
         $this->load->model('class/bank_ticket_model');   
-        if($status == user_status::BLOCKED_BY_PAYMENT || $status == user_status::PENDENT_BY_PAYMENT)
-            return false;
+        /*if($status == user_status::BLOCKED_BY_PAYMENT || $status == user_status::PENDENT_BY_PAYMENT)
+            return false;*/
         $boleto = $this->bank_ticket_model->get_charged_bank_ticket($id_user);
         $credit_card = $this->credit_card_model->get_credit_card($id_user);
         if(!$boleto && !$credit_card){
