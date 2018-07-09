@@ -690,13 +690,13 @@
                                     </div>
                                     <span id="alerta_pago">
                                     <?php
-                                        if(!$client_data['has_payment'] || $this->session->userdata('status_id') == 6){
-                                            if($this->session->userdata('status_id') == 6){                                                
+                                        if(!$client_data['has_payment'] || $this->session->userdata('status_id') == 6 || $this->session->userdata('status_id') == 2){
+                                            if($this->session->userdata('status_id') == 6 || $this->session->userdata('status_id') == 2){                                                
                                     ?>
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
-                                                    <?php // echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
-                                                    <?php echo $CI->T("Este usuário tem pagamentos sem efetuar. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
+                                                    <?php if($this->session->userdata('status_id') == 2) echo $CI->T("Este usuário atualmente está bloqueado. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
+                                                    <?php if($this->session->userdata('status_id') == 6) echo $CI->T("Este usuário tem pagamentos sem efetuar. Por favor, atualice seu método de pago e em breve será contatado.", array(),$language);?> 
                                                     <a href="" data-toggle="modal" data-target="#pagamento">
                                                         <u><?php echo $CI->T("Clique aqui", array(),$language);?> </u>
                                                     </a>
