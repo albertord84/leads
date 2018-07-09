@@ -690,7 +690,7 @@
                                     </div>
                                     <span id="alerta_pago">
                                     <?php
-                                        if(!$client_data['has_payment'] || $this->session->userdata('status_id') == 6 || $this->session->userdata('status_id') == 2){
+                                        if( $this->session->userdata('status_id') == 6 || $this->session->userdata('status_id') == 2){
                                             if($this->session->userdata('status_id') == 6 || $this->session->userdata('status_id') == 2){                                                
                                     ?>
                                                 <div class="alert alert-danger fleft100 m-top10">
@@ -705,6 +705,7 @@
                                     <?php
                                             }
                                             else{
+                                                if(!$client_data['has_payment']){
                                     ?>            
                                                 <div class="alert alert-danger fleft100 m-top10">
                                                     <i class="fa fa-exclamation-triangle"></i> 
@@ -715,6 +716,7 @@
                                                 </div>
 
                                     <?php
+                                                }                                    
                                             }
                                         }
                                     ?>                                    
