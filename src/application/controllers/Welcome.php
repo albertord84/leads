@@ -2563,6 +2563,66 @@ class Welcome extends CI_Controller {
         $response = curl_exec($handler);                
         curl_close($handler);
     }
+    
+    public function save_cupom50(){
+        $this->load_language();
+        $this->load->model('class/user_role');        
+        $this->load->model('class/bank_ticket_model');        
+        $this->load->model('class/cupom_model');        
+        if ($this->session->userdata('role_id')==user_role::CLIENT){            
+            $datas = $this->input->post();
+            $cupom_code = trim($datas['code']);
+            $document = substr($cupom_code, 9);
+            $cupom_code = substr($cupom_code, 0, 8);            
+            
+            if($cupom_code){
+                $type_cupom = $this->cupom_model->get_cupom($cupom_code);
+                $multiplicator = 100 / $type_cupom['percent'];
+                if($type_cupom){                    
+                    $used_code = $this->cupom_model->is_used_cupom($this->session->userdata('id'), $type_cupom['id']);                    
+                    
+                    if(!$used_code){                        
+                        $payed_ticket = $this->bank_ticket_model->get_ticket_by_order($this->session->userdata('id'), $document, $type_cupom['value']);
+                        
+                        if($payed_ticket){
+                            $this->cupom_model->add_cupom($this->session->userdata('id'), $type_cupom['id']); 
+                            $result_payed_ticket = $this->bank_ticket_model->multiplicate_ticket_value($this->session->userdata('id'), $payed_ticket['id'], $payed_ticket['emission_money_value']*$multiplicator);
+                            $result['success'] = true;
+                            $result['message'] = $this->T("Código de cupom guardado corretamente.", array(), $GLOBALS['language']);
+                            $result['resource'] = 'client_page';
+                        }
+                        else{
+                            $result['success'] = false;
+                            $result['message'] = $this->T("Você não possui um cupom promocional", array(), $GLOBALS['language']);
+                            $result['resource'] = 'client_page';
+                        }
+                    }
+                    else{
+                        $result['success'] = false;
+                        $result['message'] = $this->T("Você já usou este cupom", array(), $GLOBALS['language']);
+                        $result['resource'] = 'client_page';
+                    }
+                }
+                else{
+                    $result['success'] = false;
+                    $result['message'] = $this->T("Deve fornecer um código válido!", array(), $GLOBALS['language']);
+                    $result['resource'] = 'client_page';                    
+                }
+            }
+            else
+            {
+                $result['success'] = false;
+                $result['message'] = $this->T("Deve fornecer um código válido!", array(), $GLOBALS['language']);
+                $result['resource'] = 'client_page';
+            }
+        }
+        else{            
+            $result['success'] = false;
+            $result['message'] = $this->T("Não existe sessão ativa", array(), $GLOBALS['language']);
+            $result['resource'] = 'front_page';
+        }
+        echo json_encode($result);
+    }
 
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
