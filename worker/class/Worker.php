@@ -140,8 +140,8 @@ namespace leads\cls {
             else
             if(strpos($exception_message, 'User not found') !== FALSE){
                 $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
-                $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, 'profile_status_id', profiles_status::MISSING);
-                $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, 'date', time());
+//                $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, 'profile_status_id', profiles_status::MISSING);
+//                $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, 'date', time());
             }
             else
             if(strpos($exception_message, 'No response from server. Either a connection or configuration error') !== FALSE){

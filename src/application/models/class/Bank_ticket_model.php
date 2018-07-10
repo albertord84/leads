@@ -166,7 +166,8 @@ class bank_ticket_model extends CI_Model {
         try{
             $this->db->select('*');
             $this->db->from('bank_ticket');
-            $this->db->where( array('client_id' => $id_client, 'document_number' => $document, 'amount_payed_value' => $value, 'emission_money_value' => $value, 'payed' => 1) );                       
+            $this->db->where( array('client_id' => $id_client, 'amount_payed_value' => $value, 'emission_money_value' => $value, 'payed' => 1) );                       
+            //$this->db->where( array('client_id' => $id_client, 'document_number' => $document, 'amount_payed_value' => $value, 'emission_money_value' => $value, 'payed' => 1) );                       
             $ticket_row =  $this->db->get()->row_array();
             
         } catch (Exception $exception) {

@@ -707,7 +707,9 @@
                                             <!--<li><a href="">Extração de Leads</a></li>-->
                                             <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
                                             <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php // echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
-                                            <li><a href="" data-toggle="modal" data-target="#cupom50_modal"><?php echo $CI->T("Tem cupom?", array(),$language);?></a></li>
+                                            <?php if($this->session->userdata('brazilian')==1){?>
+                                                <li><a href="" data-toggle="modal" data-target="#cupom50_modal"><?php echo $CI->T("Tem cupom?", array(),$language);?></a></li>
+                                            <?php }?>
                                             <li><a target="_blank"  href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> ><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>
