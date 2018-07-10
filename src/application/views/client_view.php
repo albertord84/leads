@@ -57,6 +57,33 @@
             </style>
     </head>
     <body style="background-color:#fff">
+            <!-- Modal Cupom Cupom 50% -->
+            <div id="cupom50_modal" class="modal fade" role="dialog">                
+                <div class="modal-dialog mxw-600">
+                    <div class="modal-content fleft100 text-center pd-20">                    
+                        <a class="close" data-dismiss="modal" >&times;</a>
+                        <!--<button type="button" class="bk-none b-none pull-right" data-dismiss="modal"><img src="img/close.png" alt=""></button>-->
+                        <!--<hr class="fleft100">-->
+                        <div class="col-md-8 col-sm-8 col-xs-12 pd-0 fnone i-block">                            
+                            <span class="bol fw-600 fleft100 ft-size15 m-top20"><i></i> <?php echo $CI->T("CÓDIGO DO CUPOM", array(),$language);?></span>                            
+                            <div class="fleft100 ctr m-top20">
+                                <div class="fleft100 pd-lr5">
+                                        <input id="code_cupom50" type="text">
+                                </div>
+                            </div>    
+                        </div>    
+                        <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
+                            <button id= "do_save_cupom50" type="button" class="btn btn-mlds btngreen m-top10"><?php echo $CI->T("Salvar", array(),$language);?></button>
+                        </div>                        
+                        <div class="col-md-4 col-sm-4 col-xs-12  m-top20">
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <!-- Fecha Modal Cupom 50% -->
+            
             <!-- Modal Cupom Credito -->
             <div id="cupom_modal" class="modal fade" role="dialog">                
                 <div class="modal-dialog mxw-600">
@@ -679,7 +706,8 @@
                                             <li><a href="https:/www.dumbu.pro"><?php echo $CI->T("Captação de Seguidores", array(),$language);?></a></li>
                                             <!--<li><a href="">Extração de Leads</a></li>-->
                                             <li><a href="" data-toggle="modal" data-target="#pagamento"><b><u><?php echo $CI->T("Pagamentos", array(),$language);?></u></b></a></li>                                            
-                                            <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
+                                            <!--<li><a href="" data-toggle="modal" data-target="#cupom_modal"><?php // echo $CI->T("Pré-pagos", array(),$language);?></a></li>-->
+                                            <li><a href="" data-toggle="modal" data-target="#cupom50_modal"><?php echo $CI->T("Tem cupom?", array(),$language);?></a></li>
                                             <li><a target="_blank"  href=<?php echo base_url().'index.php/welcome/faqget?language='.$language ?> ><?php echo $CI->T("Contato / FAQ", array(),$language);?></a></li>
                                     </ul>
                             </div>

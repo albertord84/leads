@@ -1211,6 +1211,23 @@ $(document).ready(function () {
             modal_alert_message(T("Deve fornecer o intervalo válido de datas para a extração",language));
     });
     
+    $("#do_save_cupom50").on("click", function(){        
+        var code = $("#code_cupom50").val();
+        $.ajax({
+                type: "POST",
+                url: base_url + 'index.php/welcome/save_cupom50', 
+                data: {
+                    code: code                    
+                },
+                dataType:'json',
+                success: function (response) {
+                    modal_alert_message(response['message']);
+                },
+                error: function (xhr, status) {
+                    modal_alert_message('Ooops ... problema no servidor'); 
+                }
+            });
+    });
     
     $('#profile_temp').keyup(function() {
         var campaing_type = $("#campaing_type").val();
