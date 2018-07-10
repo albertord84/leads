@@ -68,6 +68,8 @@ namespace leads\cls {
                         $profiles_campaing = $objCampaing->get_profiles_of_campaings($Campaing->id);
                         if(!count($profiles_campaing)){
                             echo "Campanha sem RP ativos<br> \n";
+                            if(!$this->DB->set_campaing_available_daily_value($Campaing->id,$Campaing->total_daily_value))
+                               echo "Erro estabelecendo o orçamento do dia da campanha: ".$Client->id." <br> \n";
                         }else {
                             //4. insertar trabajo en la tabla daily_work
                             foreach ($profiles_campaing as $Profile) {
