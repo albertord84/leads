@@ -2593,7 +2593,7 @@ class Welcome extends CI_Controller {
                         }
                         else{
                             $result['success'] = false;
-                            $result['message'] = $this->T("Para usar este cupom você deve gerar e pagar um boleto de ", array(), $GLOBALS['language'])." ".$type_cupom['value']." reais";
+                            $result['message'] = $this->T("Para usar este cupom você deve gerar e pagar um boleto de ", array(), $GLOBALS['language'])." ".($type_cupom['value']/100)." reais";
                             $result['resource'] = 'client_page';
                         }
                     }
