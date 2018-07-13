@@ -143,7 +143,7 @@ $(document).ready(function () {
     
     $("#do_save_campaing").click(function () {        
         var total_daily_value = $('#daily_value').val(); 
-        total_daily_value = total_daily_value.replace(",", "."); 
+        total_daily_value = total_daily_value.replace(",", ""); 
         var available_daily_value = total_daily_value;
         var insta_id = "";
         
@@ -152,9 +152,7 @@ $(document).ready(function () {
         
        
         if(total_daily_value.trim() != '' && client_objetive != '') {
-            if( (validate_element('#daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
-                validate_element('#daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(total_daily_value) >= min_daily_value) {
+            if(parseFloat(total_daily_value) >= min_daily_value) {
                 var l = Ladda.create(this);  l.start();
                 $.ajax({
                     url: base_url + 'index.php/welcome/save_campaing',
@@ -702,11 +700,9 @@ $(document).ready(function () {
         if(!$("#ativada").hasClass('ativo')){            
             var id_campaing = $("#campaing_id").val();
             var new_daily_value = $("#edit_daily_value").val();
-            new_daily_value = new_daily_value.replace(",", "."); 
+            new_daily_value = new_daily_value.replace(",", ""); 
            
-            if ((validate_element('#edit_daily_value', "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
-                validate_element('#edit_daily_value', "^[0][\.,][1-9][0-9]?$") ||
-                validate_element('#edit_daily_value', "^[0][\.,][0-9]?[1-9]$")) && parseFloat(new_daily_value) >= min_daily_value){                    
+            if (parseFloat(new_daily_value) >= min_daily_value){                    
                 $.ajax({
                     url: base_url + 'index.php/welcome/update_daily_value',
                     data:  {
@@ -991,15 +987,14 @@ $(document).ready(function () {
                                     boleto_estado, object){
         if( $(boleto_nome).val() && $(boleto_value).val() && $(boleto_cpf).val() && $(boleto_cpe).val() && $(boleto_endereco).val()
             && $(boleto_numero).val() && $(boleto_bairro).val() && $(boleto_municipio).val() && $(boleto_estado).val()){
-            if( (validate_element(boleto_value, "^[1-9][0-9]*([\.,][0-9]{1,2})?$") ||
-                validate_element(boleto_value, "^[0][\.,][1-9][0-9]?$") ||
-                validate_element(boleto_value, "^[0][\.,][0-9]?[1-9]$")) && parseFloat($(boleto_value).val()) >= min_ticket_bank ) {
+            var money_value = $(boleto_value).val(); 
+            money_value = money_value.replace(",", ""); 
+            
+            if(parseFloat(money_value) >= min_ticket_bank ) {
                 var cpf = $(boleto_cpf).val();                
                 cpf = cpf.replace(/[.-]/g, '');
                 
                 if(validaCPF(cpf)){                    
-                        var money_value = $(boleto_value).val(); 
-                        money_value = money_value.replace(",", "."); 
                         
                         var cep = $(boleto_cpe).val(); 
                         cep = cep.replace("-", ""); 
@@ -1566,6 +1561,10 @@ $(document).ready(function () {
             }
         });
     }, 1000 * 60 * 5); 
+    
+    $("#daily_value").maskMoney();
+    $("#edit_daily_value").maskMoney();
+    $("#boleto_value").maskMoney();
 });
    
 function reset_element(element_selector, style) {

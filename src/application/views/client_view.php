@@ -49,6 +49,7 @@
             <script type="text/javascript" src="<?php echo base_url().'assets/js/front.js?'.$SCRIPT_VERSION;?>"></script>                
             <script type="text/javascript" src="<?php echo base_url().'assets/js/client_page.js?'.$SCRIPT_VERSION;?>"></script>
             <script type="text/javascript" src="<?php echo base_url().'assets/js/translation.js?'.$SCRIPT_VERSION;?>"></script> 
+            <script type="text/javascript" src="<?php echo base_url().'assets/js/maskmoney_jquery.maskMoney.js?'.$SCRIPT_VERSION;?>"></script> 
             
             <script src="<?php echo base_url().'assets/js/spin.min.js'?>"></script>
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
