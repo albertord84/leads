@@ -26,7 +26,7 @@ class Admin_model extends CI_Model {
          $this->load->model('class/payment_type');
          $identify=false;
          try{
-            $this->db->select('users.id as id_usr, login, email, telf, status_id, amount_in_cents, status_date, payments.id as idpay, user_status.name as st_name');
+            $this->db->select('users.id as id_usr, login, email, telf, status_id, amount_in_cents, init_date, status_date, payments.id as idpay, user_status.name as st_name');
             $this->db->from('users');
             $this->db->join('user_status','users.status_id = user_status.id');
             if(/*$filter['req_cam']||*/$filter['card_name'])
