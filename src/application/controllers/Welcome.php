@@ -191,8 +191,10 @@ class Welcome extends CI_Controller {
         
         if ($this->session->userdata('role_id')==user_role::ADMIN){
             //2. cargar los datos necesarios para pasarselos a la vista como parametro
+            $GLOBALS['sistem_config'] = $this->system_config->load();
             $param = array();            
             $param['language'] = $this->session->userdata('language');
+            $param['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
             $this->load->view('admin_view', $param);
         }
         else{            
