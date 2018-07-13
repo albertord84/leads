@@ -396,7 +396,8 @@ $(document).ready(function () {
                                     //echo '<b>Status: </b><b id="label_status_'.$result[$i]['user_id'].'" style="color:red">'.get_name_status($result[$i]['status_id']).'</b><br>';
                                     html+= '<td style="text-align:left; width:30%; padding:5px">';
                                     var nid=users[i]['status_id'];
-                                    //html+='<div class="col-md-2">';
+                                    //html+='<div class="col-md-2">'
+                                    html+='<b>Data de incio: </b>'+toDate(users[i]['init_date']).toString()+'<br>';
                                     html+='<b>Status: </b>'+users[i]['st_name']+'<br>';
                         /*          html+='<select class="user_atribute" id="idselestatus_'+users[i]['user_id'];
                                     html+='" name="nameselestatus_'+users[i]['user_id']+'" value="'+users[i]['status_id'];
@@ -406,7 +407,7 @@ $(document).ready(function () {
                                     html1=html1.replace('"'+users[i]['status_id']+'"','"'+users[i]['status_id']+'" selected');
                                     html+=html1;
                                     html+='</select>';
-                                    html+='</div>';*/
+                                    html+='</div>';*/                                    
                                     html+='<b>Data do status: </b>'+toDate(users[i]['status_date']).toString()+'<br>';
                                     html+='<div id="totalpago_'+users[i]['user_id']+'"></div><br>';
                                     //html+='<br>';
