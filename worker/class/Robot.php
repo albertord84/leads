@@ -182,7 +182,7 @@ namespace leads\cls {
                 //3. ver se perfil chegou ao fim, se não, salvar o cursor
                 if($cursor!==null && $new_cursor===null){
                     $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
-                    $this->DB->update_field_in_DB('profiles',
+                    /*$this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
                         'profile_status_id',profiles_status::ENDED);
                     $this->DB->update_field_in_DB('profiles',
@@ -190,7 +190,7 @@ namespace leads\cls {
                         'profile_status_date',time());
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
-                        '`cursor`','NULL');
+                        '`cursor`','NULL');*/
                 } else{
                     $this->DB->update_field_in_DB('profiles', 
                         'id', $this->next_work->profile->id, 
