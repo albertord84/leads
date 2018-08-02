@@ -615,6 +615,7 @@ class Welcome extends CI_Controller {
                                         //crear boleto de 90 reales
                                         $code['FIRST-SIGN-IN-BUY'] = 90*100;
                                         $code['53C0ND-S1GN-1N-8UY'] = 5000*100;
+                                        $code['TENR-SIGN-IN-BUY'] = 10*100;
                                         
                                         $value_code = $code[$datas['promotional_code']];
                                         if(is_numeric($value_code))
@@ -2516,6 +2517,7 @@ class Welcome extends CI_Controller {
                        
             $code['FIRST-SIGN-IN-BUY'] = 100;
             $code['53C0ND-S1GN-1N-8UY'] = 2;
+            $code['TENR-SIGN-IN-BUY'] = 500;
             
             $count_code = $code[$datas['promotional_code']];
             
