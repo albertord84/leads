@@ -179,7 +179,7 @@ $(document).ready(function () {
    
    function do_login(fieldLogin,fieldPass, fieldErrorMessage, fieldContainerLoginForce, fieldCheckForceLogin, fieldMessageForceLogin, object){                        
        if($(fieldLogin).val()!='' && $(fieldPass).val()!==''){           
-            if (validate_element(fieldLogin, '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$')) {                
+            if (validate_element(fieldLogin, '^[a-zA-Z][\._a-zA-Z0-9]{0,99}$') || validate_element(fieldLogin, "^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,4}$")) {                
                 message_container(T('Espere por favor ...',language),fieldErrorMessage,'green');                                                                                
                 var l = Ladda.create(object);  l.start();
                 $.ajax({

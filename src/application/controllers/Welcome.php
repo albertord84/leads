@@ -750,10 +750,13 @@ class Welcome extends CI_Controller {
             $this->load->model('class/user_role'); 
             $this->load->model('class/user_model');
             //$datas = $this->input->post();
-            if ($this->is_valid_user_name($datas['client_login']) ){
+            if ($this->is_valid_user_name($datas['client_login']) || $this->is_valid_email($datas['client_login']) ){
                 $datas['check_pass'] = true; 
+                $type = 0;
+                if($this->is_valid_email($datas['client_login']))
+                    $type = 1;
                 //verificar si se existe cliente        
-                $user_row = $this->user_model->verify_account($datas);
+                $user_row = $this->user_model->verify_account_email($datas, $type);
                 //$verificar = true;
                 if($user_row){      
                     /*if($datas['language'] != "PT" && $datas['language'] != "ES" && $datas['language'] != "EN")

@@ -118,7 +118,7 @@
                                                     <?php echo $CI->T("EXCLUSIVO PARA USUÁRIOS", array(),$language);?>
                                                     </div>                                                                        
                                                     <div class="form-group">
-                                                            <input id="userLogin1" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+                                                            <input id="userLogin1" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário ou e-mail", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
                                                     </div>
                                                     <div class="form-group">
                                                             <input id="userPassword1" type="password" class="form-control" placeholder="<?php echo $CI->T("senha", array(),$language);?>" required="">
@@ -270,7 +270,7 @@
                                                                 <?php echo $CI->T("Use login e senha", array(),$language);?>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input id="userLogin2" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
+                                                                <input id="userLogin2" type="text" class="form-control" placeholder="<?php echo $CI->T("Usuário ou e-mail", array(),$language);?>" onkeyup="javascript:this.value=this.value.toLowerCase();" style="text-transform:lowercase;" required="">
                                                             </div>
                                                             <div class="form-group">
                                                                     <input id="userPassword2" type="password" class="form-control" placeholder="<?php echo $CI->T("Senha", array(),$language);?>" required="">

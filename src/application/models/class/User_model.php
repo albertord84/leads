@@ -113,6 +113,50 @@ class User_model extends CI_Model {
         }
     }
     
+    /*devuele un registro con el usuario (no cancelado) 
+      dado login (o e-mail) e contrasena (obligatoria para el login)*/
+    
+     public function verify_account_email($datas, $type){
+         $user_row = NULL;
+         $this->load->model('class/user_status');            
+         try{
+            $this->db->select('*');
+            $this->db->from('users');
+            $this->db->where('status_id !=', user_status::DELETED); //not canceled
+            
+            if($type === 0){
+                $this->db->where( array('login' => $datas['client_login']) );                       
+                $user_row =  $this->db->get()->row_array();
+            
+                if($user_row && $datas['check_pass'])
+                {   $password =  $datas['client_pass'];
+                    $password_hased = $user_row['pass'];
+                    $result_login = password_verify($password, $password_hased);
+                    if(!$result_login){
+                        $user_row = NULL;
+                    }                
+                }
+            }
+            else{
+                $this->db->where( array('email' => $datas['client_login']) );                       
+                $user_row_array =  $this->db->get()->result_array();
+                $password =  $datas['client_pass'];
+                foreach($user_row_array as $user){
+                    $password_hased = $user['pass'];
+                    $result_login = password_verify($password, $password_hased);
+                    if($result_login){
+                        $user_row = $user;
+                    }   
+                }
+            }
+            
+        } catch (Exception $exception) {
+            echo 'Error accediendo a la base de datos durante la verificacion de usario';
+        } finally {
+            return $user_row;
+        }
+    }
+    
      public function get_user_by_email($email, $login = NULL){
          $user_row = NULL;
          $this->load->model('class/user_status');            
