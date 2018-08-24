@@ -497,11 +497,11 @@
 
             //Set the subject line
             //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
-            $this->mail->Subject = 'DUMBU Conta bloqueada';
+            $this->mail->Subject = 'DUMBU Conta sem saldo';
             if($lang == "EN")
-                $this->mail->Subject = 'DUMBU Account blocked!';
+                $this->mail->Subject = 'DUMBU Account without balance!';
             if($lang == "ES")
-                $this->mail->Subject = 'DUMBU Cuenta bloqueada!';
+                $this->mail->Subject = 'DUMBU Cuenta sin saldo!';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body

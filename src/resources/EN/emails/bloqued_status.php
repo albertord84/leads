@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>DUMBU Blocked account!</title>
+        <title>DUMBU Account without balance!</title>
 	<style>
 	div.red {
 	    background-color: #ff3333;
@@ -16,10 +16,10 @@
                 <p style="text-align:center;">
                     <img src='cid:logo_bloqued' style="vertical-align:middle">
                 </p>
-                <h1 style="text-align:center;">Blocked account!</h1>
+                <h1 style="text-align:center;">Account without balance!</h1>
             </div>
             <div ><p><h3>Hi <strong><?php echo $_GET["username"]; ?></strong>,</h3></p></div>
-            <p> Your account is currently locked. You need to update your payment to continue extracting leads.</p>
+            <p> Your account is not currently downloading leads because there is no balance. You need to update your payment to continue extracting leads.</p>
             <p> Please contact our team and start getting leads again!</p>                        
            
             <p>DUMBU SYSTEM</p>
