@@ -192,8 +192,11 @@ $(document).ready(function () {
                     type: 'POST',
                     dataType: 'json',
                     success: function (response) {
-                        if (response['success']) {                    
-                            $(location).attr('href',base_url+'index.php/welcome/'+response['resource']);
+                        if (response['success']) {                                                
+                            if(response['resource'] == 'client')
+                                gtag_report_conversion(base_url+'index.php/welcome/client');
+                            else
+                                $(location).attr('href',base_url+'index.php/welcome/'+response['resource']);
                         } else { 
                             message_container(response['message'],fieldErrorMessage,'red');                                
                         }
