@@ -55,7 +55,19 @@
             <script src="<?php echo base_url().'assets/js/ladda.min.js'?>"></script>           
             <style>
                 .modal { overflow: auto !important; }
-            </style>
+            </style>            
+            <!-- Global site tag (gtag.js) - Google Ads: 862085589 --> 
+            <script async src="https://www.googletagmanager.com/gtag/js?id=AW-862085589">
+            </script> 
+            <script> 
+                window.dataLayer = window.dataLayer || []; 
+                function gtag(){dataLayer.push(arguments);} 
+                gtag('js', new Date()); gtag('config', 'AW-862085589'); 
+            </script>
+            <!-- Event snippet for Cadastro Leads conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. --> 
+            <script> 
+                function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-862085589/9HIuCPaghIgBENXDiZsD', 'event_callback': callback }); return false; } 
+            </script>
     </head>
     <body style="background-color:#fff">
             <!-- Modal Cupom Cupom 50% -->
@@ -1027,6 +1039,5 @@
     <!-- MASCARAS -->
     <script src="<?php echo base_url().'assets/js/maskinput.js'?>" type="text/javascript"></script>
     <!-- Scripts -->
-    <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>
-
+    <script src="<?php echo base_url().'assets/js/script.js'?>" type="text/javascript"></script>    
 </html>

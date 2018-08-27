@@ -3,7 +3,9 @@ $(document).ready(function () {
     $('#datetimepicker_lead2').datepicker( { format: "dd/mm/yyyy", autoclose: true});
     $('#datetimepicker').datepicker( { format: "dd/mm/yyyy", autoclose: true});
     $('#datetimepicker2').datepicker( { format: "dd/mm/yyyy", autoclose: true});
-        
+    
+    gtag_report_conversion('https://dumbu.pro/leads/src/index.php/welcome/client');
+    
     function modal_alert_message(text_message){
         $('#modal_alert_message').modal('show');
         $('#message_text').text(text_message);        
