@@ -76,7 +76,7 @@ class Welcome extends CI_Controller {
         return $inp;
     } 
         
-    public function index() {         
+    public function index() {           
         $this->load->model('class/user_role');        
         $param = array();
         $this->load->model('class/system_config');
@@ -639,7 +639,8 @@ class Welcome extends CI_Controller {
                                     $this->user_model->set_session($cadastro_id,$this->session);
                                     
                                     $this->send_email_marketing($datas['client_login'], $datas['client_email'], $datas['client_telf']);
-                                            
+                                    $this->write_spreadsheet($datas['client_login'], $datas['client_email'], $datas['client_telf']);
+                                    
                                     $result['success'] = true;
                                     $result['message'] = 'Signin success ';
                                     $result['resource'] = 'client';                                    
@@ -2631,6 +2632,29 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
 
+    public function write_spreadsheet($name, $email, $phone){
+        
+        $postFields = "";
+        $postFields .=  "entry.1990475979=".htmlspecialchars($name).
+                        "&entry.1737475808=".htmlspecialchars($email).
+                        "&entry.1800856844=".htmlspecialchars($phone);
+        
+        //We will use the URL
+        //$url = "https://sheets.googleapis.com/v4/spreadsheets/" . $spreadsheetId . "/append/Sheet1";
+        $url = 'https://docs.google.com/forms/d/e/1FAIpQLSeqvUXoPaakplBygGyDsU-lxDAW66IeNSW21jvrFMZa0pmZNg/formResponse';
+        //Start cURL
+        $ch = curl_init($url);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);  
+        curl_setopt($ch, CURLOPT_POST,true);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);  
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);  
+        $response = curl_exec($ch);                
+        curl_close($ch);
+        $error = curl_error($ch);        
+        curl_close($ch);
+    }
 //------------desenvolvido para DUMBU-FOLLOW-UNFOLLOW-------------------
 
     public function language() {
