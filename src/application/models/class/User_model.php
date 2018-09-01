@@ -279,6 +279,7 @@ class User_model extends CI_Model {
             $data_user['status_date'] = $datas['status_date'];
             $data_user['language'] = $datas['language']; 
             $data_user['brazilian'] = $datas['brazilian']; 
+            $data_user['telf'] = $datas['telf']; 
             $data_user['utm_source'] = $datas['utm_source'];         
             $data_user['promotional_code'] = $datas['promotional_code'];         
             $this->db->insert('users',$data_user);
