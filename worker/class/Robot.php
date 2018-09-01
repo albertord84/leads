@@ -329,6 +329,7 @@ namespace leads\cls {
                         } else {
                             var_dump($output);
                             print_r($curl_str);
+                            print_r($json);
                             echo ("<br>\n Untrated error in Geolocation!!!");
                             throw new \Exception("Not followers from geolocation");
                         }
