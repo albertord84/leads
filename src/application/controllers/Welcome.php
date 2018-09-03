@@ -76,7 +76,7 @@ class Welcome extends CI_Controller {
         return $inp;
     } 
         
-    public function index() {           
+    public function index() {         
         $this->load->model('class/user_role');        
         $param = array();
         $this->load->model('class/system_config');
@@ -2635,13 +2635,13 @@ class Welcome extends CI_Controller {
     public function write_spreadsheet($name, $email, $phone){
         
         $postFields = "";
-        $postFields .=  "entry.1990475979=".htmlspecialchars($name).
-                        "&entry.1737475808=".htmlspecialchars($email).
-                        "&entry.1800856844=".htmlspecialchars($phone);
+        $postFields .=  "entry.2027130557=".htmlspecialchars($name).
+                        "&entry.739069715=".htmlspecialchars($email).
+                        "&entry.517560190=".htmlspecialchars($phone);
         
         //We will use the URL
-        //$url = "https://sheets.googleapis.com/v4/spreadsheets/" . $spreadsheetId . "/append/Sheet1";
-        $url = 'https://docs.google.com/forms/d/e/1FAIpQLSeqvUXoPaakplBygGyDsU-lxDAW66IeNSW21jvrFMZa0pmZNg/formResponse';
+        //$url = "https://sheets.googleapis.com/v4/spreadsheets/" . $spreadsheetId . "/append/Sheet1";        
+        $url = 'https://docs.google.com/forms/d/e/1FAIpQLSccLqdm_VoYpeAMrWqOGHBwTB-DL9SutKUr-yASdpRw8fKKbA/formResponse';
         //Start cURL
         $ch = curl_init($url);
 
