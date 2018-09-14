@@ -306,7 +306,7 @@ namespace leads\cls {
                 $json = NULL;
                 if(is_array($output)){
                     $json = json_decode($output[0]);
-                    //var_dump($output);
+                    echo "line 308"; var_dump($output);
                     if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                         $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                         if (count($json->data->location->edge_location_to_media->edges) == 0) {
@@ -364,6 +364,7 @@ namespace leads\cls {
             $object = NULL;
             if(is_array($output)){
                 $object = json_decode($output[0]);
+                echo "line 366"; var_dump($output);
             }
             if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
@@ -441,6 +442,7 @@ namespace leads\cls {
                 $json = NULL;
                 if(is_array($output)){
                     $json = json_decode($output[0]);
+                    echo "line 443"; var_dump($output);
                 }
                 //var_dump($output);
                 if(isset($json) && $json->status == 'ok')
