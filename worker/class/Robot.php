@@ -314,7 +314,7 @@ namespace leads\cls {
     //                        $this->DB->update_field_in_DB('profiles',
     //                        'id', $this->next_work->profile->id,
     //                        '`cursor`','NULL');                        
-    //                        $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                            $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                             echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
                     } else 
@@ -324,7 +324,7 @@ namespace leads\cls {
         //                    $this->DB->update_field_in_DB('profiles',
         //                    'id', $this->next_work->profile->id,
         //                    '`cursor`','NULL');                        
-        //                    $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
+                            $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                             echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         } else {
                             var_dump($output);
