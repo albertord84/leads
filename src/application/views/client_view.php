@@ -81,7 +81,7 @@
                             <span class="bol fw-600 fleft100 ft-size15 m-top20"><i></i> <?php echo $CI->T("CÓDIGO DO CUPOM", array(),$language);?></span>                            
                             <div class="fleft100 ctr m-top20">
                                 <div class="fleft100 pd-lr5">
-                                        <input id="code_cupom50" type="text">
+                                    <input id="code_cupom50" type="text">
                                 </div>
                             </div>    
                         </div>    
@@ -512,7 +512,7 @@
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
                                                             <!--<input id="" type="text" placeholder="CPF">-->
-                                                        <input id="boleto_cpf" value="" placeholder="CPF" type="text" class = "number cpf" maxlength="11">
+                                                        <input id="boleto_cpf" value="" placeholder="CPF/CNPJ" type="text" class = "number" maxlength="14">
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-12 pd-lr5">
                                                         <div style="width: 65%; float:left">
