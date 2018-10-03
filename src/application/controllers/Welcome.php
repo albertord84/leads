@@ -762,11 +762,6 @@ class Welcome extends CI_Controller {
                 $user_row = $this->user_model->verify_account_email($datas, $type);
                 //$verificar = true;
                 if($user_row){      
-                    /*if($datas['language'] != "PT" && $datas['language'] != "ES" && $datas['language'] != "EN")
-                        $datas['language'] = $user_row['language'];            
-                    if($user_row['language'] != $datas['language']){
-                        $this->user_model->update_language($user_row['id'], $datas['language']);
-                    }*/
                         
                     $this->user_model->set_session($user_row['id'],$this->session);
                    
