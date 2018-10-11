@@ -106,7 +106,7 @@ namespace leads\cls {
                         $this->Robot->next_work = $this->next_work;
                         
                         //4. processar trabalho atual e analise de exepções
-                        $result = $this->Robot->do_robot_extract_leads($robot_profile->ig, $robot_profile->cookies,$this->config->MULTI_LEVEL);
+                        $result = $this->Robot->do_robot_extract_leads($robot_profile->ig, $robot_profile->cookies, $robot_profile->proxy, $this->config->MULTI_LEVEL);
                         if($result->has_exception){
                             $this->process_instagram_api_exception($result->exception_message,$robot_profile);
                             $message = $result->exception_message;

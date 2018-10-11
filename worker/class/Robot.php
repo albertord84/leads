@@ -69,7 +69,7 @@ namespace leads\cls {
             return $result;                
         }
                
-        public function do_robot_extract_leads($ig, $cookies, $multi_level) {
+        public function do_robot_extract_leads($ig, $cookies, $proxy, $multi_level) {
             $result = array();
             $result['has_exception'] = false;
             $result['success']=false;
@@ -96,12 +96,12 @@ namespace leads\cls {
                 } else
                 if($this->next_work->profile->profile_type_id== profile_type::GEOLOCATION) {
                     //$followers deve ser un array con los nombres de los seguidores
-                    $resp = $this->get_profiles_from_geolocation($this->next_work->profile->insta_id, $cookies,50, $cursor);
+                    $resp = $this->get_profiles_from_geolocation($this->next_work->profile->insta_id, $cookies,50, $cursor, $proxy);
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }else
                 if($this->next_work->profile->profile_type_id== profile_type::HASHTAG) {
-                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,10, $cursor);
+                    $resp = $this->get_profiles_from_hastag($this->next_work->profile->profile, $cookies,10, $cursor, $proxy);
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                 }
@@ -265,16 +265,16 @@ namespace leads\cls {
             return $leads;
         }
         
-        public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor) {
+        public function get_profiles_from_geolocation($rp_insta_id, $cookies, $quantity, $cursor, $proxy = "") {
             $Profiles = array();
             try{
-                $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor);
+                $json_response = $this->get_insta_geomedia($cookies, $rp_insta_id, $quantity, $cursor, $proxy);
                 if (is_object($json_response) && $json_response->status == 'ok') {
                     if (isset($json_response->data->location->edge_location_to_media)) { // if response is ok
                         $page_info = $json_response->data->location->edge_location_to_media->page_info;
                         foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
                             $profile = new \stdClass();
-                            $profile->node = $this->get_geo_post_user_info($cookies, $rp_insta_id, $Edge->node->shortcode);
+                            $profile->node = $this->get_geo_post_user_info($cookies, $rp_insta_id, $Edge->node->shortcode, $proxy);
                             array_push($Profiles, $profile->node->username);
                         }
                         $error = FALSE;
@@ -294,12 +294,11 @@ namespace leads\cls {
             }
         }
         
-        public function get_insta_geomedia($cookies, $location, $N, &$cursor = NULL) {
+        public function get_insta_geomedia($cookies, $location, $N, &$cursor = NULL, $proxy = "") {
             try {
-//                $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
                 $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies, $proxy);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);
@@ -343,14 +342,14 @@ namespace leads\cls {
             }
         }
         
-        public function get_geo_post_user_info($cookies, $location_id, $post_reference) {
+        public function get_geo_post_user_info($cookies, $location_id, $post_reference, $proxy = "") {
             //echo " -------Obtindo dados de perfil que postou na geolocalizacao------------<br>\n<br>\n";
             $csrftoken = isset($cookies->csrftoken) ? $cookies->csrftoken : 0;
             $ds_user_id = isset($cookies->ds_user_id) ? $cookies->ds_user_id : 0;
             $sessionid = isset($cookies->sessionid) ? $cookies->sessionid : 0;
             $mid = isset($cookies->mid) ? $cookies->mid : 0;
             $url = "https://www.instagram.com/p/$post_reference/?taken-at=$location_id&__a=1";
-            $curl_str = "curl '$url' ";
+            $curl_str = "curl $proxy '$url' ";
             $curl_str .= "-H 'Accept-Encoding: gzip, deflate, br' ";
             $curl_str .= "-H 'X-Requested-With: XMLHttpRequest' ";
             $curl_str .= "-H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' ";
@@ -372,23 +371,21 @@ namespace leads\cls {
             return NULL;
         }
         
-        public function make_curl_followers_query($query, $variables, $cookies=NULL){            
+        public function make_curl_followers_query($query, $variables, $login_data = NULL, $proxy = "") {
             $variables = urlencode($variables);
-            $url = "https://www.instagram.com/graphql/query/?query_hash=$query&variables=$variables";            
-            $curl_str = "curl '$url' ";
-            if($cookies !== NULL)
-            {
-                if($cookies->mid == NULL|| $cookies->csrftoken == NULL || $cookies->sessionid == NULL ||
-                        $cookies->ds_user_id == NULL)
+            $url = "https://www.instagram.com/graphql/query/?query_hash=$query&variables=$variables";
+            $curl_str = "curl $proxy '$url' ";
+            if ($login_data !== NULL) {
+                if ($login_data->mid == NULL || $login_data->csrftoken == NULL || $login_data->sessionid == NULL ||
+                        $login_data->ds_user_id == NULL)
                     return NULL;
-               $curl_str .= "-H 'Cookie: mid=$cookies->mid; sessionid=$cookies->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$cookies->csrftoken; ds_user_id=$cookies->ds_user_id' ";            
-               $curl_str .= "-H 'X-CSRFToken: $cookies->csrftoken' ";
+                $curl_str .= "-H 'Cookie: mid=$login_data->mid; sessionid=$login_data->sessionid; s_network=; ig_pr=1; ig_vw=1855; csrftoken=$login_data->csrftoken; ds_user_id=$login_data->ds_user_id' ";
+                $curl_str .= "-H 'X-CSRFToken: $login_data->csrftoken' ";
             }
-            
             $curl_str .= "-H 'Origin: https://www.instagram.com' ";
             $curl_str .= "-H 'Accept-Encoding: gzip, deflate' ";
             $curl_str .= "-H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' ";
-            $curl_str .= "-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0' ";
+            $curl_str .= "-H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36' ";
             $curl_str .= "-H 'X-Requested-with: XMLHttpRequest' ";
             //$curl_str .= "-H 'X-Instagram-ajax: 1' ";
             $curl_str .= "-H 'content-type: application/x-www-form-urlencoded' ";
@@ -401,16 +398,16 @@ namespace leads\cls {
         
         
         
-        public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor) {
+        public function get_profiles_from_hastag($tag_name, $cookies, $quantity, $cursor, $proxy = "") {
             $Profiles = array();
             try{
-                $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor);
+                $json_response = $this->get_insta_tagmedia($cookies, $tag_name, $quantity, $cursor, $proxy);
                 if (is_object($json_response)) {
                     if (isset($json_response->data->hashtag->edge_hashtag_to_media)) { // if response is ok
                         $page_info = $json_response->data->hashtag->edge_hashtag_to_media->page_info;
                         foreach ($json_response->data->hashtag->edge_hashtag_to_media->edges as $Edge) {
                             $profile = new \stdClass();
-                            $profile->node = $this->get_tag_post_user_info($cookies,  $Edge->node->shortcode);
+                            $profile->node = $this->get_tag_post_user_info($cookies,  $Edge->node->shortcode, $proxy);
                             array_push($Profiles, $profile->node->username);
                         }
                         $error = FALSE;
@@ -430,12 +427,11 @@ namespace leads\cls {
             }
         }
 //        
-        public function get_insta_tagmedia($cookies, $tag, $N, &$cursor = NULL) {
+        public function get_insta_tagmedia($cookies, $tag, $N, &$cursor = NULL, $proxy = "") {
             try {
-//                $tag_query = '298b92c8d7cad703f7565aa892ede943';
                 $tag_query = 'ded47faa9a1aaded10161a2ff32abb6b';
                 $variables = "{\"tag_name\":\"$tag\",\"first\":2,\"after\":\"$cursor\"}";
-                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies);
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies, $proxy);
                 if ($curl_str === NULL)
                     return NULL;
                 exec('/usr/bin/'.$curl_str, $output, $status);
@@ -472,14 +468,14 @@ namespace leads\cls {
             }
         }
         
-        public function get_tag_post_user_info($cookies, $post_reference) {
+        public function get_tag_post_user_info($cookies, $post_reference, $proxy = "") {
             //echo " -------Obtindo dados de perfil que postou na geolocalizacao------------<br>\n<br>\n";
             $csrftoken = isset($cookies->csrftoken) ? $cookies->csrftoken : 0;
             $ds_user_id = isset($cookies->ds_user_id) ? $cookies->ds_user_id : 0;
             $sessionid = isset($cookies->sessionid) ? $cookies->sessionid : 0;
             $mid = isset($cookies->mid) ? $cookies->mid : 0;
             $url = "https://www.instagram.com/p/$post_reference/?__a=1";
-            $curl_str = "curl '$url' ";
+            $curl_str = "curl $proxy '$url' ";
             $curl_str .= "-H 'Accept-Encoding: gzip, deflate, br' ";
             $curl_str .= "-H 'X-Requested-With: XMLHttpRequest' ";
             $curl_str .= "-H 'Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4' ";
