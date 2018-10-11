@@ -2,6 +2,7 @@
 
 namespace InstagramAPI\Request;
 
+use InstagramAPI\Constants;
 use InstagramAPI\Response;
 
 /**
@@ -12,11 +13,17 @@ class Highlight extends RequestCollection
     /**
      * Get highlight feed.
      *
+     * NOTE: Sometimes, a highlight doesn't have any `items` property. To get
+     * the list of items in that situation, you must submit its `id` (such as
+     * `highlight:123882132324123`) to the `Story::getReelsMediaFeed()` API.
+     *
      * @param string $userId Numerical UserPK ID.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
      * @return \InstagramAPI\Response\HighlightFeedResponse
+     *
+     * @see Story::getReelsMediaFeed() To get highlight items when they aren't included in this response.
      */
     public function getUserFeed(
         $userId)
@@ -28,9 +35,15 @@ class Highlight extends RequestCollection
     /**
      * Get self highlight feed.
      *
+     * NOTE: Sometimes, a highlight doesn't have any `items` property. Read
+     * `Highlight::getUserFeed()` for more information about what to do.
+     *
      * @throws \InstagramAPI\Exception\InstagramException
      *
      * @return \InstagramAPI\Response\HighlightFeedResponse
+     *
+     * @see Highlight::getUserFeed()
+     * @see Story::getReelsMediaFeed() To get highlight items when they aren't included in this response.
      */
     public function getSelfUserFeed()
     {
@@ -48,13 +61,13 @@ class Highlight extends RequestCollection
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
      *
-     * @return \InstagramAPI\Response\HighlightFeedResponse
+     * @return \InstagramAPI\Response\CreateHighlightResponse
      */
     public function create(
         array $mediaIds,
         $title = 'Highlights',
         $coverMediaId = null,
-        $module = 'story_viewer')
+        $module = 'self_profile')
     {
         if (empty($mediaIds)) {
             throw new \InvalidArgumentException('You must provide at least one media ID.');
@@ -70,18 +83,20 @@ class Highlight extends RequestCollection
 
         $cover = [
                     'media_id'  => $coverMediaId,
-                    'crop_rect' => '[0.0, 0.19543147, 1.0, 0.8045685]',
+                    'crop_rect' => '[0.0,0.21818182,1.0,0.7801653]',
                 ];
 
         return $this->ig->request('highlights/create_reel/')
+            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
             ->addPost('source', $module)
-            ->addPost('_uuid', $this->ig->uuid)
-            ->addPost('_uid', $this->ig->account_id)
+            ->addPost('creation_id', round(microtime(true) * 1000))
             ->addPost('_csrftoken', $this->ig->client->getToken())
-            ->addPost('title', $title)
+            ->addPost('_uid', $this->ig->account_id)
+            ->addPost('_uuid', $this->ig->uuid)
             ->addPost('cover', json_encode($cover))
+            ->addPost('title', $title)
             ->addPost('media_ids', json_encode(array_values($mediaIds)))
-            ->getResponse(new Response\HighlightFeedResponse());
+            ->getResponse(new Response\CreateHighlightResponse());
     }
 
     /**
@@ -99,9 +114,9 @@ class Highlight extends RequestCollection
     public function edit(
         $highlightReelId,
         array $params,
-        $module = 'story_viewer')
+        $module = 'self_profile')
     {
-        if (isset($params['cover_media_id'])) {
+        if (!isset($params['cover_media_id'])) {
             throw new \InvalidArgumentException('You must provide one media ID for the cover.');
         }
         if (!isset($params['title'])) {
@@ -117,10 +132,11 @@ class Highlight extends RequestCollection
         }
         $cover = [
                     'media_id'  => $params['cover_media_id'],
-                    'crop_rect' => '[0.0, 0.19543147, 1.0, 0.8045685]',
+                    'crop_rect' => '[0.0,0.21854913,1.0,0.7805326]',
                 ];
 
         return $this->ig->request("highlights/{$highlightReelId}/edit_reel/")
+            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
             ->addPost('source', $module)
             ->addPost('_uuid', $this->ig->uuid)
             ->addPost('_uid', $this->ig->account_id)

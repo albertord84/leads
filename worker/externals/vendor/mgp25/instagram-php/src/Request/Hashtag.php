@@ -32,6 +32,73 @@ class Hashtag extends RequestCollection
     }
 
     /**
+     * Get hashtag story.
+     *
+     * @param string $hashtag The hashtag, not including the "#".
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\TagsStoryResponse
+     */
+    public function getStory(
+        $hashtag)
+    {
+        Utils::throwIfInvalidHashtag($hashtag);
+        $urlHashtag = urlencode($hashtag); // Necessary for non-English chars.
+        return $this->ig->request("tags/{$urlHashtag}/story/")
+            ->getResponse(new Response\TagsStoryResponse());
+    }
+
+    /**
+     * Get hashtags from a section.
+     *
+     * Available tab sections: 'top', 'recent' or 'places'.
+     *
+     * @param string      $hashtag      The hashtag, not including the "#".
+     * @param string      $rankToken    The feed UUID. You must use the same value for all pages of the feed.
+     * @param null|string $tab          Section tab for hashtags.
+     * @param null|int[]  $nextMediaIds Used for pagination.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\TagFeedResponse
+     */
+    public function getSection(
+        $hashtag,
+        $rankToken,
+        $tab = null,
+        $nextMediaIds = null)
+    {
+        Utils::throwIfInvalidHashtag($hashtag);
+        $urlHashtag = urlencode($hashtag); // Necessary for non-English chars.
+
+        $request = $this->ig->request("tags/{$urlHashtag}/sections/")
+            ->setSignedPost(false)
+            ->addPost('supported_tabs', "['top','recent','places']")
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('include_persistent', true);
+
+        if ($tab !== null) {
+            if ($tab !== 'top' && $tab !== 'recent' && $tab !== 'places') {
+                throw new \InvalidArgumentException('Tab section must be \'top\', \'recent\' or \'places\'.');
+            }
+            $request->addPost('tab', $tab);
+        }
+
+        if ($nextMediaIds !== null) {
+            if (!is_array($nextMediaIds) || !array_filter($nextMediaIds, 'is_int')) {
+                throw new \InvalidArgumentException('Next media IDs must be an Int[].');
+            }
+            $request->addPost('next_media_ids', $nextMediaIds);
+        }
+
+        return $request->getResponse(new Response\TagFeedResponse());
+    }
+
+    /**
      * Search for hashtags.
      *
      * Gives you search results ordered by best matches first.

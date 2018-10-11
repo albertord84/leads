@@ -552,23 +552,24 @@
     },
     {
         "name": "mgp25/instagram-php",
-        "version": "v4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "v5.0.0",
+        "version_normalized": "5.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/mgp25/Instagram-API.git",
-            "reference": "4b2bf58b7b80bf0b7d61356e98aee6e7bc6e558e"
+            "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/4b2bf58b7b80bf0b7d61356e98aee6e7bc6e558e",
-            "reference": "4b2bf58b7b80bf0b7d61356e98aee6e7bc6e558e",
+            "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/e3e07ec11ef5883ad6c0247c307ada317edb262f",
+            "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f",
             "shasum": ""
         },
         "require": {
             "binsoul/net-mqtt-client-react": "^0.3.2",
             "clue/http-proxy-react": "^1.1.0",
             "clue/socks-react": "^0.8.2",
+            "ext-bcmath": "*",
             "ext-curl": "*",
             "ext-exif": "*",
             "ext-gd": "*",
@@ -581,7 +582,9 @@
             "react/event-loop": "^0.4.3",
             "react/promise": "^2.5",
             "react/socket": "^0.8",
-            "valga/fbns-react": "^0.1.8"
+            "symfony/process": "^3.4|^4.0",
+            "valga/fbns-react": "^0.1.8",
+            "winbox/args": "1.0.0"
         },
         "require-dev": {
             "friendsofphp/php-cs-fixer": "^2.8.0",
@@ -592,7 +595,7 @@
         "suggest": {
             "ext-event": "Installing PHP's native Event extension enables faster Realtime class event handling."
         },
-        "time": "2018-03-27T10:25:21+00:00",
+        "time": "2018-10-08T22:42:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1120,6 +1123,57 @@
         ]
     },
     {
+        "name": "symfony/process",
+        "version": "v3.4.17",
+        "version_normalized": "3.4.17.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "1dc2977afa7d70f90f3fefbcd84152813558910e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/1dc2977afa7d70f90f3fefbcd84152813558910e",
+            "reference": "1dc2977afa7d70f90f3fefbcd84152813558910e",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2018-10-02T12:28:39+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
+    },
+    {
         "name": "valga/fbns-react",
         "version": "0.1.8",
         "version_normalized": "0.1.8.0",
@@ -1176,6 +1230,50 @@
             "FBNS",
             "client",
             "php"
+        ]
+    },
+    {
+        "name": "winbox/args",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/johnstevenson/winbox-args.git",
+            "reference": "389a9ed9410e6f422b1031b3e55a402ace716296"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/johnstevenson/winbox-args/zipball/389a9ed9410e6f422b1031b3e55a402ace716296",
+            "reference": "389a9ed9410e6f422b1031b3e55a402ace716296",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2016-08-04T14:30:27+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Winbox\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "John Stevenson",
+                "email": "john-stevenson@blueyonder.co.uk"
+            }
+        ],
+        "description": "Windows command-line formatter",
+        "homepage": "http://github.com/johnstevenson/winbox-args",
+        "keywords": [
+            "Escape",
+            "command",
+            "windows"
         ]
     }
 ]

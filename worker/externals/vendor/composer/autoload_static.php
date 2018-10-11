@@ -16,6 +16,14 @@ class ComposerStaticInitf0ab76f5b5f777c92ccc2a8625285b3f
     );
 
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'Winbox\\' => 7,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\Process\\' => 26,
+        ),
         'R' => 
         array (
             'RingCentral\\Psr7\\' => 17,
@@ -64,6 +72,14 @@ class ComposerStaticInitf0ab76f5b5f777c92ccc2a8625285b3f
     );
 
     public static $prefixDirsPsr4 = array (
+        'Winbox\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/winbox/args/src',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
         'RingCentral\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/ringcentral/psr7/src',
