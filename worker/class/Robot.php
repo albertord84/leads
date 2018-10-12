@@ -38,9 +38,9 @@ namespace leads\cls {
             $this->utils = new \leads\cls\Utils();
         }
         
-        public function do_instagram_login_by_API($login, $pass){ //return $ig object
+        public function do_instagram_login_by_API($login, $pass, $ip='207.188.155.18', $port='21316', $proxyuser='albertreye9917', $proxypass='3r4rcz0b1v') { //return $ig object
              try {
-                $result = $this->make_login($login, $pass);
+                $result = $this->make_login($login, $pass, $ip, $port, $proxyuser, $proxypass);
                 return $result;
             } catch (\Exception $e) {
                 if ((strpos($e->getMessage(), 'Challenge required') !== FALSE) || (strpos($e->getMessage(), 'Checkpoint required') !== FALSE) || (strpos($e->getMessage(), 'challenge_required') !== FALSE)) {
@@ -53,11 +53,11 @@ namespace leads\cls {
             }
         }
         
-        public function make_login($login, $pass){ //return $ig object
+        public function make_login($login, $pass, $ip='207.188.155.18', $port='21316', $proxyuser='albertreye9917', $proxypass='3r4rcz0b1v') { //return $ig object
             $instaAPI = new \leads\cls\InstaAPI();
             $result ="";
             try {
-                $resp = $instaAPI->login($login, $pass);
+                $resp = $instaAPI->login($login, $pass, $ip, $port, $proxyuser, $proxypass);
                 $result =(object)array(
                     'ig'=>$resp,
                     'cookies'=>$instaAPI->Cookies
