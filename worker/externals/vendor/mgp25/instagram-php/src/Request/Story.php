@@ -72,6 +72,7 @@ class Story extends RequestCollection
     {
         return $this->ig->request('feed/reels_tray/')
             ->setSignedPost(false)
+            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
             ->addPost('_uuid', $this->ig->uuid)
             ->addPost('_csrftoken', $this->ig->client->getToken())
             ->getResponse(new Response\ReelsTrayFeedResponse());
@@ -126,29 +127,59 @@ class Story extends RequestCollection
     }
 
     /**
-     * Get multiple users' story feeds at once.
+     * Get multiple users' story feeds (or specific highlight-details) at once.
      *
-     * @param string|string[] $userList List of numerical UserPK IDs.
+     * NOTE: Normally, you would only use this endpoint for stories (by passing
+     * UserPK IDs as the parameter). But if you're looking at people's highlight
+     * feeds (via `Highlight::getUserFeed()`), you may also sometimes discover
+     * highlight entries that don't have any `items` array. In that case, you
+     * are supposed to get the items for those highlights via this endpoint!
+     * Simply pass their `id` values as the argument to this API to get details.
+     *
+     * @param string|string[] $feedList List of numerical UserPK IDs, OR highlight IDs (such as `highlight:123882132324123`).
+     * @param string          $source   (optional) Source app-module where the request was made.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
      * @return \InstagramAPI\Response\ReelsMediaResponse
+     *
+     * @see Highlight::getUserFeed() More info about when to use this API for highlight-details.
      */
     public function getReelsMediaFeed(
-        $userList)
+        $feedList,
+        $source = 'feed_timeline')
     {
-        if (!is_array($userList)) {
-            $userList = [$userList];
+        if (!is_array($feedList)) {
+            $feedList = [$feedList];
         }
 
-        foreach ($userList as &$value) {
+        foreach ($feedList as &$value) {
             $value = (string) $value;
         }
         unset($value); // Clear reference.
 
         return $this->ig->request('feed/reels_media/')
-            ->addPost('user_ids', $userList) // Must be string[] array.
+            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('_uid', $this->ig->account_id)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('user_ids', $feedList) // Must be string[] array.
+            ->addPost('source', $source)
             ->getResponse(new Response\ReelsMediaResponse());
+    }
+
+    /**
+     * Get your archived story media feed.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\ArchivedStoriesFeedResponse
+     */
+    public function getArchivedStoriesFeed()
+    {
+        return $this->ig->request('archive/reel/day_shells/')
+            ->addParam('include_cover', 0)
+            ->getResponse(new Response\ArchivedStoriesFeedResponse());
     }
 
     /**
@@ -168,12 +199,49 @@ class Story extends RequestCollection
         $storyPk,
         $maxId = null)
     {
-        $request = $this->ig->request("media/{$storyPk}/list_reel_media_viewer/");
+        $request = $this->ig->request("media/{$storyPk}/list_reel_media_viewer/")
+            ->addParam('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES));
         if ($maxId !== null) {
             $request->addParam('max_id', $maxId);
         }
 
         return $request->getResponse(new Response\ReelMediaViewerResponse());
+    }
+
+    /**
+     * Get the list of users who have voted an option in a story poll.
+     *
+     * Note that this only works for your own story polls. Instagram doesn't
+     * allow you to see the results from other people's polls!
+     *
+     * @param string      $storyId      The story media item's ID in Instagram's internal format (ie "1542304813904481224_6112344004").
+     * @param string      $pollId       The poll ID in Instagram's internal format (ie "17956159684032257").
+     * @param int         $votingOption Value that represents the votion option of the voter. 0 for the first option, 1 for the second option.
+     * @param null|string $maxId        Next "maximum ID", used for pagination.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\StoryPollVotersResponse
+     */
+    public function getStoryPollVoters(
+        $storyId,
+        $pollId,
+        $votingOption,
+        $maxId = null)
+    {
+        if (($votingOption !== 0) && ($votingOption !== 1)) {
+            throw new \InvalidArgumentException('You must provide a valid value for voting option.');
+        }
+
+        $request = $this->ig->request("media/{$storyId}/{$pollId}/story_poll_voters/")
+            ->addParam('vote', $votingOption);
+
+        if ($maxId !== null) {
+            $request->addParam('max_id', $maxId);
+        }
+
+        return $request->getResponse(new Response\StoryPollVotersResponse());
     }
 
     /**

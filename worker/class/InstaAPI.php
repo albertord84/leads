@@ -9,12 +9,15 @@ namespace leads\cls {
 
         public $Cookies = null;
 
-        public function login($username, $password) {
+        public function login($username, $password, $ip='207.188.155.18', $port='21316', $proxyuser='albertreye9917', $proxypass='3r4rcz0b1v') {
             \InstagramAPI\Instagram::$allowDangerousWebUsageAtMyOwnRisk = true;            
             $debug = false;
             $truncatedDebug = true;
             try {             
                 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug); 
+                
+                $ig->setProxy("http://$proxyuser:$proxypass@$ip:$port");
+                
                 $loginResponse = $ig->login($username, $password);
                                 
                 $ig->client->loadCookieJar();

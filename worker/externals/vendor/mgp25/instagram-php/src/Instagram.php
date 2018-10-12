@@ -3,7 +3,7 @@
 namespace InstagramAPI;
 
 /**
- * Instagram's Private API v4.
+ * Instagram's Private API v5.
  *
  * TERMS OF USE:
  * - This code is in no way affiliated with, authorized, maintained, sponsored
@@ -199,6 +199,8 @@ class Instagram implements ExperimentsInterface
     public $hashtag;
     /** @var Request\Highlight Collection of Highlight related functions. */
     public $highlight;
+    /** @var Request\TV Collection of Instagram TV functions. */
+    public $tv;
     /** @var Request\Internal Collection of Internal (non-public) functions. */
     public $internal;
     /** @var Request\Live Collection of Live related functions. */
@@ -211,6 +213,8 @@ class Instagram implements ExperimentsInterface
     public $people;
     /** @var Request\Push Collection of Push related functions. */
     public $push;
+    /** @var Request\Shopping Collection of Shopping related functions. */
+    public $shopping;
     /** @var Request\Story Collection of Story related functions. */
     public $story;
     /** @var Request\Timeline Collection of Timeline related functions. */
@@ -284,12 +288,14 @@ class Instagram implements ExperimentsInterface
         $this->discover = new Request\Discover($this);
         $this->hashtag = new Request\Hashtag($this);
         $this->highlight = new Request\Highlight($this);
+        $this->tv = new Request\TV($this);
         $this->internal = new Request\Internal($this);
         $this->live = new Request\Live($this);
         $this->location = new Request\Location($this);
         $this->media = new Request\Media($this);
         $this->people = new Request\People($this);
         $this->push = new Request\Push($this);
+        $this->shopping = new Request\Shopping($this);
         $this->story = new Request\Story($this);
         $this->timeline = new Request\Timeline($this);
         $this->usertag = new Request\Usertag($this);
@@ -408,6 +414,9 @@ class Instagram implements ExperimentsInterface
      * two-factor login example to see how to handle that.
      *
      * @param string $username           Your Instagram username.
+     *                                   You can also use your email or phone,
+     *                                   but take in mind that they won't work
+     *                                   when you have two factor auth enabled.
      * @param string $password           Your Instagram password.
      * @param int    $appRefreshInterval How frequently `login()` should act
      *                                   like an Instagram app that's been
@@ -526,6 +535,7 @@ class Instagram implements ExperimentsInterface
      * you will be logged in after this function call.
      *
      * @param string $username            Your Instagram username.
+     *                                    Email and phone aren't allowed here.
      * @param string $password            Your Instagram password.
      * @param string $twoFactorIdentifier Two factor identifier, obtained in
      *                                    login() response. Format: `123456`.
@@ -568,12 +578,14 @@ class Instagram implements ExperimentsInterface
 
         $response = $this->request('accounts/two_factor_login/')
             ->setNeedsAuth(false)
+            // 1 - SMS, 2 - Messenger (?), 3 - TOTP, 0 - ??
+            ->addPost('verification_method', '1')
             ->addPost('verification_code', $verificationCode)
             ->addPost('two_factor_identifier', $twoFactorIdentifier)
             ->addPost('_csrftoken', $this->client->getToken())
             ->addPost('username', $this->username)
             ->addPost('device_id', $this->device_id)
-            ->addPost('password', $this->password)
+            ->addPost('guid', $this->uuid)
             ->getResponse(new Response\LoginResponse());
 
         $this->_updateLoginState($response);
@@ -581,6 +593,153 @@ class Instagram implements ExperimentsInterface
         $this->_sendLoginFlow(true, $appRefreshInterval);
 
         return $response;
+    }
+
+    /**
+     * Request a new security code SMS for a Two Factor login account.
+     *
+     * NOTE: You should first attempt to `login()` which will automatically send
+     * you a two factor SMS. This function is just for asking for a new SMS if
+     * the old code has expired.
+     *
+     * NOTE: Instagram can only send you a new code every 60 seconds.
+     *
+     * @param string $username            Your Instagram username.
+     * @param string $password            Your Instagram password.
+     * @param string $twoFactorIdentifier Two factor identifier, obtained in
+     *                                    `login()` response.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\TwoFactorLoginSMSResponse
+     */
+    public function sendTwoFactorLoginSMS(
+        $username,
+        $password,
+        $twoFactorIdentifier)
+    {
+        if (empty($username) || empty($password)) {
+            throw new \InvalidArgumentException('You must provide a username and password to sendTwoFactorLoginSMS().');
+        }
+        if (empty($twoFactorIdentifier)) {
+            throw new \InvalidArgumentException('You must provide a two-factor identifier to sendTwoFactorLoginSMS().');
+        }
+
+        // Switch the currently active user/pass if the details are different.
+        // NOTE: The password IS NOT actually necessary for THIS
+        // endpoint, but this extra step helps people who statelessly embed the
+        // library directly into a webpage, so they can `sendTwoFactorLoginSMS()`
+        // on their second page load without having to begin any new `login()`
+        // call (since they did that in their previous webpage's library calls).
+        if ($this->username !== $username || $this->password !== $password) {
+            $this->_setUser($username, $password);
+        }
+
+        return $this->request('accounts/send_two_factor_login_sms/')
+            ->setNeedsAuth(false)
+            ->addPost('two_factor_identifier', $twoFactorIdentifier)
+            ->addPost('username', $username)
+            ->addPost('device_id', $this->device_id)
+            ->addPost('guid', $this->uuid)
+            ->addPost('_csrftoken', $this->client->getToken())
+            ->getResponse(new Response\TwoFactorLoginSMSResponse());
+    }
+
+    /**
+     * Request information about available password recovery methods for an account.
+     *
+     * This will tell you things such as whether SMS or EMAIL-based recovery is
+     * available for the given account name.
+     *
+     * `WARNING:` You can call this function without having called `login()`,
+     * but be aware that a user database entry will be created for every
+     * username you try to look up. This is ONLY meant for recovering your OWN
+     * accounts.
+     *
+     * @param string $username Your Instagram username.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\UsersLookupResponse
+     */
+    public function userLookup(
+        $username)
+    {
+        // Set active user (without pwd), and create database entry if new user.
+        $this->_setUserWithoutPassword($username);
+
+        return $this->request('users/lookup/')
+            ->setNeedsAuth(false)
+            ->addPost('q', $username)
+            ->addPost('directly_sign_in', true)
+            ->addPost('username', $username)
+            ->addPost('device_id', $this->device_id)
+            ->addPost('guid', $this->uuid)
+            ->addPost('_csrftoken', $this->client->getToken())
+            ->getResponse(new Response\UsersLookupResponse());
+    }
+
+    /**
+     * Request a recovery EMAIL to get back into your account.
+     *
+     * `WARNING:` You can call this function without having called `login()`,
+     * but be aware that a user database entry will be created for every
+     * username you try to look up. This is ONLY meant for recovering your OWN
+     * accounts.
+     *
+     * @param string $username Your Instagram username.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\RecoveryResponse
+     */
+    public function sendRecoveryEmail(
+        $username)
+    {
+        // Verify that they can use the recovery email option.
+        $userLookup = $this->userLookup($username);
+        if (!$userLookup->getCanEmailReset()) {
+            throw new \InstagramAPI\Exception\InternalException('Email recovery is not available, since your account lacks a verified email address.');
+        }
+
+        return $this->request('accounts/send_recovery_flow_email/')
+            ->setNeedsAuth(false)
+            ->addPost('query', $username)
+            ->addPost('adid', $this->advertising_id)
+            ->addPost('device_id', $this->device_id)
+            ->addPost('guid', $this->uuid)
+            ->addPost('_csrftoken', $this->client->getToken())
+            ->getResponse(new Response\RecoveryResponse());
+    }
+
+    /**
+     * Request a recovery SMS to get back into your account.
+     *
+     * `WARNING:` You can call this function without having called `login()`,
+     * but be aware that a user database entry will be created for every
+     * username you try to look up. This is ONLY meant for recovering your OWN
+     * accounts.
+     *
+     * @param string $username Your Instagram username.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\RecoveryResponse
+     */
+    public function sendRecoverySMS(
+        $username)
+    {
+        // Verify that they can use the recovery SMS option.
+        $userLookup = $this->userLookup($username);
+        if (!$userLookup->getHasValidPhone() || !$userLookup->getCanSmsReset()) {
+            throw new \InstagramAPI\Exception\InternalException('SMS recovery is not available, since your account lacks a verified phone number.');
+        }
+
+        return $this->request('users/lookup_phone/')
+            ->setNeedsAuth(false)
+            ->addPost('query', $username)
+            ->addPost('_csrftoken', $this->client->getToken())
+            ->getResponse(new Response\RecoveryResponse());
     }
 
     /**
@@ -689,6 +848,49 @@ class Instagram implements ExperimentsInterface
     }
 
     /**
+     * Set the active account for the class instance, without knowing password.
+     *
+     * This internal function is used by all unauthenticated pre-login functions
+     * whenever they need to perform unauthenticated requests, such as looking
+     * up a user's account recovery options.
+     *
+     * `WARNING:` A user database entry will be created for every username you
+     * set as the active user, exactly like the normal `_setUser()` function.
+     * This is necessary so that we generate a user-device and data storage for
+     * each given username, which gives us necessary data such as a "device ID"
+     * for the new user's virtual device, to use in various API-call parameters.
+     *
+     * `WARNING:` This function CANNOT be used for performing logins, since
+     * Instagram will validate the password and will reject the missing
+     * password. It is ONLY meant to be used for *RECOVERY* PRE-LOGIN calls that
+     * need device parameters when the user DOESN'T KNOW their password yet.
+     *
+     * @param string $username Your Instagram username.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     */
+    protected function _setUserWithoutPassword(
+        $username)
+    {
+        if (empty($username) || !is_string($username)) {
+            throw new \InvalidArgumentException('You must provide a username.');
+        }
+
+        // Switch the currently active user/pass if the username is different.
+        // NOTE: Creates a user database (device) for the user if they're new!
+        // NOTE: Because we don't know their password, we'll mark the user as
+        // having "NOPASSWORD" as pwd. The user will fix that when/if they call
+        // `login()` with the ACTUAL password, which will tell us what it is.
+        // We CANNOT use an empty string since `_setUser()` will not allow that!
+        // NOTE: If the user tries to look up themselves WHILE they are logged
+        // in, we'll correctly NOT call `_setUser()` since they're already set.
+        if ($this->username !== $username) {
+            $this->_setUser($username, 'NOPASSWORD');
+        }
+    }
+
+    /**
      * Updates the internal state after a successful login.
      *
      * @param Response\LoginResponse $response The login response.
@@ -719,12 +921,17 @@ class Instagram implements ExperimentsInterface
      */
     protected function _sendPreLoginFlow()
     {
+        // Reset zero rating rewrite rules.
+        $this->client->zeroRating()->reset();
         // Calling this non-token API will put a csrftoken in our cookie
         // jar. We must do this before any functions that require a token.
-        $this->internal->readMsisdnHeader();
+        $this->internal->readMsisdnHeader('ig_select_app');
         $this->internal->syncDeviceFeatures(true);
-        $this->internal->getZeroRatingTokenResult();
+        $this->internal->sendLauncherSync(true);
         $this->internal->logAttribution();
+        // We must fetch new token here, because it updates rewrite rules.
+        $this->internal->fetchZeroRatingToken();
+        // It must be at the end, because it's called when a user taps on login input.
         $this->account->setContactPointPrefill('prefill');
     }
 
@@ -822,22 +1029,35 @@ class Instagram implements ExperimentsInterface
         //
         // You have been warned.
         if ($justLoggedIn) {
+            // Reset zero rating rewrite rules.
+            $this->client->zeroRating()->reset();
             // Perform the "user has just done a full login" API flow.
-            $this->internal->getZeroRatingTokenResult();
-            $this->people->getBootstrapUsers();
-            $this->story->getReelsTrayFeed();
-            $this->timeline->getTimelineFeed(null, ['recovered_from_crash' => true]);
+            $this->internal->sendLauncherSync(false);
             $this->internal->syncUserFeatures();
+            $this->timeline->getTimelineFeed(null, ['recovered_from_crash' => true]);
+            $this->story->getReelsTrayFeed();
+            $this->discover->getSuggestedSearches('users');
+            $this->discover->getRecentSearches();
+            $this->discover->getSuggestedSearches('blended');
+            //$this->story->getReelsMediaFeed();
+            // We must fetch new token here, because it updates rewrite rules.
+            $this->internal->fetchZeroRatingToken();
             $this->_registerPushChannels();
             $this->direct->getRankedRecipients('reshare', true);
             $this->direct->getRankedRecipients('raven', true);
             $this->direct->getInbox();
-            $this->internal->getProfileNotice();
-            //$this->internal->getMegaphoneLog();
+            $this->direct->getPresences();
             $this->people->getRecentActivityInbox();
-            $this->internal->getQPFetch();
+            if ((int) $this->getExperimentParam('ig_android_loom_universe', 'cpu_sampling_rate_ms', 0) > 0) {
+                $this->internal->getLoomFetchConfig();
+            }
+            $this->internal->getProfileNotice();
             $this->media->getBlockedMedia();
+            $this->people->getBootstrapUsers();
+            //$this->internal->getQPCooldowns();
             $this->discover->getExploreFeed(null, true);
+            //$this->internal->getMegaphoneLog();
+            $this->internal->getQPFetch();
             $this->internal->getFacebookOTA();
         } else {
             $lastLoginTime = $this->settings->get('last_login');
@@ -872,6 +1092,7 @@ class Instagram implements ExperimentsInterface
                 $this->_registerPushChannels();
                 //$this->internal->getMegaphoneLog();
                 $this->direct->getInbox();
+                $this->direct->getPresences();
                 $this->people->getRecentActivityInbox();
                 $this->internal->getProfileNotice();
                 $this->discover->getExploreFeed();
@@ -883,6 +1104,13 @@ class Instagram implements ExperimentsInterface
             if ($lastExperimentsTime === null || (time() - $lastExperimentsTime) > self::EXPERIMENTS_REFRESH) {
                 $this->internal->syncUserFeatures();
                 $this->internal->syncDeviceFeatures();
+            }
+
+            // Update zero rating token when it has been expired.
+            $expired = time() - (int) $this->settings->get('zr_expires');
+            if ($expired > 0) {
+                $this->client->zeroRating()->reset();
+                $this->internal->fetchZeroRatingToken($expired > 7200 ? 'token_stale' : 'token_expired');
             }
         }
 
@@ -930,15 +1158,18 @@ class Instagram implements ExperimentsInterface
      *
      * @param string $experiment
      * @param string $param
+     * @param bool   $default
      *
      * @return bool
      */
     public function isExperimentEnabled(
         $experiment,
-        $param)
+        $param,
+        $default = false)
     {
         return isset($this->experiments[$experiment][$param])
-            && in_array($this->experiments[$experiment][$param], ['enabled', 'true', '1']);
+            ? in_array($this->experiments[$experiment][$param], ['enabled', 'true', '1'])
+            : $default;
     }
 
     /**
