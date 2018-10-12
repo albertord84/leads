@@ -363,7 +363,7 @@ namespace leads\cls {
             $object = NULL;
             if(is_array($output)){
                 $object = json_decode($output[0]);
-                echo "line 366"; var_dump($output);
+                //echo "line 366"; var_dump($output);
             }
             if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
