@@ -3,17 +3,15 @@
 set_time_limit(0);
 date_default_timezone_set('UTC');
 
-echo __DIR__.'/../../../../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
-
-require_once __DIR__.'/../../../../vendor/autoload.php';
 /////// CONFIG ///////
 $username = '';
 $password = '';
 $debug = true;
 $truncatedDebug = false;
 //////////////////////
-\InstagramAPI\Instagram::$allowDangerousWebUsageAtMyOwnRisk = true;
+
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 
 try {

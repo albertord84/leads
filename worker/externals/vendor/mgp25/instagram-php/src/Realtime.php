@@ -8,6 +8,7 @@ use InstagramAPI\React\Connector;
 use InstagramAPI\Realtime\Command\Direct as DirectCommand;
 use InstagramAPI\Realtime\Command\IrisSubscribe;
 use InstagramAPI\Realtime\Mqtt\Auth;
+use InstagramAPI\Realtime\Payload\ZeroProvisionEvent;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use React\EventLoop\LoopInterface;
@@ -31,6 +32,7 @@ use React\EventLoop\LoopInterface;
  *  - client-context-ack - Acknowledgment for client_context has been received.
  *  - unseen-count-update - Unseen count indicator has been updated.
  *  - region-hint - Preferred data center has been changed.
+ *  - zero-provision - Zero rating token has been updated.
  *  - warning - An exception of severity "warning" occurred.
  *  - error - An exception of severity "error" occurred.
  */
@@ -80,6 +82,18 @@ class Realtime implements EventEmitterInterface
             $this->_instagram->settings->set('datacenter', $region);
             $this->_client->setAdditionalOption('datacenter', $region);
         });
+        $this->on('zero-provision', function (ZeroProvisionEvent $event) {
+            if ($event->getZeroProvisionedTime() === null) {
+                return;
+            }
+            if ($event->getProductName() !== 'select') {
+                return;
+            }
+            // TODO check whether we already have a fresh token.
+
+            $this->_instagram->client->zeroRating()->reset();
+            $this->_instagram->internal->fetchZeroRatingToken('mqtt_token_push');
+        });
     }
 
     /**
@@ -91,8 +105,7 @@ class Realtime implements EventEmitterInterface
     {
         $additionalOptions = [
             'datacenter'       => $this->_instagram->settings->get('datacenter'),
-            // TODO store presence in settings (?)
-            //'disable_presence' => $this->_instagram->account->getPresenceStatus()->getDisabled(),
+            'disable_presence' => (bool) $this->_instagram->settings->get('presence_disabled'),
         ];
 
         return new Realtime\Mqtt(
@@ -223,6 +236,169 @@ class Realtime implements EventEmitterInterface
     }
 
     /**
+     * Share an existing media post to a given direct thread.
+     *
+     * @param string $threadId Thread ID.
+     * @param string $mediaId  The media ID in Instagram's internal format (ie "3482384834_43294").
+     * @param array  $options  An associative array of additional parameters, including:
+     *                         "client_context" (optional) - predefined UUID used to prevent double-posting;
+     *                         "text" (optional) - text message.
+     *
+     * @return bool|string Client context or false if sending is unavailable.
+     */
+    public function sendPostToDirect(
+        $threadId,
+        $mediaId,
+        array $options = [])
+    {
+        if (!$this->_isRtcReshareEnabled()) {
+            return false;
+        }
+
+        try {
+            $command = new DirectCommand\SendPost($threadId, $mediaId, $options);
+            $this->_client->sendCommand($command);
+
+            return $command->getClientContext();
+        } catch (\Exception $e) {
+            $this->_logger->warning($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * Share an existing story to a given direct thread.
+     *
+     * @param string $threadId Thread ID.
+     * @param string $storyId  The story ID in Instagram's internal format (ie "3482384834_43294").
+     * @param array  $options  An associative array of additional parameters, including:
+     *                         "client_context" (optional) - predefined UUID used to prevent double-posting;
+     *                         "text" (optional) - text message.
+     *
+     * @return bool|string Client context or false if sending is unavailable.
+     */
+    public function sendStoryToDirect(
+        $threadId,
+        $storyId,
+        array $options = [])
+    {
+        if (!$this->_isRtcReshareEnabled()) {
+            return false;
+        }
+
+        try {
+            $command = new DirectCommand\SendStory($threadId, $storyId, $options);
+            $this->_client->sendCommand($command);
+
+            return $command->getClientContext();
+        } catch (\Exception $e) {
+            $this->_logger->warning($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * Share a profile to a given direct thread.
+     *
+     * @param string $threadId Thread ID.
+     * @param string $userId   Numerical UserPK ID.
+     * @param array  $options  An associative array of additional parameters, including:
+     *                         "client_context" (optional) - predefined UUID used to prevent double-posting;
+     *                         "text" (optional) - text message.
+     *
+     * @return bool|string Client context or false if sending is unavailable.
+     */
+    public function sendProfileToDirect(
+        $threadId,
+        $userId,
+        array $options = [])
+    {
+        if (!$this->_isRtcReshareEnabled()) {
+            return false;
+        }
+
+        try {
+            $command = new DirectCommand\SendProfile($threadId, $userId, $options);
+            $this->_client->sendCommand($command);
+
+            return $command->getClientContext();
+        } catch (\Exception $e) {
+            $this->_logger->warning($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * Share a location to a given direct thread.
+     *
+     * You must provide a valid Instagram location ID, which you get via other
+     * functions such as Location::search().
+     *
+     * @param string $threadId   Thread ID.
+     * @param string $locationId Instagram's internal ID for the location.
+     * @param array  $options    An associative array of additional parameters, including:
+     *                           "client_context" (optional) - predefined UUID used to prevent double-posting;
+     *                           "text" (optional) - text message.
+     *
+     * @return bool|string Client context or false if sending is unavailable.
+     */
+    public function sendLocationToDirect(
+        $threadId,
+        $locationId,
+        array $options = [])
+    {
+        if (!$this->_isRtcReshareEnabled()) {
+            return false;
+        }
+
+        try {
+            $command = new DirectCommand\SendLocation($threadId, $locationId, $options);
+            $this->_client->sendCommand($command);
+
+            return $command->getClientContext();
+        } catch (\Exception $e) {
+            $this->_logger->warning($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * Share a hashtag to a given direct thread.
+     *
+     * @param string $threadId Thread ID.
+     * @param string $hashtag  Hashtag to share.
+     * @param array  $options  An associative array of additional parameters, including:
+     *                         "client_context" (optional) - predefined UUID used to prevent double-posting;
+     *                         "text" (optional) - text message.
+     *
+     * @return bool|string Client context or false if sending is unavailable.
+     */
+    public function sendHashtagToDirect(
+        $threadId,
+        $hashtag,
+        array $options = [])
+    {
+        if (!$this->_isRtcReshareEnabled()) {
+            return false;
+        }
+
+        try {
+            $command = new DirectCommand\SendHashtag($threadId, $hashtag, $options);
+            $this->_client->sendCommand($command);
+
+            return $command->getClientContext();
+        } catch (\Exception $e) {
+            $this->_logger->warning($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
      * Sends reaction to a given direct thread item.
      *
      * @param string $threadId     Thread ID.
@@ -305,5 +481,15 @@ class Realtime implements EventEmitterInterface
         } catch (\Exception $e) {
             $this->_logger->warning($e->getMessage());
         }
+    }
+
+    /**
+     * Check whether sharing via the realtime client is enabled.
+     *
+     * @return bool
+     */
+    protected function _isRtcReshareEnabled()
+    {
+        return $this->_instagram->isExperimentEnabled('ig_android_rtc_reshare', 'is_rtc_reshare_enabled');
     }
 }

@@ -17,6 +17,7 @@ namespace leads\cls {
         public $cookies;
         public $init;
         public $end;
+        public $proxy;
         public $Gmail;
                 
         function __construct() {
@@ -48,9 +49,12 @@ namespace leads\cls {
                     return NULL;
                 } else{
                     $rp = $this->fill_client_data($client_data);
+                    $id_proxy = ($rp->id)%8; //mod 8                        
+                    $proxy = $this->get_proxy_obj($id_proxy);
+                    $proxy_str = $this->get_proxy_str($proxy);
                     $id = $rp->id;
                     $objRobot=new Robot();
-                    $resp = $objRobot->do_instagram_login_by_API($rp->login,$rp->pass);
+                    $resp = $objRobot->do_instagram_login_by_API($rp->login,$rp->pass, $proxy->proxy, $proxy->port, $proxy->proxy_user, $proxy->proxy_password);
                     if(is_object($resp) && is_object($resp->ig)){
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'status_id', $OCCUPED);
                         $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'cookies', json_encode($resp->cookies));
@@ -62,6 +66,8 @@ namespace leads\cls {
                         $this->cookies = $resp->cookies;
                         $this->init = $rp->init;
                         $this->end = $rp->end;
+                        // proxy like string
+                        $this->proxy = $proxy_str;
                         return true;
                     } else{
                         $administrators=array('josergm86@gmail.com','danilo.oliveiira@hotmail.com');                        
@@ -97,6 +103,30 @@ namespace leads\cls {
                 $RP->end = $client_data->end;               
             }
             return $RP;
+        }
+        
+        public function get_proxy_str($proxy) {
+            
+            if ($proxy != NULL) {
+                $proxy_str = "--proxy '$proxy->proxy_user:$proxy->proxy_password@$proxy->proxy:$proxy->port'";
+                return $proxy_str;
+            }
+            return "";
+        }
+        
+        public function get_proxy_obj($id_proxy) {
+            
+            if ($id_proxy != NULL) {
+                $DB = new DB();
+                $sql = ""
+                    . "SELECT * FROM dumbu_emails_db.Proxy "
+                    . "WHERE idProxy = $id_proxy";
+                $proxy_data = mysqli_query($DB->connection, $sql);                
+                $proxy = $proxy_data->fetch_object();
+                
+                return $proxy;
+            }
+            return "";
         }
         
     }
