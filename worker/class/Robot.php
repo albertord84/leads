@@ -193,10 +193,10 @@ namespace leads\cls {
                         'profile_status_id',profiles_status::ENDED);
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
-                        'profile_status_date',time());
+                        'profile_status_date',time());*/
                     $this->DB->update_field_in_DB('profiles',
                         'id', $this->next_work->profile->id,
-                        '`cursor`','NULL');*/
+                        '`cursor`','NULL');
                 } else{
                     $this->DB->update_field_in_DB('profiles', 
                         'id', $this->next_work->profile->id, 
@@ -540,7 +540,7 @@ namespace leads\cls {
             }
         }
         
-        public function get_insta_followers($login_data, $user, $N, $cursor = NULL, $proxy = "") {
+        public function get_insta_followers($login_data, $user, $N, &$cursor = NULL, $proxy = "") {
             try {
                 $tag_query = '37479f2b8209594dde7facb0d904896a';
                 $variables = "{\"id\":\"$user\",\"first\":$N,\"after\":\"$cursor\"}";
@@ -556,6 +556,7 @@ namespace leads\cls {
                 }
                 //var_dump($output);
                 if (is_object($json) && isset($json->data->user->edge_followed_by) && isset($json->data->user->edge_followed_by->page_info)) {
+                    $cursor = $json->data->user->edge_followed_by->page_info->end_cursor;
                     if ($json->data->user->edge_followed_by->page_info->has_next_page === false) {
                         echo ("<br>\n END Cursor empty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
                         var_dump(json_encode($json));
