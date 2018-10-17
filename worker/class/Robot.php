@@ -316,7 +316,7 @@ namespace leads\cls {
                 exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = NULL;
                 if(is_array($output)){
-                    if (array_key_exists(0, $output)) {
+                    if (array_key_exists('0', $output)) {
                         $json = json_decode($output[0]);
                     }
                     else{
@@ -456,7 +456,7 @@ namespace leads\cls {
                 exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = NULL;
                 if(is_array($output)){
-                    if (array_key_exists(0, $output)) {
+                    if (array_key_exists('0', $output)) {
                         $json = json_decode($output[0]);
                     }
                     else{
@@ -483,7 +483,7 @@ namespace leads\cls {
                 }
                 
                 else {
-                    if(is_array($output) && (array_key_exists(0, $output))){
+                    if(is_array($output) && (array_key_exists('0', $output))){
                         if(strpos($output[0], 'execution failure') !== FALSE && strpos($output[0], 'execution error') !== FALSE){
                             $this->DB->update_field_in_DB('profiles',
                                     'id', $this->next_work->profile->id,
@@ -573,7 +573,7 @@ namespace leads\cls {
                 //echo "<br>output $output[0] \n\n</br>";
                 //print_r($output);
                 //print("-> $status<br><br>");                
-                if (array_key_exists(0, $output)) {
+                if (array_key_exists('0', $output)) {
                         $json = json_decode($output[0]);
                 }
                 else{
