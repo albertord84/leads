@@ -573,8 +573,13 @@ namespace leads\cls {
                 //echo "<br>output $output[0] \n\n</br>";
                 //print_r($output);
                 //print("-> $status<br><br>");                
-                if(is_array($output)){
-                    $json = json_decode($output[0]);
+                if (array_key_exists(0, $output)) {
+                        $json = json_decode($output[0]);
+                }
+                else{
+                    echo "nao e ouput[0] em get_insta_followers <br>\n"; 
+                    var_dump($output);
+                    $json = NULL;
                 }
                 //var_dump($output);
                 if (is_object($json) && isset($json->data->user->edge_followed_by) && isset($json->data->user->edge_followed_by->page_info)) {
