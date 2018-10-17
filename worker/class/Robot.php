@@ -311,7 +311,7 @@ namespace leads\cls {
                 $json = NULL;
                 if(is_array($output)){
                     $json = json_decode($output[0]);
-                    echo "line 308"; var_dump($output);
+                    //echo "line 308"; var_dump($output);
                     if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                         $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                         if (count($json->data->location->edge_location_to_media->edges) == 0) {
@@ -571,7 +571,8 @@ namespace leads\cls {
                         }*/
                     }
                 } else {
-                    var_dump($output);
+                    //var_dump($output);
+                    echo ("<br>\n REFERENCE CURL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
                     print_r($curl_str);
                     /* if (isset($json->data) && ($json->data->user == null)) {
                       //$this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
