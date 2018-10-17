@@ -94,7 +94,7 @@ namespace leads\cls {
 //                    $followers = $response->getUsers();
 //                    $new_cursor = $response->getNextMaxId();
                     
-                    $resp = $this->get_profiles_from_reference($this->next_work->profile->insta_id, $cookies,200, $cursor, $proxy);                    
+                    $resp = $this->get_profiles_from_reference($this->next_work->profile->insta_id, $cookies,50, $cursor, $proxy);                    
                     $followers = $resp->followers; //array de nomes de perfis
                     $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
                     
@@ -602,6 +602,10 @@ namespace leads\cls {
                     echo ("<br>\n REFERENCE CURL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
                     print_r($curl_str);
                     var_dump($output);
+                    $this->DB->update_field_in_DB('profiles',
+                            'id', $this->next_work->profile->id,
+                            '`cursor`','NULL');
+                    echo ("<br>\n Updated Reference Cursor to NULL!!<br>\n ");
                     /* if (isset($json->data) && ($json->data->user == null)) {
                       //$this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
                       //echo ("<br>\n Updated Reference Cursor to NULL!!");
