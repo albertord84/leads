@@ -569,7 +569,8 @@ namespace leads\cls {
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data, $proxy);
                 if ($curl_str === NULL)
                     return NULL;
-                exec($curl_str, $output, $status);
+                //exec($curl_str, $output, $status);
+                exec('/usr/bin/'.$curl_str, $output, $status);
                 //echo "<br>output $output[0] \n\n</br>";
                 //print_r($output);
                 //print("-> $status<br><br>");                
