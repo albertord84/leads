@@ -50,7 +50,7 @@ namespace leads\cls {
                     return NULL;
                 } else{
                     $rp = $this->fill_client_data($client_data);
-                    $id_proxy = ($rp->id + $inc)%8; //mod 8                        
+                    $id_proxy = ($rp->id - 1 + $inc)%8 + 1; //mod 8                        
                     $proxy = $this->get_proxy_obj($id_proxy);
                     $proxy_str = $this->get_proxy_str($proxy);
                     $id = $rp->id;
@@ -77,7 +77,7 @@ namespace leads\cls {
                             foreach($administrators as $admin){
                                 $this->Gmail->send_mail($admin, $admin,
                                 "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
-                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '");                            
+                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '".$resp);                            
                             }
                         }
                         if($resp==='BLOCKED_BY_INSTA' || $resp==='NOT LOGGED'){

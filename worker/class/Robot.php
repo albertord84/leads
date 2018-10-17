@@ -447,7 +447,7 @@ namespace leads\cls {
                     //echo "line 443"; var_dump($output);
                 }
                 //var_dump($output);
-                if(isset($json) && $json->status == 'ok')
+                if(isset($json) && is_object($json) && $json->status == 'ok')
                 {
                     if (isset($json->data->hashtag->edge_hashtag_to_media) && isset($json->data->hashtag->edge_hashtag_to_media->page_info)) {
                         $cursor = $json->data->hashtag->edge_hashtag_to_media->page_info->end_cursor;
@@ -551,9 +551,11 @@ namespace leads\cls {
                 //echo "<br>output $output[0] \n\n</br>";
                 //print_r($output);
                 //print("-> $status<br><br>");                
-                $json = json_decode($output[0]);
+                if(is_array($output)){
+                    $json = json_decode($output[0]);
+                }
                 //var_dump($output);
-                if (isset($json->data->user->edge_followed_by) && isset($json->data->user->edge_followed_by->page_info)) {
+                if (is_object($json) && isset($json->data->user->edge_followed_by) && isset($json->data->user->edge_followed_by->page_info)) {
                     if ($json->data->user->edge_followed_by->page_info->has_next_page === false) {
                         echo ("<br>\n END Cursor empty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
                         var_dump(json_encode($json));
