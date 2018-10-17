@@ -88,11 +88,16 @@ namespace leads\cls {
                 //1. obter seguidores segundo o tipo de perfil de referencia
                 if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
                     
-                    $rankToken = \InstagramAPI\Signatures::generateUUID();
-                    $userId = $ig->people->getUserIdForName($rp);
-                    $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
-                    $followers = $response->getUsers();
-                    $new_cursor = $response->getNextMaxId();
+//                    $rankToken = \InstagramAPI\Signatures::generateUUID();
+//                    $userId = $ig->people->getUserIdForName($rp);
+//                    $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
+//                    $followers = $response->getUsers();
+//                    $new_cursor = $response->getNextMaxId();
+                    
+                    $resp = $this->get_profiles_from_reference($this->next_work->profile->insta_id, $cookies,200, $cursor, $proxy);                    
+                    $followers = $resp->followers; //array de nomes de perfis
+                    $new_cursor = $resp->cursor; //string com o cursor ou null se chegou no final
+                    
                 } else
                 if($this->next_work->profile->profile_type_id== profile_type::GEOLOCATION) {
                     //$followers deve ser un array con los nombres de los seguidores
@@ -113,8 +118,9 @@ namespace leads\cls {
                 foreach ($followers as $user) {//para cada seguidor
                     //2.1 extaer las leads do perfil atual
                     if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
-                        $username = $user->getUsername();
-                        sleep(2);
+                        //$username = $user->getUsername();
+                        //sleep(2);
+                        $username = $user;
                     }
                     else
                         $username = $user;
@@ -310,9 +316,9 @@ namespace leads\cls {
                         $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                         if (count($json->data->location->edge_location_to_media->edges) == 0) {
                             $cursor = null;
-    //                        $this->DB->update_field_in_DB('profiles',
-    //                        'id', $this->next_work->profile->id,
-    //                        '`cursor`','NULL');                        
+                            $this->DB->update_field_in_DB('profiles',
+                            'id', $this->next_work->profile->id,
+                            '`cursor`','NULL');                        
                             $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                             echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
@@ -320,9 +326,9 @@ namespace leads\cls {
                         if (isset($json->data) && $json->data->location == NULL) {
                             print_r($curl_str);
                             $cursor = null;
-        //                    $this->DB->update_field_in_DB('profiles',
-        //                    'id', $this->next_work->profile->id,
-        //                    '`cursor`','NULL');                        
+                            $this->DB->update_field_in_DB('profiles',
+                            'id', $this->next_work->profile->id,
+                            '`cursor`','NULL');                        
                             $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                             echo ("<br>\n Goelocation ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         } else {
@@ -438,7 +444,7 @@ namespace leads\cls {
                 $json = NULL;
                 if(is_array($output)){
                     $json = json_decode($output[0]);
-                    echo "line 443"; var_dump($output);
+                    //echo "line 443"; var_dump($output);
                 }
                 //var_dump($output);
                 if(isset($json) && $json->status == 'ok')
@@ -448,14 +454,21 @@ namespace leads\cls {
                         if (count($json->data->hashtag->edge_hashtag_to_media->edges) == 0) {
                             $cursor = null;
 //                            echo ("<br>\n No nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                            $this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
-//                            $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                            $this->DB->update_field_in_DB('profiles',
+                                'id', $this->next_work->profile->id,
+                                '`cursor`','NULL');
+                            $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
                             echo ("<br>\n Hashtag ".$this->next_work->profile->id." Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
                     }
                 }
                 
                 else {
+                    if(strpos($output[0], 'execution failure') !== FALSE && strpos($output[0], 'execution error') !== FALSE){
+                        $this->DB->update_field_in_DB('profiles',
+                                'id', $this->next_work->profile->id,
+                                '`cursor`','NULL');
+                    }
                     var_dump($output);
                     print_r($curl_str);
                     echo ("<br>n<br>\n Untrated error!!!<br>\n<br>\n");
@@ -495,6 +508,87 @@ namespace leads\cls {
             }
             return NULL;
         }
+        
+        
+        /*****************GET FOLLOWERS REFERENCE************************/
+        public function get_profiles_from_reference($rp_insta_id, $cookies, $quantity, $cursor, $proxy = "") {
+            $Profiles = array();
+            try{
+                $json_response = $this->get_insta_followers($cookies, $rp_insta_id, $quantity, $cursor, $proxy);
+                if (is_object($json_response) && $json_response->status == 'ok') {
+                    if (isset($json_response->data->user->edge_followed_by->edges)) { // if response is ok
+                        $page_info = $json_response->data->user->edge_followed_by->page_info;
+                        foreach ($json_response->data->user->edge_followed_by->edges as $Edge) {
+                            $profile = new \stdClass();
+                            $profile->node = $Edge->node;
+                            array_push($Profiles, $profile->node->username);
+                        }
+                        $error = FALSE;
+                    } else {
+                        $page_info->end_cursor = NULL;
+                        $page_info->has_next_page = false;
+                    }
+                }
+                return (object)array(
+                    'followers'=> $Profiles,
+                    'cursor'=>$cursor
+                );
+            }
+            catch (\Exception $exc) {
+                //echo $exc->getTraceAsString();
+                throw new \Exception("Not followers from reference");
+            }
+        }
+        
+        public function get_insta_followers($login_data, $user, $N, $cursor = NULL, $proxy = "") {
+            try {
+                $tag_query = '37479f2b8209594dde7facb0d904896a';
+                $variables = "{\"id\":\"$user\",\"first\":$N,\"after\":\"$cursor\"}";
+                $curl_str = $this->make_curl_followers_query($tag_query, $variables, $login_data, $proxy);
+                if ($curl_str === NULL)
+                    return NULL;
+                exec($curl_str, $output, $status);
+                //echo "<br>output $output[0] \n\n</br>";
+                //print_r($output);
+                //print("-> $status<br><br>");                
+                $json = json_decode($output[0]);
+                //var_dump($output);
+                if (isset($json->data->user->edge_followed_by) && isset($json->data->user->edge_followed_by->page_info)) {
+                    if ($json->data->user->edge_followed_by->page_info->has_next_page === false) {
+                        echo ("<br>\n END Cursor empty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
+                        var_dump(json_encode($json));
+                        //$DB = new DB();
+                        $this->DB->update_field_in_DB('profiles',
+                            'id', $this->next_work->profile->id,
+                            '`cursor`','NULL');
+                        //$this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
+                        echo ("<br>\n Updated Reference Cursor to NULL!!<br>\n ");
+                        /*$result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                        if ($result) {
+                            echo ("<br>\n Deleted Daily work!!<br>\n ");
+                        }*/
+                    }
+                } else {
+                    var_dump($output);
+                    print_r($curl_str);
+                    /* if (isset($json->data) && ($json->data->user == null)) {
+                      //$this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
+                      //echo ("<br>\n Updated Reference Cursor to NULL!!");
+                      $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                      if ($result) {
+                      echo ("<br>\n Deleted Daily work!!<br>\n ");
+                      } else {
+                      var_dump($result);
+                      }
+                      } */
+                }
+                return $json;
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+        
+        /*****************END GET FOLLOWERS REFERENCE************************/
         
         public function get_multi_level_hash($ds_user_id, $multi_level){
             $result=array();
