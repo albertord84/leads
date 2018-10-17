@@ -579,10 +579,10 @@ namespace leads\cls {
                             echo ("<br>\n Deleted Daily work!!<br>\n ");
                         }*/
                     }
-                } else {
-                    //var_dump($output);
+                } else {                    
                     echo ("<br>\n REFERENCE CURL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>\n ");
                     print_r($curl_str);
+                    var_dump($output);
                     /* if (isset($json->data) && ($json->data->user == null)) {
                       //$this->DB->update_reference_cursor($this->daily_work->reference_id, NULL);
                       //echo ("<br>\n Updated Reference Cursor to NULL!!");
