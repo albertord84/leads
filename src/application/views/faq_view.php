@@ -423,10 +423,5 @@ array(), $language); ?>
     <!--Start of Boostbox Tag Script-->
                 <script async="1" src="//tags.fulllab.com.br/scripts/master-tag/produto_dumbu.js"></script>
         <!--End of Boostbox Tag Script-->
-        <!-- BEGIN JIVOSITE CODE -->
-<script type='text/javascript'>
-(function(){ var widget_id = 'Af9Dp13Ek6';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-</script>
-<!-- END JIVOSITE CODE -->
 </body>
 </html>    

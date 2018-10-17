@@ -708,11 +708,9 @@
             </div>
         </div>                                                        
     </div>
-    <!-- BEGIN JIVOSITE CODE -->
-<script type='text/javascript'>
-(function(){ var widget_id = 'Af9Dp13Ek6';var d=document;var w=window;function l(){var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-</script>
-<!-- END JIVOSITE CODE -->
+    <!-- Start of dumbu Zendesk Widget script -->
+     <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=c28ec1dd-02f4-4c37-808f-87833fcf6c97"> </script>
+    <!-- End of dumbu Zendesk Widget script -->
     </body>
     <!--[if lt IE 9]>
     <script src="js/jquery-1.9.1.js"></script>
