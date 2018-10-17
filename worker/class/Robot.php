@@ -281,7 +281,13 @@ namespace leads\cls {
                         foreach ($json_response->data->location->edge_location_to_media->edges as $Edge) {
                             $profile = new \stdClass();
                             $profile->node = $this->get_geo_post_user_info($cookies, $rp_insta_id, $Edge->node->shortcode, $proxy);
-                            array_push($Profiles, $profile->node->username);
+                            if(isset($profile->node->username)){
+                                array_push($Profiles, $profile->node->username);
+                            }
+                            else{
+                                echo "node:";
+                                echo var_dump($profile->node);
+                            }
                         }
                         $error = FALSE;
                     } else {
@@ -310,8 +316,14 @@ namespace leads\cls {
                 exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = NULL;
                 if(is_array($output)){
-                    $json = json_decode($output[0]);
-                    //echo "line 308"; var_dump($output);
+                    if (array_key_exists(0, $output)) {
+                        $json = json_decode($output[0]);
+                    }
+                    else{
+                        echo "nao e ouput[0] em get_insta_geomedia <br>\n"; 
+                        var_dump($output);
+                        $json = NULL;
+                    }                    
                     if(isset($json->data->location->edge_location_to_media) && isset($json->data->location->edge_location_to_media->page_info)) {
                         $cursor = $json->data->location->edge_location_to_media->page_info->end_cursor;
                         if (count($json->data->location->edge_location_to_media->edges) == 0) {
@@ -369,7 +381,8 @@ namespace leads\cls {
             $object = NULL;
             if(is_array($output)){
                 $object = json_decode($output[0]);
-                //echo "line 366"; var_dump($output);
+                if(!$object)
+                    {echo "line 372"; var_dump($output);}
             }
             if(is_object($object) && isset($object->graphql->shortcode_media->owner)) {
                 return $object->graphql->shortcode_media->owner;
@@ -443,8 +456,14 @@ namespace leads\cls {
                 exec('/usr/bin/'.$curl_str, $output, $status);
                 $json = NULL;
                 if(is_array($output)){
-                    $json = json_decode($output[0]);
-                    //echo "line 443"; var_dump($output);
+                    if (array_key_exists(0, $output)) {
+                        $json = json_decode($output[0]);
+                    }
+                    else{
+                        echo "nao e ouput[0] em get_insta_tagmedia <br>\n"; 
+                        var_dump($output);
+                        $json = NULL;
+                    }
                 }
                 //var_dump($output);
                 if(isset($json) && is_object($json) && $json->status == 'ok')
@@ -464,10 +483,13 @@ namespace leads\cls {
                 }
                 
                 else {
-                    if(strpos($output[0], 'execution failure') !== FALSE && strpos($output[0], 'execution error') !== FALSE){
-                        $this->DB->update_field_in_DB('profiles',
-                                'id', $this->next_work->profile->id,
-                                '`cursor`','NULL');
+                    if(is_array($output) && (array_key_exists(0, $output))){
+                        if(strpos($output[0], 'execution failure') !== FALSE && strpos($output[0], 'execution error') !== FALSE){
+                            $this->DB->update_field_in_DB('profiles',
+                                    'id', $this->next_work->profile->id,
+                                    '`cursor`','NULL');
+                            echo 'solved';
+                        }
                     }
                     var_dump($output);
                     print_r($curl_str);
@@ -475,15 +497,7 @@ namespace leads\cls {
                     throw new \Exception("Not followers from hashtag");
                 }
                 return $json;
-            } catch (\Exception $exc) {
-                $msg = $exc->getMessage();
-                echo 'excp:'.$msg;
-                if(strpos($msg, 'execution failure') !== FALSE && strpos($msg, 'execution error') !== FALSE){
-                    $this->DB->update_field_in_DB('profiles',
-                                'id', $this->next_work->profile->id,
-                                '`cursor`','NULL');
-                    echo 'solved';
-                }
+            } catch (\Exception $exc) {                
                 echo $exc->getTraceAsString();
                 throw new \Exception("Not followers from hashtag");
             }
