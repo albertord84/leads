@@ -477,7 +477,7 @@ namespace leads\cls {
                 return $json;
             } catch (\Exception $exc) {
                 $msg = $exc->getMessage();
-                echo $msg;
+                echo 'excp:'.$msg;
                 if(strpos($msg, 'execution failure') !== FALSE && strpos($msg, 'execution error') !== FALSE){
                     $this->DB->update_field_in_DB('profiles',
                                 'id', $this->next_work->profile->id,
