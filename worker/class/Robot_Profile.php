@@ -73,7 +73,8 @@ namespace leads\cls {
                     } else{
                         //$administrators=array('josergm86@gmail.com','danilo.oliveiira@hotmail.com');                        
                         if($resp!=='NOT LOGGED'){
-                            $administrators=array('jorge85.mail@gmail.com');                        
+                            //$administrators=array('jorge85.mail@gmail.com');                        
+                            $administrators=array();                        
                             foreach($administrators as $admin){
                                 $this->Gmail->send_mail($admin, $admin,
                                 "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
