@@ -88,7 +88,7 @@ namespace leads\cls {
                 //1. obter seguidores segundo o tipo de perfil de referencia
                 if($this->next_work->profile->profile_type_id == profile_type::REFERENCE_PROFILE){
                     
-                    $rankToken = \InstagramAPI\Signatures::generateUUID();
+                    $rankToken = \get_insta_followersagramAPI\Signatures::generateUUID();
                     $userId = $ig->people->getUserIdForName($rp);
                     $response = $ig->people->getFollowers($userId, $rankToken, null, $cursor);
                     $followers = $response->getUsers();

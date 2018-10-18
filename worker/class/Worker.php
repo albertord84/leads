@@ -110,6 +110,10 @@ namespace leads\cls {
                         if($result->has_exception){
                             $this->process_instagram_api_exception($result->exception_message,$robot_profile);
                             $message = $result->exception_message;
+                            if($message == "Invalid request options."){
+                                echo "Invalid request options.";
+                                var_dump($result); 
+                            }
                         } else{
                             $message =' proccess correctly';
                         }
