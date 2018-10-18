@@ -34,6 +34,7 @@ namespace leads\cls {
             $ig = NULL;
             $DB = new DB();
             $id =0;
+            $inc = 0;
             while(true){
                 $sql = ""
                     . "SELECT * FROM dumbu_emails_db.robots_profiles "
@@ -49,7 +50,7 @@ namespace leads\cls {
                     return NULL;
                 } else{
                     $rp = $this->fill_client_data($client_data);
-                    $id_proxy = ($rp->id)%8; //mod 8                        
+                    $id_proxy = ($rp->id - 1 + $inc)%8 + 1; //mod 8                        
                     $proxy = $this->get_proxy_obj($id_proxy);
                     $proxy_str = $this->get_proxy_str($proxy);
                     $id = $rp->id;
@@ -70,21 +71,25 @@ namespace leads\cls {
                         $this->proxy = $proxy_str;
                         return true;
                     } else{
-                        $administrators=array('josergm86@gmail.com','danilo.oliveiira@hotmail.com');                        
-                        //$administrators=array('jorge85.mail@gmail.com');                        
-                        foreach($administrators as $admin){
-                            $this->Gmail->send_mail($admin, $admin,
-                            "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
-                            "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '");                            
+                        //$administrators=array('josergm86@gmail.com','danilo.oliveiira@hotmail.com');                        
+                        if($resp!=='NOT LOGGED'){
+                            //$administrators=array('jorge85.mail@gmail.com');                        
+                            $administrators=array();                        
+                            foreach($administrators as $admin){
+                                $this->Gmail->send_mail($admin, $admin,
+                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '",
+                                "' CONCERTAR ISSO!!! Problem with login of robot_profile login = '. $rp->login '".$resp);                            
+                            }
                         }
-                        if($ig==='BLOCKED_BY_INSTA' || $ig==='NOT LOGGED'){
+                        if($resp==='BLOCKED_BY_INSTA' || $resp==='NOT LOGGED'){
                             $DB->update_field_in_DB('robots_profiles', 'id', $rp->id, 'status_id', $BLOCKED_BY_INSTA);                            
                         } else
-                        if($ig==='VERIFY_ACCOUNT'){
+                        if($resp==='VERIFY_ACCOUNT'){
                             $DB->update_field_in_DB('robots_profiles','id', $rp->id, 'status_id', $VERIFY_ACCOUNT);                            
                         }
                     }
                 }
+                $inc++;
             }
             return false;
         }
