@@ -19,7 +19,8 @@ ini_set('xdebug.var_display_max_data', 1024);
 //Worker
 $Worker = new leads\cls\Worker();
 $robot_profile = new leads\cls\Robot_Profile();
-$robot_id = 1;
+$robot_id = 11;
+$db->update_field_in_DB('robots_profiles', 'id', $robot_id, 'status_id', '1');
 $robot_profile->get_robot_profile_from_backup($robot_id);
 
 $PR = 360;

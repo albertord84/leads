@@ -16,7 +16,7 @@ namespace leads\cls {
             try {             
                 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug); 
                 
-                $ig->setProxy("http://$proxyuser:$proxypass@$ip:$port");
+                //$ig->setProxy("http://$proxyuser:$proxypass@$ip:$port");
                 
                 $loginResponse = $ig->login($username, $password);
                                 
