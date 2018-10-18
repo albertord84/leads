@@ -16,9 +16,9 @@ ini_set('xdebug.var_display_max_depth', 7);
 ini_set('xdebug.var_display_max_children', 256);
 ini_set('xdebug.var_display_max_data', 1024);
 
-$text = "as+df@asdfa-sdf.asd.sd.asdf.asd.com  as'df@asdf.asd.com  asdf@asdf.com aaaaa@aaaa.com, asdfasdf asf as@asdf, as.as.@.com @.com @com,"
-        . "asdf@com. asf@.cpomn   asdf@asdf.asd.com ";
-var_dump(\dumbu\cls\Utils::extractEmail($text));
+//$text = "as+df@asdfa-sdf.asd.sd.asdf.asd.com  as'df@asdf.asd.com  asdf@asdf.com aaaaa@aaaa.com, asdfasdf asf as@asdf, as.as.@.com @.com @com,"
+//        . "asdf@com. asf@.cpomn   asdf@asdf.asd.com ";
+//var_dump(\dumbu\cls\Utils::extractEmail($text));
 
 
 //$GLOBALS['sistem_config'] = new dumbu\cls\system_config();
@@ -216,7 +216,7 @@ var_dump($pay_day);
 //var_dump($result);
 
 
-//$Robot = new \dumbu\cls\Robot();
+$Robot = new \dumbu\cls\Robot();
 //var_dump($Robot->IPS);
 //var_dump($Robot->IPS['IPS'][0]);
 //var_dump($_SERVER['QUERY_STRING']);
@@ -291,8 +291,8 @@ var_dump($pay_day);
 //$result = $Robot->bot_login("vaniapetti", "202020");
 //var_dump($result);
 //$result = $Robot->bot_login("lambaosbeicos", "75005310");
-//$result = $Robot->bot_login("alberto_dreyes", "albertord7");
-//var_dump($result);
+$result = $Robot->bot_login("alberto_test", "alberto2");
+var_dump($result);
 //----------------------------------------------------------------
 
 

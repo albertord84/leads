@@ -24,7 +24,7 @@ namespace leads\cls {
             $this->Gmail =  new Gmail();//new leads\cls\Gmail();            
         }
         
-        public function get_robot_profile_from_backup(){ //retorna o Robot_Profile que possa ser usado para trabalhar
+        public function get_robot_profile_from_backup($param_id = false){ //retorna o Robot_Profile que possa ser usado para trabalhar
             //1. selecionar uno de entre todos los robot_profile ativos
             $ACTIVE = user_status::ACTIVE;
             $BLOCKED_BY_INSTA = user_status::BLOCKED_BY_INSTA;
@@ -41,7 +41,7 @@ namespace leads\cls {
                     . "WHERE (robots_profiles.status_id = $ACTIVE "
                     . "OR robots_profiles.status_id = $BLOCKED_BY_INSTA "
                     . "OR robots_profiles.status_id = $VERIFY_ACCOUNT )"
-                    . "AND robots_profiles.id > $id "
+                    . (($param_id)? "AND robots_profiles.id = $param_id " : "AND robots_profiles.id > $id ") 
                     . "ORDER BY robots_profiles.id "
                     . "LIMIT 1";
                 $clients_data = mysqli_query($DB->connection, $sql);                

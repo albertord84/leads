@@ -163,6 +163,49 @@ namespace leads\cls {
             }
         }   
         
+        public function get_work_by_id($profile_id) {
+            //TODO: veo más eficiente adicionar um last_accessed a cada registro en el daily_work
+            try {
+                //1. obter a registro do daily_work mais antigo sem trabalhar
+                $sql = ""
+                    . " SELECT * FROM dumbu_emails_db.daily_work "
+                    . " WHERE profile_id = '$profile_id'; ";
+                $result = mysqli_query($this->connection, $sql);
+                $work = $result->fetch_object();
+                
+               //3. obter o cliente mais antigo sem ter trabalhado segundo o daily work
+                $sql = ""
+                    . " SELECT * FROM dumbu_emails_db.clients "
+                    . " INNER JOIN users ON users.id = clients.user_id "
+                    . " WHERE clients.user_id = '$work->client_id';";
+                $result = mysqli_query($this->connection, $sql);
+                $old_client = $result->fetch_object();
+                
+                //4. obter a campanha mais antiga sem ter trabalhado segundo o daily work
+                $sql = ""
+                    . " SELECT * FROM dumbu_emails_db.campaings "
+                    . " WHERE campaings.id = '$work->campaing_id';";
+                $result = mysqli_query($this->connection, $sql);
+                $old_campaing = $result->fetch_object();
+                
+                //5. obter o perfil asociado
+                $sql = ""
+                    . " SELECT * FROM dumbu_emails_db.profiles "
+                    . " WHERE profiles.id = '$work->profile_id';";
+                $result = mysqli_query($this->connection, $sql);
+                $old_profile = $result->fetch_object();
+                
+                return (object)array(
+                    'client'=>$old_client,
+                    'campaing'=>$old_campaing,
+                    'profile'=>$old_profile
+                );                        
+                
+            } catch (\Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }   
+        
         public function update_field_in_DB($table, $key_field, $key_value, $field, $value){
             $sql = ""
                 . "UPDATE dumbu_emails_db.$table "                    
