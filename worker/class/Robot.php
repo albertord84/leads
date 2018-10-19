@@ -461,7 +461,8 @@ namespace leads\cls {
                             $cursor = null;
 //                            echo ("<br>\n No nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                             //$this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, '`cursor`', 'NULL');
-                            $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                            //$result = $this->DB->delete_daily_work($this->daily_work->reference_id);
+                            $this->DB->delete_daily_work_by_profile($this->next_work->profile->id);
                             echo ("<br>\n Hashtag " . $this->next_work->profile->id . " Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
                     }
