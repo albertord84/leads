@@ -192,6 +192,7 @@ $(document).ready(function () {
                     type: 'POST',
                     dataType: 'json',
                     success: function (response) {
+
                         if (response['success']) {                    
                             if(response['resource'] == 'client')
                                 gtag_report_conversion(base_url+'index.php/welcome/client');
