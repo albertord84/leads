@@ -39,7 +39,7 @@ namespace leads\cls {
             $this->utils = new \leads\cls\Utils();
         }
 
-        public function do_instagram_login_by_API($login, $pass, $ip = '207.188.155.18', $port = '21316', $proxyuser = 'albertreye9917', $proxypass = '3r4rcz0b1v') { //return $ig object
+        public function do_instagram_login_by_API($login, $pass, $ip = "", $port = "", $proxyuser = "", $proxypass = "") { //return $ig object
             try {
                 $result = $this->make_login($login, $pass, $ip, $port, $proxyuser, $proxypass);
                 return $result;
@@ -54,7 +54,7 @@ namespace leads\cls {
             }
         }
 
-        public function make_login($login, $pass, $ip = '207.188.155.18', $port = '21316', $proxyuser = 'albertreye9917', $proxypass = '3r4rcz0b1v') { //return $ig object
+        public function make_login($login, $pass, $ip = "", $port = "", $proxyuser = "", $proxypass = "") { //return $ig object
             $instaAPI = new \leads\cls\InstaAPI();
             $result = "";
             try {
@@ -293,7 +293,12 @@ namespace leads\cls {
         public function get_insta_geomedia($cookies, $location, $N, &$cursor = NULL, $proxy = "") {
             try {
                 $tag_query = 'ac38b90f0f3981c42092016a37c59bf7';
-                $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
+                if ($cursor && $cursor !== "NULL") {
+                    $variables = "{\"id\":\"$location\",\"first\":$N,\"after\":\"$cursor\"}";
+                }
+                else{
+                    $variables = "{\"id\":\"$location\",\"first\":$N}";
+                }
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies, $proxy);
                 if ($curl_str === NULL)
                     return NULL;
@@ -428,7 +433,12 @@ namespace leads\cls {
         public function get_insta_tagmedia($cookies, $tag, $N, &$cursor = NULL, $proxy = "") {
             try {
                 $tag_query = 'ded47faa9a1aaded10161a2ff32abb6b';
-                $variables = "{\"tag_name\":\"$tag\",\"first\":2,\"after\":\"$cursor\"}";
+                if ($cursor && $cursor !== "NULL") {
+                    $variables = "{\"tag_name\":\"$tag\",\"first\":$N,\"after\":\"$cursor\"}";
+                }
+                else {
+                    $variables = "{\"tag_name\":\"$tag\",\"first\":$N}";
+                }
                 $curl_str = $this->make_curl_followers_query($tag_query, $variables, $cookies, $proxy);
                 if ($curl_str === NULL)
                     return NULL;
@@ -450,7 +460,7 @@ namespace leads\cls {
                         if (count($json->data->hashtag->edge_hashtag_to_media->edges) == 0) {
                             $cursor = null;
 //                            echo ("<br>\n No nodes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, '`cursor`', 'NULL');
+                            //$this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, '`cursor`', 'NULL');
                             $result = $this->DB->delete_daily_work($this->daily_work->reference_id);
                             echo ("<br>\n Hashtag " . $this->next_work->profile->id . " Set end_cursor to NULL!!!!!!!! Deleted daily work!!!!!!!!!!!!");
                         }
@@ -458,7 +468,8 @@ namespace leads\cls {
                 } else {
                     if (is_array($output) && (array_key_exists('0', $output))) {
                         if (strpos($output[0], 'execution failure') !== FALSE && strpos($output[0], 'execution error') !== FALSE) {
-                            $this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, '`cursor`', 'NULL');
+                            $cursor = null;
+                            //$this->DB->update_field_in_DB('profiles', 'id', $this->next_work->profile->id, '`cursor`', 'NULL');
                             echo 'solved';
                         }
                     }

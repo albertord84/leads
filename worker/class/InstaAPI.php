@@ -9,7 +9,7 @@ namespace leads\cls {
 
         public $Cookies = null;
 
-        public function login($username, $password, $ip='207.188.155.18', $port='21316', $proxyuser='albertreye9917', $proxypass='3r4rcz0b1v') {
+        public function login($username, $password, $ip="", $port="", $proxyuser="", $proxypass="") {
             \InstagramAPI\Instagram::$allowDangerousWebUsageAtMyOwnRisk = true;            
             $debug = false;
             $truncatedDebug = true;

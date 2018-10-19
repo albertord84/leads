@@ -23,7 +23,7 @@ $robot_id = 11;
 $db->update_field_in_DB('robots_profiles', 'id', $robot_id, 'status_id', '1');
 $robot_profile->get_robot_profile_from_backup($robot_id);
 
-$PR = 360;
+$PR = 33;
 $Worker->next_work = $Worker->DB->get_work_by_id($PR);
 $Worker->Robot->next_work = $Worker->next_work;
 $result = $Worker->Robot->do_robot_extract_leads($robot_profile->ig, $robot_profile->cookies, $robot_profile->proxy, $Worker->config->MULTI_LEVEL);
