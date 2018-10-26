@@ -613,9 +613,9 @@
                                     <div>
                                         <input type="checkbox" class = "inf" name = "inf[]" value="data_nascimento"> <?php echo $CI->T("Data de nascimento", array(),$language);?>                                    
                                     </div>
-                                    <div>
-                                        <input type="checkbox" class = "inf" name = "inf[]" value="privativo"> <?php echo $CI->T("Privativo", array(),$language);?>                                    
-                                    </div>
+<!--                                    <div>
+                                        <input type="checkbox" class = "inf" name = "inf[]" value="privativo"> <?php // echo $CI->T("Privativo", array(),$language);?>                                    
+                                    </div>-->
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                     
